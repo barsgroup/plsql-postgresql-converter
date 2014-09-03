@@ -1365,6 +1365,7 @@ expression_element
     |    ^(KEEP_VK expression_element DENSE_RANK_VK (FIRST_VK|LAST_VK) order_by_clause over_clause?)
 
     |    ^(DOT_ASTERISK tableview_name)
+    |    ^((PERCENT_FOUND_VK|PERCENT_NOTFOUND_VK|PERCENT_ROWCOUNT_VK|PERCENT_ISOPEN_VK) cursor_name)
 
     |    case_statement
     |    constant

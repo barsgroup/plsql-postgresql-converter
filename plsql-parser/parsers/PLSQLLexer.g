@@ -76,7 +76,7 @@ import java.util.LinkedList;
                 state.tokenStartLine = input.getLine();
                 state.text = null;
                 if (input.LA(1) == CharStream.EOF) {
-                    return Token.EOF_TOKEN;
+                    return getEOFToken();
                 }
                 try {
                     int m = input.mark();

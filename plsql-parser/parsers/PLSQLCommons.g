@@ -69,6 +69,7 @@ tokens {
     ANY_ELEMENT;
     COST_CLASS_NAME;
     XML_COLUMN_NAME;
+    OUTER_JOIN_SIGN;
 }
 
 // $<Common SQL PL/SQL Clauses/Parts
@@ -107,8 +108,8 @@ current_of_clause
     ;
 
 into_clause
-    :    into_key^ variable_name (COMMA! variable_name)* 
-    |    bulk_key^ collect_key! into_key! variable_name (COMMA! variable_name)* 
+    :    into_key^ general_element (COMMA! general_element)* 
+    |    bulk_key^ collect_key! into_key! general_element (COMMA! general_element)* 
     ;
 
 // $>
@@ -512,7 +513,7 @@ concatenation_op
     ;
 
 outer_join_sign
-    :    LEFT_PAREN PLUS_SIGN RIGHT_PAREN
+    :    LEFT_PAREN PLUS_SIGN RIGHT_PAREN -> OUTER_JOIN_SIGN[$LEFT_PAREN, "(+)"]
     ;
 
 // $>

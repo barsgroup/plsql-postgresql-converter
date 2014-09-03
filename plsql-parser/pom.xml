@@ -40,12 +40,12 @@
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr</artifactId>
-                <version>3.3</version>
+                <version>3.5.2</version>
             </dependency>
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr-runtime</artifactId>
-                <version>3.3</version>
+                <version>3.5.2</version>
             </dependency>
             <!-- test dependencies -->
             <dependency>

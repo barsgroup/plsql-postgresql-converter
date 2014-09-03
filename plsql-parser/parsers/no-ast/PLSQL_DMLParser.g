@@ -839,6 +839,7 @@ backtrack=true;
     |    quantified_expression
     |    standard_function
     |    atom
+    |    cursor_name (percent_notfound_key|percent_found_key|percent_isopen_key|percent_rowcount_key)
     ;
 
 case_statement [boolean isStatementParameter]
