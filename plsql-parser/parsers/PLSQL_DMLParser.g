@@ -963,7 +963,12 @@ additive_expression
     ;
 
 multiply_expression
-    :    datetime_expression ( ( ASTERISK^ | SOLIDUS^ | mod_key^ | div_key^ | PERCENT^ ) datetime_expression)*
+    :    datetime_expression
+         (
+            ( ASTERISK^ | SOLIDUS^ | PERCENT^ ) datetime_expression
+            | (mod_key datetime_expression) => mod_key^ datetime_expression
+            | (div_key datetime_expression) => div_key^ datetime_expression
+         )*
     ;
 
 datetime_expression
