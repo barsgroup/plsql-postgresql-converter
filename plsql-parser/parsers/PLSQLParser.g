@@ -327,6 +327,7 @@ backtrack=true;
     |     table_declaration
     |     procedure_spec
     |     function_spec
+    |     pragma_declaration
     ;
 
 procedure_spec
