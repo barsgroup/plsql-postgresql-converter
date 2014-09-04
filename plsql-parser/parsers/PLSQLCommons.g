@@ -153,8 +153,16 @@ schema_name
     ;
 
 routine_name
-    :    id ((PERIOD id_expression)=> PERIOD id_expression)* (AT_SIGN link_name)?
-        -> ^(ROUTINE_NAME id id_expression* link_name?)
+    :    id routine_name_part_after_period* (AT_SIGN link_name)?
+        -> ^(ROUTINE_NAME id routine_name_part_after_period* link_name?)
+    ;
+    
+routine_name_part_after_period
+    :
+          (PERIOD id_expression)=> PERIOD id_expression -> id_expression
+          | (PERIOD SQL92_RESERVED_DELETE) => PERIOD SQL92_RESERVED_DELETE -> REGULAR_ID[$SQL92_RESERVED_DELETE]
+          | (PERIOD SQL92_RESERVED_EXISTS) => PERIOD SQL92_RESERVED_EXISTS -> REGULAR_ID[$SQL92_RESERVED_EXISTS]
+          | (PERIOD SQL92_RESERVED_PRIOR) => PERIOD SQL92_RESERVED_PRIOR -> REGULAR_ID[$SQL92_RESERVED_PRIOR]
     ;
 
 package_name
