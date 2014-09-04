@@ -1035,15 +1035,9 @@ backtrack=true;
     |    quantified_expression
     |    standard_function -> ^(STANDARD_FUNCTION standard_function)
     |    cursor_name (percent_notfound_key^|percent_found_key^|percent_isopen_key^|percent_rowcount_key^)
-    |    function_call_expr
     |    atom
     ;
     
-function_call_expr
-    :    routine_name function_argument
-    -> ^(ROUTINE_CALL routine_name function_argument)
-    ;
-
 case_statement [boolean isStatementParameter]
 scope    {
     boolean isStatement;

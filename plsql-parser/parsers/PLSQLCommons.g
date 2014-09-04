@@ -159,10 +159,14 @@ routine_name
     
 routine_name_part_after_period
     :
-          (PERIOD id_expression)=> PERIOD id_expression -> id_expression
-          | (PERIOD SQL92_RESERVED_DELETE) => PERIOD SQL92_RESERVED_DELETE -> REGULAR_ID[$SQL92_RESERVED_DELETE]
-          | (PERIOD SQL92_RESERVED_EXISTS) => PERIOD SQL92_RESERVED_EXISTS -> REGULAR_ID[$SQL92_RESERVED_EXISTS]
-          | (PERIOD SQL92_RESERVED_PRIOR) => PERIOD SQL92_RESERVED_PRIOR -> REGULAR_ID[$SQL92_RESERVED_PRIOR]
+          (PERIOD routine_id)=> PERIOD routine_id -> routine_id
+    ;
+
+routine_id
+    :     id_expression -> id_expression
+          | SQL92_RESERVED_DELETE -> REGULAR_ID[$SQL92_RESERVED_DELETE]
+          | SQL92_RESERVED_EXISTS -> REGULAR_ID[$SQL92_RESERVED_EXISTS]
+          | SQL92_RESERVED_PRIOR -> REGULAR_ID[$SQL92_RESERVED_PRIOR]
     ;
 
 package_name
@@ -440,10 +444,10 @@ general_element
 
 general_element_part
 @init    { boolean isRoutineCall = false; }
-    :    (INTRODUCER char_set_name)? id_expression
-            ((PERIOD id_expression)=> PERIOD id_expression)* (function_argument {isRoutineCall = true;})?
-        ->{isRoutineCall}? ^(ROUTINE_CALL ^(ROUTINE_NAME char_set_name? id_expression+) function_argument)
-        -> ^(ANY_ELEMENT char_set_name? id_expression+)
+    :    (INTRODUCER char_set_name)? routine_id
+            ((PERIOD routine_id)=> PERIOD routine_id)* (function_argument {isRoutineCall = true;})?
+        ->{isRoutineCall}? ^(ROUTINE_CALL ^(ROUTINE_NAME char_set_name? routine_id+) function_argument)
+        -> ^(ANY_ELEMENT char_set_name? routine_id+)
     ;
 
 table_element
