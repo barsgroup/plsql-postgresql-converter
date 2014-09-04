@@ -358,6 +358,34 @@ SIMPLE_LETTER
     ;
 //}
 
+// fragments for case-insensitive matching of SQL keywords
+fragment A:('a'|'A');
+fragment B:('b'|'B');
+fragment C:('c'|'C');
+fragment D:('d'|'D');
+fragment E:('e'|'E');
+fragment F:('f'|'F');
+fragment G:('g'|'G');
+fragment H:('h'|'H');
+fragment I:('i'|'I');
+fragment J:('j'|'J');
+fragment K:('k'|'K');
+fragment L:('l'|'L');
+fragment M:('m'|'M');
+fragment N:('n'|'N');
+fragment O:('o'|'O');
+fragment P:('p'|'P');
+fragment Q:('q'|'Q');
+fragment R:('r'|'R');
+fragment S:('s'|'S');
+fragment T:('t'|'T');
+fragment U:('u'|'U');
+fragment V:('v'|'V');
+fragment W:('w'|'W');
+fragment X:('x'|'X');
+fragment Y:('y'|'Y');
+fragment Z:('z'|'Z');
+
 //  Rule #176 <DIGIT> was incorporated by <UNSIGNED_INTEGER> 
 //{ Rule #615 <UNSIGNED_INTEGER> - subtoken typecast in <EXACT_NUM_LIT> 
 fragment
@@ -407,131 +435,131 @@ fragment DOUBLE_PERIOD: ;
 //  Within testLiterals all reserved and non-reserved words are being resolved
 
 SQL92_RESERVED_ALL
-    :    'all'
+    :    A L L
     ;
 
 SQL92_RESERVED_ALTER
-    :    'alter'
+    :    A L T E R
     ;
 
 SQL92_RESERVED_AND
-    :    'and'
+    :    A N D
     ;
 
 SQL92_RESERVED_ANY
-    :    'any'
+    :    A N Y
     ;
 
 SQL92_RESERVED_AS
-    :    'as'
+    :    A S
     ;
 
 SQL92_RESERVED_ASC
-    :    'asc'
+    :    A S C
     ;
 
 //SQL92_RESERVED_AT
-//    :    'at'
+//    :    A T
 //    ;
 
 SQL92_RESERVED_BEGIN
-    :    'begin'
+    :    B E G I N
     ;
 
 SQL92_RESERVED_BETWEEN
-    :    'between'
+    :    B E T W E E N
     ;
 
 SQL92_RESERVED_BY
-    :    'by'
+    :    B Y
     ;
 
 SQL92_RESERVED_CASE
-    :    'case'
+    :    C A S E
     ;
 
 SQL92_RESERVED_CHECK
-    :    'check'
+    :    C H E C K
     ;
 
 PLSQL_RESERVED_CLUSTERS
-    :    'clusters'
+    :    C L U S T E R S
     ;
 
 PLSQL_RESERVED_COLAUTH
-    :    'colauth'
+    :    C O L A U T H
     ;
 
 PLSQL_RESERVED_COMPRESS
-    :    'compress'
+    :    C O M P R E S S
     ;
 
 SQL92_RESERVED_CONNECT
-    :    'connect'
+    :    C O N N E C T
     ;
 
 //PLSQL_NON_RESERVED_COLUMNS
-//    :    'columns'
+//    :    C O L U M N S
 //    ;
 
 PLSQL_NON_RESERVED_CONNECT_BY_ROOT
-    :    'connect_by_root'
+    :    C O N N E C T '_' B Y '_' R O O T
     ;
 
 PLSQL_RESERVED_CRASH
-    :    'crash'
+    :    C R A S H
     ;
 
 SQL92_RESERVED_CREATE
-    :    'create'
+    :    C R E A T E
     ;
 
 SQL92_RESERVED_CURRENT
-    :    'current'
+    :    C U R R E N T
     ;
 
 SQL92_RESERVED_CURSOR
-    :    'cursor'
+    :    C U R S O R
     ;
 
 SQL92_RESERVED_DATE
-    :    'date'
+    :    D A T E
     ;
 
 SQL92_RESERVED_DECLARE
-    :    'declare'
+    :    D E C L A R E
     ;
 
 SQL92_RESERVED_DEFAULT
-    :    'default'
+    :    D E F A U L T
     ;
 
 SQL92_RESERVED_DELETE
-    :    'delete'
+    :    D E L E T E
     ;
 
 SQL92_RESERVED_DESC
-    :    'desc'
+    :    D E S C
     ;
 
 SQL92_RESERVED_DISTINCT
-    :    'distinct'
+    :    D I S T I N C T
     ;
 
 SQL92_RESERVED_DROP
-    :    'drop'
+    :    D R O P
     ;
 
 SQL92_RESERVED_ELSE
-    :    'else'
+    :    E L S E
     ;
 
 SQL92_RESERVED_END
-    :    'end'
+    :    E N D
     ;
 
 SQL92_RESERVED_EXCEPTION
-    :    e='exception'
+    :    e='exception' | e='EXCEPTION'
     // "exception" is a keyword only withing the contex of the PL/SQL language
     // while it can be an identifier(column name, table name) in SQL
     // "exception" is a keyword if and only it is followed by "when"
@@ -584,243 +612,244 @@ SQL92_RESERVED_EXCEPTION
     ;
 
 PLSQL_RESERVED_EXCLUSIVE
-    :    'exclusive'
+    :    E X C L U S I V E
     ;
 
 SQL92_RESERVED_EXISTS
-    :    'exists'
+    :    E X I S T S
     ;
 
 SQL92_RESERVED_FALSE
-    :    'false'
+    :    F A L S E
     ;
 
 SQL92_RESERVED_FETCH
-    :    'fetch'
+    :    F E T C H
     ;
 
 SQL92_RESERVED_FOR
-    :    'for'
+    :    F O R
     ;
 
 SQL92_RESERVED_FROM
-    :    'from'
+    :    F R O M
     ;
 
 SQL92_RESERVED_GOTO
-    :    'goto'
+    :    G O T O
     ;
 
 SQL92_RESERVED_GRANT
-    :    'grant'
+    :    G R A N T
     ;
 
 SQL92_RESERVED_GROUP
-    :    'group'
+    :    G R O U P
     ;
 
 SQL92_RESERVED_HAVING
-    :    'having'
+    :    H A V I N G
     ;
 
 PLSQL_RESERVED_IDENTIFIED
-    :    'identified'
+    :    I D E N T I F I E D
     ;
 
 PLSQL_RESERVED_IF
-    :    'if'
+    :    I F
     ;
 
 SQL92_RESERVED_IN
-    :    'in'
+    :    I N
     ;
 
 PLSQL_RESERVED_INDEX
-    :    'index'
+    :    I N D E X
     ;
 
 PLSQL_RESERVED_INDEXES
-    :    'indexes'
+    :    I N D E X E S
     ;
 
 SQL92_RESERVED_INSERT
-    :    'insert'
+    :    I N S E R T
     ;
 
 SQL92_RESERVED_INTERSECT
-    :    'intersect'
+    :    I N T E R S E C T
     ;
 
 SQL92_RESERVED_INTO
-    :    'into'
+    :    I N T O
     ;
 
 SQL92_RESERVED_IS
-    :    'is'
+    :    I S
     ;
 
 SQL92_RESERVED_LIKE
-    :    'like'
+    :    L I K E
     ;
 
 PLSQL_RESERVED_LOCK
-    :    'lock'
+    :    L O C K
     ;
 
 PLSQL_RESERVED_MINUS
-    :    'minus'
+    :    M I N U S
     ;
 
 PLSQL_RESERVED_MODE
-    :    'mode'
+    :    M O D E
     ;
 
 PLSQL_RESERVED_NOCOMPRESS
-    :    'nocompress'
+    :    N O C O M P R E S S
     ;
 
 SQL92_RESERVED_NOT
-    :    'not'
+    :    N O T
     ;
 
 PLSQL_RESERVED_NOWAIT
-    :    'nowait'
+    :    N O W A I T
     ;
 
 SQL92_RESERVED_NULL
-    :    'null'
+    :    N U L L
     ;
 
 SQL92_RESERVED_OF
-    :    'of'
+    :    O F
     ;
 
 SQL92_RESERVED_ON
-    :    'on'
+    :    O N
     ;
 
 SQL92_RESERVED_OPTION
-    :    'option'
+    :    O P T I O N
     ;
 
 SQL92_RESERVED_OR
-    :    'or'
+    :    O R
     ;
 
 SQL92_RESERVED_ORDER
-    :    'order'
+    :    O R D E R
     ;
 
 SQL92_RESERVED_OVERLAPS
-    :    'overlaps'
+    :    O V E R L A P S
     ;
 
 SQL92_RESERVED_PRIOR
-    :    'prior'
+    :    P R I O R
     ;
 
 SQL92_RESERVED_PROCEDURE
-    :    'procedure'
+    :    P R O C E D U R E
     ;
 
 SQL92_RESERVED_PUBLIC
-    :    'public'
+    :    P U B L I C
     ;
 
 PLSQL_RESERVED_RESOURCE
-    :    'resource'
+    :    R E S O U R C E
     ;
 
 SQL92_RESERVED_REVOKE
-    :    'revoke'
+    :    R E V O K E
     ;
 
 SQL92_RESERVED_SELECT
-    :    'select'
+    :    S E L E C T
     ;
 
 PLSQL_RESERVED_SHARE
-    :    'share'
+    :    S H A R E
     ;
 
 SQL92_RESERVED_SIZE
-    :    'size'
+    :    S I Z E
     ;
 
 // SQL92_RESERVED_SQL
-//     :    'sql'
+//     :    S Q L
 //     ;
 
 PLSQL_RESERVED_START
-    :    'start'
+    :    S T A R T
     ;
 
 PLSQL_RESERVED_TABAUTH
-    :    'tabauth'
+    :    T A B A U T H
     ;
 
 SQL92_RESERVED_TABLE
-    :    'table'
+    :    T A B L E
     ;
 
 SQL92_RESERVED_THE
-    :    'the'
+    :    T H E
     ;
 
 SQL92_RESERVED_THEN
-    :    'then'
+    :    T H E N
     ;
 
 SQL92_RESERVED_TO
-    :    'to'
+    :    T O
     ;
 
 SQL92_RESERVED_TRUE
-    :    'true'
+    :    T R U E
     ;
 
 SQL92_RESERVED_UNION
-    :    'union'
+    :    U N I O N
     ;
 
 SQL92_RESERVED_UNIQUE
-    :    'unique'
+    :    U N I Q U E
     ;
 
 SQL92_RESERVED_UPDATE
-    :    'update'
+    :    U P D A T E
     ;
 
 SQL92_RESERVED_VALUES
-    :    'values'
+    :    V A L U E S
     ;
 
 SQL92_RESERVED_VIEW
-    :    'view'
+    :    V I E W
     ;
 
 PLSQL_RESERVED_VIEWS
-    :    'views'
+    :    V I E W S
     ;
 
 SQL92_RESERVED_WHEN
-    :    'when'
+    :    W H E N
     ;
 
 SQL92_RESERVED_WHERE
-    :    'where'
+    :    W H E R E
     ;
 
 SQL92_RESERVED_WITH
-    :    'with'
+    :    W I T H
     ;
 
 PLSQL_NON_RESERVED_USING
-    :    'using'
+    :    U S I N G
     ;
 
 PLSQL_NON_RESERVED_MODEL
     :    m='model'
+    |    m='MODEL'
     {
          // "model" is a keyword if and only if it is followed by ("main"|"partition"|"dimension")
          // otherwise it is a identifier(REGULAR_ID).
@@ -879,15 +908,15 @@ PLSQL_NON_RESERVED_MODEL
     ;
 
 PLSQL_NON_RESERVED_ELSIF
-    :    'elsif'
+    :    E L S I F
     ;
 
 PLSQL_NON_RESERVED_PIVOT
-    :    'pivot'
+    :    P I V O T
     ;
 
 PLSQL_NON_RESERVED_UNPIVOT
-    :    'unpivot'
+    :    U N P I V O T
     ;
 
 REGULAR_ID
