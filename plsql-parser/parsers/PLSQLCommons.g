@@ -158,8 +158,8 @@ routine_name
     ;
 
 package_name
-    :    id
-        -> ^(PACKAGE_NAME id)
+    :    id ((PERIOD id_expression)=> PERIOD id_expression)?
+        -> ^(PACKAGE_NAME id id_expression?)
     ;
 
 implementation_type_name
