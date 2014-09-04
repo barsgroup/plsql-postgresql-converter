@@ -338,8 +338,14 @@ procedure_spec
 function_spec
     :    function_key function_name 
         (LEFT_PAREN parameter ( COMMA parameter)* RIGHT_PAREN )?
-        return_key type_spec SEMICOLON 
-        -> ^(FUNCTION_SPEC[$function_key.start] function_name type_spec ^(PARAMETERS parameter*))
+        return_key type_spec
+        (invoker_rights_clause|parallel_enable_clause|result_cache_clause|deterministic_key)*
+        pipelined_key?
+        SEMICOLON 
+        -> ^(FUNCTION_SPEC[$function_key.start] function_name type_spec ^(PARAMETERS parameter*)
+        invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key*
+                ^(USING_MODE pipelined_key? //aggregate_key? implementation_type_name
+                ))
     ;
 
 package_obj_body
