@@ -667,7 +667,7 @@ insert_into_clause
     ;
 
 values_clause
-    :    values_key^ expression_list
+    :    values_key^ (expression_list | expression_wrapper)
     ;
 
 // $>
@@ -1221,6 +1221,7 @@ standard_function
     |    xmlroot_key^
             LEFT_PAREN!
                 concatenation_wrapper
+                COMMA!
                     xmlroot_param_version_part
                     (COMMA! xmlroot_param_standalone_part)?
             RIGHT_PAREN!
