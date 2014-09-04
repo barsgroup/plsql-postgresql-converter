@@ -747,10 +747,10 @@ lock_mode
 // $<Common DDL Clauses
 
 general_table_ref
-    :    (    dml_table_expression_clause
-        |    only_key LEFT_PAREN dml_table_expression_clause RIGHT_PAREN
+    :    (    dml_table_expression_clause_simple
+        |    only_key LEFT_PAREN dml_table_expression_clause_simple RIGHT_PAREN
         )    table_alias?
-        -> ^(TABLE_REF table_alias? dml_table_expression_clause only_key?)
+        -> ^(TABLE_REF table_alias? dml_table_expression_clause_simple only_key?)
     ;
 
 static_returning_clause
@@ -775,10 +775,16 @@ error_logging_reject_part
     :    reject_key^ limit_key! ((unlimited_key)=>unlimited_key|expression_wrapper)
     ;
 
-dml_table_expression_clause
+dml_table_expression_clause_simple
     :    table_collection_expression -> ^(TABLE_EXPRESSION ^(COLLECTION_MODE table_collection_expression))
     |    LEFT_PAREN select_statement subquery_restriction_clause? RIGHT_PAREN -> ^(TABLE_EXPRESSION ^(SELECT_MODE select_statement subquery_restriction_clause?))
     |    tableview_name sample_clause? -> ^(TABLE_EXPRESSION ^(DIRECT_MODE tableview_name sample_clause?))
+    ;
+
+dml_table_expression_clause
+    :    dml_table_expression_clause_simple
+    |    standard_function -> ^(TABLE_EXPRESSION standard_function)
+    |    (routine_name function_argument) => general_element
     ;
 
 table_collection_expression

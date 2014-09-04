@@ -169,7 +169,7 @@ backtrack=true;
     |    alter_type
     |    create_function_body
     |    create_procedure_body
-    |    create_package
+    |    (create_key ( or_key replace_key )? package_key)=>create_package
     |    create_sequence
 
 //    |    create_index //TODO

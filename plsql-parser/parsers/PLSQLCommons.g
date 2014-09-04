@@ -445,8 +445,8 @@ general_element
 general_element_part
 @init    { boolean isRoutineCall = false; }
     :    (INTRODUCER char_set_name)? routine_id
-            ((PERIOD routine_id)=> PERIOD routine_id)* (function_argument {isRoutineCall = true;})?
-        ->{isRoutineCall}? ^(ROUTINE_CALL ^(ROUTINE_NAME char_set_name? routine_id+) function_argument)
+            ((PERIOD routine_id)=> PERIOD routine_id)* (function_argument {isRoutineCall = true;})*
+        ->{isRoutineCall}? ^(ROUTINE_CALL ^(ROUTINE_NAME char_set_name? routine_id+) function_argument+)
         -> ^(ANY_ELEMENT char_set_name? routine_id+)
     ;
 
@@ -504,19 +504,19 @@ id_expression
 
 not_equal_op
     :    NOT_EQUAL_OP
-    |    LESS_THAN_OP GREATER_THAN_OP
-    |    EXCLAMATION_OPERATOR_PART EQUALS_OP
-    |    CARRET_OPERATOR_PART EQUALS_OP
+    |    LESS_THAN_OP GREATER_THAN_OP -> NOT_EQUAL_OP[$LESS_THAN_OP, "<>"]
+    |    EXCLAMATION_OPERATOR_PART EQUALS_OP -> NOT_EQUAL_OP[$EXCLAMATION_OPERATOR_PART, "!="]
+    |    CARRET_OPERATOR_PART EQUALS_OP -> NOT_EQUAL_OP[$CARRET_OPERATOR_PART, "~="]
     ;
 
 greater_than_or_equals_op
     :    GREATER_THAN_OR_EQUALS_OP
-    |    GREATER_THAN_OP EQUALS_OP
+    |    GREATER_THAN_OP EQUALS_OP -> GREATER_THAN_OR_EQUALS_OP[$GREATER_THAN_OP, ">="]
     ;
 
 less_than_or_equals_op
     :    LESS_THAN_OR_EQUALS_OP
-    |    LESS_THAN_OP EQUALS_OP
+    |    LESS_THAN_OP EQUALS_OP -> LESS_THAN_OR_EQUALS_OP[$LESS_THAN_OP, "<="]
     ;
 
 concatenation_op
