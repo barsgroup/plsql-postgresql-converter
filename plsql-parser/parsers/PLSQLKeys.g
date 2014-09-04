@@ -340,6 +340,8 @@ tokens {
     SEARCH_VK;
     DEPTH_VK;
     BREADTH_VK;
+    MOD_VK;
+    DIV_VK;
 }
 
 create_key
@@ -1733,10 +1735,6 @@ row_key
     :    {input.LT(1).getText().equalsIgnoreCase("row")}? REGULAR_ID -> ROW_VK[$REGULAR_ID]
     ;
 
-mod_key
-    :    {input.LT(1).getText().equalsIgnoreCase("mod")}? REGULAR_ID
-    ;
-
 raw_key
     :    {input.LT(1).getText().equalsIgnoreCase("raw")}?=> REGULAR_ID -> RAW_VK[$REGULAR_ID]
     ;
@@ -2515,4 +2513,12 @@ depth_key
 
 breadth_key
     :   {input.LT(1).getText().equalsIgnoreCase("breadth")}? REGULAR_ID -> BREADTH_VK[$REGULAR_ID]
+    ;
+
+mod_key
+    :    {input.LT(1).getText().equalsIgnoreCase("mod")}? REGULAR_ID -> MOD_VK[$REGULAR_ID]
+    ;
+
+div_key
+    :   {input.LT(1).getText().equalsIgnoreCase("div")}? REGULAR_ID -> DIV_VK[$REGULAR_ID]
     ;

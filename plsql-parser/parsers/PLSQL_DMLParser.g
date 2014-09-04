@@ -957,7 +957,7 @@ additive_expression
     ;
 
 multiply_expression
-    :    datetime_expression ( ( ASTERISK^ | SOLIDUS^ ) datetime_expression)*
+    :    datetime_expression ( ( ASTERISK^ | SOLIDUS^ | mod_key^ | div_key^ | PERCENT^ ) datetime_expression)*
     ;
 
 datetime_expression
