@@ -1226,8 +1226,8 @@ return_statement
     ;
 
 function_call
-    :    call_key? routine_name function_argument?
-        -> ^(ROUTINE_CALL routine_name function_argument?)
+    :    call_key? general_element
+        -> ^(ROUTINE_CALL general_element)
     ;
 
 body
