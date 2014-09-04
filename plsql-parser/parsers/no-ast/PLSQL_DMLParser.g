@@ -204,10 +204,10 @@ table_ref
 
 table_ref_aux
     :
-    (    (LEFT_PAREN (select_key|with_key)) => dml_table_expression_clause (pivot_clause|unpivot_clause)?
-    |    (LEFT_PAREN) => LEFT_PAREN table_ref subquery_operation_part* RIGHT_PAREN (pivot_clause|unpivot_clause)?
+    (    (LEFT_PAREN (select_key|with_key)) => dml_table_expression_clause (options{k=1;} : pivot_clause|unpivot_clause)?
+    |    (LEFT_PAREN) => LEFT_PAREN table_ref subquery_operation_part* RIGHT_PAREN (options{k=1;} : pivot_clause|unpivot_clause)?
     |    (only_key LEFT_PAREN) => only_key LEFT_PAREN dml_table_expression_clause RIGHT_PAREN
-    |    dml_table_expression_clause (pivot_clause|unpivot_clause)?
+    |    dml_table_expression_clause (options{k=1;} : pivot_clause|unpivot_clause)?
     )
         flashback_query_clause*
         ({isTableAlias()}? table_alias)?
@@ -838,8 +838,8 @@ backtrack=true;
     |    {(input.LA(1) == SQL92_RESERVED_CASE || input.LA(2) == SQL92_RESERVED_CASE)}? case_statement[false]
     |    quantified_expression
     |    standard_function
-    |    atom
     |    cursor_name (percent_notfound_key|percent_found_key|percent_isopen_key|percent_rowcount_key)
+    |    atom
     ;
 
 case_statement [boolean isStatementParameter]

@@ -50,8 +50,8 @@ current_of_clause
     ;
 
 into_clause
-    :    into_key variable_name (COMMA variable_name)* 
-    |    bulk_key collect_key into_key variable_name (COMMA variable_name)* 
+    :    into_key general_element (COMMA general_element)* 
+    |    bulk_key collect_key into_key general_element (COMMA general_element)* 
     ;
 
 // $>
