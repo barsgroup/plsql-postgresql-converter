@@ -232,7 +232,7 @@ factoring_element
 search_clause
     :    search_key ( depth_key | breadth_key ) first_key by_key
              column_name asc_key ? desc_key ? (nulls_key first_key)? (nulls_key last_key)?
-             (COMMA column_name asc_key ? desc_key ? (nulls_key first_key)? (nulls_key last_key)? )*
+             (COMMA! column_name asc_key ? desc_key ? (nulls_key first_key)? (nulls_key last_key)? )*
              set_key column_name
     ;
 
@@ -340,12 +340,11 @@ outer_join_type
     ;
 
 query_partition_clause
-    :    partition_key by_key
-    (    (LEFT_PAREN (select_key|with_key)) => LEFT_PAREN subquery RIGHT_PAREN
+    :    partition_key^ by_key!
+    (    (LEFT_PAREN (select_key|with_key)) => LEFT_PAREN! subquery RIGHT_PAREN!
     |    (LEFT_PAREN)=> expression_list
-    |    expression (COMMA expression)*
+    |    expression (COMMA! expression)*
     )
-        -> ^(partition_key expression_list? (EXPR expression)*)
     ;
 
 flashback_query_clause
@@ -381,7 +380,7 @@ pivot_in_clause
     :    in_key
         LEFT_PAREN
             (    (select_key)=> subquery {mode = 1;}
-            |    (any_key)=> any_key (COMMA any_key)* {mode = 1;}
+            |    (any_key)=> any_key (COMMA any_key)* {mode = 2;}
             |    pivot_in_clause_element (COMMA pivot_in_clause_element)*
             )
         RIGHT_PAREN
@@ -1165,12 +1164,12 @@ standard_function
              respect_or_ignore_nulls? over_clause
     |    stantard_function_pedictions^
             LEFT_PAREN!
-                expression_wrapper (COMMA expression_wrapper)* cost_matrix_clause? using_clause? 
+                expression_wrapper (COMMA! expression_wrapper)* cost_matrix_clause? using_clause? 
             RIGHT_PAREN!
     |    translate_key^
             LEFT_PAREN! 
                 expression_wrapper (using_key! (char_cs_key|nchar_cs_key))? 
-                    (COMMA expression_wrapper)* 
+                    (COMMA! expression_wrapper)* 
             RIGHT_PAREN!
     |    treat_key^
             LEFT_PAREN!
