@@ -1,0 +1,4 @@
+bin
+failure*.txt
+output.txt
+parsetrees
