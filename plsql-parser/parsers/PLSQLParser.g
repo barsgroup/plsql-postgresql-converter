@@ -659,6 +659,15 @@ create_type
         -> ^(CREATE_TYPE_SPEC[$create_key.start] replace_key? type_definition)
     ;
 
+type_in_decl
+@init    {    int mode = 0;    }
+    :    type_key
+        ( type_definition | type_body {mode = 1;})
+        SEMICOLON
+        ->{mode == 1}? ^(CREATE_TYPE_BODY[$type_key.start] type_body)
+        -> ^(CREATE_TYPE_SPEC[$type_key.start] type_definition)
+    ;
+
 // $<Create Type - Specific Clauses
 type_definition
     :    type_name 
@@ -691,7 +700,8 @@ object_under_part
 nested_table_type_def
     :    table_key of_key type_spec
         (not_key null_key)?
-        -> ^(NESTED_TABLE_TYPE_DEF[$table_key.start] type_spec null_key?) 
+        table_indexed_by_part?
+        -> ^(NESTED_TABLE_TYPE_DEF[$table_key.start] type_spec null_key? table_indexed_by_part?) 
     ;
 
 sqlj_object_type
@@ -961,6 +971,7 @@ backtrack=true;
     |     table_declaration
     |     create_procedure_body
     |     create_function_body
+    |     type_in_decl
     ;
 
 //incorporates constant_declaration
