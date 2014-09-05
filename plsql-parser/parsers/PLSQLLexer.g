@@ -111,15 +111,6 @@ import java.util.LinkedList;
     }
 }
 
-FOR_NOTATION
-    :    UNSIGNED_INTEGER
-        {state.type = UNSIGNED_INTEGER; emit(); advanceInput();}
-        '..'
-        {state.type = DOUBLE_PERIOD; emit(); advanceInput();}
-        UNSIGNED_INTEGER
-        {state.type = UNSIGNED_INTEGER; emit(); advanceInput(); $channel=HIDDEN;}
-    ;
-
 //{ Rule #358 <NATIONAL_CHAR_STRING_LIT> - subtoken typecast in <REGULAR_ID>, it also incorporates <character_representation>
 //  Lowercase 'n' is a usual addition to the standard
 NATIONAL_CHAR_STRING_LIT
@@ -144,11 +135,7 @@ HEX_STRING_LIT
 
 PERIOD
     :    '.' 
-    {    if ((char) input.LA(1) == '.') {
-            input.consume();
-            $type = DOUBLE_PERIOD;
-        }
-    }
+    |    '..' { $type = DOUBLE_PERIOD; }
     ;
 
 //{ Rule #238 <EXACT_NUM_LIT> 
@@ -159,9 +146,11 @@ PERIOD
 EXACT_NUM_LIT
     : (
             UNSIGNED_INTEGER
-            ( '.' UNSIGNED_INTEGER
-            |    {$type = UNSIGNED_INTEGER;}
-            ) ( ('E' | 'e') ('+' | '-')? UNSIGNED_INTEGER {$type = APPROXIMATE_NUM_LIT;} )?
+            (
+              {input.LA(1) == '.' && input.LA(2) != '.'}? => '.' UNSIGNED_INTEGER
+              | {$type = UNSIGNED_INTEGER;}
+            )
+            ( ('E' | 'e') ('+' | '-')? UNSIGNED_INTEGER {$type = APPROXIMATE_NUM_LIT;} )?
     |    '.' UNSIGNED_INTEGER ( ('E' | 'e') ('+' | '-')? UNSIGNED_INTEGER {$type = APPROXIMATE_NUM_LIT;} )?
     )
     ( 'D' | 'd' | 'f' | 'F')?
