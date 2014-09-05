@@ -482,6 +482,7 @@ constant
 
 numeric
     :    UNSIGNED_INTEGER
+    |    MINUS_SIGN^ UNSIGNED_INTEGER
     |    EXACT_NUM_LIT
     |    APPROXIMATE_NUM_LIT;
 
