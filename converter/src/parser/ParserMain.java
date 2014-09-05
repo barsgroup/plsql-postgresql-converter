@@ -39,7 +39,7 @@ public class ParserMain {
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		input = new ANTLRFileStream("failure1.txt");
+		input = new ANTLRFileStream("failure3.txt");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
 		//input = new ANTLRStringStream("c%ROWCOUNT");
@@ -57,10 +57,10 @@ public class ParserMain {
 			String[] tokenNames = p.getTokenNames();
 			for (Token t: tokens) {
 				int type = t.getType();
-				if (type != Token.EOF) {
+				if (type != Token.EOF && t.getChannel() != Token.HIDDEN_CHANNEL) {
 					String s = tokenNames[type];
 					String tokenText = t.getText();
-					System.out.printf("%s %s\n", s, tokenText);
+					System.out.printf("%s '%s' %d\n", s, tokenText, t.getChannel());
 				}
 			}
 			return;
@@ -102,16 +102,20 @@ public class ParserMain {
 		List<String> failures = new ArrayList<String>();
 		List<String> failureBodies = new ArrayList<String>();
 		List<String> successes = new ArrayList<String>();
+		long ms_start_all = System.currentTimeMillis();
 		for (String part : parts) {
 			String header = part.substring(0, part.indexOf('\n'));
-			System.out.println(header);
+			System.out.print(header);
 
+			long ms_start_1 = System.currentTimeMillis();
 			ANTLRStringStream input = new ANTLRStringStream(part);
-			PLSQLLexer l = new PLSQLLexer(input);
+			DerivedSqlLexer l = new DerivedSqlLexer(input);
 			CommonTokenStream cts = new CommonTokenStream(l);
 			DerivedSqlParser p = new DerivedSqlParser(cts);
 			sql_script_return r = p.sql_script();
-			if (p.errors.size() > 0) {
+			long ms_end_1 = System.currentTimeMillis();
+			System.out.printf(" %f s\n", (ms_end_1 - ms_start_1) / 1000.0);
+			if (p.errors.size() > 0 || l.errors.size() > 0) {
 				System.out.println("FAIL");
 				failures.add(header);
 				failureBodies.add(part);
@@ -131,6 +135,8 @@ public class ParserMain {
 				}
 			}
 		}
+		long ms_end_all = System.currentTimeMillis();
+		System.out.printf("Total time: %f s\n", (ms_end_all - ms_start_all) / 1000.0);
 		
 		System.out.printf("%d succeeded, %d failed\n", successes.size(), failures.size());
 		System.out.println("Failures:");

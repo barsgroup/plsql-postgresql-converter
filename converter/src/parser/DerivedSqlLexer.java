@@ -3,16 +3,15 @@ package parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.TokenStream;
 
-import br.com.porcelli.parser.plsql.PLSQLParser;
+import br.com.porcelli.parser.plsql.PLSQLLexer;
 
-public class DerivedSqlParser extends PLSQLParser {
+public class DerivedSqlLexer extends PLSQLLexer {
 
-	public DerivedSqlParser(TokenStream input) {
+	public DerivedSqlLexer(CharStream input) {
 		super(input);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public List<RecognitionException> errors = new ArrayList<RecognitionException>();
@@ -23,5 +22,4 @@ public class DerivedSqlParser extends PLSQLParser {
 		
 		errors.add(e);
 	}
-
 }
