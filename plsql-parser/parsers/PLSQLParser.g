@@ -1266,7 +1266,8 @@ block
 
 sql_statement
 options{
-backtrack=true;
+//backtrack=true;
+k = 1;
 }    :    execute_immediate
     |    data_manipulation_language_statements
     |    cursor_manipulation_statements
