@@ -3,12 +3,22 @@ package parser;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import javax.management.RuntimeErrorException;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
@@ -16,6 +26,7 @@ import org.antlr.runtime.BufferedTokenStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
+import org.antlr.runtime.tree.Tree;
 
 import br.com.porcelli.parser.plsql.PLSQLLexer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -38,8 +49,9 @@ public class ParserMain {
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/types.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		input = new ANTLRFileStream("failure3.txt");
+		input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
+		//input = new ANTLRFileStream("failure3.txt");
+		//input = new ANTLRFileStream("parsetrees/1353_D_PKG_BROKER_input.txt");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
 		//input = new ANTLRStringStream("c%ROWCOUNT");
@@ -82,7 +94,7 @@ public class ParserMain {
 		//sql_script_return r = p.sql_script();
 		//Object tree = p.pragma_declaration().getTree();
 		//Object tree = p.create_procedure_body().getTree();
-		Object tree = p.sql_script().getTree();
+		Object tree = p.sql_statement().getTree();
 	
 		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
 		String str;
@@ -93,8 +105,12 @@ public class ParserMain {
 		try (PrintStream out = new PrintStream(new FileOutputStream("output.txt"))) {
 		    out.print(str);
 		}
+		
+		TokenCounter ctr = new TokenCounter();
+		ctr.addTree(theTree);
+		printTokenStats(ctr.getOccurences());
 	}
-	
+
 	private static void parseByParts() throws Exception {
 		byte[] contentBytes = Files.readAllBytes(Paths.get("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql"));
 		String contentString = new String(contentBytes, Charset.forName("UTF-8"));
@@ -102,8 +118,14 @@ public class ParserMain {
 		List<String> failures = new ArrayList<String>();
 		List<String> failureBodies = new ArrayList<String>();
 		List<String> successes = new ArrayList<String>();
+		TokenCounter ctr = new TokenCounter();
 		long ms_start_all = System.currentTimeMillis();
+		//int times = 0;
 		for (String part : parts) {
+			//if (times > 100) {
+			//	break;
+			//}
+			//++times;
 			String header = part.substring(0, part.indexOf('\n'));
 			System.out.print(header);
 
@@ -115,7 +137,8 @@ public class ParserMain {
 			sql_script_return r = p.sql_script();
 			long ms_end_1 = System.currentTimeMillis();
 			System.out.printf(" %f s\n", (ms_end_1 - ms_start_1) / 1000.0);
-			if (p.errors.size() > 0 || l.errors.size() > 0) {
+			boolean failure = p.errors.size() > 0 || l.errors.size() > 0;
+			if (failure) {
 				System.out.println("FAIL");
 				failures.add(header);
 				failureBodies.add(part);
@@ -125,14 +148,24 @@ public class ParserMain {
 				}*/
 			} else {
 				successes.add(header);
-				
-				org.antlr.runtime.tree.Tree tree = (org.antlr.runtime.tree.Tree)r.getTree();
-				String str;
-				str = prettyPrint(tree);
+				ctr.addTree((Tree)r.getTree());
+			}
+			
+			org.antlr.runtime.tree.Tree tree = (org.antlr.runtime.tree.Tree)r.getTree();
+			String str;
+			str = prettyPrint(tree);
+			
+			String name = tryGuessPackageName(tree);
+			if (name == null) {
+				name = "unguessed";
+			}
 
-				try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/success%d.txt", successes.size() - 1)))) {
-				    out.print(str);
-				}
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_input.txt", successes.size() - 1, name)))) {
+			    out.print(part);
+			}
+
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_%s.txt", successes.size() - 1, name, failure ? "failure" : "success")))) {
+			    out.print(str);
 			}
 		}
 		long ms_end_all = System.currentTimeMillis();
@@ -147,7 +180,34 @@ public class ParserMain {
 			    out.print(failureBodies.get(i));
 			}
 		}
-		
+		try (PrintStream out = new PrintStream(new FileOutputStream("token_stats.txt"))) {
+			printTokenStats(ctr.getOccurences(), out);
+		}
+	}
+
+	private static String tryGuessPackageName(Tree tree) {
+		if (tree.getType() == PLSQLParser.SQL_SCRIPT) {
+			tree = tree.getChild(0);
+		}
+		if (tree.getType() == PLSQLParser.CREATE_PACKAGE_SPEC || tree.getType() == PLSQLParser.CREATE_PACKAGE_BODY) {
+			for (int i = 0; i < tree.getChildCount(); ++i) {
+				Tree childNode = tree.getChild(i);
+				if (childNode.getType() == PLSQLParser.PACKAGE_NAME) {
+					Tree nameNode = childNode.getChild(childNode.getChildCount() - 1);
+					if (nameNode.getType() == PLSQLParser.ID) {
+						String maybeQuotedName = nameNode.getText();
+						if (maybeQuotedName.charAt(0) == '\"') {
+							maybeQuotedName = maybeQuotedName.substring(1, maybeQuotedName.length() - 1);
+						}
+						if (tree.getType() == PLSQLParser.CREATE_PACKAGE_SPEC) {
+							maybeQuotedName += "_spec";
+						}
+						return maybeQuotedName;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	private static List<String> splitContent(String contentString) {
@@ -180,25 +240,21 @@ public class ParserMain {
 	
 	private static void prettyPrint(org.antlr.runtime.tree.Tree tree, StringBuilder sb, int indent) {
 		sb.append('(');
-		if (true) {
-			sb.append(tree.getText());
-		} else {
-			int ttype = tree.getType();
-			String tokenName = ttype >= 0 && ttype < PLSQLParser.tokenNames.length ? PLSQLParser.tokenNames[ttype] : "";
-			int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
-			sb.append(String.format("%d %d %s[%s]", ttype, ntype, tokenName, tree.getText()));
-		}
+		String nodeText = prettyPrintNodeTag(tree);
+		sb.append(nodeText);
 		if (tree.getChildCount() == 1 && tree.getChild(0).getChildCount() == 0) {
 			sb.append(" ");
 			org.antlr.runtime.tree.Tree childNode = tree.getChild(0);
-			sb.append(childNode.getText());
+			String childNodeText = prettyPrintNodeTag(childNode);
+			sb.append(childNodeText);
 		} else {
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				org.antlr.runtime.tree.Tree childNode = tree.getChild(i);
 				sb.append("\n");
 				printIndent(sb, indent + 1);
 				if (childNode.getChildCount() == 0) {
-					sb.append(childNode.getText());
+					String childNodeText = prettyPrintNodeTag(childNode);
+					sb.append(childNodeText);
 				} else {
 					prettyPrint(childNode, sb, indent + 1);
 				}
@@ -207,5 +263,69 @@ public class ParserMain {
 		sb.append(")");
 	}
 	
+	private static String prettyPrintNodeTag(Tree tree) {
+		if (false) {
+			return tree.getText();
+		} else {
+			int ttype = tree.getType();
+			String tokenName = ttype >= 0 && ttype < tokenNames.length ? tokenNames[ttype] : "";
+			String text = tree.getText();
+			if (tokenName.equals(text)) {
+				return tokenName;
+			} else {
+				//int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
+				return String.format("%s[%s]", tokenName, text);
+			}
+		}
+	}
+
 	String sql = "";
+	
+	static String[] tokenNames = getTokenNames();
+	
+	static String[] getTokenNames() {
+		Field[] fields = PLSQLParser.class.getDeclaredFields();
+		Map<Integer, String> tokenNamesMap = new HashMap<Integer, String>();
+		int maxTokenValue = 0;
+		for (Field field: fields) {
+			int mod = field.getModifiers();
+			if (Modifier.isStatic(mod) && Modifier.isFinal(mod) && field.getType() == int.class) {
+				String name = field.getName();
+				int value;
+				try {
+					value = field.getInt(null);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				tokenNamesMap.put(value, name);
+				maxTokenValue = Math.max(maxTokenValue, value);
+			}
+		}
+		String[] result = new String[maxTokenValue + 1];
+		for (int i = 0; i < maxTokenValue; ++i) {
+			if (tokenNamesMap.containsKey(i)) {
+				result[i] = tokenNamesMap.get(i);
+			} else {
+				result[i] = "<none>";
+			}
+		}
+		return result;
+	}
+	
+	private static void printTokenStats(final Map<Integer, Integer> occurences) {
+		printTokenStats(occurences, System.out);
+	}
+	
+	private static void printTokenStats(final Map<Integer, Integer> occurences, PrintStream out) {
+		List<Integer> keys = new ArrayList<Integer>(occurences.keySet());
+		Collections.sort(keys, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return occurences.get(o2) - occurences.get(o1);
+			}
+		});
+		for (int key : keys) {
+			System.out.printf("%s -> %d\n", tokenNames[key], occurences.get(key));
+		}
+	}
 }
