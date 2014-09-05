@@ -120,6 +120,7 @@ tokens {
     DROP_SEQUENCE;
     ALTER_SEQUENCE;
     CREATE_SEQUENCE;
+    PIPE_ROW;
 }
 
 @header {
@@ -1115,6 +1116,7 @@ backtrack=true;
     |    null_statement
     |    raise_statement
     |    return_statement
+    |    pipe_row_statement
     |    case_statement[true]
     |    sql_statement
     |    function_call
@@ -1401,6 +1403,11 @@ rollback_statement
 
 savepoint_statement
     :    savepoint_key^ savepoint_name 
+    ;
+    
+pipe_row_statement
+    :    pipe_key row_key LEFT_PAREN expression_wrapper RIGHT_PAREN
+         -> ^(PIPE_ROW expression_wrapper)
     ;
 
 // $>

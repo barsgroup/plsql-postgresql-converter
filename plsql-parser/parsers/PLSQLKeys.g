@@ -342,6 +342,7 @@ tokens {
     BREADTH_VK;
     MOD_VK;
     DIV_VK;
+    PIPE_VK;
 }
 
 create_key
@@ -2521,4 +2522,8 @@ mod_key
 
 div_key
     :   {input.LT(1).getText().equalsIgnoreCase("div")}? REGULAR_ID -> DIV_VK[$REGULAR_ID]
+    ;
+
+pipe_key
+    :   {input.LT(1).getText().equalsIgnoreCase("pipe")}? REGULAR_ID -> PIPE_VK[$REGULAR_ID]
     ;
