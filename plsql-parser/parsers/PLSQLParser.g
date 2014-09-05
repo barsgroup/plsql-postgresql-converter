@@ -304,17 +304,17 @@ create_package
 // $<Create Package - Specific Clauses
 
 package_body
-    :    body_key package_name (is_key | as_key)
+    :    body_key n=package_name (is_key | as_key)
         package_obj_body*
         (begin_key seq_of_statements|end_key package_name?)
-        -> package_name+ package_obj_body* seq_of_statements?
+        -> $n package_obj_body* seq_of_statements?
     ;
 
 package_spec
-    :    package_name invoker_rights_clause? (is_key | as_key)
+    :   n= package_name invoker_rights_clause? (is_key | as_key)
         package_obj_spec*
         end_key package_name?
-        -> package_name+ invoker_rights_clause? package_obj_spec*
+        -> $n invoker_rights_clause? package_obj_spec*
     ;
 
 package_obj_spec
