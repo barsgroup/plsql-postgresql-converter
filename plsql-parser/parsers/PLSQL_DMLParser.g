@@ -1246,7 +1246,7 @@ standard_function
                 xml_namespaces_clause?
                 concatenation_wrapper
                 xml_passing_clause?
-                (columns_key! xml_table_column (COMMA! xml_table_column))?
+                (columns_key! xml_table_column (COMMA! xml_table_column)*)?
             RIGHT_PAREN!
             (PERIOD general_element_part)?
     ;
@@ -1326,7 +1326,7 @@ cost_matrix_clause
 
 xml_passing_clause
     :    passing_key^ (by_key! value_key)?
-            expression_wrapper column_alias? (COMMA! expression_wrapper column_alias?)
+            expression_wrapper column_alias? (COMMA! expression_wrapper column_alias?)*
     ;
 
 xml_attributes_clause
