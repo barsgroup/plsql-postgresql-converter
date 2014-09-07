@@ -1211,6 +1211,7 @@ dml_table_expression_clause
         |    general_element
         )
         )
+        |    table_ref
     ;
 
 subquery_restriction_clause
