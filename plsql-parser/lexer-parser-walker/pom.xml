@@ -18,6 +18,10 @@
             <groupId>org.antlr</groupId>
             <artifactId>antlr-runtime</artifactId>
         </dependency>
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>stringtemplate</artifactId>
+            </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -70,6 +74,8 @@
                         <argument>${project.basedir}/src/main/antlr3/br/com/porcelli/parser/plsql/PLSQLParser.g
                         </argument>
                         <argument>${project.basedir}/src/main/antlr3/br/com/porcelli/parser/plsql/PLSQLWalker.g
+                        </argument>
+                        <argument>${project.basedir}/src/main/antlr3/br/com/porcelli/parser/plsql/PLSQLPrinter.g
                         </argument>
                     </arguments>
                 </configuration>

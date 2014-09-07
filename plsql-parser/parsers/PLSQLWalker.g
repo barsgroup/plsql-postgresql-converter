@@ -140,8 +140,8 @@ alter_package
     ;
 
 create_package
-    :    ^(CREATE_PACKAGE_SPEC REPLACE_VK? package_name+ invoker_rights_clause? package_obj_spec*) 
-    |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name+ package_obj_body* seq_of_statements?)
+    :    ^(CREATE_PACKAGE_SPEC REPLACE_VK? package_name invoker_rights_clause? package_obj_spec*) 
+    |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name package_obj_body* seq_of_statements?)
     ;
 
 // $<Create Package - Specific Clauses
@@ -155,6 +155,7 @@ package_obj_spec
     |     table_declaration
     |     procedure_spec
     |     function_spec
+    |     pragma_declaration
     ;
 
 procedure_spec
@@ -165,6 +166,7 @@ procedure_spec
 
 function_spec
     :    ^(FUNCTION_SPEC function_name (type_spec|SELF_VK) ^(PARAMETERS parameter*)
+            invoker_rights_clause* parallel_enable_clause* result_cache_clause* DETERMINISTIC_VK*
             (    ^(CALL_MODE call_spec)
             |    ^(EXTERNAL_VK expression)
             )?
@@ -179,7 +181,8 @@ package_obj_body
     |     record_declaration
     |     table_declaration
     |     create_procedure_body
-    |     create_function_body 
+    |     create_function_body
+    |     create_type
     ;
 
 // $>
@@ -386,7 +389,7 @@ object_under_part
     ;
 
 nested_table_type_def
-    :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL?) 
+    :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?)
     ;
 
 sqlj_object_type
@@ -678,6 +681,7 @@ statement
     |    null_statement
     |    raise_statement
     |    return_statement
+    |    pipe_row_statement
     |    case_statement
     |    sql_statement
     |    function_call
@@ -764,7 +768,7 @@ return_statement
     ;
 
 function_call
-    :    ^(ROUTINE_CALL routine_name function_argument?)
+    :    ^(ROUTINE_CALL general_element)
     ;
 
 body
@@ -887,7 +891,7 @@ join_using_part
     ;
 
 query_partition_clause
-    :    ^(PARTITION_VK (expression_list|expression+))
+    :    ^(PARTITION_VK (subquery|expression_list|expression+))
     ;
 
 flashback_query_clause
@@ -1119,7 +1123,7 @@ insert_into_clause
     ;
 
 values_clause
-    :    ^(SQL92_RESERVED_VALUES expression_list)
+    :    ^(SQL92_RESERVED_VALUES (expression_list|expression))
     ;
 
 // $>
@@ -1204,6 +1208,7 @@ dml_table_expression_clause
         (    ^(COLLECTION_MODE expression PLUS_SIGN?)
         |    ^(SELECT_MODE select_statement subquery_restriction_clause?)
         |    ^(DIRECT_MODE tableview_name sample_clause?)
+        |    general_element
         )
         )
     ;
@@ -1302,6 +1307,10 @@ rollback_statement
 savepoint_statement
     :    ^(SAVEPOINT_VK savepoint_name) 
     ;
+    
+pipe_row_statement
+    :    ^(PIPE_ROW expression)
+    ;
 
 // $>
 
@@ -1351,6 +1360,9 @@ expression_element
     |    ^(MINUS_SIGN expression_element expression_element)
     |    ^(ASTERISK expression_element expression_element)
     |    ^(SOLIDUS expression_element expression_element)
+    |    ^(MOD_VK expression_element expression_element)
+    |    ^(DIV_VK expression_element expression_element)
+    |    ^(PIPE_VK expression_element expression_element)
 
     |    ^(UNARY_OPERATOR expression_element)
     |    ^(SQL92_RESERVED_PRIOR expression_element)
@@ -1366,6 +1378,7 @@ expression_element
 
     |    ^(DOT_ASTERISK tableview_name)
     |    ^((PERCENT_FOUND_VK|PERCENT_NOTFOUND_VK|PERCENT_ROWCOUNT_VK|PERCENT_ISOPEN_VK) cursor_name)
+    |    ^(OUTER_JOIN_SIGN expression_element)
 
     |    case_statement
     |    constant
@@ -1578,8 +1591,8 @@ where_clause
     ;
 
 into_clause
-    :    ^(SQL92_RESERVED_INTO variable_name+) 
-    |    ^(BULK_VK variable_name+) 
+    :    ^(SQL92_RESERVED_INTO general_element+) 
+    |    ^(BULK_VK general_element+) 
     ;
 
 // $>
@@ -1620,7 +1633,7 @@ routine_name
     ;
 
 package_name
-    :    ^(PACKAGE_NAME char_set_name? ID)
+    :    ^(PACKAGE_NAME char_set_name? ID+)
     ;
 
 implementation_type_name
@@ -1805,6 +1818,7 @@ general_element
 
 constant
     :    UNSIGNED_INTEGER
+    |    ^(MINUS_SIGN UNSIGNED_INTEGER)
     |    EXACT_NUM_LIT
     |    APPROXIMATE_NUM_LIT
     |    CHAR_STRING

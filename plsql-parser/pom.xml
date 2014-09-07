@@ -47,6 +47,11 @@
                 <artifactId>antlr-runtime</artifactId>
                 <version>3.5.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>stringtemplate</artifactId>
+                <version>3.2.1</version>
+            </dependency>
             <!-- test dependencies -->
             <dependency>
                 <groupId>junit</groupId>
@@ -221,6 +226,7 @@
                                       <include>PLSQLLexer.g</include>
                                       <include>PLSQLParser.g</include>
                                       <include>PLSQLWalker.g</include>
+                                      <include>PLSQLPrinter.g</include>
                                     </includes>
                                 </resource>
                             </resources>
