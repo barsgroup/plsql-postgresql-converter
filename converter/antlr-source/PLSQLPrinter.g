@@ -786,6 +786,8 @@ declare_spec
     ->   template() "not implemented: declare_spec"
     |     create_function_body
     ->   template() "not implemented: declare_spec"
+    |     create_type
+    ->   template() "not implemented: declare_spec"
     ;
 
 //incorporates constant_declaration
