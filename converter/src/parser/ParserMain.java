@@ -45,7 +45,7 @@ import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
 	public static void main(String[] args) throws Exception {
-		if (false) {
+		if (true) {
 			parseByParts();
 			return;
 		}
@@ -58,7 +58,7 @@ public class ParserMain {
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		input = new ANTLRFileStream("failure17.txt");
+		input = new ANTLRFileStream("failure20.txt");
 		//input = new ANTLRFileStream("parsetrees/1353_D_PKG_BROKER_input.txt");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
