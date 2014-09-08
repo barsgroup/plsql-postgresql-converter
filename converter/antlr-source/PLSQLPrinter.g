@@ -149,15 +149,15 @@ alter_function
 
 create_function_body
     :    ^(CREATE_FUNCTION REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
-            ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK*
-            (    ^(USING_MODE PIPELINED_VK? AGGREGATE_VK? implementation_type_name)
+            ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
+            (    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
     ->   template() "not implemented: create_function_body"
-            |    ^(CALL_MODE PIPELINED_VK? call_spec)
+            |    ^(CALL_MODE call_spec)
     ->   template() "not implemented: create_function_body"
-            |    ^(BODY_MODE body_pipe=PIPELINED_VK? declare_spec* body)
+            |    ^(BODY_MODE declare_spec* body)
                  -> create_function_body(
                       is_replace={$REPLACE_VK != null}, name_parts={$name},
-                      arguments={$args}, return_type={$ret.st}, add_clauses={$ac}, is_pipelined={$body_pipe != null},
+                      arguments={$args}, return_type={$ret.st}, add_clauses={$ac}, is_pipelined={$PIPELINED_VK != null},
                       body={$body.st})
             )
         );
