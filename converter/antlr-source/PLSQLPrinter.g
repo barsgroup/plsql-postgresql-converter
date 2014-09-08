@@ -748,7 +748,10 @@ c_parameters_clause
 
 parameter
     :    ^(PARAMETER parameter_name (SQL92_RESERVED_IN|OUT_VK|INOUT_VK)* type_spec? default_value_part?)
-    ->   template() "not implemented: "
+    ->   parameter(name={$parameter_name.st}, is_in={$SQL92_RESERVED_IN != null},
+           is_out={$OUT_VK != null}, is_inout={$INOUT_VK != null}, is_nocopy={false}, type={$type_spec.st})
+           // TODO: what to do with default_value_part?
+           // TODO: can type_spec really be null?
     ;
 
 default_value_part
@@ -2178,7 +2181,7 @@ implementation_type_name
 
 parameter_name
     :    ^(PARAMETER_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   parameter_name(name={$ID.text})
     ;
 
 reference_model_name
