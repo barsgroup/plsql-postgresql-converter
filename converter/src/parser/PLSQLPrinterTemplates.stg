@@ -20,3 +20,18 @@ parameter(
 >>
 
 parameter_name(name) ::= "<name>"
+
+base_type_spec_precision(
+  size1, size2, is_byte, is_char
+) ::= <<
+(<size1><if (is_byte)>byte<elseif (is_char)>char<endif><if (size2)>, <size2><endif>)
+<endif>
+>>
+
+base_type_spec(
+  baseName, precision, is_with_time_zone, is_time_zone_local
+) ::= <<
+<baseName> <precision> <if (is_with_time_zone)>
+with <if (is_time_zone_local)>local<endif> time zone
+<endif>
+>>

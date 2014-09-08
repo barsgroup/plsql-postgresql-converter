@@ -2304,126 +2304,85 @@ argument
 type_spec
     :     ^(CUSTOM_TYPE type_name REF_VK? (PERCENT_ROWTYPE_VK|PERCENT_TYPE_VK)?)
     ->   template() "not implemented: type_spec"
-    |    ^(NATIVE_DATATYPE native_datatype_element type_precision? (TIME_VK LOCAL_VK?)?)
-    ->   template() "not implemented: type_spec"
+    |    native_datatype_spec -> { $native_datatype_spec.st; }
     |    ^(INTERVAL_DATATYPE (YEAR_VK|DAY_VK) (MONTH_VK|SECOND_VK) expression*)
     ->   template() "not implemented: type_spec"
     ;
 
 type_precision
-    :    ^(PRECISION constant constant? (CHAR_VK|BYTE_VK)? (TIME_VK LOCAL_VK?)?)
-    ->   template() "not implemented: type_precision"
+    :    ^(PRECISION size1=constant size2=constant? (precision_char=CHAR_VK|precision_byte=BYTE_VK)?)
+    ->   base_type_spec_precision(
+  size1={$size1.st}, size2={$size2.st}, is_byte={$precision_byte != null}, is_char={$precision_char != null}
+)
     ;
 
-native_datatype_element
-    :    BINARY_INTEGER_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    PLS_INTEGER_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NATURAL_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    BINARY_FLOAT_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    BINARY_DOUBLE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NATURALN_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    POSITIVE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    POSITIVEN_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    SIGNTYPE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    SIMPLE_INTEGER_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NVARCHAR2_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    DEC_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    INTEGER_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    INT_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NUMERIC_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    SMALLINT_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NUMBER_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    DECIMAL_VK 
-    ->   template() "not implemented: native_datatype_element"
-    |    DOUBLE_VK PRECISION_VK?
-    ->   template() "not implemented: native_datatype_element"
-    |    FLOAT_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    REAL_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NCHAR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    LONG_VK RAW_VK?
-    ->   template() "not implemented: native_datatype_element"
-    |    CHAR_VK  
-    ->   template() "not implemented: native_datatype_element"
-    |    CHARACTER_VK 
-    ->   template() "not implemented: native_datatype_element"
-    |    VARCHAR2_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    VARCHAR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    STRING_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    RAW_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    BOOLEAN_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    DATE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    ROWID_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    UROWID_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    YEAR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    MONTH_VK
-    ->   template() "not implemented: native_datatype_element"
+native_datatype_spec
+@init { String typeBaseName = null; }
+    :    ^(NATIVE_DATATYPE
+    (    BFILE_VK { typeBaseName = "bfile"; }
+    |    BINARY_FLOAT_VK { typeBaseName = "binary_float"; }
+    |    BINARY_INTEGER_VK { typeBaseName = "binary_integer"; }
+    |    BLOB_VK { typeBaseName = "blob"; }
+    |    BOOLEAN_VK { typeBaseName = "boolean"; }
+    |    CHARACTER_VK  { typeBaseName = "character"; }
+    |    CHAR_VK { typeBaseName = "char"; }
+    |    CLOB_VK { typeBaseName = "clob"; }
+    |    DATE_VK { typeBaseName = "date"; }
+    |    SQL92_RESERVED_DATE { typeBaseName = "date"; }
     |    DAY_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    HOUR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    MINUTE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    SECOND_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMEZONE_HOUR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMEZONE_MINUTE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMEZONE_REGION_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMEZONE_ABBR_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMESTAMP_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMESTAMP_UNCONSTRAINED_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMESTAMP_TZ_UNCONSTRAINED_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    TIMESTAMP_LTZ_UNCONSTRAINED_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    YMINTERVAL_UNCONSTRAINED_VK
-    ->   template() "not implemented: native_datatype_element"
+    |    DECIMAL_VK  { typeBaseName = "decimal"; }
+    |    DEC_VK { typeBaseName = "dec"; }
+    |    DOUBLE_VK { typeBaseName = "double"; }
+    |    DOUBLE_VK PRECISION_VK { typeBaseName = "double precision"; }
     |    DSINTERVAL_UNCONSTRAINED_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    BFILE_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    BLOB_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    CLOB_VK
-    ->   template() "not implemented: native_datatype_element"
-    |    NCLOB_VK
-    ->   template() "not implemented: native_datatype_element"
+    |    FLOAT_VK { typeBaseName = "float"; }
+    |    HOUR_VK
+    |    INTEGER_VK { typeBaseName = "integer"; }
+    |    INT_VK { typeBaseName = "int"; }
+    |    LONG_VK { typeBaseName = "long"; }
+    |    LONG_VK RAW_VK { typeBaseName = "long raw"; }
+    |    MINUTE_VK
     |    MLSLABEL_VK
-    ->   template() "not implemented: native_datatype_element"
+    |    MONTH_VK
+    |    NATURALN_VK
+    |    NATURAL_VK
+    |    NCHAR_VK { typeBaseName = "nchar"; }
+    |    NCLOB_VK { typeBaseName = "nclob"; }
+    |    NUMBER_VK { typeBaseName = "number"; }
+    |    NUMERIC_VK { typeBaseName = "numeric"; }
+    |    NVARCHAR2_VK { typeBaseName = "nvarchar2"; }
+    |    PLS_INTEGER_VK { typeBaseName = "pls_integer"; }
+    |    POSITIVEN_VK
+    |    POSITIVE_VK
+    |    RAW_VK { typeBaseName = "raw"; }
+    |    REAL_VK
+    |    ROWID_VK { typeBaseName = "rowid"; }
+    |    SECOND_VK
+    |    SIGNTYPE_VK
+    |    SIMPLE_INTEGER_VK
+    |    SMALLINT_VK { typeBaseName = "smallint"; }
+    |    STRING_VK
+    |    TIMESTAMP_LTZ_UNCONSTRAINED_VK
+    |    TIMESTAMP_TZ_UNCONSTRAINED_VK
+    |    TIMESTAMP_UNCONSTRAINED_VK
+    |    TIMESTAMP_VK { typeBaseName = "timestamp"; }
+    |    TIMEZONE_ABBR_VK
+    |    TIMEZONE_HOUR_VK
+    |    TIMEZONE_MINUTE_VK
+    |    TIMEZONE_REGION_VK
+    |    UROWID_VK { typeBaseName = "urowid"; }
+    |    VARCHAR2_VK { typeBaseName = "varchar2"; }
+    |    VARCHAR_VK { typeBaseName = "varchar"; }
+    |    YEAR_VK
+    |    YMINTERVAL_UNCONSTRAINED_VK)
+    prec=type_precision?
+    (is_tz=TIME_VK is_tz_local=LOCAL_VK?)?
+    )
+    { if (typeBaseName == null) { typeBaseName = "Unsupported datatype"; } }
+    -> base_type_spec(
+  baseName={typeBaseName}, precision={$prec.st},
+  is_with_time_zone={$is_tz != null}, is_time_zone_local={$is_tz_local != null}
+)
     ;
 
 general_element
@@ -2444,32 +2403,19 @@ general_element
 // $<Lexer Mappings
 
 constant
-    :    UNSIGNED_INTEGER
-    ->   template() "not implemented: constant"
-    |    ^(MINUS_SIGN UNSIGNED_INTEGER)
-    ->   template() "not implemented: constant"
-    |    EXACT_NUM_LIT
-    ->   template() "not implemented: constant"
-    |    APPROXIMATE_NUM_LIT
-    ->   template() "not implemented: constant"
-    |    CHAR_STRING
-    ->   template() "not implemented: constant"
-    |    SQL92_RESERVED_NULL
-    ->   template() "not implemented: constant"
-    |    SQL92_RESERVED_TRUE
-    ->   template() "not implemented: constant"
-    |    SQL92_RESERVED_FALSE
-    ->   template() "not implemented: constant"
-    |    DBTIMEZONE_VK 
-    ->   template() "not implemented: constant"
-    |    SESSIONTIMEZONE_VK
-    ->   template() "not implemented: constant"
-    |    MINVALUE_VK
-    ->   template() "not implemented: constant"
-    |    MAXVALUE_VK
-    ->   template() "not implemented: constant"
-    |    SQL92_RESERVED_DEFAULT
-    ->   template() "not implemented: constant"
+    :    v1=UNSIGNED_INTEGER -> {%{$v1.text}}
+    |    ^(MINUS_SIGN v2=UNSIGNED_INTEGER) -> {%{"-" + $v2.text}}
+    |    EXACT_NUM_LIT -> {%{$EXACT_NUM_LIT.text}}
+    |    APPROXIMATE_NUM_LIT -> {%{$APPROXIMATE_NUM_LIT.text}}
+    |    CHAR_STRING -> {%{$CHAR_STRING.text}}
+    |    SQL92_RESERVED_NULL -> {%{"null"}}
+    |    SQL92_RESERVED_TRUE -> {%{"true"}}
+    |    SQL92_RESERVED_FALSE -> {%{"false"}}
+    |    DBTIMEZONE_VK  -> {%{"dbtimezone"}}
+    |    SESSIONTIMEZONE_VK -> {%{"sessiontimezone"}}
+    |    MINVALUE_VK -> {%{"minvalue"}}
+    |    MAXVALUE_VK -> {%{"maxvalue"}}
+    |    SQL92_RESERVED_DEFAULT -> {%{"default"}}
     ;
 
 // $>
