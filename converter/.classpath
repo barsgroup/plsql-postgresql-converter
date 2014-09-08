@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="antlr-source/generated"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/lexer-parser-walker-1.0-SNAPSHOT.jar" sourcepath="/home/dvk/bars/misc/2014.09.03/plsql-parser/lexer-parser-walker"/>
-	<classpathentry kind="lib" path="lib/antlr-runtime-3.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-runtime-3.5.2.jar" sourcepath="/home/dvk/develop/antlr3/runtime/Java/src/main/java"/>
 	<classpathentry kind="lib" path="lib/stringtemplate-3.2.1.jar" sourcepath="/home/dvk/develop/stringtemplate3/src"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="output" path="bin"/>

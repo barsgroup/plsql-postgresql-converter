@@ -1135,7 +1135,7 @@ query_block
             |    ^(SELECT_LIST selected_element+)
             )
             into_clause? where_clause? hierarchical_query_clause? 
-            group_by_clause? having_clause? model_clause?
+            group_by_clause? model_clause?
         )
     ->   template() "not implemented: query_block"
     ;
@@ -1241,7 +1241,7 @@ start_part
     ;
 
 group_by_clause
-    :    ^(SQL92_RESERVED_GROUP group_by_element+)
+    :    ^(SQL92_RESERVED_GROUP group_by_element+ having_clause?)
     ->   template() "not implemented: group_by_clause"
     ;
 

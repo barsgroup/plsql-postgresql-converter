@@ -45,7 +45,7 @@ import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
 	public static void main(String[] args) throws Exception {
-		if (true) {
+		if (false) {
 			parseByParts();
 			return;
 		}
