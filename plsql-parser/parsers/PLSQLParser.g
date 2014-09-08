@@ -1098,8 +1098,8 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    :     (statement (SEMICOLON|EOF)|label_declaration)+
-        -> ^(STATEMENTS label_declaration* statement*)
+    :     (items+=statement (SEMICOLON|EOF)|items+=label_declaration)+
+        -> ^(STATEMENTS $items+)
     ;  
 
 label_declaration
