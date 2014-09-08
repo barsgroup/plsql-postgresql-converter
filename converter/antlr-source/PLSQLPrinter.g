@@ -2380,7 +2380,8 @@ general_element
     ->   template() "not implemented: general_element"
     |    ^(HOSTED_VARIABLE char_set_name? ID+)
     ->   template() "not implemented: general_element"
-    |    ^(ROUTINE_CALL routine_name function_argument)
+    |    ^(ROUTINE_CALL routine_name function_argument+)
+    // TODO: исправить костыль: не нужно лишних ROUTINE_CALL и прочих, а дополнить general_element
     ->   template() "not implemented: general_element"
     |    ^(ANY_ELEMENT char_set_name? ID+)
     ->   template() "not implemented: general_element"
