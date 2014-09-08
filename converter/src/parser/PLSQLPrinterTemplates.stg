@@ -1,0 +1,14 @@
+group PLSQLPrinterTemplates;
+
+create_function_body(
+  is_replace, name_parts, arguments,
+  return_type, add_clauses, is_pipelined, body
+) ::= <<
+create <if (is_replace)>or replace<endif> function <name_parts; separator=".">
+<if (arguments)>(<arguments; separator=",\n">)<endif>
+return <return_type>
+<add_clauses; separator=" ">
+<if (is_pipelined)>pipelined<endif>
+as
+<body>;
+>>

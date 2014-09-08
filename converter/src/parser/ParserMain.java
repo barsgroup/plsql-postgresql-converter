@@ -2,7 +2,10 @@ package parser;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
@@ -30,6 +33,7 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
 import br.com.porcelli.parser.plsql.PLSQLLexer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -109,26 +113,23 @@ public class ParserMain {
 		    out.print(str);
 		}
 		
+		/*
 		TokenCounter ctr = new TokenCounter();
 		ctr.addTree(theTree);
 		printTokenStats(ctr.getOccurences());
+		*/
 		
 		//StringBuilder sb = new StringBuilder();
 		//SqlPrinter printer = new SqlPrinter(sb);
 		//printer.visitNode(theTree);
 		//System.out.println(sb);
 		
-		/*
-		HashMap<String, Object> attrs = new HashMap<String, Object>();
-		attrs.put("foo",  null);
-		org.antlr.stringtemplate.StringTemplate qqq = new org.antlr.stringtemplate.StringTemplate(new StringTemplateGroup("xyz"), "$if(foo)$foo$endif$", attrs);
-		//qqq.setAttribute("foo", "");
-		System.out.println(qqq.toString());
-		//if (true) return;
-		 * 
-		 */
-		
 		PLSQLPrinter printer = new PLSQLPrinter(new CommonTreeNodeStream(theTree));
+		
+		try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/PLSQLPrinterTemplates.stg")) {
+			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
+			printer.setTemplateLib(templateGroup);
+		}
 		String printed = printer.sql_script().st.toString();
 
 		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
