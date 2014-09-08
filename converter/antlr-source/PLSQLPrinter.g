@@ -249,8 +249,9 @@ procedure_spec
 
 function_spec
     :    ^(FUNCTION_SPEC function_name (type_spec|SELF_VK) ^(PARAMETERS parameter*)
-            invoker_rights_clause* parallel_enable_clause* result_cache_clause* DETERMINISTIC_VK*
+            invoker_rights_clause* parallel_enable_clause* result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
             (    ^(CALL_MODE call_spec)
+            |    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
             |    ^(EXTERNAL_VK expression)
             )?
         )

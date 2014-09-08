@@ -40,11 +40,12 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 import br.com.porcelli.parser.plsql.PLSQLParser.sql_script_return;
 import br.com.porcelli.parser.plsql.PLSQLParser_PLSQL_DMLParser.*;
 import br.com.porcelli.parser.plsql.PLSQLParser_PLSQLCommons.*;
+import br.com.porcelli.parser.plsql.PLSQLParser_PLSQLKeys.new_key_return;
 import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
 	public static void main(String[] args) throws Exception {
-		if (false) {
+		if (true) {
 			parseByParts();
 			return;
 		}
@@ -56,8 +57,8 @@ public class ParserMain {
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/types.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
-		input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		//input = new ANTLRFileStream("failure3.txt");
+		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
+		input = new ANTLRFileStream("failure2.txt");
 		//input = new ANTLRFileStream("parsetrees/1353_D_PKG_BROKER_input.txt");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
@@ -142,8 +143,10 @@ public class ParserMain {
 		byte[] contentBytes = Files.readAllBytes(Paths.get("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql"));
 		String contentString = new String(contentBytes, Charset.forName("UTF-8"));
 		List<String> parts = splitContent(contentString);
-		List<String> failures = new ArrayList<String>();
-		List<String> failureBodies = new ArrayList<String>();
+		List<String> parseFailures = new ArrayList<String>();
+		List<String> parseFailureBodies = new ArrayList<String>();
+		List<String> printFailures = new ArrayList<String>();
+		List<String> printFailureBodies = new ArrayList<String>();
 		List<String> successes = new ArrayList<String>();
 		TokenCounter ctr = new TokenCounter();
 		long ms_start_all = System.currentTimeMillis();
@@ -162,20 +165,46 @@ public class ParserMain {
 			CommonTokenStream cts = new CommonTokenStream(l);
 			DerivedSqlParser p = new DerivedSqlParser(cts);
 			sql_script_return r = p.sql_script();
+			String printedTree = "";
 			long ms_end_1 = System.currentTimeMillis();
 			System.out.printf(" %f s\n", (ms_end_1 - ms_start_1) / 1000.0);
 			boolean failure = p.errors.size() > 0 || l.errors.size() > 0;
 			if (failure) {
-				System.out.println("FAIL");
-				failures.add(header);
-				failureBodies.add(part);
+				System.out.println("PARSE FAIL");
+				parseFailures.add(header);
+				parseFailureBodies.add(part);
 				/*for (RecognitionException ex: p.errors) {
 					System.out.println(ex.toString());
 					System.out.println(p.getErrorHeader(ex) + ":" + p.getErrorMessage(ex, new String[0]));
 				}*/
 			} else {
-				successes.add(header);
 				ctr.addTree((Tree)r.getTree());
+				
+				boolean is_tree_walked;
+				try {
+					DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(r.getTree()));
+					try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/PLSQLPrinterTemplates.stg")) {
+						StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
+						printer.setTemplateLib(templateGroup);
+					}
+					StringTemplate st = printer.sql_script().st;
+					if (printer.errors.size() > 0) {
+						is_tree_walked = false;
+					} else {
+						printedTree = st.toString();
+						is_tree_walked = true;
+					}
+				} catch (Exception ex) {
+					is_tree_walked = false;
+					ex.printStackTrace();
+				}
+				if (is_tree_walked) {
+					successes.add(header);
+				} else {
+					System.out.println("PRINT FAIL");
+					printFailures.add(header);
+					printFailureBodies.add(part);
+				}
 			}
 			
 			org.antlr.runtime.tree.Tree tree = (org.antlr.runtime.tree.Tree)r.getTree();
@@ -194,18 +223,36 @@ public class ParserMain {
 			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_%s.txt", successes.size() - 1, name, failure ? "failure" : "success")))) {
 			    out.print(str);
 			}
+
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_printed.txt", successes.size() - 1, name)))) {
+			    out.print(printedTree);
+			}
 		}
 		long ms_end_all = System.currentTimeMillis();
 		System.out.printf("Total time: %f s\n", (ms_end_all - ms_start_all) / 1000.0);
 		
-		System.out.printf("%d succeeded, %d failed\n", successes.size(), failures.size());
-		System.out.println("Failures:");
-		for (int i = 0; i < failures.size(); ++i) {
-			System.out.printf("%d %s\n", i, failures.get(i));
+		System.out.printf("%d succeeded, %d parse failed, %d print failed\n", successes.size(), parseFailures.size(), printFailures.size());
+		int idx = 0;
+		System.out.println("Parse failures:");
+		for (int i = 0; i < parseFailures.size(); ++i) {
+			System.out.printf("%d %s\n", idx, parseFailures.get(i));
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("failure%d.txt", i)))) {
-			    out.print(failureBodies.get(i));
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("failure%d.txt", idx)))) {
+			    out.print(parseFailureBodies.get(i));
 			}
+			++idx;
+		}
+		try (PrintStream out = new PrintStream(new FileOutputStream("token_stats.txt"))) {
+			printTokenStats(ctr.getOccurences(), out);
+		}
+		System.out.println("Print failures:");
+		for (int i = 0; i < printFailures.size(); ++i) {
+			System.out.printf("%d %s\n", idx, printFailures.get(i));
+
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("failure%d.txt", idx)))) {
+			    out.print(printFailureBodies.get(i));
+			}
+			++idx;
 		}
 		try (PrintStream out = new PrintStream(new FileOutputStream("token_stats.txt"))) {
 			printTokenStats(ctr.getOccurences(), out);
