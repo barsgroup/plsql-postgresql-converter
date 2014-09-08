@@ -1577,6 +1577,7 @@ dml_table_expression_clause
         |    ^(DIRECT_MODE tableview_name sample_clause?)
         |    table_ref
         |    general_element
+        |    standard_function
         )
         )
     ->   template() "not implemented: dml_table_expression_clause"
