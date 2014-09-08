@@ -75,8 +75,6 @@
                         </argument>
                         <argument>${project.basedir}/src/main/antlr3/br/com/porcelli/parser/plsql/PLSQLWalker.g
                         </argument>
-                        <argument>${project.basedir}/src/main/antlr3/br/com/porcelli/parser/plsql/PLSQLPrinter.g
-                        </argument>
                     </arguments>
                 </configuration>
             </plugin>
