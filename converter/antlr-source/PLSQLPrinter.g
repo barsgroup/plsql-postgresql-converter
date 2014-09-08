@@ -92,45 +92,45 @@ sql_script
 
 serveroutput_declaration
     :    ^(SET_SERVEROUTPUT (SQL92_RESERVED_ON|OFF_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: serveroutput_declaration"
     ;
 
 unit_statement
     :    alter_function
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    alter_package
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    alter_procedure
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    alter_sequence
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    alter_trigger
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    alter_type
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    create_function_body { $unit_statement.st = $create_function_body.st; }
     |    create_procedure_body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    create_package
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    create_sequence
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    create_trigger
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    create_type
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_function
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_package
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_procedure
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_sequence
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_trigger
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     |    drop_type
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unit_statement"
     ;
 
 // $<DDL -> SQL Statements for Stored PL/SQL Units
@@ -139,21 +139,21 @@ unit_statement
 
 drop_function
     :    ^(DROP_FUNCTION function_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_function"
     ;
 
 alter_function
     :    ^(ALTER_FUNCTION function_name DEBUG_VK? REUSE_VK? compiler_parameters_clause*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_function"
     ;
 
 create_function_body
     :    ^(CREATE_FUNCTION REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
             ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK*
             (    ^(USING_MODE PIPELINED_VK? AGGREGATE_VK? implementation_type_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_function_body"
             |    ^(CALL_MODE PIPELINED_VK? call_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_function_body"
             |    ^(BODY_MODE body_pipe=PIPELINED_VK? declare_spec* body)
                  -> create_function_body(
                       is_replace={$REPLACE_VK != null}, name_parts={$name},
@@ -177,22 +177,22 @@ partition_by_clause
             ) 
             streaming_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: partition_by_clause"
     ;
 
 result_cache_clause
     :    ^(RESULT_CACHE_VK relies_on_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: result_cache_clause"
     ;
 
 relies_on_part
     :    ^(RELIES_ON_VK tableview_name+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: relies_on_part"
     ;
 
 streaming_clause
     :    ^(STREAMING_CLAUSE (SQL92_RESERVED_ORDER|CLUSTER_VK) expression ^(COLUMNS column_name+)) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: streaming_clause"
     ;
 // $>
 // $>
@@ -201,50 +201,50 @@ streaming_clause
 
 drop_package
     :    ^(DROP_PACKAGE package_name BODY_VK?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_package"
     ;
 
 alter_package
     :    ^(ALTER_PACKAGE package_name DEBUG_VK? REUSE_VK? 
                 (PACKAGE_VK|BODY_VK|SPECIFICATION_VK)? compiler_parameters_clause*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_package"
     ;
 
 create_package
     :    ^(CREATE_PACKAGE_SPEC REPLACE_VK? package_name invoker_rights_clause? package_obj_spec*) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_package"
     |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name package_obj_body* seq_of_statements?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_package"
     ;
 
 // $<Create Package - Specific Clauses
 
 package_obj_spec
     :    variable_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     subtype_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     cursor_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     exception_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     record_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     table_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     procedure_spec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     function_spec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     |     pragma_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_spec"
     ;
 
 procedure_spec
     :     ^(PROCEDURE_SPEC procedure_name ^(PARAMETERS parameter*)
             (^(CALL_MODE call_spec))?
     ) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: procedure_spec"
     ;
 
 function_spec
@@ -254,28 +254,28 @@ function_spec
             |    ^(EXTERNAL_VK expression)
             )?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: function_spec"
     ;
 
 package_obj_body
     :     variable_declaration 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     subtype_declaration 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     cursor_declaration 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     exception_declaration 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     record_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     table_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     create_procedure_body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     create_function_body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     |     create_type
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_obj_body"
     ;
 
 // $>
@@ -286,12 +286,12 @@ package_obj_body
 
 drop_procedure
     :    ^(DROP_PROCEDURE procedure_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_procedure"
     ;
 
 alter_procedure
     :    ^(ALTER_PROCEDURE procedure_name DEBUG_VK? REUSE_VK? compiler_parameters_clause*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_procedure"
     ;
 
 create_procedure_body
@@ -301,7 +301,7 @@ create_procedure_body
             |    ^(BODY_MODE declare_spec* body)
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_procedure_body"
     ;
 
 // $>
@@ -310,7 +310,7 @@ create_procedure_body
 
 drop_trigger
     :    ^(DROP_TRIGGER trigger_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_trigger"
     ;
 
 alter_trigger
@@ -320,135 +320,136 @@ alter_trigger
             |    DEBUG_VK? REUSE_VK? compiler_parameters_clause*
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_trigger"
     ;
 
 create_trigger
     :    ^(CREATE_TRIGGER REPLACE_VK? trigger_name  
             simple_dml_trigger? compound_dml_trigger? non_dml_trigger?
             trigger_follows_clause? (ENABLE_VK|DISABLE_VK)? trigger_when_clause? trigger_body)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_trigger"
     ;
 
 trigger_follows_clause
     :    ^(FOLLOWS_VK trigger_name+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_follows_clause"
     ;
 
 trigger_when_clause
     :    ^(SQL92_RESERVED_WHEN expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_when_clause"
     ;
 
 // $<Create Trigger- Specific Clauses
 simple_dml_trigger
     :    ^(SIMPLE_DML (BEFORE_VK|AFTER_VK|INSTEAD_VK) FOR_EACH_ROW? referencing_clause? dml_event_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: simple_dml_trigger"
     ;
 
 compound_dml_trigger
     :    ^(COMPOUND_DML referencing_clause? dml_event_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: compound_dml_trigger"
     ;
 
 non_dml_trigger
     :    ^(NON_DML (BEFORE_VK|AFTER_VK) non_dml_event+ (DATABASE_VK|schema_name? SCHEMA_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_trigger"
     ;
 
 trigger_body
     :    ^(COMPOUND_VK trigger_name declare_spec* timing_point_section+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_body"
     |    ^(CALL_VK routine_name function_argument?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_body"
     |    ^(BODY_MODE block)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_body"
     ;
 
 timing_point_section
     :    ^(BEFORE_STATEMENT block)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: timing_point_section"
     |    ^(BEFORE_EACH_ROW block)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: timing_point_section"
     |    ^(AFTER_STATEMENT block)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: timing_point_section"
     |    ^(AFTER_EACH_ROW block)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: timing_point_section"
     ;
 
 non_dml_event
     :    SQL92_RESERVED_ALTER
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    ANALYZE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    ASSOCIATE_VK STATISTICS_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    AUDIT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    COMMENT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SQL92_RESERVED_CREATE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    DISASSOCIATE_VK STATISTICS_VK
+    ->   template() "not implemented: non_dml_event"
     |    SQL92_RESERVED_DROP
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SQL92_RESERVED_GRANT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    NOAUDIT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    RENAME_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SQL92_RESERVED_REVOKE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    TRUNCATE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    DDL_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    STARTUP_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SHUTDOWN_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    DB_ROLE_CHANGE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    LOGON_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    LOGOFF_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SERVERERROR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SUSPEND_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    DATABASE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    SCHEMA_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     |    FOLLOWS_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: non_dml_event"
     ;
 
 dml_event_clause
     :    ^(DML_EVENT dml_event_element+ ^(SQL92_RESERVED_ON tableview_name dml_event_nested_clause?))  
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dml_event_clause"
     ;
 
 dml_event_element
     :    ^(DML_EVENT_ELEMENT (SQL92_RESERVED_DELETE|SQL92_RESERVED_INSERT|SQL92_RESERVED_UPDATE) ^(COLUMNS column_name*))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dml_event_element"
     ;
 
 dml_event_nested_clause
     :    ^(NESTED_VK tableview_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dml_event_nested_clause"
     ;
 
 referencing_clause
     :    ^(REFERENCING_VK referencing_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: referencing_clause"
     ;
 
 referencing_element
     :    ^((NEW_VK|OLD_VK|PARENT_VK) alias)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: referencing_element"
     ;
 
 // $>
@@ -458,7 +459,7 @@ referencing_element
 
 drop_type
     :    ^(DROP_TYPE type_name BODY_VK? FORCE_VK? VALIDATE_VK?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_type"
     ;
 
 alter_type
@@ -472,19 +473,19 @@ alter_type
             ) 
             dependent_handling_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_type"
     ;
 
 // $<Alter Type - Specific Clauses
 
 alter_method_element
     :    ^(ALTER_METHOD_ELEMENT (ADD_VK|SQL92_RESERVED_DROP) map_order_function_spec? subprogram_spec?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_method_element"
     ;
 
 attribute_definition
     :    ^(ATTRIBUTE attribute_name type_spec?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: attribute_definition"
     ;
 
 alter_collection_clauses
@@ -493,7 +494,7 @@ alter_collection_clauses
             |    ^(LIMIT_VK expression)
             )
         ) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_collection_clauses"
     ;
 
 dependent_handling_clause
@@ -506,59 +507,59 @@ dependent_handling_clause
                 )
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dependent_handling_clause"
     ;
 
 dependent_exceptions_part
     :    ^(EXCEPTIONS_VK FORCE_VK? tableview_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dependent_exceptions_part"
     ;
 
 // $>
 
 create_type
     :    ^(CREATE_TYPE_BODY REPLACE_VK? type_name ^(TYPE_BODY_ELEMENTS type_body_elements+))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_type"
     |    ^(CREATE_TYPE_SPEC REPLACE_VK? type_name CHAR_STRING? object_type_def?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_type"
     ;
 
 object_type_def
     :    ^(OBJECT_TYPE_DEF (object_as_part|object_under_part) invoker_rights_clause?
              sqlj_object_type? modifier_clause* ^(OBJECT_MEMBERS element_spec*))  
-    ->   template() "not implemented: "
+    ->   template() "not implemented: object_type_def"
     ;
 
 object_as_part
     :    ^(OBJECT_AS (OBJECT_VK|varray_type_def|nested_table_type_def))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: object_as_part"
     ;
 
 object_under_part
     :    ^(UNDER_VK type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: object_under_part"
     ;
 
 nested_table_type_def
     :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: nested_table_type_def"
     ;
 
 sqlj_object_type
     :    ^(JAVA_VK expression (SQLDATA_VK|CUSTOMDATUM_VK|ORADATA_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sqlj_object_type"
     ;
 
 type_body_elements
     :    map_order_func_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_body_elements"
     |    subprog_decl_in_type
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_body_elements"
     ;
 
 map_order_func_declaration
     :    ^((MAP_VK|SQL92_RESERVED_ORDER) create_function_body)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: map_order_func_declaration"
     ;
 
 subprog_decl_in_type
@@ -568,7 +569,7 @@ subprog_decl_in_type
             |    constructor_declaration
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subprog_decl_in_type"
     ;
 
 constructor_declaration
@@ -577,7 +578,7 @@ constructor_declaration
             |    ^(BODY_MODE declare_spec* body)
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constructor_declaration"
     ;
 
 // $>
@@ -586,28 +587,28 @@ constructor_declaration
 
 modifier_clause
     :    ^(MODIFIER SQL92_RESERVED_NOT? (INSTANTIABLE_VK|FINAL_VK|OVERRIDING_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: modifier_clause"
     ;
 
 sqlj_object_type_attr
     :    ^(EXTERNAL_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sqlj_object_type_attr"
     ;
 
 element_spec
     :    ^(ELEMENT_SPEC element_spec_options+ modifier_clause? pragma_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: element_spec"
     ;
 
 element_spec_options
     :    subprogram_spec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: element_spec_options"
     |    constructor_spec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: element_spec_options"
     |    map_order_function_spec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: element_spec_options"
     |    ^(FIELD_SPEC id type_spec sqlj_object_type_attr?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: element_spec_options"
     ;
 
 subprogram_spec
@@ -616,39 +617,39 @@ subprogram_spec
             |    function_spec
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subprogram_spec"
     ;
 
 constructor_spec
     :    ^(CONSTRUCTOR_SPEC type_spec FINAL_VK? INSTANTIABLE_VK? ^(PARAMETERS type_elements_parameter*) constructor_call_mode?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constructor_spec"
     ;
 
 constructor_call_mode
     :    ^(CALL_MODE call_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constructor_call_mode"
     ;
 
 map_order_function_spec
     :    ^((MAP_VK|SQL92_RESERVED_ORDER) function_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: map_order_function_spec"
     ;
 
 pragma_clause
     :    ^(PRAGMA_VK pragma_elements+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pragma_clause"
     ;
 
 pragma_elements
     :    id
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pragma_elements"
     |    SQL92_RESERVED_DEFAULT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pragma_elements"
     ;
 
 type_elements_parameter
     :    ^(PARAMETER parameter_name type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_elements_parameter"
     ;
 
 // $>
@@ -659,46 +660,46 @@ type_elements_parameter
 
 drop_sequence
     :   ^(DROP_SEQUENCE sequence_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: drop_sequence"
     ;
 
 alter_sequence
     :    ^(ALTER_SEQUENCE sequence_name sequence_spec+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alter_sequence"
     ;
 
 create_sequence
     :    ^(CREATE_SEQUENCE sequence_name sequence_spec*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: create_sequence"
     ;
 
 // $<Common Sequence
 
 sequence_spec
     :    ^(START_VK UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    ^(INCREMENT_VK UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    ^(MAXVALUE_VK UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    ^(MINVALUE_VK UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    ^(CACHE_VK UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    NOMAXVALUE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    NOMINVALUE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    CYCLE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    NOCYCLE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    NOCACHE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    ORDER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     |    NOORDER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_spec"
     ;
 
 // $>
@@ -709,39 +710,39 @@ sequence_spec
 
 invoker_rights_clause
     :    ^(AUTHID_VK (CURRENT_USER_VK|DEFINER_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: invoker_rights_clause"
     ;
 
 compiler_parameters_clause
     :    ^(COMPILER_PARAMETER ^(ASSIGN id expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: compiler_parameters_clause"
     ;
 
 call_spec
     :    ^(LANGUAGE_VK ( java_spec | c_spec ))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: call_spec"
     ;
 
 // $<Call Spec - Specific Clauses
 
 java_spec
     :    ^(JAVA_VK CHAR_STRING)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: java_spec"
     ;
 
 c_spec
     :    ^(C_VK CHAR_STRING? CONTEXT_VK? ^(LIBRARY_VK id) c_agent_in_clause? c_parameters_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: c_spec"
     ;
 
 c_agent_in_clause
     :    ^(AGENT_VK expression+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: c_agent_in_clause"
     ;
 
 c_parameters_clause
     :    ^(PARAMETERS_VK (THREE_DOTS|expression+))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: c_parameters_clause"
     ;
 
 // $>
@@ -756,7 +757,7 @@ parameter
 
 default_value_part
     :    ^(DEFAULT_VALUE expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: default_value_part"
     ;
 
 // $>
@@ -767,55 +768,55 @@ default_value_part
 
 declare_spec
     :    variable_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     subtype_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     cursor_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     exception_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     pragma_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     record_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     table_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     create_procedure_body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     |     create_function_body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: declare_spec"
     ;
 
 //incorporates constant_declaration
 variable_declaration
     :    ^(VARIABLE_DECLARE variable_name type_spec CONSTANT_VK? SQL92_RESERVED_NULL? default_value_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: variable_declaration"
     ;    
 
 subtype_declaration
       :    ^(SUBTYPE_DECLARE type_name type_spec SQL92_RESERVED_NULL? subtype_range?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subtype_declaration"
       ;
 
 subtype_range
     :    ^(RANGE_VK expression+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subtype_range"
     ;
 
 //cursor_declaration incorportates curscursor_body and cursor_spec
 cursor_declaration
     :    ^(CURSOR_DECLARE cursor_name type_spec? select_statement? ^(PARAMETERS parameter_spec*)) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_declaration"
     ;
 
 parameter_spec
     :    ^(PARAMETER parameter_name type_spec? default_value_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: parameter_spec"
     ;
 
 exception_declaration 
     :    ^(EXCEPTION_DECLARE exception_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: exception_declaration"
     ;             
 
 pragma_declaration
@@ -827,14 +828,14 @@ pragma_declaration
             |    ^(RESTRICT_REFERENCES_VK SQL92_RESERVED_DEFAULT? id*)
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pragma_declaration"
     ;
 
 record_declaration
     :    record_type_dec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: record_declaration"
     |    record_var_dec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: record_declaration"
     ;
 
 // $<Record Declaration - Specific Clauses
@@ -842,26 +843,26 @@ record_declaration
 //incorporates ref_cursor_type_definition
 record_type_dec
     :    ^(RECORD_TYPE_DECLARE type_name REF_VK? type_spec? ^(FIELDS field_spec*))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: record_type_dec"
     ;
 
 field_spec
     :    ^(FIELD_SPEC column_name type_spec? SQL92_RESERVED_NULL? default_value_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: field_spec"
     ;
 
 record_var_dec
     :    ^(RECORD_VAR_DECLARE record_name type_name (PERCENT_ROWTYPE_VK|PERCENT_TYPE_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: record_var_dec"
     ;
 
 // $>
 
 table_declaration
     :    table_type_dec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_declaration"
     |    table_var_dec
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_declaration"
     ;
 
 table_type_dec
@@ -870,22 +871,22 @@ table_type_dec
             |    SQL92_RESERVED_NULL? ^(SQL92_RESERVED_TABLE type_spec table_indexed_by_part?)
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_type_dec"
     ;
 
 table_indexed_by_part
     :    ^(INDEXED_BY type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_indexed_by_part"
     ;
 
 varray_type_def
     :    SQL92_RESERVED_NULL? ^(VARR_ARRAY_DEF expression type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: varray_type_def"
     ;
 
 table_var_dec
     :    ^(TABLE_VAR_DECLARE table_var_name type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_var_dec"
     ;
 
 // $>
@@ -894,174 +895,174 @@ table_var_dec
 
 seq_of_statements
     :     ^(STATEMENTS statement+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: seq_of_statements"
     ;
 
 statement
     :    label_declaration
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    assignment_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    continue_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    exit_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    goto_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    if_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    loop_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    forall_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    null_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    raise_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    return_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    pipe_row_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    case_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    sql_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    function_call
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    body
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     |    block
-    ->   template() "not implemented: "
+    ->   template() "not implemented: statement"
     ;
 
 label_declaration
     :    ^(LABEL_DECLARE label_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: label_declaration"
     ;
 
 assignment_statement
     :     ^(ASSIGN general_element expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: assignment_statement"
     ;
 
 continue_statement
     :    ^(CONTINUE_VK label_name? general_when?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: continue_statement"
     ;
 
 general_when
     :    ^(SQL92_RESERVED_WHEN expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_when"
     ;
 
 exit_statement
     :    ^(EXIT_VK label_name? general_when?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: exit_statement"
     ;
 
 goto_statement
     :    ^(SQL92_RESERVED_GOTO label_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: goto_statement"
     ;
 
 if_statement
     :    ^(PLSQL_RESERVED_IF expression seq_of_statements elsif_part* else_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: if_statement"
     ;
 
 elsif_part
     :    ^(PLSQL_NON_RESERVED_ELSIF expression seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: elsif_part"
     ;
 
 else_part
     :    ^(SQL92_RESERVED_ELSE seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: else_part"
     ;
 
 loop_statement
     :    ^(WHILE_LOOP label_name* expression seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: loop_statement"
     |    ^(FOR_LOOP label_name* cursor_loop_param seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: loop_statement"
     |    ^(LOOP_VK label_name* seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: loop_statement"
     ;
 
 // $<Loop - Specific Clause
 
 cursor_loop_param
     :    ^(INDEXED_FOR index_name REVERSE_VK? ^(SIMPLE_BOUND expression expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_loop_param"
     |    ^(CURSOR_BASED_FOR record_name cursor_name expression_list?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_loop_param"
     |    ^(SELECT_BASED_FOR record_name select_statement)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_loop_param"
     ;
 
 // $>
 
 forall_statement
     :    ^(FORALL_VK index_name bounds_clause sql_statement EXCEPTIONS_VK?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: forall_statement"
     ;
 
 bounds_clause
     :    ^(SIMPLE_BOUND expression expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: bounds_clause"
     |    ^(INDICES_BOUND collection_name between_bound?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: bounds_clause"
     |    ^(VALUES_BOUND index_name) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: bounds_clause"
     ;
 
 between_bound
     :    ^(SQL92_RESERVED_BETWEEN expression expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: between_bound"
     ;
 
 null_statement
     :    SQL92_RESERVED_NULL
-    ->   template() "not implemented: "
+    ->   template() "not implemented: null_statement"
     ;
 
 raise_statement
     :    ^(RAISE_VK exception_name?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: raise_statement"
     ;
 
 return_statement
     :    ^(RETURN_VK expression?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: return_statement"
     ;
 
 function_call
     :    ^(ROUTINE_CALL general_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: function_call"
     ;
 
 body
     :    ^(BODY label_name? seq_of_statements exception_clause?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: body"
     ;
 
 // $<Body - Specific Clause
 
 exception_clause
     :    ^(SQL92_RESERVED_EXCEPTION exception_handler+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: exception_clause"
     ;
 
 exception_handler
     :    ^(SQL92_RESERVED_WHEN exception_name+ seq_of_statements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: exception_handler"
     ;
 
 // $>
 
 block
     :    ^(BLOCK declare_spec* body)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: block"
     ;
 
 // $>
@@ -1070,24 +1071,24 @@ block
 
 sql_statement
     :    execute_immediate
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sql_statement"
     |    data_manipulation_language_statements
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sql_statement"
     |    cursor_manipulation_statements
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sql_statement"
     |    transaction_control_statements
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sql_statement"
     ;
 
 execute_immediate
     :    ^(EXECUTE_VK expression (into_clause|using_clause|dynamic_returning_clause)?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: execute_immediate"
     ;
 
 // $<Execute Immediate - Specific Clause
 dynamic_returning_clause
     :    ^(DYNAMIC_RETURN into_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dynamic_returning_clause"
     ;
 // $>
 
@@ -1096,50 +1097,50 @@ dynamic_returning_clause
 
 data_manipulation_language_statements
     :    merge_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     |    lock_table_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     |    select_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     |     update_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     |     delete_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     |    insert_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: data_manipulation_language_statements"
     ;
 
 select_statement
     :    ^(SELECT_STATEMENT subquery_factoring_clause? subquery for_update_clause* order_by_clause*)  
-    ->   template() "not implemented: "
+    ->   template() "not implemented: select_statement"
     ;
 
 // $<Select - Specific Clauses
 subquery_factoring_clause
     :    ^(SQL92_RESERVED_WITH factoring_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery_factoring_clause"
     ;
 
 factoring_element
     :    ^(FACTORING query_name subquery)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: factoring_element"
     ;
 
 subquery
     :    ^(SUBQUERY subquery_basic_elements subquery_operation_part*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery"
     ;
 
 subquery_operation_part
     :    ^((SQL92_RESERVED_UNION|SQL92_RESERVED_INTERSECT|PLSQL_RESERVED_MINUS) SQL92_RESERVED_ALL? subquery_basic_elements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery_operation_part"
     ;
 
 subquery_basic_elements
     :    query_block
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery_basic_elements"
     |    subquery
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery_basic_elements"
     ;
 
 query_block
@@ -1152,67 +1153,67 @@ query_block
             into_clause? where_clause? hierarchical_query_clause? 
             group_by_clause? having_clause? model_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: query_block"
     ;
 
 selected_element
     :    ^(SELECT_ITEM expression alias?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: selected_element"
     ;
 
 from_clause
     :    ^(SQL92_RESERVED_FROM table_ref+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: from_clause"
     ;
 
 table_ref
     :    ^(TABLE_REF table_ref_aux join_clause*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_ref"
     ;
 
 table_ref_aux
     :    ^(TABLE_REF_ELEMENT alias? dml_table_expression_clause ONLY_VK? pivot_clause? unpivot_clause? flashback_query_clause*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_ref_aux"
     ;
 
 join_clause
     :    ^(JOIN_DEF (CROSS_VK|NATURAL_VK)? (INNER_VK|FULL_VK|LEFT_VK|RIGHT_VK)? table_ref_aux query_partition_clause* (join_on_part|join_using_part)?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: join_clause"
     ;
 
 join_on_part
     :    ^(SQL92_RESERVED_ON expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: join_on_part"
     ;
 
 join_using_part
     :    ^(PLSQL_NON_RESERVED_USING column_name+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: join_using_part"
     ;
 
 query_partition_clause
     :    ^(PARTITION_VK (subquery|expression_list|expression+))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: query_partition_clause"
     ;
 
 flashback_query_clause
     :    ^((VERSIONS_VK|SQL92_RESERVED_AS) (SCN_VK|TIMESTAMP_VK)? expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: flashback_query_clause"
     ;
 
 pivot_clause
     :    ^(PIVOT_VK XML_VK? pivot_element+ pivot_for_clause pivot_in_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pivot_clause"
     ;
 
 pivot_element
     :    ^(PIVOT_ELEMENT alias? expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pivot_element"
     ;
 
 pivot_for_clause
     :    ^(SQL92_RESERVED_FOR column_name+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pivot_for_clause"
     ;
 
 pivot_in_clause
@@ -1222,124 +1223,124 @@ pivot_in_clause
         |    ^(ELEMENTS_MODE pivot_in_clause_element+)
         )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pivot_in_clause"
     ;
 
 pivot_in_clause_element
     :    ^(PIVOT_IN_ELEMENT alias? (expression|expression_list))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pivot_in_clause_element"
     ;
 
 unpivot_clause
     :    ^(UNPIVOT_VK ((INCLUDE_VK|EXCLUDE_VK) NULLS_VK?)? column_name+ pivot_for_clause unpivot_in_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unpivot_clause"
     ;
 
 unpivot_in_clause
     :    ^(SQL92_RESERVED_IN unpivot_in_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unpivot_in_clause"
     ;
 
 unpivot_in_element
     :    ^(UNPIVOT_IN_ELEMENT column_name+ ^(PIVOT_ALIAS (expression|expression_list)))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: unpivot_in_element"
     ;
 
 hierarchical_query_clause
     :    ^(HIERARCHICAL start_part? ^(SQL92_RESERVED_CONNECT NOCYCLE_VK? expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: hierarchical_query_clause"
     ;
 
 start_part
     :    ^(PLSQL_RESERVED_START expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: start_part"
     ;
 
 group_by_clause
     :    ^(SQL92_RESERVED_GROUP group_by_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: group_by_clause"
     ;
 
 group_by_element
     :    ^(GROUP_BY_ELEMENT group_by_elements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: group_by_element"
     ;
 
 group_by_elements
     :    ^(GROUPING_VK groupin_set+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: group_by_elements"
     |    grouping_element 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: group_by_elements"
     ;
 
 groupin_set
     :    ^(GROUPIN_SET grouping_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: groupin_set"
     ;
 
 grouping_element
     :    ^((ROLLUP_VK|CUBE_VK) grouping_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: grouping_element"
     |    expression_list
-    ->   template() "not implemented: "
+    ->   template() "not implemented: grouping_element"
     |    expression 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: grouping_element"
     ;
 
 having_clause
     :    ^(SQL92_RESERVED_HAVING expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: having_clause"
     ;
 
 model_clause
     :    ^(PLSQL_NON_RESERVED_MODEL main_model cell_reference_options* return_rows_clause? reference_model*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_clause"
     ;
 
 cell_reference_options
     :    ^((IGNORE_VK|KEEP_VK) NAV_VK)
     |    ^(SQL92_RESERVED_UNIQUE (DIMENSION_VK|SINGLE_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cell_reference_options"
     ;
 
 return_rows_clause
     :    ^(RETURN_VK (UPDATED_VK|SQL92_RESERVED_ALL))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: return_rows_clause"
     ;
 
 reference_model
     :    ^(REFERENCE_VK reference_model_name subquery model_column_clauses cell_reference_options*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: reference_model"
     ;
 
 main_model
     :    ^(MAIN_MODEL main_model_name? model_column_clauses model_rules_clause cell_reference_options*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: main_model"
     ;
 
 model_column_clauses
     :    ^(MODEL_COLUMN ^(DIMENSION_VK model_column_list) ^(MEASURES_VK model_column_list) model_column_partition_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_column_clauses"
     ;
 
 model_column_partition_part
     :    ^(PARTITION_VK model_column_list)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_column_partition_part"
     ;
 
 model_column_list
     :    ^(MODEL_COLUMNS model_column+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_column_list"
     ;
 
 model_column
     :    ^(MODEL_COLUMN alias? expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_column"
     ;
 
 model_rules_clause
     :    ^(MODEL_RULES model_rules_element+ model_rules_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_rules_clause"
     ;
 
 model_rules_part
@@ -1348,7 +1349,7 @@ model_rules_part
             (AUTOMATIC_VK|SEQUENTIAL_VK)? 
             model_iterate_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_rules_part"
     ;
 
 model_rules_element
@@ -1357,46 +1358,46 @@ model_rules_element
             (SQL92_RESERVED_UPDATE|UPSERT_VK SQL92_RESERVED_ALL?)? 
             order_by_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_rules_element"
     ;
 
 model_iterate_clause
     :    ^(ITERATE_VK expression until_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_iterate_clause"
     ;
 
 until_part
     :    ^(UNTIL_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: until_part"
     ;
 
 order_by_clause
     :    ^(SQL92_RESERVED_ORDER SIBLINGS_VK? ^(ORDER_BY_ELEMENTS order_by_elements+))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: order_by_clause"
     ;
 
 order_by_elements
     :    ^(ORDER_BY_ELEMENT expression (SQL92_RESERVED_ASC|SQL92_RESERVED_DESC)? (NULLS_VK (FIRST_VK|LAST_VK))?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: order_by_elements"
     ;
 
 for_update_clause
     :    ^(SQL92_RESERVED_FOR for_update_of_part? for_update_options?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_update_clause"
     ;
 
 for_update_of_part
     :    ^(SQL92_RESERVED_OF column_name+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_update_of_part"
     ;
 
 for_update_options
     :    SKIP_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_update_options"
     |    PLSQL_RESERVED_NOWAIT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_update_options"
     |    ^(WAIT_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_update_options"
     ;
 
 // $>
@@ -1406,22 +1407,22 @@ update_statement
             update_set_clause
             where_clause? static_returning_clause? error_logging_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: update_statement"
     ;
 
 // $<Update - Specific Clauses
 update_set_clause
     :    ^(SET_VK update_set_elements+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: update_set_clause"
     ;
 
 update_set_elements
     :    ^(ASSIGN column_name expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: update_set_elements"
     |    ^(ASSIGN column_name+ subquery)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: update_set_elements"
     |    ^(VALUE_VK char_set_name? ID expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: update_set_elements"
     ;
 
 // $>
@@ -1429,7 +1430,7 @@ update_set_elements
 delete_statement
     :    ^(SQL92_RESERVED_DELETE general_table_ref
             where_clause? static_returning_clause? error_logging_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: delete_statement"
     ;
 
 insert_statement
@@ -1438,49 +1439,49 @@ insert_statement
         |    multi_table_insert
         )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: insert_statement"
     ;
 
 // $<Insert - Specific Clauses
 
 single_table_insert
     :    ^(SINGLE_TABLE_MODE insert_into_clause (values_clause static_returning_clause?| select_statement) error_logging_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: single_table_insert"
     ;
 
 multi_table_insert
     :    ^(MULTI_TABLE_MODE select_statement (conditional_insert_clause|multi_table_element+))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: multi_table_insert"
     ;
 
 multi_table_element
     :    ^(TABLE_ELEMENT insert_into_clause values_clause? error_logging_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: multi_table_element"
     ;
 
 conditional_insert_clause
     :    ^(CONDITIONAL_INSERT (SQL92_RESERVED_ALL|FIRST_VK)? conditional_insert_when_part+ conditional_insert_else_part?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: conditional_insert_clause"
     ;
 
 conditional_insert_when_part
     :    ^(SQL92_RESERVED_WHEN expression multi_table_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: conditional_insert_when_part"
     ;
 
 conditional_insert_else_part
     :    ^(SQL92_RESERVED_ELSE multi_table_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: conditional_insert_else_part"
     ;
 
 insert_into_clause
     :    ^(SQL92_RESERVED_INTO general_table_ref ^(COLUMNS column_name*))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: insert_into_clause"
     ;
 
 values_clause
     :    ^(SQL92_RESERVED_VALUES (expression_list|expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: values_clause"
     ;
 
 // $>
@@ -1488,68 +1489,68 @@ merge_statement
     :    ^(MERGE_VK alias? tableview_name 
             ^(PLSQL_NON_RESERVED_USING selected_tableview expression)
              merge_update_clause? merge_insert_clause? error_logging_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: merge_statement"
     ;
 
 // $<Merge - Specific Clauses
 
 merge_update_clause
     :    ^(MERGE_UPDATE merge_element+ where_clause? merge_update_delete_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: merge_update_clause"
     ;
 
 merge_element
     :    ^(ASSIGN column_name expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: merge_element"
     ;
 
 merge_update_delete_part
     :    ^(SQL92_RESERVED_DELETE where_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: merge_update_delete_part"
     ;
 
 merge_insert_clause
     :    ^(MERGE_INSERT ^(COLUMNS column_name*) expression_list where_clause?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: merge_insert_clause"
     ;
 
 selected_tableview
     :    ^(SELECTED_TABLEVIEW alias? (tableview_name|subquery))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: selected_tableview"
     ;
 
 // $>
 
 lock_table_statement
     :    ^(PLSQL_RESERVED_LOCK lock_table_element+ lock_mode wait_nowait_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_table_statement"
     ;
 
 wait_nowait_part
     :    ^(WAIT_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: wait_nowait_part"
     |    PLSQL_RESERVED_NOWAIT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: wait_nowait_part"
     ;
 
 // $<Lock - Specific Clauses
 
 lock_table_element
     :    ^(LOCK_TABLE_ELEMENT tableview_name partition_extension_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_table_element"
     ;
 
 lock_mode
     :    ROW_VK PLSQL_RESERVED_SHARE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_mode"
     |    ROW_VK PLSQL_RESERVED_EXCLUSIVE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_mode"
     |    PLSQL_RESERVED_SHARE SQL92_RESERVED_UPDATE?
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_mode"
     |    PLSQL_RESERVED_SHARE ROW_VK PLSQL_RESERVED_EXCLUSIVE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_mode"
     |    PLSQL_RESERVED_EXCLUSIVE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: lock_mode"
     ;
 // $>
 
@@ -1557,27 +1558,27 @@ lock_mode
 
 general_table_ref
     :    ^(TABLE_REF alias? dml_table_expression_clause ONLY_VK?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_table_ref"
     ;
 
 static_returning_clause
     :    ^(STATIC_RETURNING expression+ into_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: static_returning_clause"
     ;
 
 error_logging_clause
     :    ^(LOG_VK error_logging_into_part? expression? error_logging_reject_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: error_logging_clause"
     ;
 
 error_logging_into_part
     :    ^(SQL92_RESERVED_INTO tableview_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: error_logging_into_part"
     ;
 
 error_logging_reject_part
     :    ^(REJECT_VK (UNLIMITED_VK|expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: error_logging_reject_part"
     ;
 
 dml_table_expression_clause
@@ -1589,24 +1590,24 @@ dml_table_expression_clause
         |    general_element
         )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dml_table_expression_clause"
         |    table_ref
-    ->   template() "not implemented: "
+    ->   template() "not implemented: dml_table_expression_clause"
     ;
 
 subquery_restriction_clause
     :    ^(SQL92_RESERVED_WITH (READ_VK|SQL92_RESERVED_CHECK constraint_name?))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: subquery_restriction_clause"
     ;
 
 sample_clause
     :    ^(SAMPLE_VK BLOCK_VK? expression seed_part?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sample_clause"
     ;
 
 seed_part
     :    ^(SEED_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: seed_part"
     ;
 
 // $>
@@ -1617,23 +1618,23 @@ seed_part
 
 cursor_manipulation_statements
     :    close_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_manipulation_statements"
     |    open_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_manipulation_statements"
     |    fetch_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_manipulation_statements"
     |    open_for_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_manipulation_statements"
     ;
 
 close_statement
     :     ^(CLOSE_VK variable_name) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: close_statement"
     ;
 
 open_statement
     :    ^(OPEN_VK cursor_name expression_list?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: open_statement"
     ;
 
 fetch_statement
@@ -1642,12 +1643,12 @@ fetch_statement
             |    ^(BULK_VK variable_name+)
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: fetch_statement"
     ;
 
 open_for_statement
     :    ^(OPEN_VK variable_name (expression|select_statement) using_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: open_for_statement"
     ;
 
 // $>
@@ -1656,15 +1657,15 @@ open_for_statement
 
 transaction_control_statements
     :    set_transaction_command
-    ->   template() "not implemented: "
+    ->   template() "not implemented: transaction_control_statements"
     |    set_constraint_command
-    ->   template() "not implemented: "
+    ->   template() "not implemented: transaction_control_statements"
     |    commit_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: transaction_control_statements"
     |    rollback_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: transaction_control_statements"
     |    savepoint_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: transaction_control_statements"
     ;
 
 set_transaction_command
@@ -1674,12 +1675,12 @@ set_transaction_command
             |    ^(ROLLBACK_VK rollback_segment_name)
             )?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: set_transaction_command"
     ;
 
 set_constraint_command
     :    ^(SET_CONSTRAINT (SQL92_RESERVED_ALL|constraint_name+) (IMMEDIATE_VK|DEFERRED_VK))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: set_constraint_command"
     ;
 
 commit_statement
@@ -1689,12 +1690,12 @@ commit_statement
             )?
             write_clause?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: commit_statement"
     ;
 
 write_clause
     :    ^(WRITE_VK (WAIT_VK|PLSQL_RESERVED_NOWAIT)? (IMMEDIATE_VK|BATCH_VK)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: write_clause"
     ;
 
 rollback_statement
@@ -1703,17 +1704,17 @@ rollback_statement
             |    ^(FORCE_VK CHAR_STRING)
             )?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: rollback_statement"
     ;
 
 savepoint_statement
     :    ^(SAVEPOINT_VK savepoint_name) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: savepoint_statement"
     ;
     
 pipe_row_statement
     :    ^(PIPE_ROW expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: pipe_row_statement"
     ;
 
 // $>
@@ -1722,252 +1723,252 @@ pipe_row_statement
 
 expression_list
     :    ^(EXPR_LIST expression*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_list"
     ;
 
 expression
     :    ^(LOGIC_EXPR expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression"
     |    ^(EXPR expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression"
     ;
 
 expression_element
     :    ^(SQL92_RESERVED_OR expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_AND expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_NOT expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^((EQUALS_OP|NOT_EQUAL_OP|LESS_THAN_OP|GREATER_THAN_OP|LESS_THAN_OR_EQUALS_OP|GREATER_THAN_OR_EQUALS_OP) expression_element expression_element)
 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_NULL expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NULL expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_NAN expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NAN expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_PRESENT expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_PRESENT expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_INFINITE expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_INFINITE expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_A_SET expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_A_SET expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_EMPTY expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_EMPTY expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_OF_TYPE expression_element type_spec+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(IS_OF_TYPE expression_element type_spec+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^((MEMBER_VK|SUBMULTISET_VK) expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^(NOT_IN expression_element in_elements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_IN expression_element in_elements)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(NOT_BETWEEN expression_element expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_BETWEEN expression_element expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(NOT_LIKE expression_element expression_element expression_element?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^((SQL92_RESERVED_LIKE|LIKEC_VK|LIKE2_VK|LIKE4_VK) expression_element expression_element expression_element?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^(CONCATENATION_OP expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(PLUS_SIGN expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(MINUS_SIGN expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(ASTERISK expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SOLIDUS expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(MOD_VK expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(DIV_VK expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(PIPE_VK expression_element expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^(UNARY_OPERATOR expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_PRIOR expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(NEW_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_DISTINCT expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(STANDARD_FUNCTION standard_function)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^((SOME_VK|SQL92_RESERVED_EXISTS|SQL92_RESERVED_ALL|SQL92_RESERVED_ANY) expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(VECTOR_EXPR expression_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^(DATETIME_OP expression_element datetime_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    model_expression
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(KEEP_VK expression_element DENSE_RANK_VK (FIRST_VK|LAST_VK) order_by_clause over_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    ^(DOT_ASTERISK tableview_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^((PERCENT_FOUND_VK|PERCENT_NOTFOUND_VK|PERCENT_ROWCOUNT_VK|PERCENT_ISOPEN_VK) cursor_name)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    ^(OUTER_JOIN_SIGN expression_element)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
 
     |    case_statement
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    constant
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    general_element
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     |    subquery
-    ->   template() "not implemented: "
+    ->   template() "not implemented: expression_element"
     ;
 
 in_elements
     :    subquery
-    ->   template() "not implemented: "
+    ->   template() "not implemented: in_elements"
     |    expression_list
-    ->   template() "not implemented: "
+    ->   template() "not implemented: in_elements"
     ;
 
 datetime_element
     :    ^(AT_VK expression_element (LOCAL_VK|TIME_VK expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: datetime_element"
     |    ^(DAY_VK SECOND_VK expression*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: datetime_element"
     |    ^(YEAR_VK MONTH_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: datetime_element"
     ;
 
 model_expression
     :    ^(MODEL_EXPRESSION expression_element model_expression_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_expression"
     ;
 
 model_expression_element
     :    SQL92_RESERVED_ANY
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_expression_element"
     |    expression
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_expression_element"
     |    ^(FOR_SINGLE_COLUMN column_name for_single_column_element for_like_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_expression_element"
     |    ^(FOR_MULTI_COLUMN column_name+ ^(SQL92_RESERVED_IN (subquery|expression_list+)))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: model_expression_element"
     ;
 
 for_single_column_element
     :    ^(SQL92_RESERVED_IN expression_list)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_single_column_element"
     |    ^(SQL92_RESERVED_FROM expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_single_column_element"
     |    ^(SQL92_RESERVED_TO expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_single_column_element"
     |    ^((INCREMENT_VK|DECREMENT_VK) expression) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_single_column_element"
     ;
 
 for_like_part
     :    ^(SQL92_RESERVED_LIKE expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: for_like_part"
     ;
 
 case_statement
     :    ^(SIMPLE_CASE label_name* expression case_when_part+ case_else_part?)  
-    ->   template() "not implemented: "
+    ->   template() "not implemented: case_statement"
     |    ^(SEARCHED_CASE label_name* case_when_part+ case_else_part?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: case_statement"
     ;
 
 // $<CASE - Specific Clauses
 
 case_when_part
     :    ^(SQL92_RESERVED_WHEN expression (seq_of_statements|expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: case_when_part"
     ;
 
 case_else_part
     :    ^(SQL92_RESERVED_ELSE (seq_of_statements|expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: case_else_part"
     ;
 // $>
 
 standard_function
     :    ^(FUNCTION_ENABLING_OVER function_argument over_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(FUNCTION_ENABLING_USING function_argument using_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(COUNT_VK ( ASTERISK | expression ) over_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^((CAST_VK|XMLCAST_VK) (subquery|expression) type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(CHR_VK expression NCHAR_CS_VK)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(COLLECT_VK (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE)? column_name collect_order_by_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(FUNCTION_ENABLING_WITHIN_OR_OVER function_argument (within_clause|over_clause)+ )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(DECOMPOSE_VK expression (CANONICAL_VK|COMPATIBILITY_VK)?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(EXTRACT_VK REGULAR_ID expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^((FIRST_VALUE_VK|LAST_VALUE_VK) expression NULLS_VK? over_clause) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(PREDICTION_FUNCTION expression+ cost_matrix_clause? using_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(TRANSLATE_VK expression (CHAR_CS_VK|NCHAR_CS_VK)? expression*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(TREAT_VK expression REF_VK? type_spec)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(TRIM_VK (LEADING_VK|TRAILING_VK|BOTH_VK)? expression expression?) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
 
     |    ^(XMLAGG_VK expression order_by_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^((XMLCOLATTVAL_VK|XMLFOREST_VK) xml_multiuse_expression_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLEXISTS_VK expression xml_passing_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLPARSE_VK (DOCUMENT_VK|CONTENT_VK) expression WELLFORMED_VK?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLQUERY_VK expression xml_passing_clause? SQL92_RESERVED_NULL?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLROOT_VK expression xml_param_version_part xmlroot_param_standalone_part?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLTABLE_VK xml_namespaces_clause? expression xml_passing_clause? xml_table_column*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLELEMENT_VK
             (ENTITYESCAPING_VK|NOENTITYESCAPING_VK)?
             (NAME_VK|EVALNAME_VK)? expression
             xml_attributes_clause? (expression alias?)*
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLPI_VK
                 (    NAME_VK char_set_name? ID
                 |    EVALNAME_VK expression
                 )
                 expression?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     |    ^(XMLSERIALIZE_VK
                 (DOCUMENT_VK|CONTENT_VK)
                 expression type_spec?
@@ -1976,12 +1977,12 @@ standard_function
                 xmlserialize_param_ident_part?
                 ((HIDE_VK|SHOW_VK) DEFAULTS_VK)?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: standard_function"
     ;
 
 over_clause
     :    ^(OVER_VK query_partition_clause? (order_by_clause windowing_clause?)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: over_clause"
     ;
 
 windowing_clause
@@ -1990,38 +1991,38 @@ windowing_clause
             |    windowing_elements+
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: windowing_clause"
     ;
 
 windowing_elements
     :    ^(UNBOUNDED_VK PRECEDING_VK)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: windowing_elements"
     |    ^(CURRENT_VK ROW_VK)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: windowing_elements"
     |    ^((PRECEDING_VK|FOLLOWING_VK) expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: windowing_elements"
     ;
 
 using_clause
     :    ^(PLSQL_NON_RESERVED_USING using_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: using_clause"
     ;
 
 using_element
     :    ^(ELEMENT SQL92_RESERVED_IN? OUT_VK? expression alias?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: using_element"
     |    ASTERISK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: using_element"
     ;
 
 collect_order_by_part
     :    ^(SQL92_RESERVED_ORDER expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: collect_order_by_part"
     ;
 
 within_clause
     :    ^(WITHIN_VK order_by_clause)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: within_clause"
     ;
 
 cost_matrix_clause
@@ -2030,12 +2031,12 @@ cost_matrix_clause
             |    cost_class_name+ expression_list
             )
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cost_matrix_clause"
     ;
 
 xml_passing_clause
     :    ^(PASSING_VK VALUE_VK? expression alias? (expression alias?)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_passing_clause"
     ;
 
 xml_attributes_clause
@@ -2044,58 +2045,58 @@ xml_attributes_clause
             (SCHEMACHECK_VK|NOSCHEMACHECK_VK)?
             xml_multiuse_expression_element+
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_attributes_clause"
     ;
 
 xml_namespaces_clause
     :    ^(XMLNAMESPACES_VK
             (expression alias?)* xml_general_default_part?
         )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_namespaces_clause"
     ;
 
 xml_table_column
     :    ^(XML_COLUMN xml_column_name (ORDINALITY_VK|type_spec expression? xml_general_default_part?) )
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_table_column"
     ;
 
 xml_general_default_part
     :    ^(SQL92_RESERVED_DEFAULT expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_general_default_part"
     ;
 
 xml_multiuse_expression_element
     :    ^(XML_ELEMENT expression xml_alias?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_multiuse_expression_element"
     ;
 
 xml_alias
     :    ^(XML_ALIAS ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_alias"
     |    ^(XML_ALIAS ^(EVALNAME_VK expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_alias"
     ;
 
 xml_param_version_part
     :    ^(VERSION_VK (NO_VK VALUE_VK|expression))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_param_version_part"
     ;
 
 xmlroot_param_standalone_part
     :    ^(STANDALONE_VK (YES_VK|NO_VK VALUE_VK?))
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xmlroot_param_standalone_part"
     ;
 
 xmlserialize_param_enconding_part
     :    ^(ENCODING_VK expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xmlserialize_param_enconding_part"
     ;
 
 xmlserialize_param_ident_part
     :    NO_VK INDENT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xmlserialize_param_ident_part"
     |    ^(INDENT_VK expression?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xmlserialize_param_ident_part"
     ;
 
 // $>
@@ -2104,24 +2105,24 @@ xmlserialize_param_ident_part
 
 partition_extension_clause
     :    ^((SUBPARTITION_VK|PARTITION_VK) expression_list)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: partition_extension_clause"
     ;
 
 alias
     :    ^(ALIAS char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: alias"
     ;
 
 where_clause
     :    ^(SQL92_RESERVED_WHERE expression)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: where_clause"
     ;
 
 into_clause
     :    ^(SQL92_RESERVED_INTO general_element+) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: into_clause"
     |    ^(BULK_VK general_element+) 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: into_clause"
     ;
 
 // $>
@@ -2130,53 +2131,53 @@ into_clause
 
 xml_column_name
     :    ^(XML_COLUMN_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: xml_column_name"
     ;
 
 cost_class_name
     :    ^(COST_CLASS_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cost_class_name"
     ;
 
 attribute_name
     :    ^(ATTRIBUTE_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: attribute_name"
     ;
 
 savepoint_name
     :    ^(SAVEPOINT_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: savepoint_name"
     ;
 
 rollback_segment_name
     :    ^(ROLLBACK_SEGMENT_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: rollback_segment_name"
     ;
 
 
 table_var_name
     :    ^(TABLE_VAR_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: table_var_name"
     ;
 
 schema_name
     :    ^(SCHEMA_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: schema_name"
     ;
 
 routine_name
     :    ^(ROUTINE_NAME char_set_name? ID+ link_name?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: routine_name"
     ;
 
 package_name
     :    ^(PACKAGE_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: package_name"
     ;
 
 implementation_type_name
     :    ^(IMPLEMENTATION_TYPE_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: implementation_type_name"
     ;
 
 parameter_name
@@ -2186,104 +2187,104 @@ parameter_name
 
 reference_model_name
     :    ^(REFERENCE_MODEL_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: reference_model_name"
     ;
 
 main_model_name
     :    ^(MAIN_MODEL_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: main_model_name"
     ;
 
 query_name
     :    ^(QUERY_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: query_name"
     ;
 
 constraint_name
     :    ^(CONSTRAINT_NAME char_set_name? ID+ link_name?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constraint_name"
     ;
 
 label_name
     :    ^(LABEL_NAME ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: label_name"
     ;
 
 type_name
     :    ^(TYPE_NAME ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_name"
     ;
 
 sequence_name
     :    ^(SEQUENCE_NAME ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: sequence_name"
     ;
 
 exception_name
     :    ^(EXCEPTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: exception_name"
     ;
 
 function_name
     :    ^(FUNCTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: function_name"
     ;
 
 procedure_name
     :    ^(PROCEDURE_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: procedure_name"
     ;
 
 trigger_name
     :    ^(TRIGGER_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: trigger_name"
     ;
 
 variable_name
     :    ^(HOSTED_VARIABLE_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: variable_name"
     |    ^(VARIABLE_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: variable_name"
     ;
 
 index_name
     :    ^(INDEX_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: index_name"
     ;
 
 cursor_name
     :    ^(CURSOR_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: cursor_name"
     ;
 
 record_name
     :    ^(RECORD_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: record_name"
     ;
 
 collection_name
     :    ^(COLLECTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: collection_name"
     ;
 
 link_name
     :    ^(LINK_NAME char_set_name? ID)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: link_name"
     ;
 
 column_name
     :    ^(COLUMN_NAME char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: column_name"
     ;
 
 tableview_name
     :    ^(TABLEVIEW_NAME char_set_name? ID+ link_name? partition_extension_clause?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: tableview_name"
     ;
 
 char_set_name
     :    ^(CHAR_SET_NAME ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: char_set_name"
     ;
 
 // $>
@@ -2292,150 +2293,150 @@ char_set_name
 
 function_argument
     :    ^(ARGUMENTS argument*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: function_argument"
     ;
 
 argument
     :    ^(ARGUMENT expression parameter_name?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: argument"
     ;
 
 type_spec
     :     ^(CUSTOM_TYPE type_name REF_VK? (PERCENT_ROWTYPE_VK|PERCENT_TYPE_VK)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_spec"
     |    ^(NATIVE_DATATYPE native_datatype_element type_precision? (TIME_VK LOCAL_VK?)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_spec"
     |    ^(INTERVAL_DATATYPE (YEAR_VK|DAY_VK) (MONTH_VK|SECOND_VK) expression*)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_spec"
     ;
 
 type_precision
     :    ^(PRECISION constant constant? (CHAR_VK|BYTE_VK)? (TIME_VK LOCAL_VK?)?)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: type_precision"
     ;
 
 native_datatype_element
     :    BINARY_INTEGER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    PLS_INTEGER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NATURAL_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    BINARY_FLOAT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    BINARY_DOUBLE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NATURALN_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    POSITIVE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    POSITIVEN_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    SIGNTYPE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    SIMPLE_INTEGER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NVARCHAR2_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DEC_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    INTEGER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    INT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NUMERIC_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    SMALLINT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NUMBER_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DECIMAL_VK 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DOUBLE_VK PRECISION_VK?
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    FLOAT_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    REAL_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NCHAR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    LONG_VK RAW_VK?
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    CHAR_VK  
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    CHARACTER_VK 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    VARCHAR2_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    VARCHAR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    STRING_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    RAW_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    BOOLEAN_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DATE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    ROWID_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    UROWID_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    YEAR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    MONTH_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DAY_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    HOUR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    MINUTE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    SECOND_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMEZONE_HOUR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMEZONE_MINUTE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMEZONE_REGION_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMEZONE_ABBR_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMESTAMP_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMESTAMP_UNCONSTRAINED_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMESTAMP_TZ_UNCONSTRAINED_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    TIMESTAMP_LTZ_UNCONSTRAINED_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    YMINTERVAL_UNCONSTRAINED_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    DSINTERVAL_UNCONSTRAINED_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    BFILE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    BLOB_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    CLOB_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    NCLOB_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     |    MLSLABEL_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: native_datatype_element"
     ;
 
 general_element
     :    ^(CASCATED_ELEMENT general_element+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_element"
     |    ^(HOSTED_VARIABLE_ROUTINE_CALL routine_name function_argument)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_element"
     |    ^(HOSTED_VARIABLE char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_element"
     |    ^(ROUTINE_CALL routine_name function_argument)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_element"
     |    ^(ANY_ELEMENT char_set_name? ID+)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: general_element"
     ;
 
 // $>
@@ -2444,38 +2445,38 @@ general_element
 
 constant
     :    UNSIGNED_INTEGER
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    ^(MINUS_SIGN UNSIGNED_INTEGER)
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    EXACT_NUM_LIT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    APPROXIMATE_NUM_LIT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    CHAR_STRING
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    SQL92_RESERVED_NULL
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    SQL92_RESERVED_TRUE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    SQL92_RESERVED_FALSE
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    DBTIMEZONE_VK 
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    SESSIONTIMEZONE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    MINVALUE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    MAXVALUE_VK
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     |    SQL92_RESERVED_DEFAULT
-    ->   template() "not implemented: "
+    ->   template() "not implemented: constant"
     ;
 
 // $>
 
 id
     :    char_set_name? ID
-    ->   template() "not implemented: "
+    ->   template() "not implemented: id"
     ;
 
     
