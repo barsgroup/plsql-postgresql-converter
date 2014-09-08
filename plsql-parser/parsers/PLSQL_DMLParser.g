@@ -902,7 +902,7 @@ relational_expression
 
 compound_expression
 @init    {    boolean isNegated = false;    }
-    :    (concatenation -> concatenation)
+    :    (e1=concatenation -> $e1)
     (    (not_key {isNegated = true;} )?
         (    in_key in_elements
                 -> {isNegated}? ^(NOT_IN $compound_expression in_elements)
@@ -910,9 +910,9 @@ compound_expression
         |    between_key between_elements
                 -> {isNegated}? ^(NOT_BETWEEN $compound_expression between_elements)
                 -> ^(between_key $compound_expression between_elements)
-        |    like_type concatenation like_escape_part?
-                -> {isNegated}? ^(NOT_LIKE $compound_expression ^(EXPR concatenation) like_escape_part?)
-                -> ^(like_type $compound_expression  ^(EXPR concatenation) like_escape_part?)
+        |    like_type c2=concatenation like_escape_part?
+                -> {isNegated}? ^(NOT_LIKE $compound_expression $c2 like_escape_part?)
+                -> ^(like_type $compound_expression $c2 like_escape_part?)
         )
     )?
     ;
@@ -925,8 +925,7 @@ like_type
     ;
 
 like_escape_part
-    :    escape_key concatenation
-        -> ^(EXPR concatenation)
+    :    escape_key concatenation -> concatenation
     ;
 
 in_elements
@@ -945,7 +944,7 @@ in_elements
 
 between_elements
     :    cn1=concatenation and_key cn2=concatenation
-        -> ^(EXPR $cn1) ^(EXPR $cn2) 
+        -> $cn1 $cn2
     ;
 
 concatenation
