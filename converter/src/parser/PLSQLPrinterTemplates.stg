@@ -1,5 +1,7 @@
 group PLSQLPrinterTemplates;
 
+string_literal(val) ::= "<val>"
+
 create_function_body(
   is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, body
@@ -34,4 +36,18 @@ base_type_spec(
 <baseName> <precision> <if (is_with_time_zone)>
 with <if (is_time_zone_local)>local<endif> time zone
 <endif>
+>>
+
+body(
+  bodyLabel, statements, exception_clause
+) ::= <<
+begin
+  <statements>
+<exception_clause>
+end<if (bodyLabel)> <bodyLabel><endif>
+>>
+
+seq_of_statements(statements) ::= <<
+<statements:{statement|<statement>;
+}>
 >>

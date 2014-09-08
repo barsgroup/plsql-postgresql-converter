@@ -894,45 +894,28 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    :     ^(STATEMENTS statement+)
-    ->   template() "not implemented: seq_of_statements"
+    :     ^(STATEMENTS statements+=statement+)
+    -> seq_of_statements(statements={$statements})
     ;
 
 statement
-    :    label_declaration
-    ->   template() "not implemented: statement"
-    |    assignment_statement
-    ->   template() "not implemented: statement"
-    |    continue_statement
-    ->   template() "not implemented: statement"
-    |    exit_statement
-    ->   template() "not implemented: statement"
-    |    goto_statement
-    ->   template() "not implemented: statement"
-    |    if_statement
-    ->   template() "not implemented: statement"
-    |    loop_statement
-    ->   template() "not implemented: statement"
-    |    forall_statement
-    ->   template() "not implemented: statement"
-    |    null_statement
-    ->   template() "not implemented: statement"
-    |    raise_statement
-    ->   template() "not implemented: statement"
-    |    return_statement
-    ->   template() "not implemented: statement"
-    |    pipe_row_statement
-    ->   template() "not implemented: statement"
-    |    case_statement
-    ->   template() "not implemented: statement"
-    |    sql_statement
-    ->   template() "not implemented: statement"
-    |    function_call
-    ->   template() "not implemented: statement"
-    |    body
-    ->   template() "not implemented: statement"
-    |    block
-    ->   template() "not implemented: statement"
+    :    label_declaration -> { $label_declaration.st }
+    |    assignment_statement -> { $assignment_statement.st }
+    |    continue_statement -> { $continue_statement.st }
+    |    exit_statement -> { $exit_statement.st }
+    |    goto_statement -> { $goto_statement.st }
+    |    if_statement -> { $if_statement.st }
+    |    loop_statement -> { $loop_statement.st }
+    |    forall_statement -> { $forall_statement.st }
+    |    null_statement -> { $null_statement.st }
+    |    raise_statement -> { $raise_statement.st }
+    |    return_statement -> { $return_statement.st }
+    |    pipe_row_statement -> { $pipe_row_statement.st }
+    |    case_statement -> { $case_statement.st }
+    |    sql_statement -> { $sql_statement.st }
+    |    function_call -> { $function_call.st }
+    |    body -> { $body.st }
+    |    block -> { $block.st }
     ;
 
 label_declaration
@@ -1043,7 +1026,7 @@ function_call
 
 body
     :    ^(BODY label_name? seq_of_statements exception_clause?) 
-    ->   template() "not implemented: body"
+    ->   body(bodyLabel={$label_name.st}, statements={$seq_of_statements.st}, exception_clause={$exception_clause.st})
     ;
 
 // $<Body - Specific Clause
@@ -2206,8 +2189,7 @@ constraint_name
     ;
 
 label_name
-    :    ^(LABEL_NAME ID)
-    ->   template() "not implemented: label_name"
+    :    ^(LABEL_NAME ID) -> string_literal(val={$ID.text})
     ;
 
 type_name
@@ -2403,19 +2385,19 @@ general_element
 // $<Lexer Mappings
 
 constant
-    :    v1=UNSIGNED_INTEGER -> {%{$v1.text}}
-    |    ^(MINUS_SIGN v2=UNSIGNED_INTEGER) -> {%{"-" + $v2.text}}
-    |    EXACT_NUM_LIT -> {%{$EXACT_NUM_LIT.text}}
-    |    APPROXIMATE_NUM_LIT -> {%{$APPROXIMATE_NUM_LIT.text}}
-    |    CHAR_STRING -> {%{$CHAR_STRING.text}}
-    |    SQL92_RESERVED_NULL -> {%{"null"}}
-    |    SQL92_RESERVED_TRUE -> {%{"true"}}
-    |    SQL92_RESERVED_FALSE -> {%{"false"}}
-    |    DBTIMEZONE_VK  -> {%{"dbtimezone"}}
-    |    SESSIONTIMEZONE_VK -> {%{"sessiontimezone"}}
-    |    MINVALUE_VK -> {%{"minvalue"}}
-    |    MAXVALUE_VK -> {%{"maxvalue"}}
-    |    SQL92_RESERVED_DEFAULT -> {%{"default"}}
+    :    v1=UNSIGNED_INTEGER -> string_literal(val={$v1.text})
+    |    ^(MINUS_SIGN v2=UNSIGNED_INTEGER) -> string_literal(val={"-" + $v2.text})
+    |    EXACT_NUM_LIT -> string_literal(val={$EXACT_NUM_LIT.text})
+    |    APPROXIMATE_NUM_LIT -> string_literal(val={$APPROXIMATE_NUM_LIT.text})
+    |    CHAR_STRING -> string_literal(val={$CHAR_STRING.text})
+    |    SQL92_RESERVED_NULL -> string_literal(val={"null"})
+    |    SQL92_RESERVED_TRUE -> string_literal(val={"true"})
+    |    SQL92_RESERVED_FALSE -> string_literal(val={"false"})
+    |    DBTIMEZONE_VK  -> string_literal(val={"dbtimezone"})
+    |    SESSIONTIMEZONE_VK -> string_literal(val={"sessiontimezone"})
+    |    MINVALUE_VK -> string_literal(val={"minvalue"})
+    |    MAXVALUE_VK -> string_literal(val={"maxvalue"})
+    |    SQL92_RESERVED_DEFAULT -> string_literal(val={"default"})
     ;
 
 // $>
