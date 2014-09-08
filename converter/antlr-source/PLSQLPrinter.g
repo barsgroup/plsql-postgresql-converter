@@ -1504,7 +1504,7 @@ merge_insert_clause
     ;
 
 selected_tableview
-    :    ^(SELECTED_TABLEVIEW alias? (tableview_name|subquery))
+    :    ^(SELECTED_TABLEVIEW alias? (tableview_name|select_statement))
     ->   template() "not implemented: selected_tableview"
     ;
 
