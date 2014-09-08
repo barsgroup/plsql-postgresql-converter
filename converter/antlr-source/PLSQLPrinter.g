@@ -1065,7 +1065,12 @@ sql_statement
     ;
 
 execute_immediate
-    :    ^(EXECUTE_VK expression (into_clause|using_clause|dynamic_returning_clause)?) 
+    :    ^(EXECUTE_VK expression
+          (    into_clause using_clause?
+          |    using_clause dynamic_returning_clause?
+          |    dynamic_returning_clause
+          )?
+        )
     ->   template() "not implemented: execute_immediate"
     ;
 
@@ -1612,7 +1617,7 @@ cursor_manipulation_statements
     ;
 
 close_statement
-    :     ^(CLOSE_VK variable_name) 
+    :     ^(CLOSE_VK cursor_name) 
     ->   template() "not implemented: close_statement"
     ;
 
