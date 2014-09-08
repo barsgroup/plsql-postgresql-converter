@@ -1907,7 +1907,7 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(FUNCTION_ENABLING_USING function_argument using_clause?)
     ->   template() "not implemented: standard_function"
-    |    ^(COUNT_VK ( ASTERISK | expression ) over_clause?)
+    |    ^(COUNT_VK SQL92_RESERVED_DISTINCT? ( ASTERISK | expression ) over_clause?)
     ->   template() "not implemented: standard_function"
     |    ^((CAST_VK|XMLCAST_VK) (subquery|expression) type_spec)
     ->   template() "not implemented: standard_function"
@@ -1929,7 +1929,7 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(TREAT_VK expression REF_VK? type_spec)
     ->   template() "not implemented: standard_function"
-    |    ^(TRIM_VK (LEADING_VK|TRAILING_VK|BOTH_VK)? expression expression?) 
+    |    ^(TRIM_VK (LEADING_VK|TRAILING_VK|BOTH_VK)? expression_element expression_element?) 
     ->   template() "not implemented: standard_function"
 
     |    ^(XMLAGG_VK expression order_by_clause?)

@@ -58,7 +58,7 @@ public class ParserMain {
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		input = new ANTLRFileStream("failure5.txt");
+		input = new ANTLRFileStream("failure3.txt");
 		//input = new ANTLRFileStream("parsetrees/1353_D_PKG_BROKER_input.txt");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
 		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
