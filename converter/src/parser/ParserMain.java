@@ -26,7 +26,10 @@ import org.antlr.runtime.BufferedTokenStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
 
 import br.com.porcelli.parser.plsql.PLSQLLexer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -37,7 +40,7 @@ import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
 	public static void main(String[] args) throws Exception {
-		if (true) {
+		if (false) {
 			parseByParts();
 			return;
 		}
@@ -94,7 +97,7 @@ public class ParserMain {
 		//sql_script_return r = p.sql_script();
 		//Object tree = p.pragma_declaration().getTree();
 		//Object tree = p.create_procedure_body().getTree();
-		Object tree = p.sql_statement().getTree();
+		Object tree = p.sql_script().getTree();
 	
 		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
 		String str;
@@ -109,6 +112,29 @@ public class ParserMain {
 		TokenCounter ctr = new TokenCounter();
 		ctr.addTree(theTree);
 		printTokenStats(ctr.getOccurences());
+		
+		//StringBuilder sb = new StringBuilder();
+		//SqlPrinter printer = new SqlPrinter(sb);
+		//printer.visitNode(theTree);
+		//System.out.println(sb);
+		
+		/*
+		HashMap<String, Object> attrs = new HashMap<String, Object>();
+		attrs.put("foo",  null);
+		org.antlr.stringtemplate.StringTemplate qqq = new org.antlr.stringtemplate.StringTemplate(new StringTemplateGroup("xyz"), "$if(foo)$foo$endif$", attrs);
+		//qqq.setAttribute("foo", "");
+		System.out.println(qqq.toString());
+		//if (true) return;
+		 * 
+		 */
+		
+		PLSQLPrinter printer = new PLSQLPrinter(new CommonTreeNodeStream(theTree));
+		String printed = printer.sql_script().st.toString();
+
+		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
+		try (PrintStream out = new PrintStream(new FileOutputStream("output_printed.txt"))) {
+		    out.print(printed);
+		}
 	}
 
 	private static void parseByParts() throws Exception {
@@ -325,7 +351,7 @@ public class ParserMain {
 			}
 		});
 		for (int key : keys) {
-			System.out.printf("%s -> %d\n", tokenNames[key], occurences.get(key));
+			out.printf("%s -> %d\n", tokenNames[key], occurences.get(key));
 		}
 	}
 }
