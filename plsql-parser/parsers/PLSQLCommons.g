@@ -164,9 +164,9 @@ routine_name_part_after_period
 
 routine_id
     :     id_expression -> id_expression
-          | SQL92_RESERVED_DELETE -> REGULAR_ID[$SQL92_RESERVED_DELETE]
-          | SQL92_RESERVED_EXISTS -> REGULAR_ID[$SQL92_RESERVED_EXISTS]
-          | SQL92_RESERVED_PRIOR -> REGULAR_ID[$SQL92_RESERVED_PRIOR]
+          | SQL92_RESERVED_DELETE -> ID[$SQL92_RESERVED_DELETE]
+          | SQL92_RESERVED_EXISTS -> ID[$SQL92_RESERVED_EXISTS]
+          | SQL92_RESERVED_PRIOR -> ID[$SQL92_RESERVED_PRIOR]
     ;
 
 package_name

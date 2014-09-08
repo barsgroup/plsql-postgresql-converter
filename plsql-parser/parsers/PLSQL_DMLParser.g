@@ -1153,7 +1153,7 @@ standard_function
             RIGHT_PAREN!
     |    extract_key^
             LEFT_PAREN!
-                REGULAR_ID from_key! concatenation_wrapper 
+                id_expression from_key! concatenation_wrapper 
             RIGHT_PAREN!
     |    (first_value_key^|last_value_key^) 
             LEFT_PAREN!
