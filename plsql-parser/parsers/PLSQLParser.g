@@ -223,15 +223,15 @@ create_function_body
               SEMICOLON
         ->    {mode == 1}?
             ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
-                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key*
-                ^(USING_MODE pipelined_key? aggregate_key? implementation_type_name))
+                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key? 
+                ^(USING_MODE aggregate_key? implementation_type_name))
         -> {mode == 2}?
             ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
-                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key*
-                ^(CALL_MODE pipelined_key? call_spec))
+                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
+                ^(CALL_MODE call_spec))
         ->    ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
-                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key*
-                ^(BODY_MODE pipelined_key? declare_spec* body))
+                invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
+                ^(BODY_MODE declare_spec* body))
     ;
 
 // $<Creation Function - Specific Clauses
@@ -345,9 +345,9 @@ function_spec
         pipelined_key?
         SEMICOLON 
         -> ^(FUNCTION_SPEC[$function_key.start] function_name type_spec ^(PARAMETERS parameter*)
-        invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key*
-                ^(USING_MODE pipelined_key? //aggregate_key? implementation_type_name
-                ))
+        invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
+                //^(USING_MODE /*aggregate_key? implementation_type_name*/ )?
+        )
     ;
 
 package_obj_body
