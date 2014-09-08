@@ -1918,7 +1918,7 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(DECOMPOSE_VK expression (CANONICAL_VK|COMPATIBILITY_VK)?) 
     ->   template() "not implemented: standard_function"
-    |    ^(EXTRACT_VK REGULAR_ID expression)
+    |    ^(EXTRACT_VK ID expression)
     ->   template() "not implemented: standard_function"
     |    ^((FIRST_VALUE_VK|LAST_VALUE_VK) expression NULLS_VK? over_clause) 
     ->   template() "not implemented: standard_function"
