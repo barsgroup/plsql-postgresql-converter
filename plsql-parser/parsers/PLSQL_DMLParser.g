@@ -1177,7 +1177,7 @@ standard_function
     |    trim_key^
             LEFT_PAREN!
                 ((leading_key|trailing_key|both_key)? expression from_key!)?
-                concatenation_wrapper
+                concatenation
             RIGHT_PAREN!
     |    xmlagg_key^
             LEFT_PAREN! 
