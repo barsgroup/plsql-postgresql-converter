@@ -6,7 +6,7 @@ create_function_body(
   is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, body
 ) ::= <<
-create<if (is_replace)>or replace<endif> function <name_parts; separator=".">
+create<if (is_replace)> or replace<endif> function <name_parts; separator=".">
 <if (arguments)>(<arguments; separator=",\n">)<endif>
 return <return_type>
 <add_clauses; separator=" ">
@@ -180,4 +180,24 @@ only(<dml_table_expression_clause>)
 <else>
 <dml_table_expression_clause><if (pivot_clause)> <pivot_clause><elseif (unpivot_clause)> <unpivot_clause><endif>
 <endif><if (flashback_query_clause)> <flashback_query_clause><endif><if (alias)> <alias><endif>
+>>
+
+dml_table_expression_clause_direct(table_or_view_name, sample_clause) ::= <<
+<table_or_view_name><if (sample_clause)> <sample_clause><endif>
+>>
+
+tableview_name(ids, link_name, partition_extension_clause) ::= <<
+<ids; separator="."><if (link_name)>@<link_name><endif><if (partition_extension_clause)><partition_extension_clause><endif>
+>>
+
+join_on_part(expression) ::= "on <expression>"
+
+where_clause(expression) ::= "where <expression>"
+
+order_by_clause(is_siblings, elements) ::= <<
+order<if (is_siblings)> siblings<endif> by <elements; separator=", ">
+>>
+
+order_by_elements(expression, is_asc, is_desc, is_nulls_first, is_nulls_last) ::= <<
+<expression><if (is_asc)> asc<elseif (is_desc)> desc<endif><if (is_nulls_first)> nulls first<elseif (is_nulls_last)> nulls last<endif>
 >>

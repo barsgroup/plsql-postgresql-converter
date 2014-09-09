@@ -1189,8 +1189,8 @@ join_clause
     ;
 
 join_on_part
-    :    ^(SQL92_RESERVED_ON expression) 
-    ->   template() "not implemented: join_on_part"
+    :    ^(SQL92_RESERVED_ON expression)
+    ->   join_on_part(expression={$expression.st})
     ;
 
 join_using_part
@@ -1379,13 +1379,15 @@ until_part
     ;
 
 order_by_clause
-    :    ^(SQL92_RESERVED_ORDER SIBLINGS_VK? ^(ORDER_BY_ELEMENTS order_by_elements+))
-    ->   template() "not implemented: order_by_clause"
+    :    ^(SQL92_RESERVED_ORDER SIBLINGS_VK? ^(ORDER_BY_ELEMENTS elements+=order_by_elements+))
+    ->   order_by_clause(is_siblings={$SIBLINGS_VK != null}, elements={$elements})
     ;
 
 order_by_elements
     :    ^(ORDER_BY_ELEMENT expression (SQL92_RESERVED_ASC|SQL92_RESERVED_DESC)? (NULLS_VK (FIRST_VK|LAST_VK))?)
-    ->   template() "not implemented: order_by_elements"
+    ->   order_by_elements(
+          expression={$expression.st}, is_asc={$SQL92_RESERVED_ASC != null},
+          is_desc={$SQL92_RESERVED_DESC != null}, is_nulls_first={$FIRST_VK != null}, is_nulls_last={$LAST_VK != null})
     ;
 
 for_update_clause
@@ -1591,13 +1593,15 @@ error_logging_reject_part
 dml_table_expression_clause
     :    ^(TABLE_EXPRESSION 
         (    ^(COLLECTION_MODE expression PLUS_SIGN?)
+              ->   template() "not implemented: dml_table_expression_clause[COLLECTION_MODE]"
         |    ^(SELECT_MODE select_statement subquery_restriction_clause?)
+              ->   template() "not implemented: dml_table_expression_clause[SELECT_MODE]"
         |    ^(DIRECT_MODE tableview_name sample_clause?)
-        |    general_element
-        |    standard_function
+              -> dml_table_expression_clause_direct(table_or_view_name={$tableview_name.st}, sample_clause={$sample_clause.st})
+        |    general_element -> { $general_element.st }
+        |    standard_function -> { $standard_function.st }
         )
         )
-    ->   template() "not implemented: dml_table_expression_clause[TABLE_EXPRESSION]"
         |    table_ref -> in_parens(val={$table_ref.st})
     ;
 
@@ -2124,7 +2128,7 @@ alias
 
 where_clause
     :    ^(SQL92_RESERVED_WHERE expression)
-    ->   template() "not implemented: where_clause"
+    ->   where_clause(expression={$expression.st})
     ;
 
 into_clause
@@ -2285,8 +2289,8 @@ column_name
     ;
 
 tableview_name
-    :    ^(TABLEVIEW_NAME char_set_name? ID+ link_name? partition_extension_clause?)
-    ->   template() "not implemented: tableview_name"
+    :    ^(TABLEVIEW_NAME char_set_name? ids+=ID+ link_name? partition_extension_clause?)
+    ->   tableview_name(ids={$ids}, link_name={$link_name.st}, partition_extension_clause={$partition_extension_clause.st})
     ;
 
 char_set_name
