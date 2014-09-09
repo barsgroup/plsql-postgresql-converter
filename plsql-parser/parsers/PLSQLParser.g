@@ -1174,14 +1174,14 @@ else_part
 
 loop_statement
 @init    {    int mode = 0;    } 
-    :    label_name?
+    :    //loopLabel=label_name?
         (while_key condition {mode = 1;} | for_key cursor_loop_param {mode = 2;})?
         loop_key
         seq_of_statements
         end_key loop_key label_name?
-        -> {mode == 1}? ^(WHILE_LOOP[$while_key.start] label_name* ^(LOGIC_EXPR condition) seq_of_statements)
-        -> {mode == 2}? ^(FOR_LOOP[$for_key.start] label_name* cursor_loop_param seq_of_statements)
-        -> ^(loop_key label_name* seq_of_statements)
+        -> {mode == 1}? ^(WHILE_LOOP[$while_key.start] /*$loopLabel*/ ^(LOGIC_EXPR condition) seq_of_statements)
+        -> {mode == 2}? ^(FOR_LOOP[$for_key.start] /*$loopLabel*/ cursor_loop_param seq_of_statements)
+        -> ^(loop_key /*$loopLabel*/ seq_of_statements)
     ;
 
 // $<Loop - Specific Clause
