@@ -782,9 +782,9 @@ dml_table_expression_clause_simple
     ;
 
 dml_table_expression_clause
-    :    dml_table_expression_clause_simple
-    |    standard_function -> ^(TABLE_EXPRESSION standard_function)
-    |    (routine_name function_argument) => general_element -> ^(TABLE_EXPRESSION general_element)
+    :    (routine_id (PERIOD routine_id)* LEFT_PAREN) => general_element -> ^(TABLE_EXPRESSION general_element)
+    |    dml_table_expression_clause_simple
+    |    (standard_function) => standard_function -> ^(TABLE_EXPRESSION standard_function)
     ;
 
 table_collection_expression
