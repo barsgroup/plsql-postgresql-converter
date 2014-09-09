@@ -341,11 +341,11 @@ function_spec
     :    function_key function_name 
         (LEFT_PAREN parameter ( COMMA parameter)* RIGHT_PAREN )?
         return_key type_spec
-        (invoker_rights_clause|parallel_enable_clause|result_cache_clause|deterministic_key)*
+        (c1=pipelined_key|c2=result_cache_clause|c3=deterministic_key)*
         pipelined_key?
         SEMICOLON 
         -> ^(FUNCTION_SPEC[$function_key.start] function_name type_spec ^(PARAMETERS parameter*)
-        invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
+        $c1? $c2? $c3?
                 //^(USING_MODE /*aggregate_key? implementation_type_name*/ )?
         )
     ;
