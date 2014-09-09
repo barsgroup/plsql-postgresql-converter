@@ -240,3 +240,16 @@ return <return_type><if (is_pipelined)> pipelined<endif><if (is_result_cache)> r
 typespec_custom(name, is_ref, is_percent_rowtype, is_percent_type) ::= <<
 <if (is_ref)>ref <endif><name><if (is_percent_rowtype)>%rowtype<elseif (is_percent_type)>%type<endif>
 >>
+
+create_package_body(is_replace, name, items, init_section_seq_of_statements, init_section_exception_clause) ::= <<
+create<if (is_replace)> or replace<endif> package body <name>
+is
+  <items; separator="\n\n"><if (init_section_seq_of_statements)>
+
+begin
+  <init_section_seq_of_statements>
+<init_section_exception_clause>
+<endif>
+
+end <name>;
+>>

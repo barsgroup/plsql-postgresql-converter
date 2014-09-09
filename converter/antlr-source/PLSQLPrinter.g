@@ -198,8 +198,11 @@ create_package
     ->   create_package_spec(
            is_replace={$REPLACE_VK != null}, name={$package_name.st},
            invoker_rights_clause={$invoker_rights_clause.st}, items={$items})
-    |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name package_obj_body* seq_of_statements?)
-    ->   template() "not implemented: create_package"
+    |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name items+=package_obj_body* seq_of_statements? exception_clause?)
+    ->   create_package_body(
+           is_replace={$REPLACE_VK != null}, name={$package_name.st}, items={$items},
+           init_section_seq_of_statements={$seq_of_statements.st},
+           init_section_exception_clause={$exception_clause.st})
     ;
 
 // $<Create Package - Specific Clauses
@@ -233,24 +236,17 @@ function_spec
     ;
 
 package_obj_body
-    :     variable_declaration 
-    ->   template() "not implemented: package_obj_body"
-    |     subtype_declaration 
-    ->   template() "not implemented: package_obj_body"
-    |     cursor_declaration 
-    ->   template() "not implemented: package_obj_body"
-    |     exception_declaration 
-    ->   template() "not implemented: package_obj_body"
-    |     record_declaration
-    ->   template() "not implemented: package_obj_body"
-    |     table_declaration
-    ->   template() "not implemented: package_obj_body"
-    |     create_procedure_body
-    ->   template() "not implemented: package_obj_body"
-    |     create_function_body
-    ->   template() "not implemented: package_obj_body"
-    |     create_type
-    ->   template() "not implemented: package_obj_body"
+    :     procedure_spec -> { $procedure_spec.st}
+    |     function_spec -> { $function_spec.st}
+    |     variable_declaration -> {$variable_declaration.st}
+    |     subtype_declaration -> {$subtype_declaration.st}
+    |     cursor_declaration -> {$cursor_declaration.st}
+    |     exception_declaration -> {$exception_declaration.st}
+    |     record_declaration -> {$record_declaration.st}
+    |     table_declaration -> {$table_declaration.st}
+    |     create_procedure_body -> {$create_procedure_body.st}
+    |     create_function_body -> {$create_function_body.st}
+    |     create_type -> {$create_type.st}
     ;
 
 // $>
