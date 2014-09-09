@@ -49,7 +49,10 @@ seq_of_statements(statements) ::= <<
 <statements:{statement|<statement>;}; separator="\n">
 >>
 
-label_declaration(name) ::= "\<\<<name>\>\>"
+labeled_statement(name, statement) ::= <<
+\<\<<name>\>\>
+<statement>
+>>
 
 return_statement(expression) ::= "return<if (expression)> <expression><endif>"
 

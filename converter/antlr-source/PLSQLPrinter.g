@@ -897,13 +897,16 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    :     ^(STATEMENTS statements+=statement+)
+    :     ^(STATEMENTS (statements+=statement|statements+=labeled_statement)+)
     -> seq_of_statements(statements={$statements})
+    ;
+    
+labeled_statement
+    :    ^(LABEL_DECLARE label_name statement) -> labeled_statement(name={$label_name.st}, statement={$statement.st})
     ;
 
 statement
-    :    label_declaration -> { $label_declaration.st }
-    |    assignment_statement -> { $assignment_statement.st }
+    :    assignment_statement -> { $assignment_statement.st }
     |    continue_statement -> { $continue_statement.st }
     |    exit_statement -> { $exit_statement.st }
     |    goto_statement -> { $goto_statement.st }
@@ -919,10 +922,6 @@ statement
     |    general_element -> { $general_element.st }
     |    body -> { $body.st }
     |    block -> { $block.st }
-    ;
-
-label_declaration
-    :    ^(LABEL_DECLARE label_name) -> label_declaration(name={$label_name.st})
     ;
 
 assignment_statement

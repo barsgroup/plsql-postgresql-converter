@@ -84,9 +84,15 @@ public class ParserMain {
 		    out.print(printed);
 		}
 		
-		//String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent);
+		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent);
+		
+		if (errorMessage != null) {
+			System.out.printf("Error comparing after print: %s\n", errorMessage);
+		} else {
+			System.out.println("Tree matches reparsed tree");
+		}
 	}
-	
+
 	static class PrintResult {
 		public List<RecognitionException> printErrors;
 		public String text;
@@ -153,11 +159,17 @@ public class ParserMain {
 		List<String> parseFailureBodies = new ArrayList<String>();
 		List<String> printFailures = new ArrayList<String>();
 		List<String> printFailureBodies = new ArrayList<String>();
+		List<String> reparseFailures = new ArrayList<String>();
+		List<String> reparseFailureBodies = new ArrayList<String>();
 		List<String> successes = new ArrayList<String>();
 		TokenCounter ctr = new TokenCounter();
 		long ms_start_all = System.currentTimeMillis();
 		//int times = 0;
+		int partIdx = 0;
 		for (String part : parts) {
+			if (partIdx > 10) {
+				break;
+			}
 			//if (times > 100) {
 			//	break;
 			//}
@@ -201,7 +213,14 @@ public class ParserMain {
 					ex.printStackTrace();
 				}
 				if (is_tree_walked) {
-					successes.add(header);
+					String compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree);
+					if (compareResult != null) {
+						System.out.printf("Print&Reparse failed: %s", compareResult);
+						reparseFailures.add(header);
+						reparseFailureBodies.add(part);
+					} else {
+						successes.add(header);
+					}
 				} else {
 					System.out.println("PRINT FAIL");
 					printFailures.add(header);
@@ -218,22 +237,24 @@ public class ParserMain {
 				name = "unguessed";
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_input.txt", successes.size() - 1, name)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_input.txt", partIdx, name)))) {
 			    out.print(part);
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_%s.txt", successes.size() - 1, name, failure ? "failure" : "success")))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_%s.txt", partIdx, name, failure ? "failure" : "success")))) {
 			    out.print(str);
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_printed.txt", successes.size() - 1, name)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_printed.txt", partIdx, name)))) {
 			    out.print(printedTree);
 			}
+			
+			++partIdx;
 		}
 		long ms_end_all = System.currentTimeMillis();
 		System.out.printf("Total time: %f s\n", (ms_end_all - ms_start_all) / 1000.0);
 		
-		System.out.printf("%d succeeded, %d parse failed, %d print failed\n", successes.size(), parseFailures.size(), printFailures.size());
+		System.out.printf("%d succeeded, %d parse failed, %d print failed, %d reparse failed\n", successes.size(), parseFailures.size(), printFailures.size(), reparseFailures.size());
 		int idx = 0;
 		System.out.println("Parse failures:");
 		for (int i = 0; i < parseFailures.size(); ++i) {
@@ -253,6 +274,15 @@ public class ParserMain {
 
 			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/failure%d.txt", idx)))) {
 			    out.print(printFailureBodies.get(i));
+			}
+			++idx;
+		}
+		System.out.println("Reparse failures:");
+		for (int i = 0; i < reparseFailures.size(); ++i) {
+			System.out.printf("%d %s\n", idx, reparseFailures.get(i));
+
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/failure%d.txt", idx)))) {
+			    out.print(reparseFailureBodies.get(i));
 			}
 			++idx;
 		}
@@ -399,5 +429,89 @@ public class ParserMain {
 		for (int key : keys) {
 			out.printf("%s -> %d\n", tokenNames[key], occurences.get(key));
 		}
+	}
+	
+	private static String validatePrintedTreeMatchesParsedTree(Tree tree) throws Exception {
+		PrintResult printResult = printTreeToString(tree);
+		if (printResult.printErrors.size() > 0) {
+			return "Printer errors";
+		}
+		if (printResult.text.contains("not implemented: ")) {
+			return "Printed text contains 'not implemented: '";
+		}
+		ParseResult reparseResult = parseTreeFromString(printResult.text, false);
+		if (reparseResult.lexerErrors.size() > 0) {
+			return "Lexer errors (on printed tree)";
+		}
+		if (reparseResult.parserErrors.size() > 0) {
+			return "Parser errors (on printed tree)";
+		}
+		PrintResult reprintResult = printTreeToString(reparseResult.tree);
+		if (reprintResult.printErrors.size() > 0) {
+			return "Printer errors (on printed tree)";
+		}
+		if (!printResult.text.equals(reprintResult.text)) {
+			int mismatchIndex = getStringMismatchIndex(printResult.text, reprintResult.text);
+			return "Texts mismatch at " + mismatchIndex;
+		}
+		Tree[] mismatchedTrees = getMismatchedTreeNodes(tree, reparseResult.tree);
+		if (mismatchedTrees == null) {
+			return null;
+		}
+
+		String token1Description = getTreeNodeDescription(mismatchedTrees[0]);
+		String token2Description = getTreeNodeDescription(mismatchedTrees[1]);
+		
+		String result = String.format("Mismatch: %s <> %s", token1Description, token2Description);
+
+		return result;
+	}
+	
+	private static String validatePrintedTreeMatchesParsedTree(String inputContent) throws Exception {
+		ParseResult parseResult = parseTreeFromString(inputContent, false);
+		if (parseResult.lexerErrors.size() > 0) {
+			return "Lexer errors";
+		}
+		if (parseResult.parserErrors.size() > 0) {
+			return "Parser errors";
+		}
+		return validatePrintedTreeMatchesParsedTree(parseResult.tree);
+	}
+	
+	private static int getStringMismatchIndex(String s1, String s2) {
+		int n = Math.max(s1.length(), s2.length());
+		for (int i = 0; i < n; ++i) {
+			if (i >= s1.length() || i >= s2.length() || s1.charAt(i) != s2.charAt(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private static String getTreeNodeDescription(Tree tree) {
+		if (tree == null) {
+			return "<missing>";
+		}
+		String result = String.format("%s '%s' at %d:%d", tokenNames[tree.getType()], tree.getText(), tree.getLine(), tree.getCharPositionInLine());
+		return result;
+	}
+
+	private static Tree[] getMismatchedTreeNodes(Tree t1, Tree t2) {
+		if (t1.getType() != t2.getType()) {
+			return new Tree[] { t1, t2 };
+		}
+		int n = Math.max(t1.getChildCount(), t2.getChildCount());
+		for (int i = 0; i < n; ++i) {
+			Tree child1 = i < t1.getChildCount() ? t1.getChild(i) : null;
+			Tree child2 = i < t2.getChildCount() ? t2.getChild(i) : null;
+			if (child1 == null || child2 == null) {
+				return new Tree[] { child1, child2 };
+			}
+			Tree[] childResult = getMismatchedTreeNodes(child1, child2);
+			if (childResult != null) {
+				return childResult;
+			}
+		}
+		return null;
 	}
 }
