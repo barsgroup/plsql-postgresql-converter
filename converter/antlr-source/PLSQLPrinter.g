@@ -1049,14 +1049,10 @@ block
 // $<SQL PL/SQL Statements
 
 sql_statement
-    :    execute_immediate
-    ->   template() "not implemented: sql_statement"
-    |    data_manipulation_language_statements
-    ->   template() "not implemented: sql_statement"
-    |    cursor_manipulation_statements
-    ->   template() "not implemented: sql_statement"
-    |    transaction_control_statements
-    ->   template() "not implemented: sql_statement"
+    :    execute_immediate -> { $execute_immediate.st }
+    |    data_manipulation_language_statements -> { $data_manipulation_language_statements.st }
+    |    cursor_manipulation_statements -> { $cursor_manipulation_statements.st }
+    |    transaction_control_statements -> { $transaction_control_statements.st }
     ;
 
 execute_immediate
@@ -1080,23 +1076,21 @@ dynamic_returning_clause
 // $<DML SQL PL/SQL Statements
 
 data_manipulation_language_statements
-    :    merge_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
-    |    lock_table_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
-    |    select_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
-    |     update_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
-    |     delete_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
-    |    insert_statement
-    ->   template() "not implemented: data_manipulation_language_statements"
+    :    merge_statement -> { $merge_statement.st }
+    |    lock_table_statement -> { $lock_table_statement.st }
+    |    select_statement -> { $select_statement.st }
+    |    update_statement -> { $update_statement.st }
+    |    delete_statement -> { $delete_statement.st }
+    |    insert_statement -> { $insert_statement.st }
     ;
 
 select_statement
-    :    ^(SELECT_STATEMENT subquery_factoring_clause? subquery for_update_clause* order_by_clause*)  
-    ->   template() "not implemented: select_statement"
+    :    ^(SELECT_STATEMENT subquery_factoring_clause? subquery order_by_clause? for_update_clause?)
+    ->   select_statement(
+            query_partitioning_clause={$subquery_factoring_clause.st},
+            subquery={$subquery.st},
+            order_by_clause={$order_by_clause.st},
+            for_update_clause={$for_update_clause.st})
     ;
 
 // $<Select - Specific Clauses
@@ -1111,38 +1105,57 @@ factoring_element
     ;
 
 subquery
-    :    ^(SUBQUERY subquery_basic_elements subquery_operation_part*)
-    ->   template() "not implemented: subquery"
+    :    ^(SUBQUERY subquery_basic_elements parts+=subquery_operation_part*)
+    ->   subquery(subquery_basic_elements={$subquery_basic_elements.st}, subquery_operation_parts={$parts})
     ;
 
 subquery_operation_part
-    :    ^((SQL92_RESERVED_UNION|SQL92_RESERVED_INTERSECT|PLSQL_RESERVED_MINUS) SQL92_RESERVED_ALL? subquery_basic_elements)
-    ->   template() "not implemented: subquery_operation_part"
+@init { String op = null; }
+    :    ^(
+            (
+              SQL92_RESERVED_UNION { op = "union"; }
+              |SQL92_RESERVED_INTERSECT { op = "intersect"; }
+              |PLSQL_RESERVED_MINUS { op = "minus"; }
+            )
+            SQL92_RESERVED_ALL? subquery_basic_elements
+          )
+    ->   subquery_operation_part(operator={op}, is_all={$SQL92_RESERVED_ALL != null}, subquery_basic_elements={$subquery_basic_elements.st})
     ;
 
 subquery_basic_elements
-    :    query_block
-    ->   template() "not implemented: subquery_basic_elements"
+    :    query_block -> { $query_block.st }
     |    subquery
-    ->   template() "not implemented: subquery_basic_elements"
+    ->   in_parens(val={$subquery.st})
     ;
 
 query_block
     :    ^(SQL92_RESERVED_SELECT 
             from_clause 
-            (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE)? SQL92_RESERVED_ALL? 
+            (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE|SQL92_RESERVED_ALL)? 
             (    ASTERISK
-            |    ^(SELECT_LIST selected_element+)
+            |    ^(SELECT_LIST selected+=selected_element+)
             )
             into_clause? where_clause? hierarchical_query_clause? 
             group_by_clause? model_clause?
         )
-    ->   template() "not implemented: query_block"
+    ->   query_block(
+           is_distinct={$SQL92_RESERVED_DISTINCT != null},
+           is_unique={$SQL92_RESERVED_UNIQUE != null},
+           is_all={$SQL92_RESERVED_ALL != null},
+           is_asterisk={$ASTERISK != null},
+           selected_elements={$selected},
+           into_clause={$into_clause.st},
+           from_clause={$from_clause.st},
+           where_clause={$where_clause.st},
+           hierarchical_query_clause={$hierarchical_query_clause.st},
+           group_by_clause={$group_by_clause.st},
+           model_clause={$model_clause.st}
+         )
     ;
 
 selected_element
     :    ^(SELECT_ITEM expression alias?)
-    ->   template() "not implemented: selected_element"
+    ->   selected_element(expression={$expression.st}, alias={$alias.st})
     ;
 
 from_clause
@@ -2098,7 +2111,7 @@ partition_extension_clause
 
 alias
     :    ^(ALIAS char_set_name? ID)
-    ->   template() "not implemented: alias"
+    ->   alias(name={$ID.text})
     ;
 
 where_clause

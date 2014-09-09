@@ -72,3 +72,67 @@ end loop
 loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
 <indexVar> in<if (isReverse)> reverse<endif> <lowerBound>..<upperBound>
 >>
+
+select_statement(query_partitioning_clause, subquery, order_by_clause, for_update_clause) ::= <<
+<if (query_partitioning_clause)><query_partitioning_clause><endif>
+<subquery><if (order_by_clause)>
+
+<order_by_clause>
+<endif>
+<if (for_update_clause)>
+
+<for_update_clause>
+<endif>
+>>
+
+subquery(subquery_basic_elements, subquery_operation_parts) ::= <<
+<subquery_basic_elements><if (subquery_operation_parts)>
+<subquery_operation_parts; separator="\n">
+<endif>
+>>
+
+subquery_operation_part(operator, is_all, subquery_basic_elements) ::= <<
+<operator><if (is_all)> all<endif>
+<subquery_basic_elements>
+>>
+
+in_parens(val) ::= "(<val>)"
+
+query_block(
+  is_distinct, is_unique, is_all, is_asterisk, selected_elements,
+  into_clause, from_clause, where_clause, hierarchical_query_clause, group_by_clause, model_clause
+) ::= <<
+select <if (is_distinct)>
+distinct 
+<elseif (is_unique)>
+unique
+<elseif (is_all)>
+all
+<endif>
+<if (is_asterisk)>
+*
+<else>
+<selected_elements; separator=",\n  ">
+<endif>
+<if (into_clause)>
+<into_clause>
+<endif>
+
+<from_clause><if (where_clause)>
+
+<where_clause>
+<endif><if (hierarchical_query_clause)>
+
+<hierarchical_query_clause>
+<endif><if (group_by_clause)>
+
+<group_by_clause>
+<endif><if (model_clause)>
+
+<model_clause>
+<endif>
+>>
+
+alias(name) ::= "as <name>"
+
+selected_element(expression, alias) ::= "<expression><alias>"
