@@ -215,7 +215,7 @@ public class ParserMain {
 				if (is_tree_walked) {
 					String compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree);
 					if (compareResult != null) {
-						System.out.printf("Print&Reparse failed: %s", compareResult);
+						System.out.printf("Print&Reparse failed: %s\n", compareResult);
 						reparseFailures.add(header);
 						reparseFailureBodies.add(part);
 					} else {

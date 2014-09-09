@@ -16,10 +16,16 @@ as
 >>
 
 parameter(
-  name, is_in, is_out, is_inout, is_nocopy, type
+  name, is_in, is_out, is_inout, is_nocopy, type, default_value_part
 ) ::= <<
-<name><if (is_in)> IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT<endif><if (is_nocopy)> NOCOPY<endif> <type>
+<name><if (is_in)>
+ IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT
+<endif><if (is_nocopy)>
+ NOCOPY
+<endif> <type><if (default_value_part)> <default_value_part><endif>
 >>
+
+default_value_part(expression) ::= "default <expression>"
 
 base_type_spec_precision(
   size1, size2, is_byte, is_char
@@ -204,3 +210,23 @@ order<if (is_siblings)> siblings<endif> by <elements; separator=", ">
 order_by_elements(expression, is_asc, is_desc, is_nulls_first, is_nulls_last) ::= <<
 <expression><if (is_asc)> asc<elseif (is_desc)> desc<endif><if (is_nulls_first)> nulls first<elseif (is_nulls_last)> nulls last<endif>
 >>
+
+create_package_spec(is_replace, name, invoker_rights_clause, items) ::= <<
+create<if (is_replace)> or replace<endif> package <name><if (invoker_rights_clause)>
+
+<invoker_rights_clause>
+<endif>
+
+is
+  <items; separator="\n\n">
+end <name>;
+>>
+
+dotted_name(ids) ::= <<
+<ids; separator=".">
+>>
+
+procedure_spec(name, arguments) ::= <<
+procedure <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif>;
+>>; 

@@ -96,41 +96,24 @@ serveroutput_declaration
     ;
 
 unit_statement
-    :    alter_function
-    ->   template() "not implemented: unit_statement"
-    |    alter_package
-    ->   template() "not implemented: unit_statement"
-    |    alter_procedure
-    ->   template() "not implemented: unit_statement"
-    |    alter_sequence
-    ->   template() "not implemented: unit_statement"
-    |    alter_trigger
-    ->   template() "not implemented: unit_statement"
-    |    alter_type
-    ->   template() "not implemented: unit_statement"
+    :    alter_function -> { $alter_function.st }
+    |    alter_package -> { $alter_package.st}
+    |    alter_procedure -> { $alter_procedure.st}
+    |    alter_sequence -> { $alter_sequence.st}
+    |    alter_trigger -> { $alter_trigger.st}
+    |    alter_type -> { $alter_type.st}
     |    create_function_body -> { $create_function_body.st; }
-    |    create_procedure_body
-    ->   template() "not implemented: unit_statement"
-    |    create_package
-    ->   template() "not implemented: unit_statement"
-    |    create_sequence
-    ->   template() "not implemented: unit_statement"
-    |    create_trigger
-    ->   template() "not implemented: unit_statement"
-    |    create_type
-    ->   template() "not implemented: unit_statement"
-    |    drop_function
-    ->   template() "not implemented: unit_statement"
-    |    drop_package
-    ->   template() "not implemented: unit_statement"
-    |    drop_procedure
-    ->   template() "not implemented: unit_statement"
-    |    drop_sequence
-    ->   template() "not implemented: unit_statement"
-    |    drop_trigger
-    ->   template() "not implemented: unit_statement"
-    |    drop_type
-    ->   template() "not implemented: unit_statement"
+    |    create_procedure_body -> { $create_procedure_body.st}
+    |    create_package -> { $create_package.st}
+    |    create_sequence -> { $create_sequence.st}
+    |    create_trigger -> { $create_trigger.st}
+    |    create_type -> { $create_type.st}
+    |    drop_function -> { $drop_function.st}
+    |    drop_package -> { $drop_package.st}
+    |    drop_procedure -> { $drop_procedure.st}
+    |    drop_sequence -> { $drop_sequence.st}
+    |    drop_trigger -> { $drop_trigger.st}
+    |    drop_type -> { $drop_type.st}
     ;
 
 // $<DDL -> SQL Statements for Stored PL/SQL Units
@@ -211,8 +194,10 @@ alter_package
     ;
 
 create_package
-    :    ^(CREATE_PACKAGE_SPEC REPLACE_VK? package_name invoker_rights_clause? package_obj_spec*) 
-    ->   template() "not implemented: create_package"
+    :    ^(CREATE_PACKAGE_SPEC REPLACE_VK? package_name invoker_rights_clause? items+=package_obj_spec*) 
+    ->   create_package_spec(
+           is_replace={$REPLACE_VK != null}, name={$package_name.st},
+           invoker_rights_clause={$invoker_rights_clause.st}, items={$items})
     |    ^(CREATE_PACKAGE_BODY REPLACE_VK? package_name package_obj_body* seq_of_statements?)
     ->   template() "not implemented: create_package"
     ;
@@ -220,31 +205,22 @@ create_package
 // $<Create Package - Specific Clauses
 
 package_obj_spec
-    :    variable_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     subtype_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     cursor_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     exception_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     record_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     table_declaration
-    ->   template() "not implemented: package_obj_spec"
-    |     procedure_spec
-    ->   template() "not implemented: package_obj_spec"
-    |     function_spec
-    ->   template() "not implemented: package_obj_spec"
-    |     pragma_declaration
-    ->   template() "not implemented: package_obj_spec"
+    :    variable_declaration -> { $variable_declaration.st}
+    |     subtype_declaration -> { $subtype_declaration.st}
+    |     cursor_declaration -> { $cursor_declaration.st}
+    |     exception_declaration -> { $exception_declaration.st}
+    |     record_declaration -> { $record_declaration.st}
+    |     table_declaration -> { $table_declaration.st}
+    |     procedure_spec -> { $procedure_spec.st}
+    |     function_spec -> { $function_spec.st}
+    |     pragma_declaration -> { $pragma_declaration.st}
     ;
 
 procedure_spec
-    :     ^(PROCEDURE_SPEC procedure_name ^(PARAMETERS parameter*)
+    :     ^(PROCEDURE_SPEC procedure_name ^(PARAMETERS arguments+=parameter*)
             (^(CALL_MODE call_spec))?
-    ) 
-    ->   template() "not implemented: procedure_spec"
+    )
+    ->   procedure_spec(name={$procedure_name.st}, arguments={$arguments})
     ;
 
 function_spec
@@ -751,14 +727,13 @@ c_parameters_clause
 parameter
     :    ^(PARAMETER parameter_name (SQL92_RESERVED_IN|OUT_VK|INOUT_VK)* type_spec? default_value_part?)
     ->   parameter(name={$parameter_name.st}, is_in={$SQL92_RESERVED_IN != null},
-           is_out={$OUT_VK != null}, is_inout={$INOUT_VK != null}, is_nocopy={false}, type={$type_spec.st})
-           // TODO: what to do with default_value_part?
-           // TODO: can type_spec really be null?
+           is_out={$OUT_VK != null}, is_inout={$INOUT_VK != null}, is_nocopy={false}, type={$type_spec.st},
+           default_value_part={$default_value_part.st})
     ;
 
 default_value_part
     :    ^(DEFAULT_VALUE expression)
-    ->   template() "not implemented: default_value_part"
+    ->   default_value_part(expression={$expression.st})
     ;
 
 // $>
@@ -2183,8 +2158,8 @@ routine_name
     ;
 
 package_name
-    :    ^(PACKAGE_NAME char_set_name? ID+)
-    ->   template() "not implemented: package_name"
+    :    ^(PACKAGE_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 implementation_type_name
@@ -2242,8 +2217,8 @@ function_name
     ;
 
 procedure_name
-    :    ^(PROCEDURE_NAME char_set_name? ID+)
-    ->   template() "not implemented: procedure_name"
+    :    ^(PROCEDURE_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 trigger_name
