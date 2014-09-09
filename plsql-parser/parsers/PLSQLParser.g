@@ -1098,13 +1098,19 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    :     (items+=statement (SEMICOLON|EOF)|items+=label_declaration)+
+    :     items+=seq_of_statements_item+
         -> ^(STATEMENTS $items+)
-    ;  
+    ;
 
-label_declaration
+seq_of_statements_item
+    :    labeled_statement (SEMICOLON|EOF) -> labeled_statement
+    |    statement (SEMICOLON|EOF) -> statement
+    ;
+    
+labeled_statement
     :    ltp1=LESS_THAN_OP LESS_THAN_OP label_name GREATER_THAN_OP GREATER_THAN_OP
-    ->    ^(LABEL_DECLARE[$ltp1] label_name)
+         statement
+         -> ^(LABEL_DECLARE[$ltp1] label_name statement)
     ;
 
 statement
