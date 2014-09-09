@@ -312,14 +312,14 @@ table_ref_aux
     ;
 
 join_clause
-    :    query_partition_clause?
+    :    qpc1=query_partition_clause?
         (cross_key|natural_key)? (inner_key|outer_join_type)? join_key
         table_ref_aux
-        query_partition_clause?
-    (    join_on_part
-    |    join_using_part
-    )*
-        -> ^(JOIN_DEF[$join_key.start] cross_key? natural_key? inner_key? outer_join_type? table_ref_aux query_partition_clause* join_on_part* join_using_part*)
+        qpc2=query_partition_clause?
+        (    join_on_part
+        |    join_using_part
+        )
+        -> ^(JOIN_DEF[$join_key.start] $qpc1? cross_key? natural_key? inner_key? outer_join_type? table_ref_aux $qpc2? join_on_part? join_using_part?)
     ;
 
 join_on_part
