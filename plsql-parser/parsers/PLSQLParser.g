@@ -306,8 +306,12 @@ create_package
 package_body
     :    body_key n=package_name (is_key | as_key)
         package_obj_body*
-        (begin_key seq_of_statements|end_key package_name?)
-        -> $n package_obj_body* seq_of_statements?
+        (begin_key
+          seq_of_statements
+          exception_clause?
+        )?
+        end_key package_name?
+        -> $n package_obj_body* seq_of_statements? exception_clause?
     ;
 
 package_spec
@@ -353,7 +357,9 @@ function_spec
 package_obj_body
 options{
 backtrack=true;
-}    :     variable_declaration 
+}    :     procedure_spec
+    |     function_spec
+    |     variable_declaration 
     |     subtype_declaration 
     |     cursor_declaration 
     |     exception_declaration 
