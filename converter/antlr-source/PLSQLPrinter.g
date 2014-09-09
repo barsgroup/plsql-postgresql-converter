@@ -2195,8 +2195,8 @@ label_name
     ;
 
 type_name
-    :    ^(TYPE_NAME ID+)
-    ->   template() "not implemented: type_name"
+    :    ^(TYPE_NAME ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 sequence_name
@@ -2286,10 +2286,12 @@ argument
 
 type_spec
     :     ^(CUSTOM_TYPE type_name REF_VK? (PERCENT_ROWTYPE_VK|PERCENT_TYPE_VK)?)
-    ->   template() "not implemented: type_spec"
+    ->   typespec_custom(
+            name={$type_name.st}, is_ref={$REF_VK != null}, is_percent_rowtype={$PERCENT_ROWTYPE_VK != null},
+            is_percent_type={$PERCENT_TYPE_VK != null})
     |    native_datatype_spec -> { $native_datatype_spec.st; }
     |    ^(INTERVAL_DATATYPE (YEAR_VK|DAY_VK) (MONTH_VK|SECOND_VK) expression*)
-    ->   template() "not implemented: type_spec"
+    ->   template() "not implemented: type_spec[INTERVAL_DATATYPE]"
     ;
 
 type_precision

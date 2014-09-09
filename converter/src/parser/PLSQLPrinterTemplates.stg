@@ -19,7 +19,7 @@ parameter(
   name, is_in, is_out, is_inout, is_nocopy, type, default_value_part
 ) ::= <<
 <name><if (is_in)>
- IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT
+ IN<endif><if (is_out)> OUT<endif><if (is_inout)> IN OUT
 <endif><if (is_nocopy)>
  NOCOPY
 <endif> <type><if (default_value_part)> <default_value_part><endif>
@@ -235,4 +235,8 @@ function_spec(name, arguments, return_type, is_pipelined, is_result_cache, is_de
 function <name><if (arguments)>(
   <arguments; separator=",\n">)<endif>
 return <return_type><if (is_pipelined)> pipelined<endif><if (is_result_cache)> result_cache<endif><if (is_deterministic)> deterministic<endif>;
+>>
+
+typespec_custom(name, is_ref, is_percent_rowtype, is_percent_type) ::= <<
+<if (is_ref)>ref <endif><name><if (is_percent_rowtype)>%rowtype<elseif (is_percent_type)>%type<endif>
 >>
