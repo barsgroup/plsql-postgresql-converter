@@ -21,8 +21,6 @@ parameter(
 <name> <if (is_in)> IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT<endif> <if (is_nocopy)> NOCOPY<endif> <type>
 >>
 
-parameter_name(name) ::= "<name>"
-
 base_type_spec_precision(
   size1, size2, is_byte, is_char
 ) ::= <<
@@ -50,4 +48,16 @@ end<if (bodyLabel)> <bodyLabel><endif>
 seq_of_statements(statements) ::= <<
 <statements:{statement|<statement>;
 }>
+>>
+
+label_declaration(name) ::= "\<\<<name>\>\>"
+
+return_statement(expression) ::= "return<if (expression)> <expression><endif>"
+
+general_element(parts) ::= "<parts>"
+
+function_argument(valueExpr, name) ::= "<if (name)><name> => <endif><valueExpr>"
+
+function_arguments(arguments) ::= <<
+(<arguments; separator=", ">)
 >>

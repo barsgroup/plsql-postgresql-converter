@@ -922,8 +922,7 @@ statement
     ;
 
 label_declaration
-    :    ^(LABEL_DECLARE label_name)
-    ->   template() "not implemented: label_declaration"
+    :    ^(LABEL_DECLARE label_name) -> label_declaration(name={$label_name.st})
     ;
 
 assignment_statement
@@ -1018,8 +1017,7 @@ raise_statement
     ;
 
 return_statement
-    :    ^(RETURN_VK expression?)
-    ->   template() "not implemented: return_statement"
+    :    ^(RETURN_VK expression?) -> return_statement(expression={$expression.st})
     ;
 
 body
@@ -2169,7 +2167,7 @@ implementation_type_name
 
 parameter_name
     :    ^(PARAMETER_NAME char_set_name? ID)
-    ->   parameter_name(name={$ID.text})
+    ->   string_literal(val={$ID.text})
     ;
 
 reference_model_name
@@ -2278,13 +2276,13 @@ char_set_name
 // $<Common PL/SQL Specs
 
 function_argument
-    :    ^(ARGUMENTS argument*)
-    ->   template() "not implemented: function_argument"
+    :    ^(ARGUMENTS args+=argument*)
+    ->   function_arguments(arguments={$args})
     ;
 
 argument
     :    ^(ARGUMENT expression parameter_name?)
-    ->   template() "not implemented: argument"
+    ->   function_argument(valueExpr={$expression.st}, name={$parameter_name.st})
     ;
 
 type_spec
@@ -2372,13 +2370,25 @@ native_datatype_spec
     ;
 
 general_element
+@init {
+    List<StringTemplate> parts = new ArrayList<StringTemplate>();
+}
     :    ^(CASCATED_ELEMENT
             (
-              ^(ANY_ELEMENT ID)
-              | function_argument
+              general_element_id {
+                if (parts.size() > 0) {
+                   parts.add(%string_literal(val={"."}));
+                }
+                parts.add($general_element_id.st);
+              }
+              | function_argument { parts.add($function_argument.st); }
             )+
           )
-    ->   template() "not implemented: general_element"
+    ->   general_element(parts={parts})
+    ;
+ 
+general_element_id
+    : ^(ANY_ELEMENT ID) -> string_literal(val={$ID.text})
     ;
 
 // $>
