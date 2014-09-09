@@ -1169,8 +1169,11 @@ table_ref
     ;
 
 table_ref_aux
-    :    ^(TABLE_REF_ELEMENT alias? dml_table_expression_clause ONLY_VK? pivot_clause? unpivot_clause? flashback_query_clause*)
-    ->   template() "not implemented: table_ref_aux"
+    :    ^(TABLE_REF_ELEMENT alias? dml_table_expression_clause (ONLY_VK|pivot_clause|unpivot_clause)? flashback_query_clause*)
+    ->   table_ref_aux(
+           is_only={$ONLY_VK != null}, dml_table_expression_clause={$dml_table_expression_clause.st},
+           pivot_clause={$pivot_clause.st}, unpivot_clause={$unpivot_clause.st},
+           flashback_query_clause={$flashback_query_clause.st}, alias={$alias.st})
     ;
 
 join_clause
@@ -1590,14 +1593,12 @@ dml_table_expression_clause
         (    ^(COLLECTION_MODE expression PLUS_SIGN?)
         |    ^(SELECT_MODE select_statement subquery_restriction_clause?)
         |    ^(DIRECT_MODE tableview_name sample_clause?)
-        |    table_ref
         |    general_element
         |    standard_function
         )
         )
-    ->   template() "not implemented: dml_table_expression_clause"
-        |    table_ref
-    ->   template() "not implemented: dml_table_expression_clause"
+    ->   template() "not implemented: dml_table_expression_clause[TABLE_EXPRESSION]"
+        |    table_ref -> in_parens(val={$table_ref.st})
     ;
 
 subquery_restriction_clause

@@ -173,3 +173,11 @@ join <table_ref_aux> <if (qpc2)>
 <endif>
 <if (join_on_part)><join_on_part><else><join_using_part><endif>
 >>
+
+table_ref_aux(is_only, dml_table_expression_clause, pivot_clause, unpivot_clause, flashback_query_clause, alias) ::= <<
+<if (is_only)>
+only(<dml_table_expression_clause>)
+<else>
+<dml_table_expression_clause><if (pivot_clause)> <pivot_clause><elseif (unpivot_clause)> <unpivot_clause><endif>
+<endif><if (flashback_query_clause)> <flashback_query_clause><endif><if (alias)> <alias><endif>
+>>
