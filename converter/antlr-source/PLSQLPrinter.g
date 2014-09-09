@@ -1712,21 +1712,27 @@ expression_list
     ;
 
 expression
-    :    ^(LOGIC_EXPR expression_element)
-    ->   template() "not implemented: expression"
-    |    ^(EXPR expression_element)
-    ->   template() "not implemented: expression"
+    :    ^(LOGIC_EXPR expression_element) -> {$expression_element.st}
+    |    ^(EXPR expression_element)  -> {$expression_element.st}
     ;
 
 expression_element
-    :    ^(SQL92_RESERVED_OR expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(SQL92_RESERVED_AND expression_element expression_element)
-    ->   template() "not implemented: expression_element"
+@init { String op = null; }
+    :    ^(
+          (
+            SQL92_RESERVED_OR { op = "or"; }
+            | SQL92_RESERVED_AND { op = "and"; }
+            | EQUALS_OP { op = "="; }
+            | NOT_EQUAL_OP { op = "<>"; }
+            | LESS_THAN_OP { op = "<"; }
+            | GREATER_THAN_OP { op = ">"; }
+            | LESS_THAN_OR_EQUALS_OP { op = "<="; }
+            | GREATER_THAN_OR_EQUALS_OP { op = ">="; }
+          )
+          arg1=expression_element arg2=expression_element
+         )
+    ->   expression_element_generic_binop(op={op}, arg1={$arg1.st}, arg2={$arg2.st})
     |    ^(SQL92_RESERVED_NOT expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^((EQUALS_OP|NOT_EQUAL_OP|LESS_THAN_OP|GREATER_THAN_OP|LESS_THAN_OR_EQUALS_OP|GREATER_THAN_OR_EQUALS_OP) expression_element expression_element)
-
     ->   template() "not implemented: expression_element"
     |    ^(IS_NOT_NULL expression_element)
     ->   template() "not implemented: expression_element"
@@ -1821,12 +1827,9 @@ expression_element
 
     |    case_statement
     ->   template() "not implemented: expression_element"
-    |    constant
-    ->   template() "not implemented: expression_element"
-    |    general_element
-    ->   template() "not implemented: expression_element"
-    |    subquery
-    ->   template() "not implemented: expression_element"
+    |    constant -> { $constant.st }
+    |    general_element -> { $general_element.st }
+    |    subquery -> { $subquery.st } // TODO: need parens?
     ;
 
 in_elements

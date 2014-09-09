@@ -61,3 +61,5 @@ function_argument(valueExpr, name) ::= "<if (name)><name> => <endif><valueExpr>"
 function_arguments(arguments) ::= <<
 (<arguments; separator=", ">)
 >>
+
+expression_element_generic_binop(op, arg1, arg2) ::= "(<arg1>) <op> (<arg2>)"
