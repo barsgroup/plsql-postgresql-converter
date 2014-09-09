@@ -1159,13 +1159,13 @@ selected_element
     ;
 
 from_clause
-    :    ^(SQL92_RESERVED_FROM table_ref+)
-    ->   template() "not implemented: from_clause"
+    :    ^(SQL92_RESERVED_FROM refs+=table_ref+)
+    ->   from_clause(table_refs={$refs})
     ;
 
 table_ref
-    :    ^(TABLE_REF table_ref_aux join_clause*)
-    ->   template() "not implemented: table_ref"
+    :    ^(TABLE_REF table_ref_aux joins+=join_clause*)
+    ->   table_ref(table_ref_aux={$table_ref_aux.st}, join_clauses={$joins})
     ;
 
 table_ref_aux
@@ -1174,8 +1174,15 @@ table_ref_aux
     ;
 
 join_clause
-    :    ^(JOIN_DEF (CROSS_VK|NATURAL_VK)? (INNER_VK|FULL_VK|LEFT_VK|RIGHT_VK)? table_ref_aux query_partition_clause* (join_on_part|join_using_part)?) 
-    ->   template() "not implemented: join_clause"
+    :    ^(JOIN_DEF
+            qpc1=query_partition_clause?
+            (CROSS_VK|NATURAL_VK)? (INNER_VK|FULL_VK|LEFT_VK|RIGHT_VK)? table_ref_aux
+            qpc2=query_partition_clause?
+            (join_on_part|join_using_part)?)
+    ->   join_clause(
+            qpc1={$qpc1.st}, is_cross={$CROSS_VK != null}, is_natural={$NATURAL_VK != null}, is_inner={$INNER_VK != null},
+            is_left={$LEFT_VK != null}, is_right={$RIGHT_VK != null}, is_full={$FULL_VK != null}, table_ref_aux={$table_ref_aux.st},
+            qpc2={$qpc2.st}, join_on_part={$join_on_part.st}, join_using_part={$join_using_part.st})
     ;
 
 join_on_part

@@ -136,3 +136,40 @@ all
 alias(name) ::= "as <name>"
 
 selected_element(expression, alias) ::= "<expression><alias>"
+
+from_clause(table_refs) ::= <<
+from <table_refs; separator=",\n  ">
+>>
+
+table_ref(table_ref_aux, join_clauses) ::= <<
+<table_ref_aux><if (join_clauses)>
+
+<join_clauses; separator="\n">
+<endif>
+>>
+
+join_clause(qpc1, is_cross, is_natural, is_inner, is_left, is_right, is_full, table_ref_aux, qpc2, join_on_part, join_using_part) ::= <<
+<if (qpc1)>
+<qpc1>
+<endif>
+<if (is_cross)>
+cross
+<else>
+<if (is_natural)>
+natural
+<endif>
+<if (is_inner)>
+inner
+<elseif (is_left)>
+left
+<elseif (is_right)>
+right
+<elseif (is_full)>
+full
+<endif>
+<endif>
+join <table_ref_aux> <if (qpc2)>
+<qpc2>
+<endif>
+<if (join_on_part)><join_on_part><else><join_using_part><endif>
+>>
