@@ -6,7 +6,7 @@ create_function_body(
   is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, body
 ) ::= <<
-create <if (is_replace)>or replace<endif> function <name_parts; separator=".">
+create<if (is_replace)>or replace<endif> function <name_parts; separator=".">
 <if (arguments)>(<arguments; separator=",\n">)<endif>
 return <return_type>
 <add_clauses; separator=" ">
@@ -18,21 +18,21 @@ as
 parameter(
   name, is_in, is_out, is_inout, is_nocopy, type
 ) ::= <<
-<name> <if (is_in)> IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT<endif> <if (is_nocopy)> NOCOPY<endif> <type>
+<name><if (is_in)> IN<elseif (is_out)> OUT<elseif (is_inout)> IN OUT<endif><if (is_nocopy)> NOCOPY<endif> <type>
 >>
 
 base_type_spec_precision(
   size1, size2, is_byte, is_char
 ) ::= <<
-(<size1><if (is_byte)>byte<elseif (is_char)>char<endif><if (size2)>, <size2><endif>)
+(<size1><if (is_byte)> byte<elseif (is_char)> char<endif><if (size2)>, <size2><endif>)
 <endif>
 >>
 
 base_type_spec(
   baseName, precision, is_with_time_zone, is_time_zone_local
 ) ::= <<
-<baseName> <precision> <if (is_with_time_zone)>
-with <if (is_time_zone_local)>local<endif> time zone
+<baseName><precision><if (is_with_time_zone)>
+ with<if (is_time_zone_local)> local<endif> time zone
 <endif>
 >>
 
@@ -46,8 +46,7 @@ end<if (bodyLabel)> <bodyLabel><endif>
 >>
 
 seq_of_statements(statements) ::= <<
-<statements:{statement|<statement>;
-}>
+<statements:{statement|<statement>;}; separator="\n">
 >>
 
 label_declaration(name) ::= "\<\<<name>\>\>"
@@ -63,3 +62,13 @@ function_arguments(arguments) ::= <<
 >>
 
 expression_element_generic_binop(op, arg1, arg2) ::= "(<arg1>) <op> (<arg2>)"
+
+for_loop(loopDefinition, statements) ::= <<
+for <loopDefinition> loop
+  <statements>
+end loop
+>>
+
+loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
+<indexVar> in<if (isReverse)> reverse<endif> <lowerBound>..<upperBound>
+>>

@@ -966,23 +966,23 @@ else_part
     ;
 
 loop_statement
-    :    ^(WHILE_LOOP label_name* expression seq_of_statements)
-    ->   template() "not implemented: loop_statement"
-    |    ^(FOR_LOOP label_name* cursor_loop_param seq_of_statements)
-    ->   template() "not implemented: loop_statement"
-    |    ^(LOOP_VK label_name* seq_of_statements)
-    ->   template() "not implemented: loop_statement"
+    :    ^(WHILE_LOOP expression seq_of_statements)
+    ->   template() "not implemented: loop_statement[WHILE_LOOP]"
+    |    ^(FOR_LOOP cursor_loop_param seq_of_statements)
+    ->   for_loop(loopDefinition={$cursor_loop_param.st}, statements={$seq_of_statements.st})
+    |    ^(LOOP_VK seq_of_statements)
+    ->   template() "not implemented: loop_statement[LOOP_VK]"
     ;
 
 // $<Loop - Specific Clause
 
 cursor_loop_param
-    :    ^(INDEXED_FOR index_name REVERSE_VK? ^(SIMPLE_BOUND expression expression))
-    ->   template() "not implemented: cursor_loop_param"
+    :    ^(INDEXED_FOR index_name REVERSE_VK? ^(SIMPLE_BOUND b1=expression b2=expression))
+    ->   loopDefinition_bounds(indexVar={$index_name.st}, isReverse={$REVERSE_VK != null}, lowerBound={$b1.st}, upperBound={$b2.st})
     |    ^(CURSOR_BASED_FOR record_name cursor_name expression_list?)
-    ->   template() "not implemented: cursor_loop_param"
+    ->   template() "not implemented: cursor_loop_param[CURSOR_BASED_FOR]"
     |    ^(SELECT_BASED_FOR record_name select_statement)
-    ->   template() "not implemented: cursor_loop_param"
+    ->   template() "not implemented: cursor_loop_param[SELECT_BASED_FOR]"
     ;
 
 // $>
@@ -2235,8 +2235,7 @@ variable_name
     ;
 
 index_name
-    :    ^(INDEX_NAME char_set_name? ID)
-    ->   template() "not implemented: index_name"
+    :    ^(INDEX_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 cursor_name
