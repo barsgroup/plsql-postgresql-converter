@@ -108,7 +108,7 @@ unit_statement
     ->   template() "not implemented: unit_statement"
     |    alter_type
     ->   template() "not implemented: unit_statement"
-    |    create_function_body { $unit_statement.st = $create_function_body.st; }
+    |    create_function_body -> { $create_function_body.st; }
     |    create_procedure_body
     ->   template() "not implemented: unit_statement"
     |    create_package
@@ -916,7 +916,7 @@ statement
     |    pipe_row_statement -> { $pipe_row_statement.st }
     |    case_statement -> { $case_statement.st }
     |    sql_statement -> { $sql_statement.st }
-    |    function_call -> { $function_call.st }
+    |    general_element -> { $general_element.st }
     |    body -> { $body.st }
     |    block -> { $block.st }
     ;
@@ -1020,11 +1020,6 @@ raise_statement
 return_statement
     :    ^(RETURN_VK expression?)
     ->   template() "not implemented: return_statement"
-    ;
-
-function_call
-    :    ^(ROUTINE_CALL general_element)
-    ->   template() "not implemented: function_call"
     ;
 
 body
@@ -2377,16 +2372,12 @@ native_datatype_spec
     ;
 
 general_element
-    :    ^(CASCATED_ELEMENT general_element+)
-    ->   template() "not implemented: general_element"
-    |    ^(HOSTED_VARIABLE_ROUTINE_CALL routine_name function_argument)
-    ->   template() "not implemented: general_element"
-    |    ^(HOSTED_VARIABLE char_set_name? ID+)
-    ->   template() "not implemented: general_element"
-    |    ^(ROUTINE_CALL routine_name function_argument+)
-    // TODO: исправить костыль: не нужно лишних ROUTINE_CALL и прочих, а дополнить general_element
-    ->   template() "not implemented: general_element"
-    |    ^(ANY_ELEMENT char_set_name? ID+)
+    :    ^(CASCATED_ELEMENT
+            (
+              ^(ANY_ELEMENT ID)
+              | function_argument
+            )+
+          )
     ->   template() "not implemented: general_element"
     ;
 

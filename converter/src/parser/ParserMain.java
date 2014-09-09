@@ -45,27 +45,15 @@ import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
 	public static void main(String[] args) throws Exception {
-		if (true) {
-			parseByParts();
+		boolean isParseAllPackges = "--all-packages".equals(args[0]);
+		if (isParseAllPackges) {
+			String path = args[1];
+			parseByParts(path);
 			return;
 		}
 		
-		ANTLRStringStream input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/ora2pg/wb/easy.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/ora2pg/wb/medm.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/ora2pg/wb/hard.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/ora2pg/wb/tables.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/types.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-2.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-excerpt-3.sql");
-		input = new ANTLRFileStream("failure20.txt");
-		//input = new ANTLRFileStream("parsetrees/1353_D_PKG_BROKER_input.txt");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql");
-		//input = new ANTLRFileStream("/home/dvk/bars/misc/2014.09.03/package-broker.sql");
-		//input = new ANTLRStringStream("c%ROWCOUNT");
-		//input = new ANTLRStringStream("f(1) := 1;");
-		//input = new ANTLRStringStream("paARR.Delete");
-		//input = new ANTLRStringStream("CREATE OR RePLaCE TYPE \"DEV\".\"DPI_CL_REP_PRESCS\" as table of DPI_TP_REP_PRESCS;");
+		String path = args[0];
+		ANTLRStringStream input = new ANTLRFileStream(path);
 		PLSQLLexer l = new PLSQLLexer(input);
 		CommonTokenStream cts = new CommonTokenStream(l);
 		
@@ -86,22 +74,6 @@ public class ParserMain {
 			return;
 		}
 		PLSQLParser p = new PLSQLParser(cts);
-		//expression_return r = p.expression();
-		//general_element_return r = p.general_element();
-		//create_package_return r = p.create_package();
-		//seq_of_statements_return r = p.seq_of_statements();
-		//statement_return r = p.statement();
-		//body_return r = p.body();
-		//sql_statement_return r = p.sql_statement();
-		//loop_statement_return r = p.loop_statement();
-		//standard_function_return r = p.standard_function();
-		//pipe_row_statement_return r = p.pipe_row_statement();
-		//create_type_return r = p.create_type();
-		//create_procedure_body_return r = p.create_procedure_body();
-		//query_block_return r = p.query_block();
-		//sql_script_return r = p.sql_script();
-		//Object tree = p.pragma_declaration().getTree();
-		//Object tree = p.create_procedure_body().getTree();
 		Object tree = p.sql_script().getTree();
 	
 		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
@@ -134,13 +106,13 @@ public class ParserMain {
 		String printed = printer.sql_script().st.toString();
 
 		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
-		try (PrintStream out = new PrintStream(new FileOutputStream("output_printed.txt"))) {
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed.txt"))) {
 		    out.print(printed);
 		}
 	}
 
-	private static void parseByParts() throws Exception {
-		byte[] contentBytes = Files.readAllBytes(Paths.get("/home/dvk/bars/misc/2014.09.03/packages-all-mod1.sql"));
+	private static void parseByParts(String path) throws Exception {
+		byte[] contentBytes = Files.readAllBytes(Paths.get(path));
 		String contentString = new String(contentBytes, Charset.forName("UTF-8"));
 		List<String> parts = splitContent(contentString);
 		List<String> parseFailures = new ArrayList<String>();
@@ -216,15 +188,15 @@ public class ParserMain {
 				name = "unguessed";
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_input.txt", successes.size() - 1, name)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_input.txt", successes.size() - 1, name)))) {
 			    out.print(part);
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_%s.txt", successes.size() - 1, name, failure ? "failure" : "success")))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_%s.txt", successes.size() - 1, name, failure ? "failure" : "success")))) {
 			    out.print(str);
 			}
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("parsetrees/%d_%s_printed.txt", successes.size() - 1, name)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/parsetrees/%d_%s_printed.txt", successes.size() - 1, name)))) {
 			    out.print(printedTree);
 			}
 		}
@@ -237,24 +209,24 @@ public class ParserMain {
 		for (int i = 0; i < parseFailures.size(); ++i) {
 			System.out.printf("%d %s\n", idx, parseFailures.get(i));
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("failure%d.txt", idx)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/failure%d.txt", idx)))) {
 			    out.print(parseFailureBodies.get(i));
 			}
 			++idx;
 		}
-		try (PrintStream out = new PrintStream(new FileOutputStream("token_stats.txt"))) {
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/token_stats.txt"))) {
 			printTokenStats(ctr.getOccurences(), out);
 		}
 		System.out.println("Print failures:");
 		for (int i = 0; i < printFailures.size(); ++i) {
 			System.out.printf("%d %s\n", idx, printFailures.get(i));
 
-			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("failure%d.txt", idx)))) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(String.format("workdir/failure%d.txt", idx)))) {
 			    out.print(printFailureBodies.get(i));
 			}
 			++idx;
 		}
-		try (PrintStream out = new PrintStream(new FileOutputStream("token_stats.txt"))) {
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/token_stats.txt"))) {
 			printTokenStats(ctr.getOccurences(), out);
 		}
 	}
@@ -338,18 +310,14 @@ public class ParserMain {
 	}
 	
 	private static String prettyPrintNodeTag(Tree tree) {
-		if (false) {
-			return tree.getText();
+		int ttype = tree.getType();
+		String tokenName = ttype >= 0 && ttype < tokenNames.length ? tokenNames[ttype] : "";
+		String text = tree.getText();
+		if (tokenName.equals(text)) {
+			return tokenName;
 		} else {
-			int ttype = tree.getType();
-			String tokenName = ttype >= 0 && ttype < tokenNames.length ? tokenNames[ttype] : "";
-			String text = tree.getText();
-			if (tokenName.equals(text)) {
-				return tokenName;
-			} else {
-				//int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
-				return String.format("%s[%s]", tokenName, text);
-			}
+			//int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
+			return String.format("%s[%s]", tokenName, text);
 		}
 	}
 
