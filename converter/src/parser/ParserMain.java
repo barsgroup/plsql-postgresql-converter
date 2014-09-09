@@ -53,30 +53,9 @@ public class ParserMain {
 		}
 		
 		String path = args[0];
-		ANTLRStringStream input = new ANTLRFileStream(path);
-		PLSQLLexer l = new PLSQLLexer(input);
-		CommonTokenStream cts = new CommonTokenStream(l);
-		
-		if (false)
-		{
-			cts.fill();
-			List<? extends Token> tokens = cts.getTokens();
-			PLSQLParser p = new PLSQLParser(cts);
-			String[] tokenNames = p.getTokenNames();
-			for (Token t: tokens) {
-				int type = t.getType();
-				if (type != Token.EOF && t.getChannel() != Token.HIDDEN_CHANNEL) {
-					String s = tokenNames[type];
-					String tokenText = t.getText();
-					System.out.printf("%s '%s' %d\n", s, tokenText, t.getChannel());
-				}
-			}
-			return;
-		}
-		PLSQLParser p = new PLSQLParser(cts);
-		Object tree = p.sql_script().getTree();
-	
-		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
+		String inputContent = new String(Files.readAllBytes(Paths.get(path)), Charset.forName("UTF-8"));
+		ParseResult parseResult = parseTreeFromString(inputContent, false);
+		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		String str;
 		str = (theTree).toStringTree();
 		str = prettyPrint(theTree);
@@ -97,18 +76,73 @@ public class ParserMain {
 		//printer.visitNode(theTree);
 		//System.out.println(sb);
 		
-		PLSQLPrinter printer = new PLSQLPrinter(new CommonTreeNodeStream(theTree));
+		PrintResult printResult = printTreeToString(theTree);
+		String printed = printResult.text;
+
+		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed.txt"))) {
+		    out.print(printed);
+		}
+		
+		//String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent);
+	}
+	
+	static class PrintResult {
+		public List<RecognitionException> printErrors;
+		public String text;
+	}
+
+	private static PrintResult printTreeToString(org.antlr.runtime.tree.Tree theTree)
+			throws IOException, RecognitionException {
+		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
 		
 		try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/PLSQLPrinterTemplates.stg")) {
 			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 			printer.setTemplateLib(templateGroup);
 		}
 		String printed = printer.sql_script().st.toString();
+		PrintResult result = new PrintResult();
+		result.printErrors = printer.errors;
+		result.text = printed;
+		return result;
+	}
+	
+	static class ParseResult {
+		public List<RecognitionException> lexerErrors;
+		public List<RecognitionException> parserErrors;
+		public Tree tree;
+	}
 
-		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed.txt"))) {
-		    out.print(printed);
+	private static ParseResult parseTreeFromString(String inputContent, boolean printTokens) throws RecognitionException {
+		ANTLRStringStream input = new ANTLRStringStream(inputContent);
+		DerivedSqlLexer l = new DerivedSqlLexer(input);
+		CommonTokenStream cts = new CommonTokenStream(l);
+		
+		if (printTokens)
+		{
+			cts.fill();
+			List<? extends Token> tokens = cts.getTokens();
+			DerivedSqlParser p = new DerivedSqlParser(cts);
+			String[] tokenNames = p.getTokenNames();
+			for (Token t: tokens) {
+				int type = t.getType();
+				if (type != Token.EOF && t.getChannel() != Token.HIDDEN_CHANNEL) {
+					String s = tokenNames[type];
+					String tokenText = t.getText();
+					System.out.printf("%s '%s' %d\n", s, tokenText, t.getChannel());
+				}
+			}
+			System.exit(0);
 		}
+		DerivedSqlParser p = new DerivedSqlParser(cts);
+		Object tree = p.sql_script().getTree();
+	
+		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
+		ParseResult result = new ParseResult();
+		result.tree = theTree;
+		result.lexerErrors = l.errors;
+		result.parserErrors = p.errors;
+		return result;
 	}
 
 	private static void parseByParts(String path) throws Exception {
@@ -132,15 +166,11 @@ public class ParserMain {
 			System.out.print(header);
 
 			long ms_start_1 = System.currentTimeMillis();
-			ANTLRStringStream input = new ANTLRStringStream(part);
-			DerivedSqlLexer l = new DerivedSqlLexer(input);
-			CommonTokenStream cts = new CommonTokenStream(l);
-			DerivedSqlParser p = new DerivedSqlParser(cts);
-			sql_script_return r = p.sql_script();
+			ParseResult parseResult = parseTreeFromString(part, false);
 			String printedTree = "";
 			long ms_end_1 = System.currentTimeMillis();
 			System.out.printf(" %f s\n", (ms_end_1 - ms_start_1) / 1000.0);
-			boolean failure = p.errors.size() > 0 || l.errors.size() > 0;
+			boolean failure = parseResult.lexerErrors.size() > 0 || parseResult.parserErrors.size() > 0;
 			if (failure) {
 				System.out.println("PARSE FAIL");
 				parseFailures.add(header);
@@ -150,11 +180,11 @@ public class ParserMain {
 					System.out.println(p.getErrorHeader(ex) + ":" + p.getErrorMessage(ex, new String[0]));
 				}*/
 			} else {
-				ctr.addTree((Tree)r.getTree());
+				ctr.addTree(parseResult.tree);
 				
 				boolean is_tree_walked;
 				try {
-					DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(r.getTree()));
+					DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(parseResult.tree));
 					try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/PLSQLPrinterTemplates.stg")) {
 						StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 						printer.setTemplateLib(templateGroup);
@@ -179,7 +209,7 @@ public class ParserMain {
 				}
 			}
 			
-			org.antlr.runtime.tree.Tree tree = (org.antlr.runtime.tree.Tree)r.getTree();
+			org.antlr.runtime.tree.Tree tree = parseResult.tree;
 			String str;
 			str = prettyPrint(tree);
 			
