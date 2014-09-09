@@ -211,10 +211,11 @@ explain_statement
     ;
 
 select_statement
-    :    subquery_factoring_clause?
+    :   subquery_factoring_clause?
         subquery
-        (for_update_clause|(order_key siblings_key? by_key)=> order_by_clause)*
-        -> ^(SELECT_STATEMENT subquery_factoring_clause? subquery for_update_clause* order_by_clause*)  
+        order_by_clause?
+        for_update_clause?
+        -> ^(SELECT_STATEMENT subquery_factoring_clause? subquery order_by_clause? for_update_clause?)  
     ;
 
 // $<Select - Specific Clauses
