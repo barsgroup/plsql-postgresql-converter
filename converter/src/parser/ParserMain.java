@@ -5,27 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
-import javax.management.RuntimeErrorException;
-
-import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.BufferedTokenStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
@@ -35,25 +27,19 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
-import br.com.porcelli.parser.plsql.PLSQLLexer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
-import br.com.porcelli.parser.plsql.PLSQLParser.sql_script_return;
-import br.com.porcelli.parser.plsql.PLSQLParser_PLSQL_DMLParser.*;
-import br.com.porcelli.parser.plsql.PLSQLParser_PLSQLCommons.*;
-import br.com.porcelli.parser.plsql.PLSQLParser_PLSQLKeys.new_key_return;
-import br.com.porcelli.parser.plsql.PLSQLParser.*;
 
 public class ParserMain {
+	
+	
 	public static void main(String[] args) throws Exception {
-		boolean isParseAllPackges = "--all-packages".equals(args[0]);
-		if (isParseAllPackges) {
-			String path = args[1];
-			parseByParts(path);
+		CliOptions options = parseCliOptions(args); 
+		if (options.allPackages) {
+			parseByParts(options.path, options.validateReparse, options.limitAllPackages);
 			return;
 		}
 		
-		String path = args[0];
-		String inputContent = new String(Files.readAllBytes(Paths.get(path)), Charset.forName("UTF-8"));
+		String inputContent = new String(Files.readAllBytes(Paths.get(options.path)), Charset.forName("UTF-8"));
 		ParseResult parseResult = parseTreeFromString(inputContent, false);
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		String str;
@@ -91,6 +77,30 @@ public class ParserMain {
 		} else {
 			System.out.println("Tree matches reparsed tree");
 		}
+	}
+	
+	static class CliOptions {
+		boolean allPackages;
+		boolean validateReparse;
+		Integer limitAllPackages;
+		String path;
+	}
+	
+	private static CliOptions parseCliOptions(String[] args) {
+		CliOptions result = new CliOptions();
+		int i = 0;
+		while (i < args.length) {
+			String arg = args[i];
+			++i;
+			switch (arg) {
+			case "--all-packages": result.allPackages = true; break;
+			case "--validate-reparse": result.validateReparse = true; break;
+			case "--no-validate-reparse": result.validateReparse = false; break;
+			case "--limit-all-packages": result.limitAllPackages = Integer.valueOf(args[i]); ++i; break;
+			default: result.path = arg;
+			}
+		}
+		return result;
 	}
 
 	static class PrintResult {
@@ -151,7 +161,7 @@ public class ParserMain {
 		return result;
 	}
 
-	private static void parseByParts(String path) throws Exception {
+	private static void parseByParts(String path, boolean validateReparse, Integer limit) throws Exception {
 		byte[] contentBytes = Files.readAllBytes(Paths.get(path));
 		String contentString = new String(contentBytes, Charset.forName("UTF-8"));
 		List<String> parts = splitContent(contentString);
@@ -167,7 +177,7 @@ public class ParserMain {
 		//int times = 0;
 		int partIdx = 0;
 		for (String part : parts) {
-			if (partIdx > 10) {
+			if (limit != null && partIdx >= limit) {
 				break;
 			}
 			//if (times > 100) {
@@ -213,7 +223,10 @@ public class ParserMain {
 					ex.printStackTrace();
 				}
 				if (is_tree_walked) {
-					String compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree);
+					String compareResult = null;
+					if (validateReparse) {
+						compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree);
+					}
 					if (compareResult != null) {
 						System.out.printf("Print&Reparse failed: %s\n", compareResult);
 						reparseFailures.add(header);

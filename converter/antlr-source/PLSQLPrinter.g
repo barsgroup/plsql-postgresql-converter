@@ -224,14 +224,12 @@ procedure_spec
     ;
 
 function_spec
-    :    ^(FUNCTION_SPEC function_name (type_spec|SELF_VK) ^(PARAMETERS parameter*)
-            invoker_rights_clause* parallel_enable_clause* result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
-            (    ^(CALL_MODE call_spec)
-            |    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
-            |    ^(EXTERNAL_VK expression)
-            )?
+    :    ^(FUNCTION_SPEC function_name type_spec ^(PARAMETERS arguments+=parameter*)
+            PIPELINED_VK? RESULT_CACHE_VK? DETERMINISTIC_VK?
         )
-    ->   template() "not implemented: function_spec"
+    ->   function_spec(
+           name={$function_name.st}, arguments={$arguments}, return_type={$type_spec.st}, is_pipelined={$PIPELINED_VK != null},
+           is_result_cache={$RESULT_CACHE_VK != null}, is_deterministic={$DETERMINISTIC_VK != null})
     ;
 
 package_obj_body
@@ -2163,8 +2161,8 @@ package_name
     ;
 
 implementation_type_name
-    :    ^(IMPLEMENTATION_TYPE_NAME char_set_name? ID+)
-    ->   template() "not implemented: implementation_type_name"
+    :    ^(IMPLEMENTATION_TYPE_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 parameter_name
@@ -2207,13 +2205,13 @@ sequence_name
     ;
 
 exception_name
-    :    ^(EXCEPTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: exception_name"
+    :    ^(EXCEPTION_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 function_name
-    :    ^(FUNCTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: function_name"
+    :    ^(FUNCTION_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 procedure_name
@@ -2222,15 +2220,15 @@ procedure_name
     ;
 
 trigger_name
-    :    ^(TRIGGER_NAME char_set_name? ID+)
-    ->   template() "not implemented: trigger_name"
+    :    ^(TRIGGER_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 variable_name
-    :    ^(HOSTED_VARIABLE_NAME char_set_name? ID+)
-    ->   template() "not implemented: variable_name"
-    |    ^(VARIABLE_NAME char_set_name? ID+)
-    ->   template() "not implemented: variable_name"
+    :    ^(HOSTED_VARIABLE_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
+    |    ^(VARIABLE_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 index_name
@@ -2248,8 +2246,8 @@ record_name
     ;
 
 collection_name
-    :    ^(COLLECTION_NAME char_set_name? ID+)
-    ->   template() "not implemented: collection_name"
+    :    ^(COLLECTION_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 link_name
@@ -2258,8 +2256,8 @@ link_name
     ;
 
 column_name
-    :    ^(COLUMN_NAME char_set_name? ID+)
-    ->   template() "not implemented: column_name"
+    :    ^(COLUMN_NAME char_set_name? ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 tableview_name
@@ -2268,8 +2266,8 @@ tableview_name
     ;
 
 char_set_name
-    :    ^(CHAR_SET_NAME ID+)
-    ->   template() "not implemented: char_set_name"
+    :    ^(CHAR_SET_NAME ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 // $>

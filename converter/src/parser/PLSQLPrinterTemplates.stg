@@ -6,8 +6,8 @@ create_function_body(
   is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, body
 ) ::= <<
-create<if (is_replace)> or replace<endif> function <name_parts; separator=".">
-<if (arguments)>(<arguments; separator=",\n">)<endif>
+create<if (is_replace)> or replace<endif> function <name_parts; separator="."><if (arguments)>
+  (<arguments; separator=",\n">)<endif>
 return <return_type>
 <add_clauses; separator=" ">
 <if (is_pipelined)>pipelined<endif>
@@ -229,4 +229,10 @@ dotted_name(ids) ::= <<
 procedure_spec(name, arguments) ::= <<
 procedure <name><if (arguments)>(
   <arguments; separator=",\n">)<endif>;
->>; 
+>>
+
+function_spec(name, arguments, return_type, is_pipelined, is_result_cache, is_deterministic) ::= <<
+function <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif>
+return <return_type><if (is_pipelined)> pipelined<endif><if (is_result_cache)> result_cache<endif><if (is_deterministic)> deterministic<endif>;
+>>
