@@ -1240,7 +1240,7 @@ return_statement
 
 function_call
     :    call_key? general_element
-        -> ^(ROUTINE_CALL general_element)
+        -> general_element
     ;
 
 body

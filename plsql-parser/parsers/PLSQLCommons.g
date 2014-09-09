@@ -195,8 +195,11 @@ main_model_name
     ;
 
 aggregate_function_name
-    :    id ((PERIOD id_expression)=> PERIOD id_expression)*
-        -> ^(ROUTINE_NAME id id_expression*)
+    :   r+=general_element_id
+        (
+            PERIOD r+=general_element_id
+        )*
+        -> $r+
     ;
 
 query_name
@@ -431,23 +434,20 @@ native_datatype_element
 bind_variable
     :    ( b1=BINDVAR | COLON u1=UNSIGNED_INTEGER)
          ( indicator_key? (b2=BINDVAR | COLON u2=UNSIGNED_INTEGER))?
-         ((PERIOD general_element_part)=> PERIOD general_element_part)*
-         ->^(HOSTED_VARIABLE_NAME $b1? $u1? indicator_key? $b2? $u2? general_element_part*)
+         ((PERIOD general_element_id)=> PERIOD general_element_id)*
+         ->^(HOSTED_VARIABLE_NAME $b1? $u1? indicator_key? $b2? $u2? general_element_id*)
     ;
 
 general_element
-@init    { boolean isCascated = true; }
-    :    general_element_part ((PERIOD general_element_part)=> PERIOD general_element_part {isCascated = true;})*
-        ->{isCascated}? ^(CASCATED_ELEMENT general_element_part+)
-        -> general_element_part
+    :   r+=general_element_id
+        (
+            PERIOD r+=general_element_id | (LEFT_PAREN ~PLUS_SIGN) => r+=function_argument
+        )*
+        -> ^(CASCATED_ELEMENT $r+)
     ;
 
-general_element_part
-@init    { boolean isRoutineCall = false; }
-    :    (INTRODUCER char_set_name)? routine_id
-            ((PERIOD routine_id)=> PERIOD routine_id)* (function_argument {isRoutineCall = true;})*
-        ->{isRoutineCall}? ^(ROUTINE_CALL ^(ROUTINE_NAME char_set_name? routine_id+) function_argument+)
-        -> ^(ANY_ELEMENT char_set_name? routine_id+)
+general_element_id
+    :    (INTRODUCER char_set_name)? routine_id -> ^(ANY_ELEMENT char_set_name? routine_id)
     ;
 
 table_element
@@ -461,7 +461,7 @@ table_element
 
 constant
     :    timestamp_key (quoted_string | bind_variable) (at_key time_key zone_key quoted_string)?
-    |    interval_key (quoted_string | bind_variable | general_element_part)
+    |    interval_key (quoted_string | bind_variable | general_element_id)
          ( day_key | hour_key | minute_key | second_key)
          ( LEFT_PAREN (UNSIGNED_INTEGER | bind_variable) (COMMA (UNSIGNED_INTEGER | bind_variable) )? RIGHT_PAREN)?
          ( to_key

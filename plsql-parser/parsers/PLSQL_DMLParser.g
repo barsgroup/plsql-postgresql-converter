@@ -364,7 +364,7 @@ pivot_clause
 
 pivot_element
     :    aggregate_function_name LEFT_PAREN expression RIGHT_PAREN column_alias?
-        -> ^(PIVOT_ELEMENT column_alias? ^(EXPR ^(ROUTINE_CALL aggregate_function_name ^(ARGUMENTS ^(ARGUMENT ^(EXPR expression))))))
+        -> ^(PIVOT_ELEMENT column_alias? ^(EXPR ^(CASCATED_ELEMENT aggregate_function_name ^(ARGUMENTS ^(ARGUMENT ^(EXPR expression))))))
     ;
 
 pivot_for_clause
@@ -1088,11 +1088,11 @@ case_else_part
 // $>
 
 atom
-options
+/*options
 {
 backtrack=true;
-}
-    :    (table_element outer_join_sign) => table_element outer_join_sign^
+}*/
+    :    (routine_id (PERIOD routine_id)* outer_join_sign) => general_element outer_join_sign^
     |    bind_variable
     |    constant
     |    general_element
@@ -1183,12 +1183,12 @@ standard_function
             LEFT_PAREN! 
                 expression_wrapper order_by_clause? 
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    (xmlcolattval_key^|xmlforest_key^) 
             LEFT_PAREN!
                 xml_multiuse_expression_element (COMMA! xml_multiuse_expression_element)*
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlelement_key^
             LEFT_PAREN!
                 (entityescaping_key|noentityescaping_key)?
@@ -1196,7 +1196,7 @@ standard_function
                 ({input.LT(2).getText().equalsIgnoreCase("xmlattributes")}? COMMA! xml_attributes_clause)?
                 (COMMA! expression_wrapper column_alias?)*
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlexists_key^
             LEFT_PAREN!
                 expression_wrapper
@@ -1206,7 +1206,7 @@ standard_function
             LEFT_PAREN! 
                 (document_key|content_key) concatenation_wrapper wellformed_key?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlpi_key^
             LEFT_PAREN! 
                 (    name_key id
@@ -1214,13 +1214,13 @@ standard_function
                 )
                 (COMMA! concatenation_wrapper)?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlquery_key^
             LEFT_PAREN! 
                 concatenation_wrapper xml_passing_clause?
                 returning_key! content_key! (null_key on_key! empty_key!)?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlroot_key^
             LEFT_PAREN!
                 concatenation_wrapper
@@ -1228,7 +1228,7 @@ standard_function
                     xmlroot_param_version_part
                     (COMMA! xmlroot_param_standalone_part)?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmlserialize_key^
             LEFT_PAREN!
                 (document_key|content_key)
@@ -1238,7 +1238,7 @@ standard_function
                 xmlserialize_param_ident_part?
                 ((hide_key|show_key) defaults_key)?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     |    xmltable_key^
             LEFT_PAREN!
                 xml_namespaces_clause?
@@ -1246,7 +1246,7 @@ standard_function
                 xml_passing_clause?
                 (columns_key! xml_table_column (COMMA! xml_table_column)*)?
             RIGHT_PAREN!
-            (PERIOD general_element_part)?
+            (PERIOD general_element_id)?
     ;
 
 stantard_function_enabling_over
