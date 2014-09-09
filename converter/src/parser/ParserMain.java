@@ -82,7 +82,7 @@ public class ParserMain {
 		str = prettyPrint(theTree);
 
 		System.out.println(str.length() > 400 ? str.substring(0, 400) + "..." : str);
-		try (PrintStream out = new PrintStream(new FileOutputStream("output.txt"))) {
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output.txt"))) {
 		    out.print(str);
 		}
 		
