@@ -1051,18 +1051,20 @@ sql_statement
 
 execute_immediate
     :    ^(EXECUTE_VK expression
-          (    into_clause using_clause?
-          |    using_clause dynamic_returning_clause?
-          |    dynamic_returning_clause
+          (    into=into_clause using=using_clause?
+          |    using=using_clause dynamic_returning=dynamic_returning_clause?
+          |    dynamic_returning=dynamic_returning_clause
           )?
         )
-    ->   template() "not implemented: execute_immediate"
+    ->   execute_immediate_statement(
+          expression={$expression.st}, into_clause={$into.st},
+          using_clause={$using.st}, dynamic_returning_clause={$dynamic_returning.st})
     ;
 
 // $<Execute Immediate - Specific Clause
 dynamic_returning_clause
     :    ^(DYNAMIC_RETURN into_clause)
-    ->   template() "not implemented: dynamic_returning_clause"
+    ->   dynamic_returning_clause(into_clause={$into_clause.st})
     ;
 // $>
 

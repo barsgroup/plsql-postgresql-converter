@@ -611,3 +611,18 @@ continue<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
 >>
 
 general_when(expression) ::= "when <expression>"
+
+execute_immediate_statement(expression, into_clause, using_clause, dynamic_returning_clause) ::= <<
+execute immediate <expression><if (into_clause)>
+
+<into_clause>
+<endif><if (using_clause)>
+
+<using_clause>
+<endif><if (dynamic_returning_clause)>
+
+<dynamic_returning_clause>
+<endif>
+>>
+
+dynamic_returning_clause(into_clause) ::= "returning <into_clause>"
