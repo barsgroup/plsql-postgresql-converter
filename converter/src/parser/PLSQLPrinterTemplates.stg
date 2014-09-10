@@ -530,3 +530,7 @@ group by <group_by_elements; separator=", "><if (having_clause)>
 having_clause(condition) ::= <<
 having <condition>
 >>
+
+table_collection_expression(expression_or_subquery, is_outer_join) ::= <<
+table (<expression_or_subquery>)<if (is_outer_join)>(+)<endif>
+>>

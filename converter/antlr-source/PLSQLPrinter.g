@@ -1589,8 +1589,7 @@ error_logging_reject_part
 
 dml_table_expression_clause
     :    ^(TABLE_EXPRESSION 
-        (    ^(COLLECTION_MODE expression PLUS_SIGN?)
-              ->   template() "not implemented: dml_table_expression_clause[COLLECTION_MODE]"
+        (    ^(COLLECTION_MODE table_collection_expression) -> { $table_collection_expression.st }
         |    ^(SELECT_MODE select_statement subquery_restriction_clause?)
               ->   dml_table_expression_clause_select(
                     select_statement={$select_statement.st},
@@ -1602,6 +1601,17 @@ dml_table_expression_clause
         )
         )
         |    table_ref -> in_parens(val={$table_ref.st})
+    ;
+
+table_collection_expression
+    :   expression
+    ->  table_collection_expression(expression_or_subquery={$expression.st}, is_outer_join={false})
+    |   subquery
+    ->  table_collection_expression(expression_or_subquery={$subquery.st}, is_outer_join={false})
+    |   ^(OUTER_JOIN_SIGN expression)
+    ->  table_collection_expression(expression_or_subquery={$expression.st}, is_outer_join={true})
+    |   ^(OUTER_JOIN_SIGN subquery)
+    ->  table_collection_expression(expression_or_subquery={$subquery.st}, is_outer_join={true})
     ;
 
 subquery_restriction_clause
