@@ -124,6 +124,9 @@ expression_element_outer_join_sign(expr) ::= "<expr>(+)"
 expression_element_quantified_expr(subquery_or_expression, is_some, is_any, is_all, is_exists) ::= <<
 <if (is_some)>some<elseif (is_any)>any<elseif (is_all)>all<elseif (is_exists)>exists<endif>(<subquery_or_expression>)
 >>
+expression_element_between(expr, is_not, expr_low, expr_high) ::= <<
+<expr> <if (is_not)>not <endif>between <expr_low> and <expr_high>
+>>
 
 standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
 count(<if (is_distinct)>
@@ -162,6 +165,12 @@ loopDefinition_select(indexVar, select_statement) ::= <<
 
 while_loop(condition, seq_of_statements) ::= <<
 while <condition> loop
+  <seq_of_statements>
+end loop
+>>
+
+loop(seq_of_statements) ::= <<
+loop
   <seq_of_statements>
 end loop
 >>

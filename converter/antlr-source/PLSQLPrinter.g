@@ -965,7 +965,7 @@ loop_statement
     |    ^(FOR_LOOP cursor_loop_param seq_of_statements)
     ->   for_loop(loopDefinition={$cursor_loop_param.st}, statements={$seq_of_statements.st})
     |    ^(LOOP_VK seq_of_statements)
-    ->   template() "not implemented: loop_statement[LOOP_VK]"
+    ->   loop(seq_of_statements={$seq_of_statements.st})
     ;
 
 // $<Loop - Specific Clause
@@ -1798,10 +1798,10 @@ expression_element
     ->   expression_element_not_in(expr={$expr.st}, in_elements={$in_elements.st})
     |    ^(SQL92_RESERVED_IN expr=expression_element in_elements)
     ->   expression_element_in(expr={$expr.st}, in_elements={$in_elements.st})
-    |    ^(NOT_BETWEEN expression_element expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(SQL92_RESERVED_BETWEEN expression_element expression_element expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(NOT_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
+    ->   expression_element_between(expr={$expr.st}, is_not={true}, expr_low={$expr_low.st}, expr_high={$expr_high.st})
+    |    ^(SQL92_RESERVED_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
+    ->   expression_element_between(expr={$expr.st}, is_not={false}, expr_low={$expr_low.st}, expr_high={$expr_high.st})
     |    ^(
             (
               SQL92_RESERVED_LIKE { op = "like"; }
