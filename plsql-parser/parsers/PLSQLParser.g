@@ -1081,9 +1081,8 @@ table_type_dec
     ;
 
 table_indexed_by_part
-    :    (idx1=indexed_key|idx2=index_key) by_key type_spec
-        ->{idx1 != null}? ^(INDEXED_BY[$idx1.start] type_spec)
-        -> ^(INDEXED_BY[$idx2.start] type_spec)
+    :    (idx=indexed_key|idx=index_key) by_key type_spec
+        -> ^(INDEXED_BY[$idx.start] type_spec)
     ;
 
 varray_type_def
