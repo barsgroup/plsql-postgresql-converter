@@ -542,3 +542,27 @@ having <condition>
 table_collection_expression(expression_or_subquery, is_outer_join) ::= <<
 table (<expression_or_subquery>)<if (is_outer_join)>(+)<endif>
 >>
+
+close_statement(cursor_name) ::= "close <cursor_name>"
+open_statement(cursor_name, expression_list) ::= "open <cursor_name><expression_list>"
+
+fetch_statement(cursor_name, into_clause) ::= <<
+fetch <cursor_name> <into_clause>
+>>
+
+open_for_statement(cursor_name, expression_or_select_statement, using_clause) ::= <<
+open <cursor_name> for <expression_or_select_statement><if (using_clause)>
+
+<using_clause>
+<endif>
+>>
+
+using_clause(using_elements) ::= <<
+using <using_elements; separator=", ">
+>>
+
+using_element_asterisk() ::= "*"
+
+using_element_element(is_in, is_out, expression, alias) ::= <<
+<if (is_in)>in <endif><if (is_out)>out <endif><expression><if (alias)> <alias><endif>
+>>

@@ -1636,38 +1636,30 @@ seed_part
 // $<Cursor Manipulation SQL PL/SQL Statements
 
 cursor_manipulation_statements
-    :    close_statement
-    ->   template() "not implemented: cursor_manipulation_statements"
-    |    open_statement
-    ->   template() "not implemented: cursor_manipulation_statements"
-    |    fetch_statement
-    ->   template() "not implemented: cursor_manipulation_statements"
-    |    open_for_statement
-    ->   template() "not implemented: cursor_manipulation_statements"
+    :    close_statement -> { $close_statement.st }
+    |    open_statement -> { $open_statement.st }
+    |    fetch_statement -> { $fetch_statement.st }
+    |    open_for_statement -> { $open_for_statement.st }
     ;
 
 close_statement
     :     ^(CLOSE_VK cursor_name) 
-    ->   template() "not implemented: close_statement"
+    ->   close_statement(cursor_name={$cursor_name.st})
     ;
 
 open_statement
     :    ^(OPEN_VK cursor_name expression_list?)
-    ->   template() "not implemented: open_statement"
+    ->   open_statement(cursor_name={$cursor_name.st}, expression_list={$expression_list.st})
     ;
 
 fetch_statement
-    :    ^(SQL92_RESERVED_FETCH cursor_name 
-            (    ^(SQL92_RESERVED_INTO variable_name+)
-            |    ^(BULK_VK variable_name+)
-            )
-        )
-    ->   template() "not implemented: fetch_statement"
+    :    ^(SQL92_RESERVED_FETCH cursor_name into_clause)
+    ->   fetch_statement(cursor_name={$cursor_name.st}, into_clause={$into_clause.st})
     ;
 
 open_for_statement
-    :    ^(OPEN_VK variable_name (expression|select_statement) using_clause?)
-    ->   template() "not implemented: open_for_statement"
+    :    ^(OPEN_VK variable_name (e_or_s=expression|e_or_s=select_statement) using_clause?)
+    ->   open_for_statement(cursor_name={$variable_name.st}, expression_or_select_statement={$e_or_s.st}, using_clause={$using_clause.st})
     ;
 
 // $>
@@ -2043,15 +2035,17 @@ windowing_elements
     ;
 
 using_clause
-    :    ^(PLSQL_NON_RESERVED_USING using_element+)
-    ->   template() "not implemented: using_clause"
+    :    ^(PLSQL_NON_RESERVED_USING using_elements+=using_element+)
+    ->   using_clause(using_elements={$using_elements})
     ;
 
 using_element
     :    ^(ELEMENT SQL92_RESERVED_IN? OUT_VK? expression alias?)
-    ->   template() "not implemented: using_element"
+    ->   using_element_element(
+          is_in={$SQL92_RESERVED_IN != null}, is_out={$OUT_VK != null},
+          expression={$expression.st}, alias={$alias.st})
     |    ASTERISK
-    ->   template() "not implemented: using_element"
+    ->   using_element_asterisk()
     ;
 
 collect_order_by_part
