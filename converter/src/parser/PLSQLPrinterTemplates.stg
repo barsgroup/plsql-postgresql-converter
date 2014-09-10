@@ -111,6 +111,7 @@ expression_element_dot_star(tableview_name) ::= "<tableview_name>.*"
 expression_element_like(text, like_op, pattern, escape_char) ::= <<
 (<text>) <like_op> (<pattern>)<if (escape_char)> escape (<escape_char>)<endif>
 >>
+expression_element_not(expr) ::= "not(<expr>)"
 
 standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
 count(<if (is_distinct)>

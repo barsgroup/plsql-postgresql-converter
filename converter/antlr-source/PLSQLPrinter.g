@@ -1774,8 +1774,8 @@ expression_element
           arg1=expression_element arg2=expression_element
          )
     ->   expression_element_generic_binop(op={op}, arg1={$arg1.st}, arg2={$arg2.st})
-    |    ^(SQL92_RESERVED_NOT expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(SQL92_RESERVED_NOT expr=expression_element)
+    ->   expression_element_not(expr={$expr.st})
     |    ^(
             (
               IS_NOT_NULL { op = "is not null"; }
