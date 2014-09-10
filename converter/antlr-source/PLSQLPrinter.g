@@ -1666,16 +1666,11 @@ open_for_statement
 // $<Transaction Control SQL PL/SQL Statements
 
 transaction_control_statements
-    :    set_transaction_command
-    ->   template() "not implemented: transaction_control_statements"
-    |    set_constraint_command
-    ->   template() "not implemented: transaction_control_statements"
-    |    commit_statement
-    ->   template() "not implemented: transaction_control_statements"
-    |    rollback_statement
-    ->   template() "not implemented: transaction_control_statements"
-    |    savepoint_statement
-    ->   template() "not implemented: transaction_control_statements"
+    :    set_transaction_command -> { $set_transaction_command.st }
+    |    set_constraint_command -> { $set_constraint_command.st }
+    |    commit_statement -> { $commit_statement.st }
+    |    rollback_statement -> { $rollback_statement.st }
+    |    savepoint_statement -> { $savepoint_statement.st }
     ;
 
 set_transaction_command
@@ -1694,18 +1689,36 @@ set_constraint_command
     ;
 
 commit_statement
-    :     ^(COMMIT_VK WORK_VK? 
-            (    ^(COMMENT_VK expression)
-            |    ^(FORCE_VK (CORRUPT_XID_VK expression|CORRUPT_XID_ALL_VK|expression expression?))
+    :     ^(COMMIT_VK WORK_VK?
+            (
+              additional=commit_comment
+              | additional=commit_force    
+                 
             )?
-            write_clause?
+          )
+    -> commit_statement(is_work={$WORK_VK != null}, additional={$additional.st})
+    ;
+    
+commit_comment
+    :   ^(COMMENT_VK comment_expr=expression) write_clause?
+    ->  commit_comment(comment_expr={$expression.st}, write_clause={$write_clause.st})
+    ;
+    
+commit_force
+    :   ^(FORCE_VK
+          (
+            CORRUPT_XID_VK expr1=expression -> commit_statement_force_2(expression={$expr1.st})
+            | CORRUPT_XID_ALL_VK -> commit_statement_force_3()
+            | expr1=expression expr2=expression? -> commit_statement_force_1(expr1={$expr1.st}, expr2={$expr2.st})
+          )
         )
-    ->   template() "not implemented: commit_statement"
     ;
 
 write_clause
     :    ^(WRITE_VK (WAIT_VK|PLSQL_RESERVED_NOWAIT)? (IMMEDIATE_VK|BATCH_VK)?)
-    ->   template() "not implemented: write_clause"
+    ->   commit_statement_write_clause(
+          is_wait={$WAIT_VK != null}, is_nowait={$PLSQL_RESERVED_NOWAIT != null},
+          is_immediate={$IMMEDIATE_VK != null}, is_batch={$BATCH_VK != null})
     ;
 
 rollback_statement

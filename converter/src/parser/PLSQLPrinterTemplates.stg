@@ -638,3 +638,25 @@ execute immediate <expression><if (into_clause)>
 >>
 
 dynamic_returning_clause(into_clause) ::= "returning <into_clause>"
+
+commit_statement(is_work, additional) ::= "commit<if (is_work)> work<endif><if (additional)> <additional><endif>"
+
+commit_comment(comment_expression, write_clause) ::= <<
+comment <comment_expression><if (write_clause)> <write_clause><endif>
+>>
+
+commit_statement_write_clause(is_wait, is_nowait, is_immediate, is_batch) ::= <<
+write<if (is_wait)> wait<elseif (is_nowait)> nowait<endif><if (is_immediate)> immediate<elseif (is_batch)> batch<endif>
+>>
+
+commit_statement_force_1(expr1, expr2) ::= <<
+force <expr1><if (expr2)>, <expr2><endif>
+>>
+
+commit_statement_force_2(expression) ::= <<
+force corrupt_xid <expression>
+>>
+
+commit_statement_force_3() ::= <<
+force corrupt_xid_all
+>>
