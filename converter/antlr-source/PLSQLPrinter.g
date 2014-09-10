@@ -1832,8 +1832,16 @@ expression_element
 
     |    ^(DOT_ASTERISK tableview_name)
     ->   template() "not implemented: expression_element"
-    |    ^((PERCENT_FOUND_VK|PERCENT_NOTFOUND_VK|PERCENT_ROWCOUNT_VK|PERCENT_ISOPEN_VK) cursor_name)
-    ->   template() "not implemented: expression_element"
+    |    ^(
+            (
+              PERCENT_FOUND_VK { op = "\%FOUND"; }
+              |PERCENT_NOTFOUND_VK { op = "\%NOTFOUND"; }
+              |PERCENT_ROWCOUNT_VK { op = "\%ROWCOUNT"; }
+              |PERCENT_ISOPEN_VK { op = "\%ISOPEN"; }
+            )
+            cursor_name
+          )
+    ->   expression_element_cursor_op(op={op}, cursor_name={$cursor_name.st})
     |    ^(OUTER_JOIN_SIGN expression_element)
     ->   template() "not implemented: expression_element"
 
@@ -2251,13 +2259,11 @@ index_name
     ;
 
 cursor_name
-    :    ^(CURSOR_NAME char_set_name? ID)
-    ->   template() "not implemented: cursor_name"
+    :    ^(CURSOR_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 record_name
-    :    ^(RECORD_NAME char_set_name? ID)
-    ->   template() "not implemented: record_name"
+    :    ^(RECORD_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 collection_name
@@ -2266,8 +2272,7 @@ collection_name
     ;
 
 link_name
-    :    ^(LINK_NAME char_set_name? ID)
-    ->   template() "not implemented: link_name"
+    :    ^(LINK_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 column_name
