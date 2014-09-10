@@ -515,6 +515,11 @@ public class ParserMain {
 		if (t1.getType() != t2.getType()) {
 			return new Tree[] { t1, t2 };
 		}
+		if (t1.getType() == PLSQLParser.ID) {
+			if (!t1.getText().equals(t2.getText())) {
+				return new Tree[] { t1, t2 };
+			}
+		}
 		int n = Math.max(t1.getChildCount(), t2.getChildCount());
 		for (int i = 0; i < n; ++i) {
 			Tree child1 = i < t1.getChildCount() ? t1.getChild(i) : null;

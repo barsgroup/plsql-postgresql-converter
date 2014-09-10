@@ -75,7 +75,6 @@ compilation_unit
     :    ^(COMPILATION_UNIT u+=unit_statement*)
     ->  template(statements={$u})
 <<
---Compilation unit
 <statements:{v|<v>}; separator="\n\n">
 >>
     ;
@@ -84,9 +83,7 @@ sql_script
     :    ^(SQL_SCRIPT u+=unit_statement*)
     ->  template(statements={$u})
 <<
---SQL script
-<statements:{v|--script
-<v>}; separator="\n\n">
+<statements; separator="\n\n">
 >>
     ;
 
@@ -764,13 +761,15 @@ variable_declaration
     ;    
 
 subtype_declaration
-      :    ^(SUBTYPE_DECLARE type_name type_spec SQL92_RESERVED_NULL? subtype_range?)
-    ->   template() "not implemented: subtype_declaration"
-      ;
+    :    ^(SUBTYPE_DECLARE type_name type_spec SQL92_RESERVED_NULL? subtype_range?)
+    ->   subtype_declaration(
+            name={$type_name.st}, type_spec={$type_spec.st},
+            range={$subtype_range.st}, is_not_null={$SQL92_RESERVED_NULL != null})
+    ;
 
 subtype_range
-    :    ^(RANGE_VK expression+)
-    ->   template() "not implemented: subtype_range"
+    :    ^(RANGE_VK e1=expression e2=expression)
+    ->   subtype_range(low_bound={$e1.st}, high_bound={$e2.st})
     ;
 
 //cursor_declaration incorportates curscursor_body and cursor_spec
@@ -829,29 +828,34 @@ record_var_dec
 // $>
 
 table_declaration
-    :    table_type_dec
-    ->   template() "not implemented: table_declaration"
-    |    table_var_dec
-    ->   template() "not implemented: table_declaration"
+    :    table_type_dec -> { $table_type_dec.st }
+    |    table_var_dec -> { $table_var_dec.st }
     ;
 
 table_type_dec
-    :    ^(TABLE_TYPE_DECLARE type_name 
-            (    varray_type_def
-            |    SQL92_RESERVED_NULL? ^(SQL92_RESERVED_TABLE type_spec table_indexed_by_part?)
-            )
-        )
-    ->   template() "not implemented: table_type_dec"
+    :    ^(TABLE_TYPE_DECLARE type_name table_type_dec_impl)
+    ->   table_type_dec(name={$type_name.st}, impl={$table_type_dec_impl.st})
+    ;
+    
+table_type_dec_impl
+    :     table_type_dec_table_of -> { $table_type_dec_table_of.st }
+    |     varray_type_def -> { $varray_type_def.st }
+    ;
+    
+table_type_dec_table_of
+    :    SQL92_RESERVED_NULL? ^(SQL92_RESERVED_TABLE type_spec table_indexed_by_part?)
+    ->   table_type_dec_table_of(
+            type_spec={$type_spec.st}, table_indexed_by_part={$table_indexed_by_part.st}, is_not_null={$SQL92_RESERVED_NULL != null})
     ;
 
 table_indexed_by_part
     :    ^(INDEXED_BY type_spec)
-    ->   template() "not implemented: table_indexed_by_part"
+    ->   table_indexed_by_part(type_spec={$type_spec.st})
     ;
 
 varray_type_def
     :    SQL92_RESERVED_NULL? ^(VARR_ARRAY_DEF expression type_spec)
-    ->   template() "not implemented: varray_type_def"
+    ->   varray_type_def(limit_expression={$expression.st}, element_type={$type_spec.st}, is_not_null={$SQL92_RESERVED_NULL != null})
     ;
 
 table_var_dec

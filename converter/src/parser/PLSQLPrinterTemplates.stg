@@ -219,7 +219,7 @@ create<if (is_replace)> or replace<endif> package <name><if (invoker_rights_clau
 
 is
   <items; separator="\n\n">
-end <name>;
+end;
 >>
 
 dotted_name(ids) ::= <<
@@ -277,4 +277,28 @@ declare
 
 variable_declaration(name, type, is_constant, is_not_null, default_value_part) ::= <<
 <name><if (is_constant)> constant<endif> <type><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>;
+>>
+
+table_type_dec(name, impl) ::= <<
+type <name> is <impl>;
+>>
+
+varray_type_def(limit_expression, element_type, is_not_null) ::= <<
+varray(<limit_expression>) of <element_type><if (is_not_null)> not null<endif>
+>>
+
+table_type_dec_table_of(type_spec, table_indexed_by_part, is_not_null) ::= <<
+table of <type_spec><if (table_indexed_by_part)> <table_indexed_by_part><endif><if (is_not_null)> not null<endif>
+>>
+
+table_indexed_by_part(type_spec) ::= <<
+indexed by <type_spec>
+>>
+
+subtype_declaration(name, type_spec, range, is_not_null) ::= <<
+subtype <name> is <type_spec><if (range)> <range><endif><if (is_not_null)> not null<endif>;
+>>
+
+subtype_range(low_bound, high_bound) ::= <<
+range <low_bound>..<high_bound>
 >>
