@@ -278,11 +278,6 @@ public class ParserMain {
 			}
 			++idx;
 		}
-		if (limit == null) {
-			try (PrintStream out = new PrintStream(new FileOutputStream("workdir/token_stats.txt"))) {
-				printTokenStats(ctr.getOccurences(), out);
-			}
-		}
 		System.out.println("Print failures:");
 		for (int i = 0; i < printFailures.size(); ++i) {
 			System.out.printf("%d %s\n", idx, printFailures.get(i));
@@ -301,8 +296,10 @@ public class ParserMain {
 			}
 			++idx;
 		}
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/token_stats.txt"))) {
-			printTokenStats(ctr.getOccurences(), out);
+		if (limit == null) {
+			try (PrintStream out = new PrintStream(new FileOutputStream("workdir/token_stats.txt"))) {
+				printTokenStats(ctr.getOccurences(), out);
+			}
 		}
 	}
 

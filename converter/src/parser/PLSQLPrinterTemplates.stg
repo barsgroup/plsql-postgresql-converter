@@ -13,7 +13,7 @@ return <return_type>
 <if (is_pipelined)>pipelined<endif>
 
 is
-<block>;
+<block>
 >>
 
 parameter(
@@ -130,6 +130,7 @@ all
 <selected_elements; separator=",\n  ">
 <endif>
 <if (into_clause)>
+
 <into_clause>
 <endif>
 
@@ -258,7 +259,7 @@ begin
 <init_section_exception_clause>
 <endif>
 
-end <name>;
+end;
 >>
 
 create_procedure_body(is_create, is_replace, name, arguments, invoker_rights_clause, impl) ::= <<
