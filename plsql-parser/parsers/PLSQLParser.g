@@ -1344,24 +1344,18 @@ open_statement
     ;
 
 fetch_statement
-@init    {    int mode = 0;    }
-    :    fetch_key cursor_name 
-    (    it1=into_key variable_name (COMMA variable_name )* {mode = 1;}
-    |    bulk_key collect_key into_key variable_name (COMMA variable_name )*
-    )
-        ->{mode == 1}? ^(fetch_key cursor_name ^($it1 variable_name+))
-        -> ^(fetch_key cursor_name ^(bulk_key variable_name+))
+    :    fetch_key^ cursor_name into_clause
     ;
 
 open_for_statement
 @init    {    int mode = 0;    }
     :    open_key variable_name for_key
     (    (select_key|with_key)=> select_statement {mode = 1;}
-    |    expression
+    |    expression_wrapper
     )
         using_clause?
         ->{mode == 1}? ^(open_key variable_name select_statement using_clause?)
-        -> ^(open_key variable_name ^(EXPR expression) using_clause?)
+        -> ^(open_key variable_name expression_wrapper using_clause?)
     ;
 
 // $>
