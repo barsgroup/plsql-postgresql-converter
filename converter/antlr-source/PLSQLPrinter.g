@@ -743,32 +743,24 @@ default_value_part
 // $<PL/SQL Elements Declarations
 
 declare_spec
-    :    variable_declaration
-    ->   template() "not implemented: declare_spec"
-    |     subtype_declaration
-    ->   template() "not implemented: declare_spec"
-    |     cursor_declaration
-    ->   template() "not implemented: declare_spec"
-    |     exception_declaration
-    ->   template() "not implemented: declare_spec"
-    |     pragma_declaration
-    ->   template() "not implemented: declare_spec"
-    |     record_declaration
-    ->   template() "not implemented: declare_spec"
-    |     table_declaration
-    ->   template() "not implemented: declare_spec"
-    |     create_procedure_body
-    ->   template() "not implemented: declare_spec"
-    |     create_function_body
-    ->   template() "not implemented: declare_spec"
-    |     create_type
-    ->   template() "not implemented: declare_spec"
+    :    variable_declaration -> { $variable_declaration.st }
+    |     subtype_declaration -> { $subtype_declaration.st }
+    |     cursor_declaration -> { $cursor_declaration.st }
+    |     exception_declaration -> { $exception_declaration.st }
+    |     pragma_declaration -> { $pragma_declaration.st }
+    |     record_declaration -> { $record_declaration.st }
+    |     table_declaration -> { $table_declaration.st }
+    |     create_procedure_body -> { $create_procedure_body.st }
+    |     create_function_body -> { $create_function_body.st }
+    |     create_type -> { $create_type.st }
     ;
 
 //incorporates constant_declaration
 variable_declaration
     :    ^(VARIABLE_DECLARE variable_name type_spec CONSTANT_VK? SQL92_RESERVED_NULL? default_value_part?)
-    ->   template() "not implemented: variable_declaration"
+    ->   variable_declaration(
+           name={$variable_name.st}, type={$type_spec.st}, is_constant={$CONSTANT_VK != null},
+           is_not_null={$SQL92_RESERVED_NULL != null}, default_value_part={$default_value_part.st})
     ;    
 
 subtype_declaration

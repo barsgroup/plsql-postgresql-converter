@@ -274,3 +274,7 @@ declare
 <endif>
 <body>;
 >>
+
+variable_declaration(name, type, is_constant, is_not_null, default_value_part) ::= <<
+<name><if (is_constant)> constant<endif> <type><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>;
+>>
