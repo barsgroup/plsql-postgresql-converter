@@ -1860,8 +1860,8 @@ expression_element
             cursor_name
           )
     ->   expression_element_cursor_op(op={op}, cursor_name={$cursor_name.st})
-    |    ^(OUTER_JOIN_SIGN expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(OUTER_JOIN_SIGN expr=expression_element)
+    ->   expression_element_outer_join_sign(expr={$expr.st})
 
     |    case_statement -> { $case_statement.st }
     |    constant -> { $constant.st }
