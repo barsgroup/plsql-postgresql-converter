@@ -77,6 +77,7 @@ expression_element_generic_prefix_unary_op(op, is_spaced, arg) ::= "<op><if (is_
 expression_element_cursor_op(cursor_name, op) ::= "<cursor_name><op>"
 expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
 expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
+expression_element_prior(expr) ::= "prior <expr>"
 
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
@@ -458,4 +459,16 @@ delete from <general_table_ref><if (where_clause)>
 
 <error_logging_clause>
 <endif>
+>>
+
+assignment_statement(dst, expression) ::= <<
+<dst> := <expression>
+>>
+
+hierarchical_query_clause(is_nocycle, condition, start_part) ::= <<
+connect by<if (is_nocycle)> nocycle<endif> <condition><if (start_part)> <start_part><endif>
+>>
+
+start_part(condition) ::= <<
+start with <condition>
 >>

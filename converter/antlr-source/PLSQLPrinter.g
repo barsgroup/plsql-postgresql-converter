@@ -918,8 +918,8 @@ statement
     ;
 
 assignment_statement
-    :     ^(ASSIGN general_element expression)
-    ->   template() "not implemented: assignment_statement"
+    :     ^(ASSIGN (dst=general_element|dst=hosted_variable_name) expression)
+    ->   assignment_statement(dst={$dst.st}, expression={$expression.st})
     ;
 
 continue_statement
@@ -1249,12 +1249,12 @@ unpivot_in_element
 
 hierarchical_query_clause
     :    ^(HIERARCHICAL start_part? ^(SQL92_RESERVED_CONNECT NOCYCLE_VK? expression))
-    ->   template() "not implemented: hierarchical_query_clause"
+    ->   hierarchical_query_clause(is_nocycle={$NOCYCLE_VK != null}, condition={$expression.st}, start_part={$start_part.st})
     ;
 
 start_part
     :    ^(PLSQL_RESERVED_START expression)
-    ->   template() "not implemented: start_part"
+    ->   start_part(condition={$expression.st})
     ;
 
 group_by_clause
@@ -1812,8 +1812,8 @@ expression_element
 
     |    ^(UNARY_OPERATOR arg=expression_element)
     ->   expression_element_generic_prefix_unary_op(op={$UNARY_OPERATOR.text}, is_spaced={false}, arg={$arg.st})
-    |    ^(SQL92_RESERVED_PRIOR expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(SQL92_RESERVED_PRIOR arg=expression_element)
+    ->   expression_element_prior(expr={$arg.st})
     |    ^(NEW_VK expression)
     ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_DISTINCT expression_element)
@@ -1851,6 +1851,7 @@ expression_element
     ->   template() "not implemented: expression_element"
     |    constant -> { $constant.st }
     |    general_element -> { $general_element.st }
+    |    hosted_variable_name -> { $hosted_variable_name.st }
     |    subquery -> { $subquery.st } // TODO: need parens?
     ;
 
@@ -2249,11 +2250,18 @@ trigger_name
     :    ^(TRIGGER_NAME char_set_name? ids+=ID+)
     ->   dotted_name(ids={$ids})
     ;
+    
+hosted_variable_name
+    :    ^(HOSTED_VARIABLE_NAME
+            (
+              BINDVAR -> string_literal(val={$BINDVAR.text})
+              |UNSIGNED_INTEGER -> string_literal(val={ ":" + $UNSIGNED_INTEGER.text})
+            )
+          )
+    ;
 
 variable_name
-    :    ^(HOSTED_VARIABLE_NAME char_set_name? ids+=ID+)
-    ->   dotted_name(ids={$ids})
-    |    ^(VARIABLE_NAME char_set_name? ids+=ID+)
+    :    ^(VARIABLE_NAME char_set_name? ids+=ID+)
     ->   dotted_name(ids={$ids})
     ;
 
@@ -2434,7 +2442,7 @@ constant
     |    MAXVALUE_VK -> string_literal(val={"maxvalue"})
     |    SQL92_RESERVED_DEFAULT -> string_literal(val={"default"})
     ;
-
+    
 // $>
 
 id
