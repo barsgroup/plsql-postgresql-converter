@@ -1053,18 +1053,18 @@ scope    {
     boolean isStatement;
 }
 @init    {$case_statement::isStatement = $isStatementParameter;}
-    :    (label_name? case_key when_key)=> searched_case_statement
+    :    (case_key when_key)=> searched_case_statement
     |    simple_case_statement
     ;
 
 // $<CASE - Specific Clauses
 
 simple_case_statement
-    :    label_name? ck1=case_key atom
+    :    ck1=case_key expression_wrapper
         simple_case_when_part+ 
         case_else_part?
         end_key case_key? label_name?
-        -> ^(SIMPLE_CASE[$ck1.start] label_name* ^(EXPR atom) simple_case_when_part+ case_else_part?)  
+        -> ^(SIMPLE_CASE[$ck1.start] expression_wrapper simple_case_when_part+ case_else_part?)  
     ;
 
 simple_case_when_part
@@ -1072,11 +1072,11 @@ simple_case_when_part
     ;
 
 searched_case_statement
-    :    label_name? ck1=case_key
+    :    ck1=case_key
         searched_case_when_part+
         case_else_part?
         end_key case_key? label_name?
-        -> ^(SEARCHED_CASE[$ck1.start] label_name* searched_case_when_part+ case_else_part?) 
+        -> ^(SEARCHED_CASE[$ck1.start] searched_case_when_part+ case_else_part?) 
     ;
 
 searched_case_when_part
