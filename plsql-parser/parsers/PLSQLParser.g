@@ -215,7 +215,7 @@ create_function_body
                 (invoker_rights_clause|parallel_enable_clause|result_cache_clause|deterministic_key)*
         (
             (    pipelined_key? ( is_key | as_key )
-                      (    declare_key? declare_spec* body 
+                      (    block 
                       |    call_spec {mode = 2;})
             )
         |    (pipelined_key|aggregate_key) using_key implementation_type_name {mode = 1;}
@@ -231,7 +231,7 @@ create_function_body
                 ^(CALL_MODE call_spec))
         ->    ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
                 invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
-                ^(BODY_MODE declare_spec* body))
+                ^(BODY_MODE block))
     ;
 
 // $<Creation Function - Specific Clauses
@@ -395,7 +395,7 @@ create_procedure_body
               ( LEFT_PAREN parameter ( COMMA parameter )* RIGHT_PAREN )? 
               invoker_rights_clause?
         ( is_key | as_key )
-              (    declare_key? declare_spec* body 
+              (    block 
               |    call_spec {mode = 2;}
               |    external_key {mode = 1;}
               )
@@ -409,7 +409,7 @@ create_procedure_body
                 ^(CALL_MODE call_spec))
         ->    ^(CREATE_PROCEDURE[$procedure_key.start] replace_key? procedure_name ^(PARAMETERS parameter*)
                 invoker_rights_clause?
-                ^(BODY_MODE declare_spec* body))
+                ^(BODY_MODE block))
       ;
 
 // $>
@@ -743,9 +743,9 @@ proc_decl_in_type
     :    procedure_key procedure_name
         LEFT_PAREN type_elements_parameter (COMMA type_elements_parameter)* RIGHT_PAREN
         (is_key|as_key) 
-            (call_spec {mode = 1;}|declare_key? declare_spec* body SEMICOLON)
+            (call_spec {mode = 1;}|block SEMICOLON)
         -> {mode == 1}? ^(CREATE_PROCEDURE procedure_name ^(PARAMETERS type_elements_parameter+) ^(CALL_MODE call_spec))
-        -> ^(CREATE_PROCEDURE procedure_name ^(PARAMETERS type_elements_parameter+) ^(BODY_MODE declare_spec* body))
+        -> ^(CREATE_PROCEDURE procedure_name ^(PARAMETERS type_elements_parameter+) ^(BODY_MODE block))
     ;
 
 func_decl_in_type
@@ -754,9 +754,9 @@ func_decl_in_type
         (LEFT_PAREN type_elements_parameter (COMMA type_elements_parameter)* RIGHT_PAREN)? 
         return_key type_spec
         (is_key|as_key)
-            (call_spec {mode = 1;}|declare_key? declare_spec* body SEMICOLON)
+            (call_spec {mode = 1;}|block SEMICOLON)
         -> {mode == 1}? ^(CREATE_FUNCTION function_name type_spec ^(PARAMETERS type_elements_parameter*) ^(CALL_MODE call_spec))
-        -> ^(CREATE_FUNCTION function_name type_spec ^(PARAMETERS type_elements_parameter*) ^(BODY_MODE declare_spec* body))
+        -> ^(CREATE_FUNCTION function_name type_spec ^(PARAMETERS type_elements_parameter*) ^(BODY_MODE block))
     ;
 
 constructor_declaration
@@ -765,9 +765,9 @@ constructor_declaration
         (LEFT_PAREN (self_key in_key out_key type_spec COMMA) type_elements_parameter (COMMA type_elements_parameter)*  RIGHT_PAREN)?
         return_key self_key as_key result_key 
         (is_key|as_key) 
-            (call_spec {mode = 1;}|declare_key? declare_spec* body SEMICOLON)
+            (call_spec {mode = 1;}|declare_key? block SEMICOLON)
         -> {mode == 1}? ^(constructor_key type_spec final_key? instantiable_key? ^(PARAMETERS type_elements_parameter*) ^(CALL_MODE call_spec))
-        -> ^(constructor_key type_spec final_key? instantiable_key? ^(PARAMETERS type_elements_parameter*) ^(BODY_MODE declare_spec* body))
+        -> ^(constructor_key type_spec final_key? instantiable_key? ^(PARAMETERS type_elements_parameter*) ^(BODY_MODE block))
     ;
 
 // $>
