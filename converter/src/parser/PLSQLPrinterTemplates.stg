@@ -317,3 +317,13 @@ type <name> is ref cursor<if (type_spec)> return <type_spec><endif>;
 field_spec(name, type_spec, is_not_null, default_value_part) ::= <<
 <name><if (type_spec)> <type_spec><endif><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>
 >>
+
+pragma_declaration(impl) ::= "pragma <impl>;"
+
+pragma_declaration_impl_serially_reusable() ::= "serially_reusable"
+pragma_declaration_impl_serially_autonomous_transaction() ::= "autonomous_transaction"
+pragma_declaration_impl_serially_exception_init(name, numeric) ::= "exception_init (<name>, <numeric>)"
+pragma_declaration_impl_serially_inline(id, expression) ::= "inline (<id>, <expression>)"
+pragma_declaration_impl_serially_restrict_references(arg1, restArgs) ::= <<
+restrict_references (<arg1><restArgs:{v|, <v>}>)
+>>

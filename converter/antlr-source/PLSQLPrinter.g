@@ -789,16 +789,28 @@ exception_declaration
     ;             
 
 pragma_declaration
-    :    ^(PRAGMA_DECLARE 
-            (    SERIALLY_REUSABLE_VK
-            |     AUTONOMOUS_TRANSACTION_VK
-            |    ^(EXCEPTION_INIT_VK exception_name constant)
-            |    ^(INLINE_VK id expression)
-            |    ^(RESTRICT_REFERENCES_VK SQL92_RESERVED_DEFAULT? id*)
-            )
-        )
-    ->   template() "not implemented: pragma_declaration"
+    :    ^(PRAGMA_DECLARE pragma_declaration_impl)
+    ->   pragma_declaration(impl={$pragma_declaration_impl.st})
     ;
+    
+pragma_declaration_impl
+@init { StringTemplate firstSt = null; }
+    :    SERIALLY_REUSABLE_VK -> pragma_declaration_impl_serially_reusable()
+         |     AUTONOMOUS_TRANSACTION_VK -> pragma_declaration_impl_serially_autonomous_transaction()
+         |    ^(EXCEPTION_INIT_VK exception_name constant)
+         ->   pragma_declaration_impl_serially_exception_init(name={$exception_name.st}, numeric={$constant.st})
+         |    ^(INLINE_VK id expression)
+         ->   pragma_declaration_impl_serially_inline(id={$id.st}, expression={$expression.st})
+         |    ^(RESTRICT_REFERENCES_VK
+                (
+                  SQL92_RESERVED_DEFAULT { firstSt = %string_literal(val={"default"}); }
+                  | firstId=id { firstSt = $firstId.st; }
+                )
+                rest+=id+
+              )
+         ->   pragma_declaration_impl_serially_restrict_references(arg1={firstSt}, restArgs={$rest})
+    ;
+   
 
 record_declaration
     :    record_type_dec -> { $record_type_dec.st }
@@ -2418,7 +2430,7 @@ constant
 
 id
     :    char_set_name? ID
-    ->   template() "not implemented: id"
+    ->   string_literal(val={$ID.text})
     ;
 
     
