@@ -1836,8 +1836,10 @@ expression_element
     |    ^(SQL92_RESERVED_DISTINCT expression_element)
     ->   template() "not implemented: expression_element"
     |    ^(STANDARD_FUNCTION standard_function) -> { $standard_function.st }
-    |    ^((SOME_VK|SQL92_RESERVED_EXISTS|SQL92_RESERVED_ALL|SQL92_RESERVED_ANY) expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^((SOME_VK|SQL92_RESERVED_EXISTS|SQL92_RESERVED_ALL|SQL92_RESERVED_ANY) (s_or_e=subquery|s_or_e=expression))
+    ->   expression_element_quantified_expr(
+          subquery_or_expression={$s_or_e.st}, is_some={$SOME_VK != null}, is_any={$SQL92_RESERVED_ANY != null},
+          is_all={$SQL92_RESERVED_ALL != null}, is_exists={$SQL92_RESERVED_EXISTS != null})
     |    ^(VECTOR_EXPR expression_element+)
     ->   template() "not implemented: expression_element"
 

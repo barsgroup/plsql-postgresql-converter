@@ -113,6 +113,9 @@ expression_element_like(text, like_op, pattern, escape_char) ::= <<
 >>
 expression_element_not(expr) ::= "not(<expr>)"
 expression_element_outer_join_sign(expr) ::= "<expr>(+)"
+expression_element_quantified_expr(subquery_or_expression, is_some, is_any, is_all, is_exists) ::= <<
+<if (is_some)>some<elseif (is_any)>any<elseif (is_all)>all<elseif (is_exists)>exists<endif>(<subquery_or_expression>)
+>>
 
 standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
 count(<if (is_distinct)>
