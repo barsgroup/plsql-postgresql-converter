@@ -1020,13 +1020,13 @@ body
 // $<Body - Specific Clause
 
 exception_clause
-    :    ^(SQL92_RESERVED_EXCEPTION exception_handler+)
-    ->   template() "not implemented: exception_clause"
+    :    ^(SQL92_RESERVED_EXCEPTION handlers+=exception_handler+)
+    ->   exception_clause(exception_handlers={$handlers})
     ;
 
 exception_handler
-    :    ^(SQL92_RESERVED_WHEN exception_name+ seq_of_statements)
-    ->   template() "not implemented: exception_handler"
+    :    ^(SQL92_RESERVED_WHEN names+=exception_name+ seq_of_statements)
+    ->   exception_handler(exception_names={$names}, seq_of_statements={$seq_of_statements.st})
     ;
 
 // $>

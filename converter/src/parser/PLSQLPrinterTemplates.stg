@@ -371,3 +371,14 @@ returning <expressions; separator=", "> <into_clause>
 into_clause(is_bulk_collect, general_elements) ::= <<
 <if (is_bulk_collect)>bulk collect <endif>into <general_elements; separator=", ">
 >>
+
+exception_clause(exception_handlers) ::= <<
+exception
+  <exception_handlers; separator="\n">
+>>
+
+exception_handler(exception_names, seq_of_statements) ::= <<
+when <exception_names; separator=" or ">
+then
+  <seq_of_statements>
+>>
