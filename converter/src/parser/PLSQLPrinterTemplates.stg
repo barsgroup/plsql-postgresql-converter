@@ -605,3 +605,9 @@ over (<if (query_partition_clause)><query_partition_clause> <endif><if (order_by
 exit_statement(label_name, condition) ::= <<
 exit<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
 >>
+
+continue_statement(label_name, condition) ::= <<
+continue<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
+>>
+
+general_when(expression) ::= "when <expression>"

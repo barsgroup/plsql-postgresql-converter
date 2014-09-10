@@ -924,12 +924,12 @@ assignment_statement
 
 continue_statement
     :    ^(CONTINUE_VK label_name? general_when?)
-    ->   template() "not implemented: continue_statement"
+    ->   continue_statement(label_name={$label_name.st}, condition={$general_when.st})
     ;
 
 general_when
     :    ^(SQL92_RESERVED_WHEN expression)
-    ->   template() "not implemented: general_when"
+    ->   general_when(expression={$expression.st})
     ;
 
 exit_statement
