@@ -1195,8 +1195,14 @@ join_using_part
     ;
 
 query_partition_clause
-    :    ^(PARTITION_VK (subquery|expression_list|expression+))
-    ->   template() "not implemented: query_partition_clause"
+    :    ^(PARTITION_VK query_partition_clause_impl)
+    ->   query_partition_clause(impl={$query_partition_clause_impl.st})
+    ;
+    
+query_partition_clause_impl
+    :   subquery -> in_parens(val={$subquery.st})
+        | expression_list -> { $expression_list.st }
+        | expressions+=expression+ -> query_partition_clause_impl_expressions(expressions={$expressions})
     ;
 
 flashback_query_clause

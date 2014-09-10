@@ -662,3 +662,8 @@ force corrupt_xid_all
 >>
 
 raise_statement(name) ::= "raise<if(name)> <name><endif>"
+
+query_partition_clause(impl) ::= "partition by <impl>"
+query_partition_clause_impl_expressions(expressions) ::= <<
+<expressions; separator=", ">
+>>
