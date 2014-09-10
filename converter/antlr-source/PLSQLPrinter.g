@@ -1739,30 +1739,24 @@ expression_element
     ->   expression_element_generic_binop(op={op}, arg1={$arg1.st}, arg2={$arg2.st})
     |    ^(SQL92_RESERVED_NOT expression_element)
     ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_NULL expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NULL expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_NAN expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NAN expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_PRESENT expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_PRESENT expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_INFINITE expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_INFINITE expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_A_SET expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_A_SET expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_NOT_EMPTY expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(IS_EMPTY expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(
+            (
+              IS_NOT_NULL { op = "is not null"; }
+              | IS_NULL { op = "is null"; }
+              | IS_NOT_NAN { op = "is not nan"; }
+              | IS_NAN { op = "is nan"; }
+              | IS_NOT_PRESENT { op = "is not present"; }
+              | IS_PRESENT { op = "is present"; }
+              | IS_NOT_INFINITE { op = "is not infinite"; }
+              | IS_INFINITE { op = "is infinite"; }
+              | IS_NOT_A_SET { op = "is not a set"; }
+              | IS_A_SET { op = "is a set"; }
+              | IS_NOT_EMPTY { op = "is not empty"; }
+              | IS_EMPTY { op = "is empty"; }
+            )
+            arg=expression_element
+          )
+    ->   expression_element_generic_suffix_unary_op(op={op}, arg={$arg.st})
     |    ^(IS_NOT_OF_TYPE expression_element type_spec+)
     ->   template() "not implemented: expression_element"
     |    ^(IS_OF_TYPE expression_element type_spec+)
@@ -1801,8 +1795,8 @@ expression_element
     |    ^(PIPE_VK expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    ^(UNARY_OPERATOR expression_element)
-    ->   template() "not implemented: expression_element"
+    |    ^(UNARY_OPERATOR arg=expression_element)
+    ->   expression_element_generic_prefix_unary_op(op={$UNARY_OPERATOR.text}, is_spaced={false}, arg={$arg.st})
     |    ^(SQL92_RESERVED_PRIOR expression_element)
     ->   template() "not implemented: expression_element"
     |    ^(NEW_VK expression)

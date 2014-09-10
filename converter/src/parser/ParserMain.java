@@ -466,8 +466,8 @@ public class ParserMain {
 			return "Printer errors (on printed tree)";
 		}
 		if (!printResult.text.equals(reprintResult.text)) {
-			int mismatchIndex = getStringMismatchIndex(printResult.text, reprintResult.text);
-			return "Texts mismatch at " + mismatchIndex;
+			TextPos mismatchPos = getStringMismatchIndex(printResult.text, reprintResult.text);
+			return String.format("Texts mismatch at %d:%d", mismatchPos.line, mismatchPos.col);
 		}
 		Tree[] mismatchedTrees = getMismatchedTreeNodes(tree, reparseResult.tree);
 		if (mismatchedTrees == null) {
@@ -493,14 +493,30 @@ public class ParserMain {
 		return validatePrintedTreeMatchesParsedTree(parseResult.tree);
 	}
 	
-	private static int getStringMismatchIndex(String s1, String s2) {
+	static class TextPos {
+		public int line;
+		public int col;
+	}
+	
+	private static TextPos getStringMismatchIndex(String s1, String s2) {
 		int n = Math.max(s1.length(), s2.length());
+		int line = 1;
+		int col = 1;
 		for (int i = 0; i < n; ++i) {
 			if (i >= s1.length() || i >= s2.length() || s1.charAt(i) != s2.charAt(i)) {
-				return i;
+				TextPos result = new TextPos();
+				result.line = line;
+				result.col = col;
+				return result;
+			}
+			if (s1.charAt(i) == '\n') {
+				++line;
+				col = 1;
+			} else {
+				++col;
 			}
 		}
-		return -1;
+		return null;
 	}
 
 	private static String getTreeNodeDescription(Tree tree) {

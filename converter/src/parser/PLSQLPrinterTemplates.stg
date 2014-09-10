@@ -71,6 +71,8 @@ function_arguments(arguments) ::= <<
 >>
 
 expression_element_generic_binop(op, arg1, arg2) ::= "(<arg1>) <op> (<arg2>)"
+expression_element_generic_suffix_unary_op(op, arg) ::= "(<arg>) <op>"
+expression_element_generic_prefix_unary_op(op, is_spaced, arg) ::= "<op><if (is_spaced)> <endif>(<arg>)"
 
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
