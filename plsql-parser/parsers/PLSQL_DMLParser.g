@@ -936,11 +936,11 @@ in_elements
     |    LEFT_PAREN concatenation_wrapper (COMMA concatenation_wrapper)* RIGHT_PAREN
          -> ^(EXPR_LIST concatenation_wrapper+)
     |    constant
-         -> ^(EXPR_LIST constant)
+         -> ^(EXPR constant)
     |    bind_variable
-         -> ^(EXPR_LIST bind_variable)
+         -> ^(EXPR bind_variable)
     |    general_element
-         -> ^(EXPR_LIST general_element)
+         -> ^(EXPR general_element)
     ;
 
 between_elements
