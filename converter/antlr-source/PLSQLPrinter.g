@@ -943,18 +943,20 @@ goto_statement
     ;
 
 if_statement
-    :    ^(PLSQL_RESERVED_IF expression seq_of_statements elsif_part* else_part?)
-    ->   template() "not implemented: if_statement"
+    :    ^(PLSQL_RESERVED_IF expression seq_of_statements elsif_parts+=elsif_part* else_part?)
+    ->   if_statement(
+          condition={$expression.st}, then_seq_of_statements={$seq_of_statements.st},
+          elsif_parts={$elsif_parts}, else_part={$else_part.st})
     ;
 
 elsif_part
     :    ^(PLSQL_NON_RESERVED_ELSIF expression seq_of_statements)
-    ->   template() "not implemented: elsif_part"
+    ->   elsif_part(condition={$expression.st}, seq_of_statements={$seq_of_statements.st})
     ;
 
 else_part
     :    ^(SQL92_RESERVED_ELSE seq_of_statements)
-    ->   template() "not implemented: else_part"
+    ->   else_part(seq_of_statements={$seq_of_statements.st})
     ;
 
 loop_statement

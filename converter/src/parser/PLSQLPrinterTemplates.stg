@@ -409,3 +409,26 @@ update_set_element_columns_subquery(column_names, subquery) ::= <<
 update_set_element_column_value(column_name, expression) ::= <<
 value(<column_name>) = <expression>
 >>
+
+if_statement(condition, then_seq_of_statements, elsif_parts, else_part) ::= <<
+if <condition> then
+  <then_seq_of_statements><if (elsif_parts)>
+  
+<elsif_parts; separator="\n">
+<endif><if (else_part)>
+
+<else_part>
+<endif>
+
+end if;
+>>
+
+elsif_part(condition, seq_of_statements) ::= <<
+elsif <condition> then
+  <seq_of_statements>
+>>
+
+else_part(seq_of_statements) ::= <<
+else
+  <seq_of_statements>
+>>
