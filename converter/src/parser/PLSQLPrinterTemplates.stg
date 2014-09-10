@@ -660,3 +660,5 @@ force corrupt_xid <expression>
 commit_statement_force_3() ::= <<
 force corrupt_xid_all
 >>
+
+raise_statement(name) ::= "raise<if(name)> <name><endif>"

@@ -1007,7 +1007,7 @@ null_statement
 
 raise_statement
     :    ^(RAISE_VK exception_name?)
-    ->   template() "not implemented: raise_statement"
+    ->   raise_statement(name={$exception_name.st})
     ;
 
 return_statement
