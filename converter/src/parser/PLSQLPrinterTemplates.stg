@@ -78,6 +78,17 @@ expression_element_cursor_op(cursor_name, op) ::= "<cursor_name><op>"
 expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
 expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
 expression_element_prior(expr) ::= "prior <expr>"
+expression_element_dot_star(tableview_name) ::= "<tableview_name>.*"
+
+standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
+count(<if (is_distinct)>
+distinct <elseif(is_unique)>unique <elseif(is_all)>all <endif><if (is_asterisk)>*<else><expression>
+<endif>)<if (over_clause)> <over_clause><endif>
+>>
+
+standard_function_enabling_over(function_name, function_arguments, over_clause) ::= <<
+<function_name><function_arguments><if (over_clause)> <over_clause><endif>
+>>
 
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
@@ -160,7 +171,7 @@ all
 column_alias(name) ::= "as <name>"
 table_alias(name) ::= "<name>"
 
-selected_element(expression, alias) ::= "<expression><alias>"
+selected_element(expression, alias) ::= "<expression><if (alias)> <alias><endif>"
 
 from_clause(table_refs) ::= <<
 from <table_refs; separator=",\n  ">
@@ -213,6 +224,13 @@ dml_table_expression_clause_direct(table_or_view_name, sample_clause) ::= <<
 
 tableview_name(ids, link_name, partition_extension_clause) ::= <<
 <ids; separator="."><if (link_name)>@<link_name><endif><if (partition_extension_clause)><partition_extension_clause><endif>
+>>
+
+dml_table_expression_clause_select(select_statement, subquery_restriction_clause) ::= <<
+(<select_statement><if (subquery_restriction_clause)>
+
+<subquery_restriction_clause>
+<endif>)
 >>
 
 join_on_part(expression) ::= "on <expression>"
@@ -471,4 +489,15 @@ connect by<if (is_nocycle)> nocycle<endif> <condition><if (start_part)> <start_p
 
 start_part(condition) ::= <<
 start with <condition>
+>>
+
+group_by_clause(group_by_elements, having_clause) ::= <<
+group by <group_by_elements; separator=", "><if (having_clause)>
+
+<having_clause>
+<endif>
+>>
+
+having_clause(condition) ::= <<
+having <condition>
 >>

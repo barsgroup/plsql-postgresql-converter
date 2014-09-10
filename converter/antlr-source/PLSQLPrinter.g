@@ -1258,20 +1258,18 @@ start_part
     ;
 
 group_by_clause
-    :    ^(SQL92_RESERVED_GROUP group_by_element+ having_clause?)
-    ->   template() "not implemented: group_by_clause"
+    :    ^(SQL92_RESERVED_GROUP elements+=group_by_element+ having_clause?)
+    ->   group_by_clause(group_by_elements={$elements}, having_clause={$having_clause.st})
     ;
 
 group_by_element
-    :    ^(GROUP_BY_ELEMENT group_by_elements)
-    ->   template() "not implemented: group_by_element"
+    :    ^(GROUP_BY_ELEMENT group_by_elements) -> {$group_by_elements.st}
     ;
 
 group_by_elements
     :    ^(GROUPING_VK groupin_set+)
     ->   template() "not implemented: group_by_elements"
-    |    grouping_element 
-    ->   template() "not implemented: group_by_elements"
+    |    grouping_element -> {$grouping_element.st}
     ;
 
 groupin_set
@@ -1282,15 +1280,13 @@ groupin_set
 grouping_element
     :    ^((ROLLUP_VK|CUBE_VK) grouping_element+)
     ->   template() "not implemented: grouping_element"
-    |    expression_list
-    ->   template() "not implemented: grouping_element"
-    |    expression 
-    ->   template() "not implemented: grouping_element"
+    |    expression_list -> {$expression_list.st}
+    |    expression -> {$expression.st}
     ;
 
 having_clause
     :    ^(SQL92_RESERVED_HAVING expression)
-    ->   template() "not implemented: having_clause"
+    ->   having_clause(condition={$expression.st})
     ;
 
 model_clause
@@ -1596,7 +1592,9 @@ dml_table_expression_clause
         (    ^(COLLECTION_MODE expression PLUS_SIGN?)
               ->   template() "not implemented: dml_table_expression_clause[COLLECTION_MODE]"
         |    ^(SELECT_MODE select_statement subquery_restriction_clause?)
-              ->   template() "not implemented: dml_table_expression_clause[SELECT_MODE]"
+              ->   dml_table_expression_clause_select(
+                    select_statement={$select_statement.st},
+                    subquery_restriction_clause={$subquery_restriction_clause.st})
         |    ^(DIRECT_MODE tableview_name sample_clause?)
               -> dml_table_expression_clause_direct(table_or_view_name={$tableview_name.st}, sample_clause={$sample_clause.st})
         |    general_element -> { $general_element.st }
@@ -1818,8 +1816,7 @@ expression_element
     ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_DISTINCT expression_element)
     ->   template() "not implemented: expression_element"
-    |    ^(STANDARD_FUNCTION standard_function)
-    ->   template() "not implemented: expression_element"
+    |    ^(STANDARD_FUNCTION standard_function) -> { $standard_function.st }
     |    ^((SOME_VK|SQL92_RESERVED_EXISTS|SQL92_RESERVED_ALL|SQL92_RESERVED_ANY) expression_element)
     ->   template() "not implemented: expression_element"
     |    ^(VECTOR_EXPR expression_element+)
@@ -1833,7 +1830,7 @@ expression_element
     ->   template() "not implemented: expression_element"
 
     |    ^(DOT_ASTERISK tableview_name)
-    ->   template() "not implemented: expression_element"
+    ->   expression_element_dot_star(tableview_name={$tableview_name.st})
     |    ^(
             (
               PERCENT_FOUND_VK { op = "\%FOUND"; }
@@ -1852,7 +1849,7 @@ expression_element
     |    constant -> { $constant.st }
     |    general_element -> { $general_element.st }
     |    hosted_variable_name -> { $hosted_variable_name.st }
-    |    subquery -> { $subquery.st } // TODO: need parens?
+    |    subquery -> in_parens(val={$subquery.st})
     ;
 
 in_elements
@@ -1924,11 +1921,15 @@ case_else_part
 
 standard_function
     :    ^(FUNCTION_ENABLING_OVER function_argument over_clause?)
-    ->   template() "not implemented: standard_function"
+    ->   standard_function_enabling_over(
+          function_name={$FUNCTION_ENABLING_OVER.text}, function_arguments={$function_argument.st}, over_clause={$over_clause.st})
     |    ^(FUNCTION_ENABLING_USING function_argument using_clause?)
     ->   template() "not implemented: standard_function"
     |    ^(COUNT_VK (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE|SQL92_RESERVED_ALL)? ( ASTERISK | expression ) over_clause?)
-    ->   template() "not implemented: standard_function"
+    ->   standard_function_count(
+            is_distinct={$SQL92_RESERVED_DISTINCT != null}, is_unique={$SQL92_RESERVED_UNIQUE != null},
+            is_all={$SQL92_RESERVED_ALL != null}, is_asterisk={$ASTERISK != null}, expression={$expression.st},
+            over_clause={$over_clause.st})
     |    ^((CAST_VK|XMLCAST_VK) (subquery|expression) type_spec)
     ->   template() "not implemented: standard_function"
     |    ^(CHR_VK expression NCHAR_CS_VK)
