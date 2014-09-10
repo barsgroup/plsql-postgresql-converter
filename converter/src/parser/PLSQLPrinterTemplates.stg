@@ -108,6 +108,9 @@ expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
 expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
 expression_element_prior(expr) ::= "prior <expr>"
 expression_element_dot_star(tableview_name) ::= "<tableview_name>.*"
+expression_element_like(text, like_op, pattern, escape_char) ::= <<
+(<text>) <like_op> (<pattern>)<if (escape_char)> escape (<escape_char>)<endif>
+>>
 
 standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
 count(<if (is_distinct)>

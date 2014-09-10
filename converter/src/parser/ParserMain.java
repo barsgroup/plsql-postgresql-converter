@@ -70,7 +70,7 @@ public class ParserMain {
 		    out.print(printed);
 		}
 		
-		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent);
+		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, "workdir/output_reprinted.txt");
 		
 		if (errorMessage != null) {
 			System.out.printf("Error comparing after print: %s\n", errorMessage);
@@ -444,6 +444,10 @@ public class ParserMain {
 	}
 	
 	private static String validatePrintedTreeMatchesParsedTree(Tree tree) throws Exception {
+		return validatePrintedTreeMatchesParsedTree(tree, null);
+	}
+	
+	private static String validatePrintedTreeMatchesParsedTree(Tree tree, String reprintedTreeDestination) throws Exception {
 		PrintResult printResult = printTreeToString(tree);
 		if (printResult.printErrors.size() > 0) {
 			return "Printer errors";
@@ -459,13 +463,23 @@ public class ParserMain {
 			return "Parser errors (on printed tree)";
 		}
 		PrintResult reprintResult = printTreeToString(reparseResult.tree);
+		if (reprintedTreeDestination != null) {
+			try (PrintStream out = new PrintStream(new FileOutputStream(reprintedTreeDestination))) {
+			    out.print(reprintResult.text);
+			}
+		}
 		if (reprintResult.printErrors.size() > 0) {
 			return "Printer errors (on printed tree)";
 		}
-		if (!printResult.text.equals(reprintResult.text)) {
-			TextPos mismatchPos = getStringMismatchIndex(printResult.text, reprintResult.text);
-			return String.format("Texts mismatch at %d:%d", mismatchPos.line, mismatchPos.col);
-		}
+		/*
+		String text1 = printResult.text.replace("\r\n", "\n").replace("\r", "\n");
+		String text2 = reprintResult.text.replace("\r\n", "\n").replace("\r", "\n");
+		if (!text1.equals(text2)) {
+			TextPos mismatchPos = getStringMismatchIndex(text1, text2);
+			Character c1 = mismatchPos.index < text1.length() ? text1.charAt(mismatchPos.index) : null;
+			Character c2 = mismatchPos.index < text2.length() ? text2.charAt(mismatchPos.index) : null;
+			return String.format("Texts mismatch at %d:%d '%s' <> '%s'", mismatchPos.line, mismatchPos.col, c1, c2);
+		}*/
 		Tree[] mismatchedTrees = getMismatchedTreeNodes(tree, reparseResult.tree);
 		if (mismatchedTrees == null) {
 			return null;
@@ -480,6 +494,10 @@ public class ParserMain {
 	}
 	
 	private static String validatePrintedTreeMatchesParsedTree(String inputContent) throws Exception {
+		return validatePrintedTreeMatchesParsedTree(inputContent, null);
+	}
+	
+	private static String validatePrintedTreeMatchesParsedTree(String inputContent, String reprintedTreeDestination) throws Exception {
 		ParseResult parseResult = parseTreeFromString(inputContent, false);
 		if (parseResult.lexerErrors.size() > 0) {
 			return "Lexer errors";
@@ -487,12 +505,13 @@ public class ParserMain {
 		if (parseResult.parserErrors.size() > 0) {
 			return "Parser errors";
 		}
-		return validatePrintedTreeMatchesParsedTree(parseResult.tree);
+		return validatePrintedTreeMatchesParsedTree(parseResult.tree, reprintedTreeDestination);
 	}
 	
 	static class TextPos {
 		public int line;
 		public int col;
+		public int index;
 	}
 	
 	private static TextPos getStringMismatchIndex(String s1, String s2) {
@@ -504,6 +523,7 @@ public class ParserMain {
 				TextPos result = new TextPos();
 				result.line = line;
 				result.col = col;
+				result.index = i;
 				return result;
 			}
 			if (s1.charAt(i) == '\n') {

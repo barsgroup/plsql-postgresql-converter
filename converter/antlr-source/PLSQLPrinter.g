@@ -1810,10 +1810,19 @@ expression_element
     ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_BETWEEN expression_element expression_element expression_element)
     ->   template() "not implemented: expression_element"
-    |    ^(NOT_LIKE expression_element expression_element expression_element?)
-    ->   template() "not implemented: expression_element"
-    |    ^((SQL92_RESERVED_LIKE|LIKEC_VK|LIKE2_VK|LIKE4_VK) expression_element expression_element expression_element?)
-    ->   template() "not implemented: expression_element"
+    |    ^(
+            (
+              SQL92_RESERVED_LIKE { op = "like"; }
+              | LIKEC_VK { op = "likec"; }
+              | LIKE2_VK { op = "like2"; }
+              | LIKE4_VK { op = "like4"; }
+              | NOT_LIKE { op = "not like"; }
+            )
+            text=expression_element
+            pattern=expression_element
+            escape=expression_element?
+          )
+    ->   expression_element_like(text={$text.st}, like_op={op}, pattern={$pattern.st}, escape_char={$escape.st})
     
     |    ^(PIPE_VK expression_element expression_element)
     ->   template() "not implemented: expression_element"
