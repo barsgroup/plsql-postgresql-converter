@@ -1384,21 +1384,18 @@ order_by_elements
 
 for_update_clause
     :    ^(SQL92_RESERVED_FOR for_update_of_part? for_update_options?)
-    ->   template() "not implemented: for_update_clause"
+    ->   for_update_clause(for_update_of_part={$for_update_of_part.st}, for_update_options={$for_update_options.st})
     ;
 
 for_update_of_part
-    :    ^(SQL92_RESERVED_OF column_name+)
-    ->   template() "not implemented: for_update_of_part"
+    :    ^(SQL92_RESERVED_OF column_names+=column_name+)
+    ->   for_update_of_part(column_names={$column_names})
     ;
 
 for_update_options
-    :    SKIP_VK
-    ->   template() "not implemented: for_update_options"
-    |    PLSQL_RESERVED_NOWAIT
-    ->   template() "not implemented: for_update_options"
-    |    ^(WAIT_VK expression)
-    ->   template() "not implemented: for_update_options"
+    :    SKIP_VK -> for_update_options_skip_locked()
+    |    PLSQL_RESERVED_NOWAIT -> for_update_options_nowait()
+    |    ^(WAIT_VK expression) -> for_update_options_wait(expression={$expression.st})
     ;
 
 // $>

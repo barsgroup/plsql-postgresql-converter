@@ -313,6 +313,18 @@ order_by_elements(expression, is_asc, is_desc, is_nulls_first, is_nulls_last) ::
 <expression><if (is_asc)> asc<elseif (is_desc)> desc<endif><if (is_nulls_first)> nulls first<elseif (is_nulls_last)> nulls last<endif>
 >>
 
+for_update_clause(for_update_of_part, for_update_options) ::= <<
+for update<if (for_update_of_part)> <for_update_of_part><endif><if (for_update_options)> <for_update_options><endif>
+>>
+
+for_update_of_part(column_names) ::= <<
+of <column_names; separator=",">
+>>
+
+for_update_options_skip_locked() ::= "skip locked"
+for_update_options_nowait() ::= "nowait"
+for_update_options_wait(expression) ::= "wait <expression>"
+
 create_package_spec(is_replace, name, invoker_rights_clause, items) ::= <<
 create<if (is_replace)> or replace<endif> package <name><if (invoker_rights_clause)>
 
