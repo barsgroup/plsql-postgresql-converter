@@ -1202,8 +1202,8 @@ cursor_loop_param
     :    (index_name in_key reverse_key? lower_bound DOUBLE_PERIOD)=> 
             index_name in_key reverse_key? lower_bound DOUBLE_PERIOD upper_bound
         -> ^(INDEXED_FOR index_name reverse_key? ^(SIMPLE_BOUND lower_bound upper_bound))
-    |     record_name in_key ( cursor_name expression_list? {mode = 1;} | LEFT_PAREN select_statement RIGHT_PAREN)
-        ->{mode == 1}? ^(CURSOR_BASED_FOR record_name cursor_name expression_list?)
+    |     record_name in_key ( general_element {mode = 1;} | LEFT_PAREN select_statement RIGHT_PAREN)
+        ->{mode == 1}? ^(CURSOR_BASED_FOR record_name general_element)
         -> ^(SELECT_BASED_FOR record_name select_statement)
     ;
 // $>
