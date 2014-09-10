@@ -188,14 +188,14 @@ select_statement(query_partitioning_clause, subquery, order_by_clause, for_updat
 >>
 
 subquery(subquery_basic_elements, subquery_operation_parts) ::= <<
-<subquery_basic_elements><if (subquery_operation_parts)>
+<subquery_basic_elements>
+<if (subquery_operation_parts)>
 <subquery_operation_parts; separator="\n">
 <endif>
 >>
 
 subquery_operation_part(operator, is_all, subquery_basic_elements) ::= <<
-<operator><if (is_all)> all<endif>
-<subquery_basic_elements>
+<operator><if (is_all)> all<endif> <subquery_basic_elements>
 >>
 
 in_parens(val) ::= "(<val>)"
