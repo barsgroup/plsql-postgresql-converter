@@ -128,7 +128,7 @@ alter_function
     ;
 
 create_function_body
-    :    ^(CREATE_FUNCTION REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
+    :    ^(CREATE_FUNCTION SQL92_RESERVED_CREATE? REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
             ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
             (    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
     ->   template() "not implemented: create_function_body"
@@ -136,7 +136,7 @@ create_function_body
     ->   template() "not implemented: create_function_body"
             |    ^(BODY_MODE block)
                  -> create_function_body(
-                      is_replace={$REPLACE_VK != null}, name_parts={$name},
+                      is_create={$SQL92_RESERVED_CREATE != null}, is_replace={$REPLACE_VK != null}, name_parts={$name},
                       arguments={$args}, return_type={$ret.st}, add_clauses={$ac}, is_pipelined={$PIPELINED_VK != null},
                       block={$block.st})
             )
@@ -263,11 +263,11 @@ alter_procedure
     ;
 
 create_procedure_body
-    :    ^(CREATE_PROCEDURE REPLACE_VK? procedure_name ^(PARAMETERS arguments+=parameter*) invoker_rights_clause?
+    :    ^(CREATE_PROCEDURE SQL92_RESERVED_CREATE? REPLACE_VK? procedure_name ^(PARAMETERS arguments+=parameter*) invoker_rights_clause?
            create_procedure_body_impl
         )
     ->   create_procedure_body(
-          is_replace={$REPLACE_VK != null}, name={$procedure_name.st}, arguments={$arguments},
+          is_create={$SQL92_RESERVED_CREATE != null}, is_replace={$REPLACE_VK != null}, name={$procedure_name.st}, arguments={$arguments},
           invoker_rights_clause={$invoker_rights_clause.st}, impl={$create_procedure_body_impl.st})
     ;
     
@@ -1432,7 +1432,9 @@ update_set_elements
 delete_statement
     :    ^(SQL92_RESERVED_DELETE general_table_ref
             where_clause? static_returning_clause? error_logging_clause?)
-    ->   template() "not implemented: delete_statement"
+    ->   delete_statement(
+            general_table_ref={$general_table_ref.st}, where_clause={$where_clause.st},
+            static_returning_clause={$static_returning_clause.st}, error_logging_clause={$error_logging_clause.st})
     ;
 
 insert_statement
@@ -1792,10 +1794,10 @@ expression_element
     |    ^((MEMBER_VK|SUBMULTISET_VK) expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    ^(NOT_IN expression_element in_elements)
-    ->   template() "not implemented: expression_element"
-    |    ^(SQL92_RESERVED_IN expression_element in_elements)
-    ->   template() "not implemented: expression_element"
+    |    ^(NOT_IN expr=expression_element in_elements)
+    ->   expression_element_not_in(expr={$expr.st}, in_elements={$in_elements.st})
+    |    ^(SQL92_RESERVED_IN expr=expression_element in_elements)
+    ->   expression_element_in(expr={$expr.st}, in_elements={$in_elements.st})
     |    ^(NOT_BETWEEN expression_element expression_element expression_element)
     ->   template() "not implemented: expression_element"
     |    ^(SQL92_RESERVED_BETWEEN expression_element expression_element expression_element)
@@ -1853,10 +1855,9 @@ expression_element
     ;
 
 in_elements
-    :    subquery
-    ->   template() "not implemented: in_elements"
-    |    expression_list
-    ->   template() "not implemented: in_elements"
+    :    subquery -> in_parens(val={$subquery.st})
+    |    expression -> { $expression.st }
+    |    expression_list -> { $expression_list.st }
     ;
 
 datetime_element
@@ -2117,8 +2118,10 @@ partition_extension_clause
     ;
 
 alias
-    :    ^(ALIAS char_set_name? ID)
-    ->   alias(name={$ID.text})
+    :    ^(COLUMN_ALIAS char_set_name? ID)
+    ->   column_alias(name={$ID.text})
+    |    ^(TABLE_ALIAS char_set_name? ID)
+    ->   table_alias(name={$ID.text})
     ;
 
 where_clause

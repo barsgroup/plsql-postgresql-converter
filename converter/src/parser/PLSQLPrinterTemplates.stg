@@ -3,15 +3,16 @@ group PLSQLPrinterTemplates;
 string_literal(val) ::= "<val>"
 
 create_function_body(
-  is_replace, name_parts, arguments,
+  is_create, is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, block
 ) ::= <<
-create<if (is_replace)> or replace<endif> function <name_parts; separator="."><if (arguments)>
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>function <name_parts; separator="."><if (arguments)>
   (<arguments; separator=",\n">)<endif>
 return <return_type>
 <add_clauses; separator=" ">
 <if (is_pipelined)>pipelined<endif>
-as
+
+is
 <block>;
 >>
 
@@ -74,6 +75,8 @@ expression_element_generic_binop(op, arg1, arg2) ::= "(<arg1>) <op> (<arg2>)"
 expression_element_generic_suffix_unary_op(op, arg) ::= "(<arg>) <op>"
 expression_element_generic_prefix_unary_op(op, is_spaced, arg) ::= "<op><if (is_spaced)> <endif>(<arg>)"
 expression_element_cursor_op(cursor_name, op) ::= "<cursor_name><op>"
+expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
+expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
 
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
@@ -145,7 +148,8 @@ all
 <endif>
 >>
 
-alias(name) ::= "as <name>"
+column_alias(name) ::= "as <name>"
+table_alias(name) ::= "<name>"
 
 selected_element(expression, alias) ::= "<expression><alias>"
 
@@ -257,12 +261,13 @@ begin
 end <name>;
 >>
 
-create_procedure_body(is_replace, name, arguments, invoker_rights_clause, impl) ::= <<
-create<if (is_replace)> or replace<endif> procedure <name><if (arguments)>(
+create_procedure_body(is_create, is_replace, name, arguments, invoker_rights_clause, impl) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>procedure <name><if (arguments)>(
   <arguments; separator=",\n">)<endif><if (invoker_rights_clause)>
 
 <invoker_rights_clause>
 <endif>
+
 is
 <impl>
 >>
@@ -272,7 +277,7 @@ create_procedure_body_impl_external() ::= "external"
 block(declare_spec, body) ::= <<
 <if (declare_spec)>
 declare
-  <declare_spec:{v|<v>;
+  <declare_spec:{v|<v>
 }>
 <endif>
 <body>;
@@ -432,4 +437,17 @@ elsif <condition> then
 else_part(seq_of_statements) ::= <<
 else
   <seq_of_statements>
+>>
+
+delete_statement(general_table_ref, where_clause, static_returning_clause, error_logging_clause) ::= <<
+delete from <general_table_ref><if (where_clause)>
+
+<where_clause>
+<endif><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
 >>
