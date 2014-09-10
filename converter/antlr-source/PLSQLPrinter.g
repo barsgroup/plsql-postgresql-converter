@@ -1745,6 +1745,14 @@ expression_element
             | GREATER_THAN_OP { op = ">"; }
             | LESS_THAN_OR_EQUALS_OP { op = "<="; }
             | GREATER_THAN_OR_EQUALS_OP { op = ">="; }
+            | CONCATENATION_OP { op = "||"; }
+            | PLUS_SIGN { op = "+"; }
+            | MINUS_SIGN { op = "-"; }
+            | ASTERISK { op = "*"; }
+            | SOLIDUS { op = "/"; }
+            | PERCENT { op = "\%"; }
+            | MOD_VK { op = "mod"; }
+            | DIV_VK { op = "div"; }
           )
           arg1=expression_element arg2=expression_element
          )
@@ -1789,21 +1797,7 @@ expression_element
     ->   template() "not implemented: expression_element"
     |    ^((SQL92_RESERVED_LIKE|LIKEC_VK|LIKE2_VK|LIKE4_VK) expression_element expression_element expression_element?)
     ->   template() "not implemented: expression_element"
-
-    |    ^(CONCATENATION_OP expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(PLUS_SIGN expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(MINUS_SIGN expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(ASTERISK expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(SOLIDUS expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(MOD_VK expression_element expression_element)
-    ->   template() "not implemented: expression_element"
-    |    ^(DIV_VK expression_element expression_element)
-    ->   template() "not implemented: expression_element"
+    
     |    ^(PIPE_VK expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
