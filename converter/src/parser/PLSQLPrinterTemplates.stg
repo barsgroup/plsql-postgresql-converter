@@ -160,6 +160,12 @@ loopDefinition_select(indexVar, select_statement) ::= <<
 )
 >>
 
+while_loop(condition, seq_of_statements) ::= <<
+while <condition> loop
+  <seq_of_statements>
+end loop
+>>
+
 select_statement(query_partitioning_clause, subquery, order_by_clause, for_update_clause) ::= <<
 <if (query_partitioning_clause)><query_partitioning_clause><endif>
 <subquery><if (order_by_clause)>
@@ -581,4 +587,12 @@ using_element_asterisk() ::= "*"
 
 using_element_element(is_in, is_out, expression, alias) ::= <<
 <if (is_in)>in <endif><if (is_out)>out <endif><expression><if (alias)> <alias><endif>
+>>
+
+over_clause(query_partition_clause, order_by_clause, windowing_clause) ::= <<
+over (<if (query_partition_clause)><query_partition_clause> <endif><if (order_by_clause)><order_by_clause><if (windowing_clause)> <windowing_clause><endif><endif>)
+>>
+
+exit_statement(label_name, condition) ::= <<
+exit<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
 >>

@@ -934,7 +934,7 @@ general_when
 
 exit_statement
     :    ^(EXIT_VK label_name? general_when?)
-    ->   template() "not implemented: exit_statement"
+    ->   exit_statement(label_name={$label_name.st}, condition={$general_when.st})
     ;
 
 goto_statement
@@ -961,7 +961,7 @@ else_part
 
 loop_statement
     :    ^(WHILE_LOOP expression seq_of_statements)
-    ->   template() "not implemented: loop_statement[WHILE_LOOP]"
+    ->   while_loop(condition={$expression.st}, seq_of_statements={$seq_of_statements.st})
     |    ^(FOR_LOOP cursor_loop_param seq_of_statements)
     ->   for_loop(loopDefinition={$cursor_loop_param.st}, statements={$seq_of_statements.st})
     |    ^(LOOP_VK seq_of_statements)
@@ -2015,7 +2015,9 @@ standard_function
 
 over_clause
     :    ^(OVER_VK query_partition_clause? (order_by_clause windowing_clause?)?)
-    ->   template() "not implemented: over_clause"
+    ->   over_clause(
+          query_partition_clause={$query_partition_clause.st},
+          order_by_clause={$order_by_clause.st}, windowing_clause={$windowing_clause.st})
     ;
 
 windowing_clause
