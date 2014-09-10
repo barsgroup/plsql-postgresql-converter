@@ -789,10 +789,11 @@ dml_table_expression_clause
 
 table_collection_expression
     :    ( table_key | the_key)
-         ( (LEFT_PAREN (select_key | with_key)) => LEFT_PAREN subquery RIGHT_PAREN
-         | LEFT_PAREN expression RIGHT_PAREN //(LEFT_PAREN PLUS_SIGN RIGHT_PAREN)?
+         (
+           (LEFT_PAREN (select_key | with_key)) => LEFT_PAREN subquery RIGHT_PAREN -> subquery
+           | LEFT_PAREN expression_wrapper RIGHT_PAREN -> expression_wrapper
          )
-        -> ^(EXPR subquery? expression?) //PLUS_SIGN?
+         (outer_join_sign -> ^(outer_join_sign $table_collection_expression))?
     ;
 
 subquery_restriction_clause
