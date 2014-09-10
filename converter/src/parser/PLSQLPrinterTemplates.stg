@@ -88,6 +88,13 @@ loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
 <indexVar> in<if (isReverse)> reverse<endif> <lowerBound>..<upperBound>
 >>
 
+loopDefinition_select(indexVar, select_statement) ::= <<
+<indexVar> in
+(
+  <select_statement>
+)
+>>
+
 select_statement(query_partitioning_clause, subquery, order_by_clause, for_update_clause) ::= <<
 <if (query_partitioning_clause)><query_partitioning_clause><endif>
 <subquery><if (order_by_clause)>

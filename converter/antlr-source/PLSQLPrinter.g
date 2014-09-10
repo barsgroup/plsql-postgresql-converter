@@ -973,10 +973,10 @@ loop_statement
 cursor_loop_param
     :    ^(INDEXED_FOR index_name REVERSE_VK? ^(SIMPLE_BOUND b1=expression b2=expression))
     ->   loopDefinition_bounds(indexVar={$index_name.st}, isReverse={$REVERSE_VK != null}, lowerBound={$b1.st}, upperBound={$b2.st})
-    |    ^(CURSOR_BASED_FOR record_name cursor_name expression_list?)
+    |    ^(CURSOR_BASED_FOR record_name general_element)
     ->   template() "not implemented: cursor_loop_param[CURSOR_BASED_FOR]"
     |    ^(SELECT_BASED_FOR record_name select_statement)
-    ->   template() "not implemented: cursor_loop_param[SELECT_BASED_FOR]"
+    ->   loopDefinition_select(indexVar={$record_name.st}, select_statement={$select_statement.st})
     ;
 
 // $>
