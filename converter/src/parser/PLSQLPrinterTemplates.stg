@@ -353,7 +353,7 @@ only(<dml_table_expression_clause>)
 <else>
 <dml_table_expression_clause>
 <endif>
-<table_alias>
+<if (table_alias)> <table_alias><endif>
 >>
 
 values_clause(expression_or_expression_list) ::= <<
@@ -381,4 +381,31 @@ exception_handler(exception_names, seq_of_statements) ::= <<
 when <exception_names; separator=" or ">
 then
   <seq_of_statements>
+>>
+
+update_statement(general_table_ref, update_set_elements, where_clause, static_returning_clause, error_logging_clause) ::= <<
+update <general_table_ref>
+set
+  <update_set_elements; separator=",\n"><if (where_clause)>
+  
+<where_clause>
+<endif><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+update_set_element_column_expr(column_name, expression) ::= <<
+<column_name> = <expression>
+>>
+
+update_set_element_columns_subquery(column_names, subquery) ::= <<
+(<column_names; separator=", ">) = <subquery>
+>>
+
+update_set_element_column_value(column_name, expression) ::= <<
+value(<column_name>) = <expression>
 >>

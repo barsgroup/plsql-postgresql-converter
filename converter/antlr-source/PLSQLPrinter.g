@@ -1405,25 +1405,24 @@ for_update_options
 
 update_statement
     :    ^(SQL92_RESERVED_UPDATE general_table_ref
-            update_set_clause
+            ^(SET_VK update_elements+=update_set_elements+)
             where_clause? static_returning_clause? error_logging_clause?
         )
-    ->   template() "not implemented: update_statement"
+    ->   update_statement(
+            general_table_ref={$general_table_ref.st}, update_set_elements={$update_elements},
+            where_clause={$where_clause.st}, static_returning_clause={$static_returning_clause.st},
+            error_logging_clause={$error_logging_clause.st})
     ;
 
 // $<Update - Specific Clauses
-update_set_clause
-    :    ^(SET_VK update_set_elements+)
-    ->   template() "not implemented: update_set_clause"
-    ;
 
 update_set_elements
     :    ^(ASSIGN column_name expression)
-    ->   template() "not implemented: update_set_elements"
-    |    ^(ASSIGN column_name+ subquery)
-    ->   template() "not implemented: update_set_elements"
+    ->   update_set_element_column_expr(column_name={$column_name.st}, expression={$expression.st})
+    |    ^(ASSIGN names+=column_name+ subquery)
+    ->   update_set_element_columns_subquery(column_names={$names}, subquery={$subquery.st})
     |    ^(VALUE_VK char_set_name? ID expression)
-    ->   template() "not implemented: update_set_elements"
+    ->   update_set_element_column_value(column_name={$ID.text}, expression={$expression.st})
     ;
 
 // $>
@@ -1564,7 +1563,7 @@ general_table_ref
     :    ^(TABLE_REF alias? dml_table_expression_clause ONLY_VK?)
     ->   general_table_ref(
             is_only={$ONLY_VK != null},
-            dml_table_expression_clause_simple={$dml_table_expression_clause.st},
+            dml_table_expression_clause={$dml_table_expression_clause.st},
             table_alias={$alias.st})
     ;
 
