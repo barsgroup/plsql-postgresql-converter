@@ -137,11 +137,11 @@ create_function_body
     ->   template() "not implemented: create_function_body"
             |    ^(CALL_MODE call_spec)
     ->   template() "not implemented: create_function_body"
-            |    ^(BODY_MODE declare_spec* body)
+            |    ^(BODY_MODE block)
                  -> create_function_body(
                       is_replace={$REPLACE_VK != null}, name_parts={$name},
                       arguments={$args}, return_type={$ret.st}, add_clauses={$ac}, is_pipelined={$PIPELINED_VK != null},
-                      body={$body.st})
+                      block={$block.st})
             )
         );
 
@@ -266,13 +266,19 @@ alter_procedure
     ;
 
 create_procedure_body
-    :    ^(CREATE_PROCEDURE REPLACE_VK? procedure_name ^(PARAMETERS parameter*) invoker_rights_clause?
-            (    EXTERNAL_VK
-            |    ^(CALL_MODE call_spec)
-            |    ^(BODY_MODE declare_spec* body)
-            )
+    :    ^(CREATE_PROCEDURE REPLACE_VK? procedure_name ^(PARAMETERS arguments+=parameter*) invoker_rights_clause?
+           create_procedure_body_impl
         )
-    ->   template() "not implemented: create_procedure_body"
+    ->   create_procedure_body(
+          is_replace={$REPLACE_VK != null}, name={$procedure_name.st}, arguments={$arguments},
+          invoker_rights_clause={$invoker_rights_clause.st}, impl={$create_procedure_body_impl.st})
+    ;
+    
+create_procedure_body_impl
+    :   EXTERNAL_VK -> create_procedure_body_impl_external()
+        |    ^(CALL_MODE call_spec)
+        ->   template() "not implemented: alter_procedure"
+        |    ^(BODY_MODE block) -> { $block.st }
     ;
 
 // $>
@@ -546,7 +552,7 @@ subprog_decl_in_type
 constructor_declaration
     :    ^(CONSTRUCTOR_VK type_spec FINAL_VK? INSTANTIABLE_VK? ^(PARAMETERS type_elements_parameter*) 
             (    ^(CALL_MODE call_spec)
-            |    ^(BODY_MODE declare_spec* body)
+            |    ^(BODY_MODE block)
             )
         )
     ->   template() "not implemented: constructor_declaration"
@@ -1008,8 +1014,8 @@ exception_handler
 // $>
 
 block
-    :    ^(BLOCK declare_spec* body)
-    ->   template() "not implemented: block"
+    :    ^(BLOCK specs+=declare_spec* body)
+    ->   block(declare_spec={$specs}, body={$body.st})
     ;
 
 // $>

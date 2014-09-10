@@ -4,7 +4,7 @@ string_literal(val) ::= "<val>"
 
 create_function_body(
   is_replace, name_parts, arguments,
-  return_type, add_clauses, is_pipelined, body
+  return_type, add_clauses, is_pipelined, block
 ) ::= <<
 create<if (is_replace)> or replace<endif> function <name_parts; separator="."><if (arguments)>
   (<arguments; separator=",\n">)<endif>
@@ -12,7 +12,7 @@ return <return_type>
 <add_clauses; separator=" ">
 <if (is_pipelined)>pipelined<endif>
 as
-<body>;
+<block>;
 >>
 
 parameter(
@@ -252,4 +252,25 @@ begin
 <endif>
 
 end <name>;
+>>
+
+create_procedure_body(is_replace, name, arguments, invoker_rights_clause, impl) ::= <<
+create<if (is_replace)> or replace<endif> procedure <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif><if (invoker_rights_clause)>
+
+<invoker_rights_clause>
+<endif>
+is
+<impl>
+>>
+
+create_procedure_body_impl_external() ::= "external"
+
+block(declare_spec, body) ::= <<
+<if (declare_spec)>
+declare
+  <declare_spec:{v|<v>;
+}>
+<endif>
+<body>;
 >>
