@@ -327,3 +327,47 @@ pragma_declaration_impl_serially_inline(id, expression) ::= "inline (<id>, <expr
 pragma_declaration_impl_serially_restrict_references(arg1, restArgs) ::= <<
 restrict_references (<arg1><restArgs:{v|, <v>}>)
 >>
+
+single_table_insert(insert_into_clause, values_clause, static_returning_clause, select_statement, error_logging_clause) ::= <<
+insert <insert_into_clause>
+<if (values_clause)>
+<values_clause><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif>
+<else>
+<select_statement>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+insert_into_clause(general_table_ref, columns) ::= <<
+into <general_table_ref><if (columns)>(<columns; separator=", ">)<endif>
+>>
+
+general_table_ref(is_only, dml_table_expression_clause, table_alias) ::= <<
+<if (is_only)>
+only(<dml_table_expression_clause>)
+<else>
+<dml_table_expression_clause>
+<endif>
+<table_alias>
+>>
+
+values_clause(expression_or_expression_list) ::= <<
+values <expression_or_expression_list>
+>>
+
+expression_list(expressions) ::= <<
+(<expressions; separator=",\n">)
+>>
+
+static_returning_clause(expressions, into_clause) ::= <<
+returning <expressions; separator=", "> <into_clause>
+>>
+
+into_clause(is_bulk_collect, general_elements) ::= <<
+<if (is_bulk_collect)>bulk collect <endif>into <general_elements; separator=", ">
+>>

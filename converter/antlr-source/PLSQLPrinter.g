@@ -1436,18 +1436,21 @@ delete_statement
 
 insert_statement
     :    ^(SQL92_RESERVED_INSERT
-        (    single_table_insert
-        |    multi_table_insert
-        )
-        )
-    ->   template() "not implemented: insert_statement"
+            (
+              single_table_insert -> { $single_table_insert.st }
+              |    multi_table_insert -> { $multi_table_insert.st }
+            )
+          )
     ;
 
 // $<Insert - Specific Clauses
 
 single_table_insert
     :    ^(SINGLE_TABLE_MODE insert_into_clause (values_clause static_returning_clause?| select_statement) error_logging_clause?)
-    ->   template() "not implemented: single_table_insert"
+    ->   single_table_insert(
+            insert_into_clause={$insert_into_clause.st}, values_clause={$values_clause.st},
+            static_returning_clause={$static_returning_clause.st}, select_statement={$select_statement.st},
+            error_logging_clause={$error_logging_clause.st})
     ;
 
 multi_table_insert
@@ -1476,13 +1479,13 @@ conditional_insert_else_part
     ;
 
 insert_into_clause
-    :    ^(SQL92_RESERVED_INTO general_table_ref ^(COLUMNS column_name*))
-    ->   template() "not implemented: insert_into_clause"
+    :    ^(SQL92_RESERVED_INTO general_table_ref ^(COLUMNS columns+=column_name*))
+    ->   insert_into_clause(general_table_ref={$general_table_ref.st}, columns={$columns})
     ;
 
 values_clause
-    :    ^(SQL92_RESERVED_VALUES (expression_list|expression))
-    ->   template() "not implemented: values_clause"
+    :    ^(SQL92_RESERVED_VALUES (r=expression_list|r=expression))
+    ->   values_clause(expression_or_expression_list={$r.st})
     ;
 
 // $>
@@ -1559,12 +1562,15 @@ lock_mode
 
 general_table_ref
     :    ^(TABLE_REF alias? dml_table_expression_clause ONLY_VK?)
-    ->   template() "not implemented: general_table_ref"
+    ->   general_table_ref(
+            is_only={$ONLY_VK != null},
+            dml_table_expression_clause_simple={$dml_table_expression_clause.st},
+            table_alias={$alias.st})
     ;
 
 static_returning_clause
-    :    ^(STATIC_RETURNING expression+ into_clause)
-    ->   template() "not implemented: static_returning_clause"
+    :    ^(STATIC_RETURNING expressions+=expression+ into_clause)
+    ->   static_returning_clause(expressions={$expressions}, into_clause={$into_clause.st})
     ;
 
 error_logging_clause
@@ -1724,8 +1730,8 @@ pipe_row_statement
 // $<Expression & Condition
 
 expression_list
-    :    ^(EXPR_LIST expression*)
-    ->   template() "not implemented: expression_list"
+    :    ^(EXPR_LIST expressions+=expression*)
+    ->   expression_list(expressions={$expressions})
     ;
 
 expression
@@ -2112,10 +2118,10 @@ where_clause
     ;
 
 into_clause
-    :    ^(SQL92_RESERVED_INTO general_element+) 
-    ->   template() "not implemented: into_clause"
-    |    ^(BULK_VK general_element+) 
-    ->   template() "not implemented: into_clause"
+    :    ^(SQL92_RESERVED_INTO elements+=general_element+) 
+    ->   into_clause(is_bulk_collect={false}, general_elements={$elements})
+    |    ^(BULK_VK elements+=general_element+) 
+    ->   into_clause(is_bulk_collect={true}, general_elements={$elements})
     ;
 
 // $>
