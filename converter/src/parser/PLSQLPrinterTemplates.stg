@@ -65,6 +65,14 @@ return_statement(expression) ::= "return<if (expression)> <expression><endif>"
 
 null_statement() ::= "null"
 
+case_statement_simple(expression, case_when_parts, case_else_part) ::= <<
+case <expression>
+  <case_when_parts; separator="\n"><if (case_else_part)>
+  
+  <case_else_part><endif>
+end
+>>
+
 case_statement_searched(case_when_parts, case_else_part) ::= <<
 case
   <case_when_parts; separator="\n"><if (case_else_part)>

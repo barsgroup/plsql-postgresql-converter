@@ -1912,8 +1912,8 @@ for_like_part
     ;
 
 case_statement
-    :    ^(SIMPLE_CASE expression case_when_part+ case_else_part?)  
-    ->   template() "not implemented: case_statement"
+    :    ^(SIMPLE_CASE expression parts+=case_when_part+ case_else_part?)  
+    ->   case_statement_simple(expression={$expression.st}, case_when_parts={$parts}, case_else_part={$case_else_part.st})
     |    ^(SEARCHED_CASE parts+=case_when_part+ case_else_part?) 
     ->   case_statement_searched(case_when_parts={$parts}, case_else_part={$case_else_part.st})
     ;
