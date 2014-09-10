@@ -1950,8 +1950,10 @@ standard_function
             is_distinct={$SQL92_RESERVED_DISTINCT != null}, is_unique={$SQL92_RESERVED_UNIQUE != null},
             is_all={$SQL92_RESERVED_ALL != null}, is_asterisk={$ASTERISK != null}, expression={$expression.st},
             over_clause={$over_clause.st})
-    |    ^((CAST_VK|XMLCAST_VK) (subquery|expression) type_spec)
-    ->   template() "not implemented: standard_function"
+    |    ^(XMLCAST_VK expression type_spec)
+    ->   standard_function_xmlcast(expression={$expression.st}, type_spec={$type_spec.st})
+    |    ^(CAST_VK (s_or_e=subquery|s_or_e=expression) type_spec)
+    ->   standard_function_cast(subquery_or_expression={$s_or_e.st}, type_spec={$type_spec.st})
     |    ^(CHR_VK expression NCHAR_CS_VK)
     ->   template() "not implemented: standard_function"
     |    ^(COLLECT_VK (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE)? column_name collect_order_by_part?)

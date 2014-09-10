@@ -135,6 +135,14 @@ standard_function_enabling_over(function_name, function_arguments, over_clause) 
 <function_name><function_arguments><if (over_clause)> <over_clause><endif>
 >>
 
+standard_function_cast(subquery_or_expression, type_spec) ::= <<
+cast(<subquery_or_expression> as <type_spec>)
+>>
+
+standard_function_xmlcast(expression, type_spec) ::= <<
+cast(<expression> as <type_spec>)
+>>
+
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
   <statements>
