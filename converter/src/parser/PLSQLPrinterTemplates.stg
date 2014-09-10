@@ -302,3 +302,16 @@ subtype <name> is <type_spec><if (range)> <range><endif><if (is_not_null)> not n
 subtype_range(low_bound, high_bound) ::= <<
 range <low_bound>..<high_bound>
 >>
+    
+record_type_dec_record(name, field_specs) ::= <<
+type <name> is record (
+  <field_specs; separator=",\n">);
+>>
+    
+record_type_dec_refcursor(name, type_spec) ::= <<
+type <name> is ref cursor<if (type_spec)> return <type_spec><endif>;
+>>
+
+field_spec(name, type_spec, is_not_null, default_value_part) ::= <<
+<name><if (type_spec)> <type_spec><endif><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>
+>>

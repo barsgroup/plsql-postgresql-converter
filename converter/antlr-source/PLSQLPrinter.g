@@ -801,23 +801,33 @@ pragma_declaration
     ;
 
 record_declaration
-    :    record_type_dec
-    ->   template() "not implemented: record_declaration"
-    |    record_var_dec
-    ->   template() "not implemented: record_declaration"
+    :    record_type_dec -> { $record_type_dec.st }
+    |    record_var_dec -> { $record_var_dec.st }
     ;
 
 // $<Record Declaration - Specific Clauses
 
 //incorporates ref_cursor_type_definition
 record_type_dec
-    :    ^(RECORD_TYPE_DECLARE type_name REF_VK? type_spec? ^(FIELDS field_spec*))
-    ->   template() "not implemented: record_type_dec"
+    :    record_type_dec_record -> { $record_type_dec_record.st }
+    |    record_type_dec_refcursor -> { $record_type_dec_refcursor.st }
+    ;
+    
+record_type_dec_record
+    :    ^(RECORD_TYPE_DECLARE type_name (^(FIELDS fields+=field_spec*))?)
+    ->   record_type_dec_record(name={$type_name.st}, field_specs={$fields})
+    ;
+    
+record_type_dec_refcursor
+    :    ^(RECORD_TYPE_DECLARE type_name REF_VK type_spec?)
+    ->   record_type_dec_refcursor(name={$type_name.st}, type_spec={$type_spec.st})
     ;
 
 field_spec
     :    ^(FIELD_SPEC column_name type_spec? SQL92_RESERVED_NULL? default_value_part?)
-    ->   template() "not implemented: field_spec"
+    ->  field_spec(
+          name={$column_name.st}, type_spec={$type_spec.st}, is_not_null={$SQL92_RESERVED_NULL != null},
+          default_value_part={$default_value_part.st})
     ;
 
 record_var_dec
