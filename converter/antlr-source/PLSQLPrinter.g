@@ -1002,7 +1002,7 @@ between_bound
 
 null_statement
     :    SQL92_RESERVED_NULL
-    ->   template() "not implemented: null_statement"
+    ->   null_statement()
     ;
 
 raise_statement
@@ -1844,8 +1844,7 @@ expression_element
     |    ^(OUTER_JOIN_SIGN expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    case_statement
-    ->   template() "not implemented: expression_element"
+    |    case_statement -> { $case_statement.st }
     |    constant -> { $constant.st }
     |    general_element -> { $general_element.st }
     |    hosted_variable_name -> { $hosted_variable_name.st }
@@ -1900,22 +1899,30 @@ for_like_part
     ;
 
 case_statement
-    :    ^(SIMPLE_CASE label_name* expression case_when_part+ case_else_part?)  
+    :    ^(SIMPLE_CASE expression case_when_part+ case_else_part?)  
     ->   template() "not implemented: case_statement"
-    |    ^(SEARCHED_CASE label_name* case_when_part+ case_else_part?) 
-    ->   template() "not implemented: case_statement"
+    |    ^(SEARCHED_CASE parts+=case_when_part+ case_else_part?) 
+    ->   case_statement_searched(case_when_parts={$parts}, case_else_part={$case_else_part.st})
     ;
 
 // $<CASE - Specific Clauses
 
 case_when_part
-    :    ^(SQL92_RESERVED_WHEN expression (seq_of_statements|expression))
-    ->   template() "not implemented: case_when_part"
+    :    ^(SQL92_RESERVED_WHEN condition=expression
+            (
+              seq_of_statements -> case_when_part_statements(condition={$condition.st}, seq_of_statements={$seq_of_statements.st})
+              | then_expr=expression -> case_when_part_expression(condition={$condition.st}, expression={$then_expr.st})
+            )
+          )
     ;
 
 case_else_part
-    :    ^(SQL92_RESERVED_ELSE (seq_of_statements|expression))
-    ->   template() "not implemented: case_else_part"
+    :    ^(SQL92_RESERVED_ELSE
+            (
+              seq_of_statements -> case_else_part_statements(seq_of_statements={$seq_of_statements.st})
+              | expression -> case_else_part_expression(expression={$expression.st})
+            )
+          )
     ;
 // $>
 
