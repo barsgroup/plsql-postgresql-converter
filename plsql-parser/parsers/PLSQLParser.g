@@ -1046,7 +1046,7 @@ record_type_dec
     (    record_key LEFT_PAREN field_spec ( COMMA field_spec )* RIGHT_PAREN
     |    ref_key cursor_key (return_key type_spec)?
     )    SEMICOLON
-    -> ^(RECORD_TYPE_DECLARE[$type_key.start] type_name ref_key? type_spec? ^(FIELDS field_spec*))
+    -> ^(RECORD_TYPE_DECLARE[$type_key.start] type_name ref_key? type_spec? ^(FIELDS field_spec*)?)
     ;
 
 field_spec
