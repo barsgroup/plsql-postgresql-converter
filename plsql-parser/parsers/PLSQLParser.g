@@ -222,14 +222,14 @@ create_function_body
         )
               SEMICOLON
         ->    {mode == 1}?
-            ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
+            ^(CREATE_FUNCTION[$function_key.start] create_key? replace_key? function_name type_spec ^(PARAMETERS parameter*)
                 invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key? 
                 ^(USING_MODE aggregate_key? implementation_type_name))
         -> {mode == 2}?
-            ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
+            ^(CREATE_FUNCTION[$function_key.start] create_key? replace_key? function_name type_spec ^(PARAMETERS parameter*)
                 invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
                 ^(CALL_MODE call_spec))
-        ->    ^(CREATE_FUNCTION[$function_key.start] replace_key? function_name type_spec ^(PARAMETERS parameter*)
+        ->    ^(CREATE_FUNCTION[$function_key.start] create_key? replace_key? function_name type_spec ^(PARAMETERS parameter*)
                 invoker_rights_clause* parallel_enable_clause* result_cache_clause* deterministic_key* pipelined_key?
                 ^(BODY_MODE block))
     ;
@@ -401,13 +401,13 @@ create_procedure_body
               )
               SEMICOLON
         ->    {mode == 1}?
-            ^(CREATE_PROCEDURE[$procedure_key.start] replace_key? procedure_name ^(PARAMETERS parameter*)
+            ^(CREATE_PROCEDURE[$procedure_key.start] create_key? replace_key? procedure_name ^(PARAMETERS parameter*)
                 invoker_rights_clause? external_key)
         -> {mode == 2}?
-            ^(CREATE_PROCEDURE[$procedure_key.start] replace_key? procedure_name ^(PARAMETERS parameter*)
+            ^(CREATE_PROCEDURE[$procedure_key.start] create_key? replace_key? procedure_name ^(PARAMETERS parameter*)
                 invoker_rights_clause?
                 ^(CALL_MODE call_spec))
-        ->    ^(CREATE_PROCEDURE[$procedure_key.start] replace_key? procedure_name ^(PARAMETERS parameter*)
+        ->    ^(CREATE_PROCEDURE[$procedure_key.start] create_key? replace_key? procedure_name ^(PARAMETERS parameter*)
                 invoker_rights_clause?
                 ^(BODY_MODE block))
       ;

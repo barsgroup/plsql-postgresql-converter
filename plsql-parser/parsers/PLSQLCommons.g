@@ -23,7 +23,8 @@ options {
 }
 
 tokens {
-    ALIAS;
+    COLUMN_ALIAS;
+    TABLE_ALIAS;
     EXPR;
     ARGUMENTS;
     ARGUMENT;
@@ -85,13 +86,13 @@ options
 backtrack=true;
 }
     :    as_key? (id|alias_quoted_string)
-    ->    ^(ALIAS id? alias_quoted_string?)
+    ->    ^(COLUMN_ALIAS id? alias_quoted_string?)
     |    as_key
     ;
 
 table_alias
     :    ( id | alias_quoted_string )
-    ->   ^(ALIAS id? alias_quoted_string?)
+    ->   ^(TABLE_ALIAS id? alias_quoted_string?)
     ;
 
 alias_quoted_string
