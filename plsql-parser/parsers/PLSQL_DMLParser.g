@@ -220,14 +220,16 @@ select_statement
 
 // $<Select - Specific Clauses
 subquery_factoring_clause
-    :    with_key^ factoring_element (COMMA! factoring_element)*
+    :    with_key^ recursive_key? factoring_element (COMMA! factoring_element)*
     ;
 
 factoring_element
-    :    query_name (LEFT_PAREN column_name (COMMA column_name)* RIGHT_PAREN)? as_key LEFT_PAREN subquery order_by_clause? RIGHT_PAREN
+    :    query_name
+         (LEFT_PAREN columns+=column_name (COMMA columns+=column_name)* RIGHT_PAREN)?
+         as_key LEFT_PAREN subquery order_by_clause? RIGHT_PAREN
          search_clause?
          cycle_clause?
-        -> ^(FACTORING query_name subquery search_clause? cycle_clause?)
+        -> ^(FACTORING query_name $columns* subquery order_by_clause? search_clause? cycle_clause?)
     ;
 
 search_clause

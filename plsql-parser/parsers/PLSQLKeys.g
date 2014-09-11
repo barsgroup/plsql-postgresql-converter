@@ -343,6 +343,7 @@ tokens {
     MOD_VK;
     DIV_VK;
     PIPE_VK;
+    RECURSIVE_VK;
 }
 
 create_key
@@ -2526,4 +2527,8 @@ div_key
 
 pipe_key
     :   {input.LT(1).getText().equalsIgnoreCase("pipe")}? REGULAR_ID -> PIPE_VK[$REGULAR_ID]
+    ;
+
+recursive_key
+    :   {input.LT(1).getText().equalsIgnoreCase("recursive")}? REGULAR_ID -> RECURSIVE_VK[$REGULAR_ID]
     ;
