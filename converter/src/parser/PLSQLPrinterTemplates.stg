@@ -204,8 +204,8 @@ loop
 end loop
 >>
 
-select_statement(query_partitioning_clause, subquery, order_by_clause, for_update_clause) ::= <<
-<if (query_partitioning_clause)><query_partitioning_clause><endif>
+select_statement(subquery_factoring_clause, subquery, order_by_clause, for_update_clause) ::= <<
+<if (subquery_factoring_clause)><subquery_factoring_clause><endif>
 <subquery><if (order_by_clause)>
 
 <order_by_clause>
@@ -889,4 +889,16 @@ when not matched then
 
   <where_clause>
 <endif>
+>>
+
+subquery_factoring_clause(is_recursive, factoring_elements) ::= <<
+with<if (is_recursive)> recursive<endif>
+  <factoring_elements; separator=",\n">
+>>
+
+factoring_element(query_name, column_names, subquery, order_by_clause) ::= <<
+<query_name><if (column_names)> (<column_names; separator=", ">)<endif> as (
+  <subquery><if (order_by_clause)>
+  
+  <order_by_clause><endif>)
 >>

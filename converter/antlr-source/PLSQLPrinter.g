@@ -1086,7 +1086,7 @@ data_manipulation_language_statements
 select_statement
     :    ^(SELECT_STATEMENT subquery_factoring_clause? subquery order_by_clause? for_update_clause?)
     ->   select_statement(
-            query_partitioning_clause={$subquery_factoring_clause.st},
+            subquery_factoring_clause={$subquery_factoring_clause.st},
             subquery={$subquery.st},
             order_by_clause={$order_by_clause.st},
             for_update_clause={$for_update_clause.st})
@@ -1094,13 +1094,15 @@ select_statement
 
 // $<Select - Specific Clauses
 subquery_factoring_clause
-    :    ^(SQL92_RESERVED_WITH factoring_element+)
-    ->   template() "not implemented: subquery_factoring_clause"
+    :    ^(SQL92_RESERVED_WITH RECURSIVE_VK? factoring_elements+=factoring_element+)
+    ->   subquery_factoring_clause(is_recursive={$RECURSIVE_VK != null}, factoring_elements={$factoring_elements})
     ;
 
 factoring_element
-    :    ^(FACTORING query_name subquery)
-    ->   template() "not implemented: factoring_element"
+    :    ^(FACTORING query_name column_names+=column_name* subquery order_by_clause? /*search_clause? cycle_clause?*/)
+    ->   factoring_element(
+            query_name={$query_name.st}, column_names={$column_names},
+            subquery={$subquery.st}, order_by_clause={$order_by_clause.st})
     ;
 
 subquery
@@ -2341,8 +2343,7 @@ main_model_name
     ;
 
 query_name
-    :    ^(QUERY_NAME char_set_name? ID)
-    ->   template() "not implemented: query_name"
+    :    ^(QUERY_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 constraint_name
