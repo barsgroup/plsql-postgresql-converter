@@ -776,3 +776,5 @@ cursor <cursor_name><if (parameters)>(<parameters; separator=", ">)<endif>
 parameter_spec(parameter_name, type_spec, default_value_part) ::= <<
 <parameter_name><if (type_spec)> <type_spec><endif><if (default_value_part)> <default_value_part><endif>
 >>
+
+goto_statement(label_name) ::= "goto <label_name>"

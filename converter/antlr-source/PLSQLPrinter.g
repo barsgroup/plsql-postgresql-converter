@@ -943,7 +943,7 @@ exit_statement
 
 goto_statement
     :    ^(SQL92_RESERVED_GOTO label_name)
-    ->   template() "not implemented: goto_statement"
+    ->   goto_statement(label_name={$label_name.st})
     ;
 
 if_statement
