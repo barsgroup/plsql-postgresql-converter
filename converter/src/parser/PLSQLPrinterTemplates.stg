@@ -824,3 +824,7 @@ parameter_spec(parameter_name, type_spec, default_value_part) ::= <<
 goto_statement(label_name) ::= "goto <label_name>"
 
 pipe_row_statement(expression) ::= "pipe row(<expression>)"
+
+call_spec(declaration) ::= "language <declaration>"
+
+call_spec_java(name) ::= "java name <name>"

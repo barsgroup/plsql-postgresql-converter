@@ -273,8 +273,7 @@ create_procedure_body
     
 create_procedure_body_impl
     :   EXTERNAL_VK -> create_procedure_body_impl_external()
-        |    ^(CALL_MODE call_spec)
-        ->   template() "not implemented: alter_procedure"
+        |    ^(CALL_MODE call_spec) -> { $call_spec.st }
         |    ^(BODY_MODE block) -> { $block.st }
     ;
 
@@ -693,15 +692,15 @@ compiler_parameters_clause
     ;
 
 call_spec
-    :    ^(LANGUAGE_VK ( java_spec | c_spec ))
-    ->   template() "not implemented: call_spec"
+    :    ^(LANGUAGE_VK ( declaration=java_spec | declaration=c_spec ))
+    ->   call_spec(declaration={$declaration.st})
     ;
 
 // $<Call Spec - Specific Clauses
 
 java_spec
     :    ^(JAVA_VK CHAR_STRING)
-    ->   template() "not implemented: java_spec"
+    ->   call_spec_java(name={$CHAR_STRING.text})
     ;
 
 c_spec
