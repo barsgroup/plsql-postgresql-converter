@@ -1971,6 +1971,7 @@ case_else_part
 // $>
 
 standard_function
+@init { StringTemplate trimKind = null; }
     :    ^(FUNCTION_ENABLING_OVER function_argument over_clause?)
     ->   standard_function_enabling_over(
           function_name={$FUNCTION_ENABLING_OVER.text}, function_arguments={$function_argument.st}, over_clause={$over_clause.st})
@@ -1999,12 +2000,22 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(PREDICTION_FUNCTION expression+ cost_matrix_clause? using_clause?)
     ->   template() "not implemented: standard_function"
-    |    ^(TRANSLATE_VK expression (CHAR_CS_VK|NCHAR_CS_VK)? expression*)
-    ->   template() "not implemented: standard_function"
+    |    ^(TRANSLATE_VK /*(CHAR_CS_VK|NCHAR_CS_VK)?*/ expr=expression expr_from=expression expr_to=expression)
+    ->   standard_function_translate(expr={$expr.st}, expr_from={$expr_from.st}, expr_to={$expr_to.st})
     |    ^(TREAT_VK expression REF_VK? type_spec)
     ->   template() "not implemented: standard_function"
-    |    ^(TRIM_VK (LEADING_VK|TRAILING_VK|BOTH_VK)? expression_element expression_element?) 
-    ->   template() "not implemented: standard_function"
+    |    ^(TRIM_VK
+            text_expr=expression_element
+            (
+              trim_char_expr=expression_element
+              (
+                LEADING_VK { trimKind = %trim_kind_leading(); }
+                | TRAILING_VK { trimKind = %trim_kind_trailing(); }
+                | BOTH_VK { trimKind = %trim_kind_both(); }
+              )?
+            )?
+          ) 
+    ->   standard_function_trim(text_expr={$text_expr.st}, trim_char_expr={$trim_char_expr.st}, trim_kind={trimKind})
 
     |    ^(XMLAGG_VK expression order_by_clause?)
     ->   xmlagg(expression={$expression.st}, order_by_clause={$order_by_clause.st})

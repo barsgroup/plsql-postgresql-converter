@@ -150,6 +150,19 @@ standard_function_extract(part, expression) ::= <<
 extract(<part> from <expression>)
 >>
 
+standard_function_translate(expr, expr_from, expr_to) ::= <<
+translate(<expr>, <expr_from>, <expr_to>)
+>>
+
+standard_function_trim(text_expr, trim_char_expr, trim_kind) ::= <<
+trim(<if (trim_char_expr)><if (trim_kind)><trim_kind> <endif><trim_char_expr> from <endif><text_expr>)
+>>
+
+trim_kind_leading() ::= "leading"
+trim_kind_trailing() ::= "trailing"
+trim_kind_both() ::= "both"
+
+
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
   <statements>
