@@ -492,10 +492,10 @@ dependent_exceptions_part
 // $>
 
 create_type
-    :    ^(CREATE_TYPE_BODY REPLACE_VK? type_name ^(TYPE_BODY_ELEMENTS type_body_elements+))
-    ->   template() "not implemented: create_type"
-    |    ^(CREATE_TYPE_SPEC REPLACE_VK? type_name CHAR_STRING? object_type_def?)
-    ->   template() "not implemented: create_type"
+    :    ^(CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name ^(TYPE_BODY_ELEMENTS type_body_elements+))
+    ->   template() "not implemented: create_type[CREATE_TYPE_BODY]"
+    |    ^(CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def?)
+    ->   template() "not implemented: create_type[CREATE_TYPE_SPEC]"
     ;
 
 object_type_def
@@ -978,7 +978,7 @@ cursor_loop_param
     :    ^(INDEXED_FOR index_name REVERSE_VK? ^(SIMPLE_BOUND b1=expression b2=expression))
     ->   loopDefinition_bounds(indexVar={$index_name.st}, isReverse={$REVERSE_VK != null}, lowerBound={$b1.st}, upperBound={$b2.st})
     |    ^(CURSOR_BASED_FOR record_name general_element)
-    ->   template() "not implemented: cursor_loop_param[CURSOR_BASED_FOR]"
+    ->   loopDefinition_cursor(indexVar={$record_name.st}, cursor={$general_element.st})
     |    ^(SELECT_BASED_FOR record_name select_statement)
     ->   loopDefinition_select(indexVar={$record_name.st}, select_statement={$select_statement.st})
     ;

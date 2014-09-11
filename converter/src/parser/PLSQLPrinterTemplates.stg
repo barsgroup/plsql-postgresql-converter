@@ -173,6 +173,10 @@ loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
 <indexVar> in<if (isReverse)> reverse<endif> <lowerBound>..<upperBound>
 >>
 
+loopDefinition_cursor(indexVar, cursor) ::= <<
+<indexVar> in <cursor>
+>>
+
 loopDefinition_select(indexVar, select_statement) ::= <<
 <indexVar> in
 (
