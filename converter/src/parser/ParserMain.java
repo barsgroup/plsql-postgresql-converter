@@ -40,7 +40,7 @@ public class ParserMain {
 		}
 		
 		String inputContent = new String(Files.readAllBytes(Paths.get(options.path)), Charset.forName("UTF-8"));
-		ParseResult parseResult = parseTreeFromString(inputContent, false);
+		ParseResult parseResult = parseTreeFromString(inputContent, false, options.tree_type);
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		String str;
 		str = (theTree).toStringTree();
@@ -62,7 +62,7 @@ public class ParserMain {
 		//printer.visitNode(theTree);
 		//System.out.println(sb);
 		
-		PrintResult printResult = printTreeToString(theTree);
+		PrintResult printResult = printTreeToString(theTree, options.tree_type);
 		String printed = printResult.text;
 
 		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
@@ -70,7 +70,7 @@ public class ParserMain {
 		    out.print(printed);
 		}
 		
-		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, "workdir/output_reprinted.txt");
+		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, "workdir/output_reprinted.txt", options.tree_type);
 		
 		if (errorMessage != null) {
 			System.out.printf("Error comparing after print: %s\n", errorMessage);
@@ -80,10 +80,11 @@ public class ParserMain {
 	}
 	
 	static class CliOptions {
-		boolean allPackages;
-		boolean validateReparse;
-		Integer limitAllPackages;
-		String path;
+		public boolean allPackages;
+		public boolean validateReparse;
+		public Integer limitAllPackages;
+		public String path;
+		public String tree_type = "sql_script";
 	}
 	
 	private static CliOptions parseCliOptions(String[] args) {
@@ -97,6 +98,7 @@ public class ParserMain {
 			case "--validate-reparse": result.validateReparse = true; break;
 			case "--no-validate-reparse": result.validateReparse = false; break;
 			case "--limit-all-packages": result.limitAllPackages = Integer.valueOf(args[i]); ++i; break;
+			case "--tree-type": result.tree_type = args[i]; ++i; break;
 			default: result.path = arg;
 			}
 		}
@@ -107,8 +109,26 @@ public class ParserMain {
 		public List<RecognitionException> printErrors;
 		public String text;
 	}
+	
+	private static Object callMethod(Object obj, String methodName) {
+		try {
+			Object result = obj.getClass().getMethod(methodName).invoke(obj);
+			return result;
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	private static Object getField(Object obj, String fieldName) {
+		try {
+			Object result = obj.getClass().getField(fieldName).get(obj);
+			return result;
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
 
-	private static PrintResult printTreeToString(org.antlr.runtime.tree.Tree theTree)
+	private static PrintResult printTreeToString(org.antlr.runtime.tree.Tree theTree, String treeType)
 			throws IOException, RecognitionException {
 		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
 		
@@ -116,7 +136,8 @@ public class ParserMain {
 			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 			printer.setTemplateLib(templateGroup);
 		}
-		String printed = printer.sql_script().st.toString();
+		StringTemplate printedTemplate = (StringTemplate)getField(callMethod(printer, treeType), "st");
+		String printed = printedTemplate.toString();
 		PrintResult result = new PrintResult();
 		result.printErrors = printer.errors;
 		result.text = printed;
@@ -129,7 +150,7 @@ public class ParserMain {
 		public Tree tree;
 	}
 
-	private static ParseResult parseTreeFromString(String inputContent, boolean printTokens) throws RecognitionException {
+	private static ParseResult parseTreeFromString(String inputContent, boolean printTokens, String treeType) throws RecognitionException {
 		ANTLRStringStream input = new ANTLRStringStream(inputContent);
 		DerivedSqlLexer l = new DerivedSqlLexer(input);
 		CommonTokenStream cts = new CommonTokenStream(l);
@@ -151,7 +172,7 @@ public class ParserMain {
 			System.exit(0);
 		}
 		DerivedSqlParser p = new DerivedSqlParser(cts);
-		Object tree = p.sql_script().getTree();
+		Object tree = callMethod(callMethod(p, treeType), "getTree");
 	
 		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
 		ParseResult result = new ParseResult();
@@ -188,7 +209,7 @@ public class ParserMain {
 			System.out.print(header);
 
 			long ms_start_1 = System.currentTimeMillis();
-			ParseResult parseResult = parseTreeFromString(part, false);
+			ParseResult parseResult = parseTreeFromString(part, false, "sql_script");
 			String printedTree = "";
 			long ms_end_1 = System.currentTimeMillis();
 			System.out.printf(" %f s\n", (ms_end_1 - ms_start_1) / 1000.0);
@@ -225,7 +246,7 @@ public class ParserMain {
 				if (is_tree_walked) {
 					String compareResult = null;
 					if (validateReparse) {
-						compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree);
+						compareResult = validatePrintedTreeMatchesParsedTree(parseResult.tree, "sql_script");
 					}
 					if (compareResult != null) {
 						System.out.printf("Print&Reparse failed: %s\n", compareResult);
@@ -443,26 +464,26 @@ public class ParserMain {
 		}
 	}
 	
-	private static String validatePrintedTreeMatchesParsedTree(Tree tree) throws Exception {
-		return validatePrintedTreeMatchesParsedTree(tree, null);
+	private static String validatePrintedTreeMatchesParsedTree(Tree tree, String treeType) throws Exception {
+		return validatePrintedTreeMatchesParsedTree(tree, null, treeType);
 	}
 	
-	private static String validatePrintedTreeMatchesParsedTree(Tree tree, String reprintedTreeDestination) throws Exception {
-		PrintResult printResult = printTreeToString(tree);
+	private static String validatePrintedTreeMatchesParsedTree(Tree tree, String reprintedTreeDestination, String treeType) throws Exception {
+		PrintResult printResult = printTreeToString(tree, treeType);
 		if (printResult.printErrors.size() > 0) {
 			return "Printer errors";
 		}
 		if (printResult.text.contains("not implemented: ")) {
 			return "Printed text contains 'not implemented: '";
 		}
-		ParseResult reparseResult = parseTreeFromString(printResult.text, false);
+		ParseResult reparseResult = parseTreeFromString(printResult.text, false, treeType);
 		if (reparseResult.lexerErrors.size() > 0) {
 			return "Lexer errors (on printed tree)";
 		}
 		if (reparseResult.parserErrors.size() > 0) {
 			return "Parser errors (on printed tree)";
 		}
-		PrintResult reprintResult = printTreeToString(reparseResult.tree);
+		PrintResult reprintResult = printTreeToString(reparseResult.tree, treeType);
 		if (reprintedTreeDestination != null) {
 			try (PrintStream out = new PrintStream(new FileOutputStream(reprintedTreeDestination))) {
 			    out.print(reprintResult.text);
@@ -493,19 +514,15 @@ public class ParserMain {
 		return result;
 	}
 	
-	private static String validatePrintedTreeMatchesParsedTree(String inputContent) throws Exception {
-		return validatePrintedTreeMatchesParsedTree(inputContent, null);
-	}
-	
-	private static String validatePrintedTreeMatchesParsedTree(String inputContent, String reprintedTreeDestination) throws Exception {
-		ParseResult parseResult = parseTreeFromString(inputContent, false);
+	private static String validatePrintedTreeMatchesParsedTree(String inputContent, String reprintedTreeDestination, String treeType) throws Exception {
+		ParseResult parseResult = parseTreeFromString(inputContent, false, treeType);
 		if (parseResult.lexerErrors.size() > 0) {
 			return "Lexer errors";
 		}
 		if (parseResult.parserErrors.size() > 0) {
 			return "Parser errors";
 		}
-		return validatePrintedTreeMatchesParsedTree(parseResult.tree, reprintedTreeDestination);
+		return validatePrintedTreeMatchesParsedTree(parseResult.tree, reprintedTreeDestination, treeType);
 	}
 	
 	static class TextPos {
