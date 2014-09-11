@@ -1044,7 +1044,6 @@ backtrack=true;
     |    all_key^ unary_expression
     |    {(input.LA(1) == SQL92_RESERVED_CASE || input.LA(2) == SQL92_RESERVED_CASE)}? case_statement[false]
     |    quantified_expression
-    |    standard_function -> ^(STANDARD_FUNCTION standard_function)
     |    cursor_name (percent_notfound_key^|percent_found_key^|percent_isopen_key^|percent_rowcount_key^)
     |    atom
     ;
@@ -1097,6 +1096,7 @@ backtrack=true;
     :    (routine_id (PERIOD routine_id)* outer_join_sign) => general_element outer_join_sign^
     |    bind_variable
     |    constant
+    |    (standard_function) => standard_function -> ^(STANDARD_FUNCTION standard_function)
     |    general_element
     |    LEFT_PAREN!
          (
@@ -1174,18 +1174,31 @@ standard_function
             RIGHT_PAREN!
     |    translate_key^
             LEFT_PAREN! 
-                expression_wrapper (using_key! (char_cs_key|nchar_cs_key))? 
-                    (COMMA! expression_wrapper)* 
+                expression_wrapper //(using_key! (char_cs_key|nchar_cs_key))? 
+                COMMA! expression_wrapper
+                COMMA! expression_wrapper
             RIGHT_PAREN!
     |    treat_key^
             LEFT_PAREN!
                 expression_wrapper as_key! ref_key? type_spec 
             RIGHT_PAREN!
-    |    trim_key^
-            LEFT_PAREN!
-                ((leading_key|trailing_key|both_key)? expression from_key!)?
-                concatenation
-            RIGHT_PAREN!
+    |    trim_key
+            LEFT_PAREN
+                (
+                  (trim_kind=leading_key|trim_kind=trailing_key|trim_kind=both_key)
+                  expr_ch=expression
+                  from_key
+                  expr_src=concatenation
+                    -> ^(trim_key $expr_src $expr_ch $trim_kind)
+                  | expr1=expression
+                    (
+                      from_key expr2=expression
+                        -> ^(trim_key $expr2 $expr1)
+                      |
+                        -> ^(trim_key $expr1)
+                    )
+                )
+            RIGHT_PAREN
     |    xmlagg_key^
             LEFT_PAREN! 
                 expression_wrapper order_by_clause? 
