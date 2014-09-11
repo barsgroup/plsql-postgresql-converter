@@ -2000,13 +2000,17 @@ standard_function
     |    ^(XMLEXISTS_VK expression xml_passing_clause?)
     ->   template() "not implemented: standard_function"
     |    ^(XMLPARSE_VK (DOCUMENT_VK|CONTENT_VK) expression WELLFORMED_VK?)
-    ->   template() "not implemented: standard_function"
+    ->   xml_parse(
+          is_document={$DOCUMENT_VK != null}, is_content={$CONTENT_VK != null},
+          expression={$expression.st}, is_wellformed={$WELLFORMED_VK != null})
     |    ^(XMLQUERY_VK expression xml_passing_clause? SQL92_RESERVED_NULL?)
     ->   template() "not implemented: standard_function"
     |    ^(XMLROOT_VK expression xml_param_version_part xmlroot_param_standalone_part?)
     ->   template() "not implemented: standard_function"
-    |    ^(XMLTABLE_VK xml_namespaces_clause? expression xml_passing_clause? xml_table_column*)
-    ->   template() "not implemented: standard_function"
+    |    ^(XMLTABLE_VK xml_namespaces_clause? expr=expression xml_passing_clause? xml_table_columns+=xml_table_column*)
+    ->   xmltable(
+          xml_namespaces_clause={$xml_namespaces_clause.st}, xquery_expression={$expr.st},
+          xml_passing_clause={$xml_passing_clause.st}, xml_table_columns={$xml_table_columns})
     |    ^(XMLELEMENT_VK
             (ENTITYESCAPING_VK|NOENTITYESCAPING_VK)?
             (NAME_VK|EVALNAME_VK)? expression
@@ -2090,8 +2094,13 @@ cost_matrix_clause
     ;
 
 xml_passing_clause
-    :    ^(PASSING_VK VALUE_VK? expression alias? (expression alias?)?)
-    ->   template() "not implemented: xml_passing_clause"
+    :    ^(PASSING_VK VALUE_VK? exprs+=xml_passing_clause_expr)
+    ->   xml_passing_clause(is_by_value={$VALUE_VK != null}, xml_passing_clause_expressions={$exprs})
+    ;
+    
+xml_passing_clause_expr
+    :   expression alias?
+    ->  xml_passing_clause_expr(expression={$expression.st}, alias={$alias.st})
     ;
 
 xml_attributes_clause
@@ -2111,13 +2120,20 @@ xml_namespaces_clause
     ;
 
 xml_table_column
-    :    ^(XML_COLUMN xml_column_name (ORDINALITY_VK|type_spec expression? xml_general_default_part?) )
-    ->   template() "not implemented: xml_table_column"
+    :    ^(XML_COLUMN xml_column_name
+            (
+              ORDINALITY_VK -> xml_table_column_ordinality(name={$xml_column_name.st})
+              | type_spec expression? xml_general_default_part?
+              -> xml_table_column_typespec(
+                  name={$xml_column_name.st}, type_spec={$type_spec.st},
+                  path_expr={$expression.st}, xml_general_default_part={$xml_general_default_part.st})
+            )
+          )
     ;
 
 xml_general_default_part
     :    ^(SQL92_RESERVED_DEFAULT expression)
-    ->   template() "not implemented: xml_general_default_part"
+    ->   xml_general_default_part(expression={$expression.st})
     ;
 
 xml_multiuse_expression_element
@@ -2187,39 +2203,32 @@ into_clause
 // $<Common PL/SQL Named Elements
 
 xml_column_name
-    :    ^(XML_COLUMN_NAME char_set_name? ID)
-    ->   template() "not implemented: xml_column_name"
+    :    ^(XML_COLUMN_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 cost_class_name
-    :    ^(COST_CLASS_NAME char_set_name? ID)
-    ->   template() "not implemented: cost_class_name"
+    :    ^(COST_CLASS_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 attribute_name
-    :    ^(ATTRIBUTE_NAME char_set_name? ID)
-    ->   template() "not implemented: attribute_name"
+    :    ^(ATTRIBUTE_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 savepoint_name
-    :    ^(SAVEPOINT_NAME char_set_name? ID)
-    ->   template() "not implemented: savepoint_name"
+    :    ^(SAVEPOINT_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 rollback_segment_name
-    :    ^(ROLLBACK_SEGMENT_NAME char_set_name? ID)
-    ->   template() "not implemented: rollback_segment_name"
+    :    ^(ROLLBACK_SEGMENT_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 
 table_var_name
-    :    ^(TABLE_VAR_NAME char_set_name? ID)
-    ->   template() "not implemented: table_var_name"
+    :    ^(TABLE_VAR_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 schema_name
-    :    ^(SCHEMA_NAME char_set_name? ID)
-    ->   template() "not implemented: schema_name"
+    :    ^(SCHEMA_NAME char_set_name? ID) -> string_literal(val={$ID.text})
     ;
 
 routine_name

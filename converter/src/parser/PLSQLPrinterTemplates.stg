@@ -667,3 +667,34 @@ query_partition_clause(impl) ::= "partition by <impl>"
 query_partition_clause_impl_expressions(expressions) ::= <<
 <expressions; separator=", ">
 >>
+
+xmltable(xml_namespaces_clause, xquery_expression, xml_passing_clause, xml_table_columns) ::= <<
+xmltable(<if (xml_namespaces_clause)>
+<xml_namespaces_clause> <endif><xquery_expression><if (xml_passing_clause)> <xml_passing_clause>
+<endif>
+<if (xml_table_columns)> columns <xml_table_columns; separator=", "><endif>)
+>>
+
+xml_passing_clause(is_by_value, xml_passing_clause_expressions) ::= <<
+passing<if (is_by_value)> by value<endif> <xml_passing_clause_expressions; separator=", ">
+>>
+
+xml_passing_clause_expr(expression, alias) ::= <<
+<expression><if (alias)> <alias><endif>
+>>
+
+xml_table_column_ordinality(name) ::= <<
+<name> for ordinality
+>>
+
+xml_table_column_typespec(name, type_spec, path_expr, xml_general_default_part) ::= <<
+<name> <type_spec><if (path_expr)> path <path_expr><endif><if (xml_general_default_part)> <xml_general_default_part><endif>
+>>
+
+xml_general_default_part(expression) ::= <<
+default <expression>
+>>
+
+xml_parse(is_document, is_content, expression, is_wellformed) ::= <<
+xmlparse(<if (is_document)>document<elseif (is_content)>content><endif> <expression><if (is_wellformed)> wellformed<endif>)
+>>
