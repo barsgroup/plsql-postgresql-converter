@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 PLSQLPrinter.g 2014-09-11 10:45:07
+// $ANTLR 3.5.2 PLSQLPrinter.g 2014-09-11 11:04:19
 
 /**
  * Oracle(c) PL/SQL 11g Parser  
@@ -35342,7 +35342,7 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "type_spec"
-	// PLSQLPrinter.g:2372:1: type_spec : ( ^( CUSTOM_TYPE type_name ( REF_VK )? ( PERCENT_ROWTYPE_VK | PERCENT_TYPE_VK )? ) -> typespec_custom(name=$type_name.stis_ref=$REF_VK != nullis_percent_rowtype=$PERCENT_ROWTYPE_VK != nullis_percent_type=$PERCENT_TYPE_VK != null)| native_datatype_spec -> { $native_datatype_spec.st; }| ^( INTERVAL_DATATYPE ( YEAR_VK | DAY_VK ) ( MONTH_VK | SECOND_VK ) ( expression )* ) -> template( \"not implemented: type_spec[INTERVAL_DATATYPE]\");
+	// PLSQLPrinter.g:2372:1: type_spec : ( ^( CUSTOM_TYPE type_name ( REF_VK )? ( PERCENT_ROWTYPE_VK | PERCENT_TYPE_VK )? ) -> typespec_custom(name=$type_name.stis_ref=$REF_VK != nullis_percent_rowtype=$PERCENT_ROWTYPE_VK != nullis_percent_type=$PERCENT_TYPE_VK != null)| native_datatype_spec -> { $native_datatype_spec.st; }| ^( INTERVAL_DATATYPE interval_type_spec_first interval_type_spec_second ) -> interval_type_spec(left_side=$interval_type_spec_first.stright_side=$interval_type_spec_second.st));
 	public final PLSQLPrinter.type_spec_return type_spec() throws RecognitionException {
 		PLSQLPrinter.type_spec_return retval = new PLSQLPrinter.type_spec_return();
 		retval.start = input.LT(1);
@@ -35352,32 +35352,34 @@ public class PLSQLPrinter extends TreeParser {
 		CommonTree PERCENT_TYPE_VK378=null;
 		TreeRuleReturnScope type_name375 =null;
 		TreeRuleReturnScope native_datatype_spec379 =null;
+		TreeRuleReturnScope interval_type_spec_first380 =null;
+		TreeRuleReturnScope interval_type_spec_second381 =null;
 
 		try {
-			// PLSQLPrinter.g:2373:5: ( ^( CUSTOM_TYPE type_name ( REF_VK )? ( PERCENT_ROWTYPE_VK | PERCENT_TYPE_VK )? ) -> typespec_custom(name=$type_name.stis_ref=$REF_VK != nullis_percent_rowtype=$PERCENT_ROWTYPE_VK != nullis_percent_type=$PERCENT_TYPE_VK != null)| native_datatype_spec -> { $native_datatype_spec.st; }| ^( INTERVAL_DATATYPE ( YEAR_VK | DAY_VK ) ( MONTH_VK | SECOND_VK ) ( expression )* ) -> template( \"not implemented: type_spec[INTERVAL_DATATYPE]\")
-			int alt567=3;
+			// PLSQLPrinter.g:2373:5: ( ^( CUSTOM_TYPE type_name ( REF_VK )? ( PERCENT_ROWTYPE_VK | PERCENT_TYPE_VK )? ) -> typespec_custom(name=$type_name.stis_ref=$REF_VK != nullis_percent_rowtype=$PERCENT_ROWTYPE_VK != nullis_percent_type=$PERCENT_TYPE_VK != null)| native_datatype_spec -> { $native_datatype_spec.st; }| ^( INTERVAL_DATATYPE interval_type_spec_first interval_type_spec_second ) -> interval_type_spec(left_side=$interval_type_spec_first.stright_side=$interval_type_spec_second.st))
+			int alt564=3;
 			switch ( input.LA(1) ) {
 			case CUSTOM_TYPE:
 				{
-				alt567=1;
+				alt564=1;
 				}
 				break;
 			case NATIVE_DATATYPE:
 				{
-				alt567=2;
+				alt564=2;
 				}
 				break;
 			case INTERVAL_DATATYPE:
 				{
-				alt567=3;
+				alt564=3;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 567, 0, input);
+					new NoViableAltException("", 564, 0, input);
 				throw nvae;
 			}
-			switch (alt567) {
+			switch (alt564) {
 				case 1 :
 					// PLSQLPrinter.g:2373:11: ^( CUSTOM_TYPE type_name ( REF_VK )? ( PERCENT_ROWTYPE_VK | PERCENT_TYPE_VK )? )
 					{
@@ -35458,105 +35460,24 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 3 :
-					// PLSQLPrinter.g:2378:10: ^( INTERVAL_DATATYPE ( YEAR_VK | DAY_VK ) ( MONTH_VK | SECOND_VK ) ( expression )* )
+					// PLSQLPrinter.g:2378:10: ^( INTERVAL_DATATYPE interval_type_spec_first interval_type_spec_second )
 					{
 					match(input,INTERVAL_DATATYPE,FOLLOW_INTERVAL_DATATYPE_in_type_spec24707); 
 					match(input, Token.DOWN, null); 
-					// PLSQLPrinter.g:2378:30: ( YEAR_VK | DAY_VK )
-					int alt564=2;
-					int LA564_0 = input.LA(1);
-					if ( (LA564_0==YEAR_VK) ) {
-						alt564=1;
-					}
-					else if ( (LA564_0==DAY_VK) ) {
-						alt564=2;
-					}
+					pushFollow(FOLLOW_interval_type_spec_first_in_type_spec24709);
+					interval_type_spec_first380=interval_type_spec_first();
+					state._fsp--;
 
-					else {
-						NoViableAltException nvae =
-							new NoViableAltException("", 564, 0, input);
-						throw nvae;
-					}
-
-					switch (alt564) {
-						case 1 :
-							// PLSQLPrinter.g:2378:31: YEAR_VK
-							{
-							match(input,YEAR_VK,FOLLOW_YEAR_VK_in_type_spec24710); 
-							}
-							break;
-						case 2 :
-							// PLSQLPrinter.g:2378:39: DAY_VK
-							{
-							match(input,DAY_VK,FOLLOW_DAY_VK_in_type_spec24712); 
-							}
-							break;
-
-					}
-
-					// PLSQLPrinter.g:2378:47: ( MONTH_VK | SECOND_VK )
-					int alt565=2;
-					int LA565_0 = input.LA(1);
-					if ( (LA565_0==MONTH_VK) ) {
-						alt565=1;
-					}
-					else if ( (LA565_0==SECOND_VK) ) {
-						alt565=2;
-					}
-
-					else {
-						NoViableAltException nvae =
-							new NoViableAltException("", 565, 0, input);
-						throw nvae;
-					}
-
-					switch (alt565) {
-						case 1 :
-							// PLSQLPrinter.g:2378:48: MONTH_VK
-							{
-							match(input,MONTH_VK,FOLLOW_MONTH_VK_in_type_spec24716); 
-							}
-							break;
-						case 2 :
-							// PLSQLPrinter.g:2378:57: SECOND_VK
-							{
-							match(input,SECOND_VK,FOLLOW_SECOND_VK_in_type_spec24718); 
-							}
-							break;
-
-					}
-
-					// PLSQLPrinter.g:2378:68: ( expression )*
-					loop566:
-					while (true) {
-						int alt566=2;
-						int LA566_0 = input.LA(1);
-						if ( (LA566_0==EXPR||LA566_0==LOGIC_EXPR) ) {
-							alt566=1;
-						}
-
-						switch (alt566) {
-						case 1 :
-							// PLSQLPrinter.g:2378:68: expression
-							{
-							pushFollow(FOLLOW_expression_in_type_spec24721);
-							expression();
-							state._fsp--;
-
-							}
-							break;
-
-						default :
-							break loop566;
-						}
-					}
+					pushFollow(FOLLOW_interval_type_spec_second_in_type_spec24711);
+					interval_type_spec_second381=interval_type_spec_second();
+					state._fsp--;
 
 					match(input, Token.UP, null); 
 
 					// TEMPLATE REWRITE
-					// 2379:5: -> template( \"not implemented: type_spec[INTERVAL_DATATYPE]\"
+					// 2379:5: -> interval_type_spec(left_side=$interval_type_spec_first.stright_side=$interval_type_spec_second.st)
 					{
-						retval.st = new StringTemplate(templateLib, "not implemented: type_spec[INTERVAL_DATATYPE]");
+						retval.st = templateLib.getInstanceOf("interval_type_spec",new STAttrMap().put("left_side", (interval_type_spec_first380!=null?((StringTemplate)interval_type_spec_first380.getTemplate()):null)).put("right_side", (interval_type_spec_second381!=null?((StringTemplate)interval_type_spec_second381.getTemplate()):null)));
 					}
 
 
@@ -35578,6 +35499,206 @@ public class PLSQLPrinter extends TreeParser {
 	// $ANTLR end "type_spec"
 
 
+	public static class interval_type_spec_first_return extends TreeRuleReturnScope {
+		public StringTemplate st;
+		public Object getTemplate() { return st; }
+		public String toString() { return st==null?null:st.toString(); }
+	};
+
+
+	// $ANTLR start "interval_type_spec_first"
+	// PLSQLPrinter.g:2382:1: interval_type_spec_first : ^( ( YEAR_VK | DAY_VK ) ( expression )? ) -> interval_type_spec_first(is_year=$YEAR_VK != nullis_day=$DAY_VK != nullexpression=$expression.st);
+	public final PLSQLPrinter.interval_type_spec_first_return interval_type_spec_first() throws RecognitionException {
+		PLSQLPrinter.interval_type_spec_first_return retval = new PLSQLPrinter.interval_type_spec_first_return();
+		retval.start = input.LT(1);
+
+		CommonTree YEAR_VK382=null;
+		CommonTree DAY_VK383=null;
+		TreeRuleReturnScope expression384 =null;
+
+		try {
+			// PLSQLPrinter.g:2383:5: ( ^( ( YEAR_VK | DAY_VK ) ( expression )? ) -> interval_type_spec_first(is_year=$YEAR_VK != nullis_day=$DAY_VK != nullexpression=$expression.st))
+			// PLSQLPrinter.g:2383:9: ^( ( YEAR_VK | DAY_VK ) ( expression )? )
+			{
+			// PLSQLPrinter.g:2384:11: ( YEAR_VK | DAY_VK )
+			int alt565=2;
+			int LA565_0 = input.LA(1);
+			if ( (LA565_0==YEAR_VK) ) {
+				alt565=1;
+			}
+			else if ( (LA565_0==DAY_VK) ) {
+				alt565=2;
+			}
+
+			else {
+				NoViableAltException nvae =
+					new NoViableAltException("", 565, 0, input);
+				throw nvae;
+			}
+
+			switch (alt565) {
+				case 1 :
+					// PLSQLPrinter.g:2384:12: YEAR_VK
+					{
+					YEAR_VK382=(CommonTree)match(input,YEAR_VK,FOLLOW_YEAR_VK_in_interval_type_spec_first24764); 
+					}
+					break;
+				case 2 :
+					// PLSQLPrinter.g:2384:20: DAY_VK
+					{
+					DAY_VK383=(CommonTree)match(input,DAY_VK,FOLLOW_DAY_VK_in_interval_type_spec_first24766); 
+					}
+					break;
+
+			}
+
+			if ( input.LA(1)==Token.DOWN ) {
+				match(input, Token.DOWN, null); 
+				// PLSQLPrinter.g:2385:11: ( expression )?
+				int alt566=2;
+				int LA566_0 = input.LA(1);
+				if ( (LA566_0==EXPR||LA566_0==LOGIC_EXPR) ) {
+					alt566=1;
+				}
+				switch (alt566) {
+					case 1 :
+						// PLSQLPrinter.g:2385:11: expression
+						{
+						pushFollow(FOLLOW_expression_in_interval_type_spec_first24779);
+						expression384=expression();
+						state._fsp--;
+
+						}
+						break;
+
+				}
+
+				match(input, Token.UP, null); 
+			}
+
+			// TEMPLATE REWRITE
+			// 2387:9: -> interval_type_spec_first(is_year=$YEAR_VK != nullis_day=$DAY_VK != nullexpression=$expression.st)
+			{
+				retval.st = templateLib.getInstanceOf("interval_type_spec_first",new STAttrMap().put("is_year", YEAR_VK382 != null).put("is_day", DAY_VK383 != null).put("expression", (expression384!=null?((StringTemplate)expression384.getTemplate()):null)));
+			}
+
+
+
+			}
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "interval_type_spec_first"
+
+
+	public static class interval_type_spec_second_return extends TreeRuleReturnScope {
+		public StringTemplate st;
+		public Object getTemplate() { return st; }
+		public String toString() { return st==null?null:st.toString(); }
+	};
+
+
+	// $ANTLR start "interval_type_spec_second"
+	// PLSQLPrinter.g:2390:1: interval_type_spec_second : ^( ( MONTH_VK | SECOND_VK ) ( expression )? ) -> interval_type_spec_second(is_month=$MONTH_VK != nullis_second=$SECOND_VK != nullexpression=$expression.st);
+	public final PLSQLPrinter.interval_type_spec_second_return interval_type_spec_second() throws RecognitionException {
+		PLSQLPrinter.interval_type_spec_second_return retval = new PLSQLPrinter.interval_type_spec_second_return();
+		retval.start = input.LT(1);
+
+		CommonTree MONTH_VK385=null;
+		CommonTree SECOND_VK386=null;
+		TreeRuleReturnScope expression387 =null;
+
+		try {
+			// PLSQLPrinter.g:2391:5: ( ^( ( MONTH_VK | SECOND_VK ) ( expression )? ) -> interval_type_spec_second(is_month=$MONTH_VK != nullis_second=$SECOND_VK != nullexpression=$expression.st))
+			// PLSQLPrinter.g:2391:9: ^( ( MONTH_VK | SECOND_VK ) ( expression )? )
+			{
+			// PLSQLPrinter.g:2392:11: ( MONTH_VK | SECOND_VK )
+			int alt567=2;
+			int LA567_0 = input.LA(1);
+			if ( (LA567_0==MONTH_VK) ) {
+				alt567=1;
+			}
+			else if ( (LA567_0==SECOND_VK) ) {
+				alt567=2;
+			}
+
+			else {
+				NoViableAltException nvae =
+					new NoViableAltException("", 567, 0, input);
+				throw nvae;
+			}
+
+			switch (alt567) {
+				case 1 :
+					// PLSQLPrinter.g:2392:12: MONTH_VK
+					{
+					MONTH_VK385=(CommonTree)match(input,MONTH_VK,FOLLOW_MONTH_VK_in_interval_type_spec_second24849); 
+					}
+					break;
+				case 2 :
+					// PLSQLPrinter.g:2392:21: SECOND_VK
+					{
+					SECOND_VK386=(CommonTree)match(input,SECOND_VK,FOLLOW_SECOND_VK_in_interval_type_spec_second24851); 
+					}
+					break;
+
+			}
+
+			if ( input.LA(1)==Token.DOWN ) {
+				match(input, Token.DOWN, null); 
+				// PLSQLPrinter.g:2393:11: ( expression )?
+				int alt568=2;
+				int LA568_0 = input.LA(1);
+				if ( (LA568_0==EXPR||LA568_0==LOGIC_EXPR) ) {
+					alt568=1;
+				}
+				switch (alt568) {
+					case 1 :
+						// PLSQLPrinter.g:2393:11: expression
+						{
+						pushFollow(FOLLOW_expression_in_interval_type_spec_second24864);
+						expression387=expression();
+						state._fsp--;
+
+						}
+						break;
+
+				}
+
+				match(input, Token.UP, null); 
+			}
+
+			// TEMPLATE REWRITE
+			// 2395:9: -> interval_type_spec_second(is_month=$MONTH_VK != nullis_second=$SECOND_VK != nullexpression=$expression.st)
+			{
+				retval.st = templateLib.getInstanceOf("interval_type_spec_second",new STAttrMap().put("is_month", MONTH_VK385 != null).put("is_second", SECOND_VK386 != null).put("expression", (expression387!=null?((StringTemplate)expression387.getTemplate()):null)));
+			}
+
+
+
+			}
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "interval_type_spec_second"
+
+
 	public static class type_precision_return extends TreeRuleReturnScope {
 		public StringTemplate st;
 		public Object getTemplate() { return st; }
@@ -35586,7 +35707,7 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "type_precision"
-	// PLSQLPrinter.g:2382:1: type_precision : ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? ) -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null);
+	// PLSQLPrinter.g:2398:1: type_precision : ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? ) -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null);
 	public final PLSQLPrinter.type_precision_return type_precision() throws RecognitionException {
 		PLSQLPrinter.type_precision_return retval = new PLSQLPrinter.type_precision_return();
 		retval.start = input.LT(1);
@@ -35597,26 +35718,26 @@ public class PLSQLPrinter extends TreeParser {
 		TreeRuleReturnScope size2 =null;
 
 		try {
-			// PLSQLPrinter.g:2383:5: ( ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? ) -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null))
-			// PLSQLPrinter.g:2383:10: ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? )
+			// PLSQLPrinter.g:2399:5: ( ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? ) -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null))
+			// PLSQLPrinter.g:2399:10: ^( PRECISION size1= constant (size2= constant )? (precision_char= CHAR_VK |precision_byte= BYTE_VK )? )
 			{
-			match(input,PRECISION,FOLLOW_PRECISION_in_type_precision24758); 
+			match(input,PRECISION,FOLLOW_PRECISION_in_type_precision24923); 
 			match(input, Token.DOWN, null); 
-			pushFollow(FOLLOW_constant_in_type_precision24762);
+			pushFollow(FOLLOW_constant_in_type_precision24927);
 			size1=constant();
 			state._fsp--;
 
-			// PLSQLPrinter.g:2383:42: (size2= constant )?
-			int alt568=2;
-			int LA568_0 = input.LA(1);
-			if ( (LA568_0==APPROXIMATE_NUM_LIT||LA568_0==CHAR_STRING||LA568_0==EXACT_NUM_LIT||LA568_0==MINUS_SIGN||LA568_0==SQL92_RESERVED_DEFAULT||LA568_0==SQL92_RESERVED_FALSE||LA568_0==SQL92_RESERVED_NULL||LA568_0==SQL92_RESERVED_TRUE||LA568_0==UNSIGNED_INTEGER||LA568_0==DBTIMEZONE_VK||LA568_0==MAXVALUE_VK||LA568_0==MINVALUE_VK||LA568_0==SESSIONTIMEZONE_VK) ) {
-				alt568=1;
+			// PLSQLPrinter.g:2399:42: (size2= constant )?
+			int alt569=2;
+			int LA569_0 = input.LA(1);
+			if ( (LA569_0==APPROXIMATE_NUM_LIT||LA569_0==CHAR_STRING||LA569_0==EXACT_NUM_LIT||LA569_0==MINUS_SIGN||LA569_0==SQL92_RESERVED_DEFAULT||LA569_0==SQL92_RESERVED_FALSE||LA569_0==SQL92_RESERVED_NULL||LA569_0==SQL92_RESERVED_TRUE||LA569_0==UNSIGNED_INTEGER||LA569_0==DBTIMEZONE_VK||LA569_0==MAXVALUE_VK||LA569_0==MINVALUE_VK||LA569_0==SESSIONTIMEZONE_VK) ) {
+				alt569=1;
 			}
-			switch (alt568) {
+			switch (alt569) {
 				case 1 :
-					// PLSQLPrinter.g:2383:42: size2= constant
+					// PLSQLPrinter.g:2399:42: size2= constant
 					{
-					pushFollow(FOLLOW_constant_in_type_precision24766);
+					pushFollow(FOLLOW_constant_in_type_precision24931);
 					size2=constant();
 					state._fsp--;
 
@@ -35625,26 +35746,26 @@ public class PLSQLPrinter extends TreeParser {
 
 			}
 
-			// PLSQLPrinter.g:2383:53: (precision_char= CHAR_VK |precision_byte= BYTE_VK )?
-			int alt569=3;
-			int LA569_0 = input.LA(1);
-			if ( (LA569_0==CHAR_VK) ) {
-				alt569=1;
+			// PLSQLPrinter.g:2399:53: (precision_char= CHAR_VK |precision_byte= BYTE_VK )?
+			int alt570=3;
+			int LA570_0 = input.LA(1);
+			if ( (LA570_0==CHAR_VK) ) {
+				alt570=1;
 			}
-			else if ( (LA569_0==BYTE_VK) ) {
-				alt569=2;
+			else if ( (LA570_0==BYTE_VK) ) {
+				alt570=2;
 			}
-			switch (alt569) {
+			switch (alt570) {
 				case 1 :
-					// PLSQLPrinter.g:2383:54: precision_char= CHAR_VK
+					// PLSQLPrinter.g:2399:54: precision_char= CHAR_VK
 					{
-					precision_char=(CommonTree)match(input,CHAR_VK,FOLLOW_CHAR_VK_in_type_precision24772); 
+					precision_char=(CommonTree)match(input,CHAR_VK,FOLLOW_CHAR_VK_in_type_precision24937); 
 					}
 					break;
 				case 2 :
-					// PLSQLPrinter.g:2383:77: precision_byte= BYTE_VK
+					// PLSQLPrinter.g:2399:77: precision_byte= BYTE_VK
 					{
-					precision_byte=(CommonTree)match(input,BYTE_VK,FOLLOW_BYTE_VK_in_type_precision24776); 
+					precision_byte=(CommonTree)match(input,BYTE_VK,FOLLOW_BYTE_VK_in_type_precision24941); 
 					}
 					break;
 
@@ -35653,7 +35774,7 @@ public class PLSQLPrinter extends TreeParser {
 			match(input, Token.UP, null); 
 
 			// TEMPLATE REWRITE
-			// 2384:5: -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null)
+			// 2400:5: -> base_type_spec_precision(size1=$size1.stsize2=$size2.stis_byte=$precision_byte != nullis_char=$precision_char != null)
 			{
 				retval.st = templateLib.getInstanceOf("base_type_spec_precision",new STAttrMap().put("size1", (size1!=null?((StringTemplate)size1.getTemplate()):null)).put("size2", (size2!=null?((StringTemplate)size2.getTemplate()):null)).put("is_byte", precision_byte != null).put("is_char", precision_char != null));
 			}
@@ -35683,7 +35804,7 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "native_datatype_spec"
-	// PLSQLPrinter.g:2389:1: native_datatype_spec : ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? ) -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null);
+	// PLSQLPrinter.g:2405:1: native_datatype_spec : ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? ) -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null);
 	public final PLSQLPrinter.native_datatype_spec_return native_datatype_spec() throws RecognitionException {
 		PLSQLPrinter.native_datatype_spec_return retval = new PLSQLPrinter.native_datatype_spec_return();
 		retval.start = input.LT(1);
@@ -35694,87 +35815,87 @@ public class PLSQLPrinter extends TreeParser {
 
 		 String typeBaseName = null; 
 		try {
-			// PLSQLPrinter.g:2391:5: ( ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? ) -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null))
-			// PLSQLPrinter.g:2391:10: ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? )
+			// PLSQLPrinter.g:2407:5: ( ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? ) -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null))
+			// PLSQLPrinter.g:2407:10: ^( NATIVE_DATATYPE ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK ) (prec= type_precision )? (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )? )
 			{
-			match(input,NATIVE_DATATYPE,FOLLOW_NATIVE_DATATYPE_in_native_datatype_spec24839); 
+			match(input,NATIVE_DATATYPE,FOLLOW_NATIVE_DATATYPE_in_native_datatype_spec25004); 
 			match(input, Token.DOWN, null); 
-			// PLSQLPrinter.g:2392:5: ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK )
-			int alt570=56;
+			// PLSQLPrinter.g:2408:5: ( BFILE_VK | BINARY_FLOAT_VK | BINARY_INTEGER_VK | BLOB_VK | BOOLEAN_VK | CHARACTER_VK | CHAR_VK | CLOB_VK | DATE_VK | SQL92_RESERVED_DATE | DAY_VK | DECIMAL_VK | DEC_VK | DOUBLE_VK | DOUBLE_VK PRECISION_VK | DSINTERVAL_UNCONSTRAINED_VK | FLOAT_VK | HOUR_VK | INTEGER_VK | INT_VK | LONG_VK | LONG_VK RAW_VK | MINUTE_VK | MLSLABEL_VK | MONTH_VK | NATURALN_VK | NATURAL_VK | NCHAR_VK | NCLOB_VK | NUMBER_VK | NUMERIC_VK | NVARCHAR2_VK | PLS_INTEGER_VK | POSITIVEN_VK | POSITIVE_VK | RAW_VK | REAL_VK | ROWID_VK | SECOND_VK | SIGNTYPE_VK | SIMPLE_INTEGER_VK | SMALLINT_VK | STRING_VK | TIMESTAMP_LTZ_UNCONSTRAINED_VK | TIMESTAMP_TZ_UNCONSTRAINED_VK | TIMESTAMP_UNCONSTRAINED_VK | TIMESTAMP_VK | TIMEZONE_ABBR_VK | TIMEZONE_HOUR_VK | TIMEZONE_MINUTE_VK | TIMEZONE_REGION_VK | UROWID_VK | VARCHAR2_VK | VARCHAR_VK | YEAR_VK | YMINTERVAL_UNCONSTRAINED_VK )
+			int alt571=56;
 			switch ( input.LA(1) ) {
 			case BFILE_VK:
 				{
-				alt570=1;
+				alt571=1;
 				}
 				break;
 			case BINARY_FLOAT_VK:
 				{
-				alt570=2;
+				alt571=2;
 				}
 				break;
 			case BINARY_INTEGER_VK:
 				{
-				alt570=3;
+				alt571=3;
 				}
 				break;
 			case BLOB_VK:
 				{
-				alt570=4;
+				alt571=4;
 				}
 				break;
 			case BOOLEAN_VK:
 				{
-				alt570=5;
+				alt571=5;
 				}
 				break;
 			case CHARACTER_VK:
 				{
-				alt570=6;
+				alt571=6;
 				}
 				break;
 			case CHAR_VK:
 				{
-				alt570=7;
+				alt571=7;
 				}
 				break;
 			case CLOB_VK:
 				{
-				alt570=8;
+				alt571=8;
 				}
 				break;
 			case DATE_VK:
 				{
-				alt570=9;
+				alt571=9;
 				}
 				break;
 			case SQL92_RESERVED_DATE:
 				{
-				alt570=10;
+				alt571=10;
 				}
 				break;
 			case DAY_VK:
 				{
-				alt570=11;
+				alt571=11;
 				}
 				break;
 			case DECIMAL_VK:
 				{
-				alt570=12;
+				alt571=12;
 				}
 				break;
 			case DEC_VK:
 				{
-				alt570=13;
+				alt571=13;
 				}
 				break;
 			case DOUBLE_VK:
 				{
-				int LA570_14 = input.LA(2);
-				if ( (LA570_14==PRECISION_VK) ) {
-					alt570=15;
+				int LA571_14 = input.LA(2);
+				if ( (LA571_14==PRECISION_VK) ) {
+					alt571=15;
 				}
-				else if ( (LA570_14==UP||LA570_14==PRECISION||LA570_14==TIME_VK) ) {
-					alt570=14;
+				else if ( (LA571_14==UP||LA571_14==PRECISION||LA571_14==TIME_VK) ) {
+					alt571=14;
 				}
 
 				else {
@@ -35782,7 +35903,7 @@ public class PLSQLPrinter extends TreeParser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 570, 14, input);
+							new NoViableAltException("", 571, 14, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -35793,37 +35914,37 @@ public class PLSQLPrinter extends TreeParser {
 				break;
 			case DSINTERVAL_UNCONSTRAINED_VK:
 				{
-				alt570=16;
+				alt571=16;
 				}
 				break;
 			case FLOAT_VK:
 				{
-				alt570=17;
+				alt571=17;
 				}
 				break;
 			case HOUR_VK:
 				{
-				alt570=18;
+				alt571=18;
 				}
 				break;
 			case INTEGER_VK:
 				{
-				alt570=19;
+				alt571=19;
 				}
 				break;
 			case INT_VK:
 				{
-				alt570=20;
+				alt571=20;
 				}
 				break;
 			case LONG_VK:
 				{
-				int LA570_20 = input.LA(2);
-				if ( (LA570_20==RAW_VK) ) {
-					alt570=22;
+				int LA571_20 = input.LA(2);
+				if ( (LA571_20==RAW_VK) ) {
+					alt571=22;
 				}
-				else if ( (LA570_20==UP||LA570_20==PRECISION||LA570_20==TIME_VK) ) {
-					alt570=21;
+				else if ( (LA571_20==UP||LA571_20==PRECISION||LA571_20==TIME_VK) ) {
+					alt571=21;
 				}
 
 				else {
@@ -35831,7 +35952,7 @@ public class PLSQLPrinter extends TreeParser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 570, 20, input);
+							new NoViableAltException("", 571, 20, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -35842,564 +35963,564 @@ public class PLSQLPrinter extends TreeParser {
 				break;
 			case MINUTE_VK:
 				{
-				alt570=23;
+				alt571=23;
 				}
 				break;
 			case MLSLABEL_VK:
 				{
-				alt570=24;
+				alt571=24;
 				}
 				break;
 			case MONTH_VK:
 				{
-				alt570=25;
+				alt571=25;
 				}
 				break;
 			case NATURALN_VK:
 				{
-				alt570=26;
+				alt571=26;
 				}
 				break;
 			case NATURAL_VK:
 				{
-				alt570=27;
+				alt571=27;
 				}
 				break;
 			case NCHAR_VK:
 				{
-				alt570=28;
+				alt571=28;
 				}
 				break;
 			case NCLOB_VK:
 				{
-				alt570=29;
+				alt571=29;
 				}
 				break;
 			case NUMBER_VK:
 				{
-				alt570=30;
+				alt571=30;
 				}
 				break;
 			case NUMERIC_VK:
 				{
-				alt570=31;
+				alt571=31;
 				}
 				break;
 			case NVARCHAR2_VK:
 				{
-				alt570=32;
+				alt571=32;
 				}
 				break;
 			case PLS_INTEGER_VK:
 				{
-				alt570=33;
+				alt571=33;
 				}
 				break;
 			case POSITIVEN_VK:
 				{
-				alt570=34;
+				alt571=34;
 				}
 				break;
 			case POSITIVE_VK:
 				{
-				alt570=35;
+				alt571=35;
 				}
 				break;
 			case RAW_VK:
 				{
-				alt570=36;
+				alt571=36;
 				}
 				break;
 			case REAL_VK:
 				{
-				alt570=37;
+				alt571=37;
 				}
 				break;
 			case ROWID_VK:
 				{
-				alt570=38;
+				alt571=38;
 				}
 				break;
 			case SECOND_VK:
 				{
-				alt570=39;
+				alt571=39;
 				}
 				break;
 			case SIGNTYPE_VK:
 				{
-				alt570=40;
+				alt571=40;
 				}
 				break;
 			case SIMPLE_INTEGER_VK:
 				{
-				alt570=41;
+				alt571=41;
 				}
 				break;
 			case SMALLINT_VK:
 				{
-				alt570=42;
+				alt571=42;
 				}
 				break;
 			case STRING_VK:
 				{
-				alt570=43;
+				alt571=43;
 				}
 				break;
 			case TIMESTAMP_LTZ_UNCONSTRAINED_VK:
 				{
-				alt570=44;
+				alt571=44;
 				}
 				break;
 			case TIMESTAMP_TZ_UNCONSTRAINED_VK:
 				{
-				alt570=45;
+				alt571=45;
 				}
 				break;
 			case TIMESTAMP_UNCONSTRAINED_VK:
 				{
-				alt570=46;
+				alt571=46;
 				}
 				break;
 			case TIMESTAMP_VK:
 				{
-				alt570=47;
+				alt571=47;
 				}
 				break;
 			case TIMEZONE_ABBR_VK:
 				{
-				alt570=48;
+				alt571=48;
 				}
 				break;
 			case TIMEZONE_HOUR_VK:
 				{
-				alt570=49;
+				alt571=49;
 				}
 				break;
 			case TIMEZONE_MINUTE_VK:
 				{
-				alt570=50;
+				alt571=50;
 				}
 				break;
 			case TIMEZONE_REGION_VK:
 				{
-				alt570=51;
+				alt571=51;
 				}
 				break;
 			case UROWID_VK:
 				{
-				alt570=52;
+				alt571=52;
 				}
 				break;
 			case VARCHAR2_VK:
 				{
-				alt570=53;
+				alt571=53;
 				}
 				break;
 			case VARCHAR_VK:
 				{
-				alt570=54;
+				alt571=54;
 				}
 				break;
 			case YEAR_VK:
 				{
-				alt570=55;
+				alt571=55;
 				}
 				break;
 			case YMINTERVAL_UNCONSTRAINED_VK:
 				{
-				alt570=56;
+				alt571=56;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 570, 0, input);
+					new NoViableAltException("", 571, 0, input);
 				throw nvae;
 			}
-			switch (alt570) {
+			switch (alt571) {
 				case 1 :
-					// PLSQLPrinter.g:2392:10: BFILE_VK
+					// PLSQLPrinter.g:2408:10: BFILE_VK
 					{
-					match(input,BFILE_VK,FOLLOW_BFILE_VK_in_native_datatype_spec24850); 
+					match(input,BFILE_VK,FOLLOW_BFILE_VK_in_native_datatype_spec25015); 
 					 typeBaseName = "bfile"; 
 					}
 					break;
 				case 2 :
-					// PLSQLPrinter.g:2393:10: BINARY_FLOAT_VK
+					// PLSQLPrinter.g:2409:10: BINARY_FLOAT_VK
 					{
-					match(input,BINARY_FLOAT_VK,FOLLOW_BINARY_FLOAT_VK_in_native_datatype_spec24863); 
+					match(input,BINARY_FLOAT_VK,FOLLOW_BINARY_FLOAT_VK_in_native_datatype_spec25028); 
 					 typeBaseName = "binary_float"; 
 					}
 					break;
 				case 3 :
-					// PLSQLPrinter.g:2394:10: BINARY_INTEGER_VK
+					// PLSQLPrinter.g:2410:10: BINARY_INTEGER_VK
 					{
-					match(input,BINARY_INTEGER_VK,FOLLOW_BINARY_INTEGER_VK_in_native_datatype_spec24876); 
+					match(input,BINARY_INTEGER_VK,FOLLOW_BINARY_INTEGER_VK_in_native_datatype_spec25041); 
 					 typeBaseName = "binary_integer"; 
 					}
 					break;
 				case 4 :
-					// PLSQLPrinter.g:2395:10: BLOB_VK
+					// PLSQLPrinter.g:2411:10: BLOB_VK
 					{
-					match(input,BLOB_VK,FOLLOW_BLOB_VK_in_native_datatype_spec24889); 
+					match(input,BLOB_VK,FOLLOW_BLOB_VK_in_native_datatype_spec25054); 
 					 typeBaseName = "blob"; 
 					}
 					break;
 				case 5 :
-					// PLSQLPrinter.g:2396:10: BOOLEAN_VK
+					// PLSQLPrinter.g:2412:10: BOOLEAN_VK
 					{
-					match(input,BOOLEAN_VK,FOLLOW_BOOLEAN_VK_in_native_datatype_spec24902); 
+					match(input,BOOLEAN_VK,FOLLOW_BOOLEAN_VK_in_native_datatype_spec25067); 
 					 typeBaseName = "boolean"; 
 					}
 					break;
 				case 6 :
-					// PLSQLPrinter.g:2397:10: CHARACTER_VK
+					// PLSQLPrinter.g:2413:10: CHARACTER_VK
 					{
-					match(input,CHARACTER_VK,FOLLOW_CHARACTER_VK_in_native_datatype_spec24915); 
+					match(input,CHARACTER_VK,FOLLOW_CHARACTER_VK_in_native_datatype_spec25080); 
 					 typeBaseName = "character"; 
 					}
 					break;
 				case 7 :
-					// PLSQLPrinter.g:2398:10: CHAR_VK
+					// PLSQLPrinter.g:2414:10: CHAR_VK
 					{
-					match(input,CHAR_VK,FOLLOW_CHAR_VK_in_native_datatype_spec24929); 
+					match(input,CHAR_VK,FOLLOW_CHAR_VK_in_native_datatype_spec25094); 
 					 typeBaseName = "char"; 
 					}
 					break;
 				case 8 :
-					// PLSQLPrinter.g:2399:10: CLOB_VK
+					// PLSQLPrinter.g:2415:10: CLOB_VK
 					{
-					match(input,CLOB_VK,FOLLOW_CLOB_VK_in_native_datatype_spec24942); 
+					match(input,CLOB_VK,FOLLOW_CLOB_VK_in_native_datatype_spec25107); 
 					 typeBaseName = "clob"; 
 					}
 					break;
 				case 9 :
-					// PLSQLPrinter.g:2400:10: DATE_VK
+					// PLSQLPrinter.g:2416:10: DATE_VK
 					{
-					match(input,DATE_VK,FOLLOW_DATE_VK_in_native_datatype_spec24955); 
+					match(input,DATE_VK,FOLLOW_DATE_VK_in_native_datatype_spec25120); 
 					 typeBaseName = "date"; 
 					}
 					break;
 				case 10 :
-					// PLSQLPrinter.g:2401:10: SQL92_RESERVED_DATE
+					// PLSQLPrinter.g:2417:10: SQL92_RESERVED_DATE
 					{
-					match(input,SQL92_RESERVED_DATE,FOLLOW_SQL92_RESERVED_DATE_in_native_datatype_spec24968); 
+					match(input,SQL92_RESERVED_DATE,FOLLOW_SQL92_RESERVED_DATE_in_native_datatype_spec25133); 
 					 typeBaseName = "date"; 
 					}
 					break;
 				case 11 :
-					// PLSQLPrinter.g:2402:10: DAY_VK
+					// PLSQLPrinter.g:2418:10: DAY_VK
 					{
-					match(input,DAY_VK,FOLLOW_DAY_VK_in_native_datatype_spec24981); 
+					match(input,DAY_VK,FOLLOW_DAY_VK_in_native_datatype_spec25146); 
 					}
 					break;
 				case 12 :
-					// PLSQLPrinter.g:2403:10: DECIMAL_VK
+					// PLSQLPrinter.g:2419:10: DECIMAL_VK
 					{
-					match(input,DECIMAL_VK,FOLLOW_DECIMAL_VK_in_native_datatype_spec24992); 
+					match(input,DECIMAL_VK,FOLLOW_DECIMAL_VK_in_native_datatype_spec25157); 
 					 typeBaseName = "decimal"; 
 					}
 					break;
 				case 13 :
-					// PLSQLPrinter.g:2404:10: DEC_VK
+					// PLSQLPrinter.g:2420:10: DEC_VK
 					{
-					match(input,DEC_VK,FOLLOW_DEC_VK_in_native_datatype_spec25006); 
+					match(input,DEC_VK,FOLLOW_DEC_VK_in_native_datatype_spec25171); 
 					 typeBaseName = "dec"; 
 					}
 					break;
 				case 14 :
-					// PLSQLPrinter.g:2405:10: DOUBLE_VK
+					// PLSQLPrinter.g:2421:10: DOUBLE_VK
 					{
-					match(input,DOUBLE_VK,FOLLOW_DOUBLE_VK_in_native_datatype_spec25019); 
+					match(input,DOUBLE_VK,FOLLOW_DOUBLE_VK_in_native_datatype_spec25184); 
 					 typeBaseName = "double"; 
 					}
 					break;
 				case 15 :
-					// PLSQLPrinter.g:2406:10: DOUBLE_VK PRECISION_VK
+					// PLSQLPrinter.g:2422:10: DOUBLE_VK PRECISION_VK
 					{
-					match(input,DOUBLE_VK,FOLLOW_DOUBLE_VK_in_native_datatype_spec25032); 
-					match(input,PRECISION_VK,FOLLOW_PRECISION_VK_in_native_datatype_spec25034); 
+					match(input,DOUBLE_VK,FOLLOW_DOUBLE_VK_in_native_datatype_spec25197); 
+					match(input,PRECISION_VK,FOLLOW_PRECISION_VK_in_native_datatype_spec25199); 
 					 typeBaseName = "double precision"; 
 					}
 					break;
 				case 16 :
-					// PLSQLPrinter.g:2407:10: DSINTERVAL_UNCONSTRAINED_VK
+					// PLSQLPrinter.g:2423:10: DSINTERVAL_UNCONSTRAINED_VK
 					{
-					match(input,DSINTERVAL_UNCONSTRAINED_VK,FOLLOW_DSINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25047); 
+					match(input,DSINTERVAL_UNCONSTRAINED_VK,FOLLOW_DSINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25212); 
 					}
 					break;
 				case 17 :
-					// PLSQLPrinter.g:2408:10: FLOAT_VK
+					// PLSQLPrinter.g:2424:10: FLOAT_VK
 					{
-					match(input,FLOAT_VK,FOLLOW_FLOAT_VK_in_native_datatype_spec25058); 
+					match(input,FLOAT_VK,FOLLOW_FLOAT_VK_in_native_datatype_spec25223); 
 					 typeBaseName = "float"; 
 					}
 					break;
 				case 18 :
-					// PLSQLPrinter.g:2409:10: HOUR_VK
+					// PLSQLPrinter.g:2425:10: HOUR_VK
 					{
-					match(input,HOUR_VK,FOLLOW_HOUR_VK_in_native_datatype_spec25071); 
+					match(input,HOUR_VK,FOLLOW_HOUR_VK_in_native_datatype_spec25236); 
 					}
 					break;
 				case 19 :
-					// PLSQLPrinter.g:2410:10: INTEGER_VK
+					// PLSQLPrinter.g:2426:10: INTEGER_VK
 					{
-					match(input,INTEGER_VK,FOLLOW_INTEGER_VK_in_native_datatype_spec25082); 
+					match(input,INTEGER_VK,FOLLOW_INTEGER_VK_in_native_datatype_spec25247); 
 					 typeBaseName = "integer"; 
 					}
 					break;
 				case 20 :
-					// PLSQLPrinter.g:2411:10: INT_VK
+					// PLSQLPrinter.g:2427:10: INT_VK
 					{
-					match(input,INT_VK,FOLLOW_INT_VK_in_native_datatype_spec25095); 
+					match(input,INT_VK,FOLLOW_INT_VK_in_native_datatype_spec25260); 
 					 typeBaseName = "int"; 
 					}
 					break;
 				case 21 :
-					// PLSQLPrinter.g:2412:10: LONG_VK
+					// PLSQLPrinter.g:2428:10: LONG_VK
 					{
-					match(input,LONG_VK,FOLLOW_LONG_VK_in_native_datatype_spec25108); 
+					match(input,LONG_VK,FOLLOW_LONG_VK_in_native_datatype_spec25273); 
 					 typeBaseName = "long"; 
 					}
 					break;
 				case 22 :
-					// PLSQLPrinter.g:2413:10: LONG_VK RAW_VK
+					// PLSQLPrinter.g:2429:10: LONG_VK RAW_VK
 					{
-					match(input,LONG_VK,FOLLOW_LONG_VK_in_native_datatype_spec25121); 
-					match(input,RAW_VK,FOLLOW_RAW_VK_in_native_datatype_spec25123); 
+					match(input,LONG_VK,FOLLOW_LONG_VK_in_native_datatype_spec25286); 
+					match(input,RAW_VK,FOLLOW_RAW_VK_in_native_datatype_spec25288); 
 					 typeBaseName = "long raw"; 
 					}
 					break;
 				case 23 :
-					// PLSQLPrinter.g:2414:10: MINUTE_VK
+					// PLSQLPrinter.g:2430:10: MINUTE_VK
 					{
-					match(input,MINUTE_VK,FOLLOW_MINUTE_VK_in_native_datatype_spec25136); 
+					match(input,MINUTE_VK,FOLLOW_MINUTE_VK_in_native_datatype_spec25301); 
 					}
 					break;
 				case 24 :
-					// PLSQLPrinter.g:2415:10: MLSLABEL_VK
+					// PLSQLPrinter.g:2431:10: MLSLABEL_VK
 					{
-					match(input,MLSLABEL_VK,FOLLOW_MLSLABEL_VK_in_native_datatype_spec25147); 
+					match(input,MLSLABEL_VK,FOLLOW_MLSLABEL_VK_in_native_datatype_spec25312); 
 					}
 					break;
 				case 25 :
-					// PLSQLPrinter.g:2416:10: MONTH_VK
+					// PLSQLPrinter.g:2432:10: MONTH_VK
 					{
-					match(input,MONTH_VK,FOLLOW_MONTH_VK_in_native_datatype_spec25158); 
+					match(input,MONTH_VK,FOLLOW_MONTH_VK_in_native_datatype_spec25323); 
 					}
 					break;
 				case 26 :
-					// PLSQLPrinter.g:2417:10: NATURALN_VK
+					// PLSQLPrinter.g:2433:10: NATURALN_VK
 					{
-					match(input,NATURALN_VK,FOLLOW_NATURALN_VK_in_native_datatype_spec25169); 
+					match(input,NATURALN_VK,FOLLOW_NATURALN_VK_in_native_datatype_spec25334); 
 					}
 					break;
 				case 27 :
-					// PLSQLPrinter.g:2418:10: NATURAL_VK
+					// PLSQLPrinter.g:2434:10: NATURAL_VK
 					{
-					match(input,NATURAL_VK,FOLLOW_NATURAL_VK_in_native_datatype_spec25180); 
+					match(input,NATURAL_VK,FOLLOW_NATURAL_VK_in_native_datatype_spec25345); 
 					}
 					break;
 				case 28 :
-					// PLSQLPrinter.g:2419:10: NCHAR_VK
+					// PLSQLPrinter.g:2435:10: NCHAR_VK
 					{
-					match(input,NCHAR_VK,FOLLOW_NCHAR_VK_in_native_datatype_spec25191); 
+					match(input,NCHAR_VK,FOLLOW_NCHAR_VK_in_native_datatype_spec25356); 
 					 typeBaseName = "nchar"; 
 					}
 					break;
 				case 29 :
-					// PLSQLPrinter.g:2420:10: NCLOB_VK
+					// PLSQLPrinter.g:2436:10: NCLOB_VK
 					{
-					match(input,NCLOB_VK,FOLLOW_NCLOB_VK_in_native_datatype_spec25204); 
+					match(input,NCLOB_VK,FOLLOW_NCLOB_VK_in_native_datatype_spec25369); 
 					 typeBaseName = "nclob"; 
 					}
 					break;
 				case 30 :
-					// PLSQLPrinter.g:2421:10: NUMBER_VK
+					// PLSQLPrinter.g:2437:10: NUMBER_VK
 					{
-					match(input,NUMBER_VK,FOLLOW_NUMBER_VK_in_native_datatype_spec25217); 
+					match(input,NUMBER_VK,FOLLOW_NUMBER_VK_in_native_datatype_spec25382); 
 					 typeBaseName = "number"; 
 					}
 					break;
 				case 31 :
-					// PLSQLPrinter.g:2422:10: NUMERIC_VK
+					// PLSQLPrinter.g:2438:10: NUMERIC_VK
 					{
-					match(input,NUMERIC_VK,FOLLOW_NUMERIC_VK_in_native_datatype_spec25230); 
+					match(input,NUMERIC_VK,FOLLOW_NUMERIC_VK_in_native_datatype_spec25395); 
 					 typeBaseName = "numeric"; 
 					}
 					break;
 				case 32 :
-					// PLSQLPrinter.g:2423:10: NVARCHAR2_VK
+					// PLSQLPrinter.g:2439:10: NVARCHAR2_VK
 					{
-					match(input,NVARCHAR2_VK,FOLLOW_NVARCHAR2_VK_in_native_datatype_spec25243); 
+					match(input,NVARCHAR2_VK,FOLLOW_NVARCHAR2_VK_in_native_datatype_spec25408); 
 					 typeBaseName = "nvarchar2"; 
 					}
 					break;
 				case 33 :
-					// PLSQLPrinter.g:2424:10: PLS_INTEGER_VK
+					// PLSQLPrinter.g:2440:10: PLS_INTEGER_VK
 					{
-					match(input,PLS_INTEGER_VK,FOLLOW_PLS_INTEGER_VK_in_native_datatype_spec25256); 
+					match(input,PLS_INTEGER_VK,FOLLOW_PLS_INTEGER_VK_in_native_datatype_spec25421); 
 					 typeBaseName = "pls_integer"; 
 					}
 					break;
 				case 34 :
-					// PLSQLPrinter.g:2425:10: POSITIVEN_VK
+					// PLSQLPrinter.g:2441:10: POSITIVEN_VK
 					{
-					match(input,POSITIVEN_VK,FOLLOW_POSITIVEN_VK_in_native_datatype_spec25269); 
+					match(input,POSITIVEN_VK,FOLLOW_POSITIVEN_VK_in_native_datatype_spec25434); 
 					}
 					break;
 				case 35 :
-					// PLSQLPrinter.g:2426:10: POSITIVE_VK
+					// PLSQLPrinter.g:2442:10: POSITIVE_VK
 					{
-					match(input,POSITIVE_VK,FOLLOW_POSITIVE_VK_in_native_datatype_spec25280); 
+					match(input,POSITIVE_VK,FOLLOW_POSITIVE_VK_in_native_datatype_spec25445); 
 					}
 					break;
 				case 36 :
-					// PLSQLPrinter.g:2427:10: RAW_VK
+					// PLSQLPrinter.g:2443:10: RAW_VK
 					{
-					match(input,RAW_VK,FOLLOW_RAW_VK_in_native_datatype_spec25291); 
+					match(input,RAW_VK,FOLLOW_RAW_VK_in_native_datatype_spec25456); 
 					 typeBaseName = "raw"; 
 					}
 					break;
 				case 37 :
-					// PLSQLPrinter.g:2428:10: REAL_VK
+					// PLSQLPrinter.g:2444:10: REAL_VK
 					{
-					match(input,REAL_VK,FOLLOW_REAL_VK_in_native_datatype_spec25304); 
+					match(input,REAL_VK,FOLLOW_REAL_VK_in_native_datatype_spec25469); 
 					}
 					break;
 				case 38 :
-					// PLSQLPrinter.g:2429:10: ROWID_VK
+					// PLSQLPrinter.g:2445:10: ROWID_VK
 					{
-					match(input,ROWID_VK,FOLLOW_ROWID_VK_in_native_datatype_spec25315); 
+					match(input,ROWID_VK,FOLLOW_ROWID_VK_in_native_datatype_spec25480); 
 					 typeBaseName = "rowid"; 
 					}
 					break;
 				case 39 :
-					// PLSQLPrinter.g:2430:10: SECOND_VK
+					// PLSQLPrinter.g:2446:10: SECOND_VK
 					{
-					match(input,SECOND_VK,FOLLOW_SECOND_VK_in_native_datatype_spec25328); 
+					match(input,SECOND_VK,FOLLOW_SECOND_VK_in_native_datatype_spec25493); 
 					}
 					break;
 				case 40 :
-					// PLSQLPrinter.g:2431:10: SIGNTYPE_VK
+					// PLSQLPrinter.g:2447:10: SIGNTYPE_VK
 					{
-					match(input,SIGNTYPE_VK,FOLLOW_SIGNTYPE_VK_in_native_datatype_spec25339); 
+					match(input,SIGNTYPE_VK,FOLLOW_SIGNTYPE_VK_in_native_datatype_spec25504); 
 					}
 					break;
 				case 41 :
-					// PLSQLPrinter.g:2432:10: SIMPLE_INTEGER_VK
+					// PLSQLPrinter.g:2448:10: SIMPLE_INTEGER_VK
 					{
-					match(input,SIMPLE_INTEGER_VK,FOLLOW_SIMPLE_INTEGER_VK_in_native_datatype_spec25350); 
+					match(input,SIMPLE_INTEGER_VK,FOLLOW_SIMPLE_INTEGER_VK_in_native_datatype_spec25515); 
 					}
 					break;
 				case 42 :
-					// PLSQLPrinter.g:2433:10: SMALLINT_VK
+					// PLSQLPrinter.g:2449:10: SMALLINT_VK
 					{
-					match(input,SMALLINT_VK,FOLLOW_SMALLINT_VK_in_native_datatype_spec25361); 
+					match(input,SMALLINT_VK,FOLLOW_SMALLINT_VK_in_native_datatype_spec25526); 
 					 typeBaseName = "smallint"; 
 					}
 					break;
 				case 43 :
-					// PLSQLPrinter.g:2434:10: STRING_VK
+					// PLSQLPrinter.g:2450:10: STRING_VK
 					{
-					match(input,STRING_VK,FOLLOW_STRING_VK_in_native_datatype_spec25374); 
+					match(input,STRING_VK,FOLLOW_STRING_VK_in_native_datatype_spec25539); 
 					}
 					break;
 				case 44 :
-					// PLSQLPrinter.g:2435:10: TIMESTAMP_LTZ_UNCONSTRAINED_VK
+					// PLSQLPrinter.g:2451:10: TIMESTAMP_LTZ_UNCONSTRAINED_VK
 					{
-					match(input,TIMESTAMP_LTZ_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_LTZ_UNCONSTRAINED_VK_in_native_datatype_spec25385); 
+					match(input,TIMESTAMP_LTZ_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_LTZ_UNCONSTRAINED_VK_in_native_datatype_spec25550); 
 					}
 					break;
 				case 45 :
-					// PLSQLPrinter.g:2436:10: TIMESTAMP_TZ_UNCONSTRAINED_VK
+					// PLSQLPrinter.g:2452:10: TIMESTAMP_TZ_UNCONSTRAINED_VK
 					{
-					match(input,TIMESTAMP_TZ_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_TZ_UNCONSTRAINED_VK_in_native_datatype_spec25396); 
+					match(input,TIMESTAMP_TZ_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_TZ_UNCONSTRAINED_VK_in_native_datatype_spec25561); 
 					}
 					break;
 				case 46 :
-					// PLSQLPrinter.g:2437:10: TIMESTAMP_UNCONSTRAINED_VK
+					// PLSQLPrinter.g:2453:10: TIMESTAMP_UNCONSTRAINED_VK
 					{
-					match(input,TIMESTAMP_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_UNCONSTRAINED_VK_in_native_datatype_spec25407); 
+					match(input,TIMESTAMP_UNCONSTRAINED_VK,FOLLOW_TIMESTAMP_UNCONSTRAINED_VK_in_native_datatype_spec25572); 
 					}
 					break;
 				case 47 :
-					// PLSQLPrinter.g:2438:10: TIMESTAMP_VK
+					// PLSQLPrinter.g:2454:10: TIMESTAMP_VK
 					{
-					match(input,TIMESTAMP_VK,FOLLOW_TIMESTAMP_VK_in_native_datatype_spec25418); 
+					match(input,TIMESTAMP_VK,FOLLOW_TIMESTAMP_VK_in_native_datatype_spec25583); 
 					 typeBaseName = "timestamp"; 
 					}
 					break;
 				case 48 :
-					// PLSQLPrinter.g:2439:10: TIMEZONE_ABBR_VK
+					// PLSQLPrinter.g:2455:10: TIMEZONE_ABBR_VK
 					{
-					match(input,TIMEZONE_ABBR_VK,FOLLOW_TIMEZONE_ABBR_VK_in_native_datatype_spec25431); 
+					match(input,TIMEZONE_ABBR_VK,FOLLOW_TIMEZONE_ABBR_VK_in_native_datatype_spec25596); 
 					}
 					break;
 				case 49 :
-					// PLSQLPrinter.g:2440:10: TIMEZONE_HOUR_VK
+					// PLSQLPrinter.g:2456:10: TIMEZONE_HOUR_VK
 					{
-					match(input,TIMEZONE_HOUR_VK,FOLLOW_TIMEZONE_HOUR_VK_in_native_datatype_spec25442); 
+					match(input,TIMEZONE_HOUR_VK,FOLLOW_TIMEZONE_HOUR_VK_in_native_datatype_spec25607); 
 					}
 					break;
 				case 50 :
-					// PLSQLPrinter.g:2441:10: TIMEZONE_MINUTE_VK
+					// PLSQLPrinter.g:2457:10: TIMEZONE_MINUTE_VK
 					{
-					match(input,TIMEZONE_MINUTE_VK,FOLLOW_TIMEZONE_MINUTE_VK_in_native_datatype_spec25453); 
+					match(input,TIMEZONE_MINUTE_VK,FOLLOW_TIMEZONE_MINUTE_VK_in_native_datatype_spec25618); 
 					}
 					break;
 				case 51 :
-					// PLSQLPrinter.g:2442:10: TIMEZONE_REGION_VK
+					// PLSQLPrinter.g:2458:10: TIMEZONE_REGION_VK
 					{
-					match(input,TIMEZONE_REGION_VK,FOLLOW_TIMEZONE_REGION_VK_in_native_datatype_spec25464); 
+					match(input,TIMEZONE_REGION_VK,FOLLOW_TIMEZONE_REGION_VK_in_native_datatype_spec25629); 
 					}
 					break;
 				case 52 :
-					// PLSQLPrinter.g:2443:10: UROWID_VK
+					// PLSQLPrinter.g:2459:10: UROWID_VK
 					{
-					match(input,UROWID_VK,FOLLOW_UROWID_VK_in_native_datatype_spec25475); 
+					match(input,UROWID_VK,FOLLOW_UROWID_VK_in_native_datatype_spec25640); 
 					 typeBaseName = "urowid"; 
 					}
 					break;
 				case 53 :
-					// PLSQLPrinter.g:2444:10: VARCHAR2_VK
+					// PLSQLPrinter.g:2460:10: VARCHAR2_VK
 					{
-					match(input,VARCHAR2_VK,FOLLOW_VARCHAR2_VK_in_native_datatype_spec25488); 
+					match(input,VARCHAR2_VK,FOLLOW_VARCHAR2_VK_in_native_datatype_spec25653); 
 					 typeBaseName = "varchar2"; 
 					}
 					break;
 				case 54 :
-					// PLSQLPrinter.g:2445:10: VARCHAR_VK
+					// PLSQLPrinter.g:2461:10: VARCHAR_VK
 					{
-					match(input,VARCHAR_VK,FOLLOW_VARCHAR_VK_in_native_datatype_spec25501); 
+					match(input,VARCHAR_VK,FOLLOW_VARCHAR_VK_in_native_datatype_spec25666); 
 					 typeBaseName = "varchar"; 
 					}
 					break;
 				case 55 :
-					// PLSQLPrinter.g:2446:10: YEAR_VK
+					// PLSQLPrinter.g:2462:10: YEAR_VK
 					{
-					match(input,YEAR_VK,FOLLOW_YEAR_VK_in_native_datatype_spec25514); 
+					match(input,YEAR_VK,FOLLOW_YEAR_VK_in_native_datatype_spec25679); 
 					}
 					break;
 				case 56 :
-					// PLSQLPrinter.g:2447:10: YMINTERVAL_UNCONSTRAINED_VK
+					// PLSQLPrinter.g:2463:10: YMINTERVAL_UNCONSTRAINED_VK
 					{
-					match(input,YMINTERVAL_UNCONSTRAINED_VK,FOLLOW_YMINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25525); 
+					match(input,YMINTERVAL_UNCONSTRAINED_VK,FOLLOW_YMINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25690); 
 					}
 					break;
 
 			}
 
-			// PLSQLPrinter.g:2448:9: (prec= type_precision )?
-			int alt571=2;
-			int LA571_0 = input.LA(1);
-			if ( (LA571_0==PRECISION) ) {
-				alt571=1;
+			// PLSQLPrinter.g:2464:9: (prec= type_precision )?
+			int alt572=2;
+			int LA572_0 = input.LA(1);
+			if ( (LA572_0==PRECISION) ) {
+				alt572=1;
 			}
-			switch (alt571) {
+			switch (alt572) {
 				case 1 :
-					// PLSQLPrinter.g:2448:9: prec= type_precision
+					// PLSQLPrinter.g:2464:9: prec= type_precision
 					{
-					pushFollow(FOLLOW_type_precision_in_native_datatype_spec25534);
+					pushFollow(FOLLOW_type_precision_in_native_datatype_spec25699);
 					prec=type_precision();
 					state._fsp--;
 
@@ -36408,28 +36529,28 @@ public class PLSQLPrinter extends TreeParser {
 
 			}
 
-			// PLSQLPrinter.g:2449:5: (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )?
-			int alt573=2;
-			int LA573_0 = input.LA(1);
-			if ( (LA573_0==TIME_VK) ) {
-				alt573=1;
+			// PLSQLPrinter.g:2465:5: (is_tz= TIME_VK (is_tz_local= LOCAL_VK )? )?
+			int alt574=2;
+			int LA574_0 = input.LA(1);
+			if ( (LA574_0==TIME_VK) ) {
+				alt574=1;
 			}
-			switch (alt573) {
+			switch (alt574) {
 				case 1 :
-					// PLSQLPrinter.g:2449:6: is_tz= TIME_VK (is_tz_local= LOCAL_VK )?
+					// PLSQLPrinter.g:2465:6: is_tz= TIME_VK (is_tz_local= LOCAL_VK )?
 					{
-					is_tz=(CommonTree)match(input,TIME_VK,FOLLOW_TIME_VK_in_native_datatype_spec25544); 
-					// PLSQLPrinter.g:2449:31: (is_tz_local= LOCAL_VK )?
-					int alt572=2;
-					int LA572_0 = input.LA(1);
-					if ( (LA572_0==LOCAL_VK) ) {
-						alt572=1;
+					is_tz=(CommonTree)match(input,TIME_VK,FOLLOW_TIME_VK_in_native_datatype_spec25709); 
+					// PLSQLPrinter.g:2465:31: (is_tz_local= LOCAL_VK )?
+					int alt573=2;
+					int LA573_0 = input.LA(1);
+					if ( (LA573_0==LOCAL_VK) ) {
+						alt573=1;
 					}
-					switch (alt572) {
+					switch (alt573) {
 						case 1 :
-							// PLSQLPrinter.g:2449:31: is_tz_local= LOCAL_VK
+							// PLSQLPrinter.g:2465:31: is_tz_local= LOCAL_VK
 							{
-							is_tz_local=(CommonTree)match(input,LOCAL_VK,FOLLOW_LOCAL_VK_in_native_datatype_spec25548); 
+							is_tz_local=(CommonTree)match(input,LOCAL_VK,FOLLOW_LOCAL_VK_in_native_datatype_spec25713); 
 							}
 							break;
 
@@ -36444,7 +36565,7 @@ public class PLSQLPrinter extends TreeParser {
 
 			 if (typeBaseName == null) { typeBaseName = "Unsupported datatype"; } 
 			// TEMPLATE REWRITE
-			// 2452:5: -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null)
+			// 2468:5: -> base_type_spec(baseName=typeBaseNameprecision=$prec.stis_with_time_zone=$is_tz != nullis_time_zone_local=$is_tz_local != null)
 			{
 				retval.st = templateLib.getInstanceOf("base_type_spec",new STAttrMap().put("baseName", typeBaseName).put("precision", (prec!=null?((StringTemplate)prec.getTemplate()):null)).put("is_with_time_zone", is_tz != null).put("is_time_zone_local", is_tz_local != null));
 			}
@@ -36474,75 +36595,75 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "general_element"
-	// PLSQLPrinter.g:2458:1: general_element : ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ ) -> general_element(parts=parts);
+	// PLSQLPrinter.g:2474:1: general_element : ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ ) -> general_element(parts=parts);
 	public final PLSQLPrinter.general_element_return general_element() throws RecognitionException {
 		PLSQLPrinter.general_element_return retval = new PLSQLPrinter.general_element_return();
 		retval.start = input.LT(1);
 
-		TreeRuleReturnScope general_element_id380 =null;
-		TreeRuleReturnScope function_argument381 =null;
+		TreeRuleReturnScope general_element_id388 =null;
+		TreeRuleReturnScope function_argument389 =null;
 
 
 		    List<StringTemplate> parts = new ArrayList<StringTemplate>();
 
 		try {
-			// PLSQLPrinter.g:2462:5: ( ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ ) -> general_element(parts=parts))
-			// PLSQLPrinter.g:2462:10: ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ )
+			// PLSQLPrinter.g:2478:5: ( ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ ) -> general_element(parts=parts))
+			// PLSQLPrinter.g:2478:10: ^( CASCATED_ELEMENT ( general_element_id | function_argument )+ )
 			{
-			match(input,CASCATED_ELEMENT,FOLLOW_CASCATED_ELEMENT_in_general_element25623); 
+			match(input,CASCATED_ELEMENT,FOLLOW_CASCATED_ELEMENT_in_general_element25788); 
 			match(input, Token.DOWN, null); 
-			// PLSQLPrinter.g:2463:13: ( general_element_id | function_argument )+
-			int cnt574=0;
-			loop574:
+			// PLSQLPrinter.g:2479:13: ( general_element_id | function_argument )+
+			int cnt575=0;
+			loop575:
 			while (true) {
-				int alt574=3;
-				int LA574_0 = input.LA(1);
-				if ( (LA574_0==ANY_ELEMENT) ) {
-					alt574=1;
+				int alt575=3;
+				int LA575_0 = input.LA(1);
+				if ( (LA575_0==ANY_ELEMENT) ) {
+					alt575=1;
 				}
-				else if ( (LA574_0==ARGUMENTS) ) {
-					alt574=2;
+				else if ( (LA575_0==ARGUMENTS) ) {
+					alt575=2;
 				}
 
-				switch (alt574) {
+				switch (alt575) {
 				case 1 :
-					// PLSQLPrinter.g:2464:15: general_element_id
+					// PLSQLPrinter.g:2480:15: general_element_id
 					{
-					pushFollow(FOLLOW_general_element_id_in_general_element25653);
-					general_element_id380=general_element_id();
+					pushFollow(FOLLOW_general_element_id_in_general_element25818);
+					general_element_id388=general_element_id();
 					state._fsp--;
 
 
 					                if (parts.size() > 0) {
 					                   parts.add(templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", ".")));
 					                }
-					                parts.add((general_element_id380!=null?((StringTemplate)general_element_id380.getTemplate()):null));
+					                parts.add((general_element_id388!=null?((StringTemplate)general_element_id388.getTemplate()):null));
 					              
 					}
 					break;
 				case 2 :
-					// PLSQLPrinter.g:2470:17: function_argument
+					// PLSQLPrinter.g:2486:17: function_argument
 					{
-					pushFollow(FOLLOW_function_argument_in_general_element25673);
-					function_argument381=function_argument();
+					pushFollow(FOLLOW_function_argument_in_general_element25838);
+					function_argument389=function_argument();
 					state._fsp--;
 
-					 parts.add((function_argument381!=null?((StringTemplate)function_argument381.getTemplate()):null)); 
+					 parts.add((function_argument389!=null?((StringTemplate)function_argument389.getTemplate()):null)); 
 					}
 					break;
 
 				default :
-					if ( cnt574 >= 1 ) break loop574;
-					EarlyExitException eee = new EarlyExitException(574, input);
+					if ( cnt575 >= 1 ) break loop575;
+					EarlyExitException eee = new EarlyExitException(575, input);
 					throw eee;
 				}
-				cnt574++;
+				cnt575++;
 			}
 
 			match(input, Token.UP, null); 
 
 			// TEMPLATE REWRITE
-			// 2473:5: -> general_element(parts=parts)
+			// 2489:5: -> general_element(parts=parts)
 			{
 				retval.st = templateLib.getInstanceOf("general_element",new STAttrMap().put("parts", parts));
 			}
@@ -36572,26 +36693,26 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "general_element_id"
-	// PLSQLPrinter.g:2476:1: general_element_id : ^( ANY_ELEMENT ID ) -> string_literal(val=$ID.text);
+	// PLSQLPrinter.g:2492:1: general_element_id : ^( ANY_ELEMENT ID ) -> string_literal(val=$ID.text);
 	public final PLSQLPrinter.general_element_id_return general_element_id() throws RecognitionException {
 		PLSQLPrinter.general_element_id_return retval = new PLSQLPrinter.general_element_id_return();
 		retval.start = input.LT(1);
 
-		CommonTree ID382=null;
+		CommonTree ID390=null;
 
 		try {
-			// PLSQLPrinter.g:2477:5: ( ^( ANY_ELEMENT ID ) -> string_literal(val=$ID.text))
-			// PLSQLPrinter.g:2477:7: ^( ANY_ELEMENT ID )
+			// PLSQLPrinter.g:2493:5: ( ^( ANY_ELEMENT ID ) -> string_literal(val=$ID.text))
+			// PLSQLPrinter.g:2493:7: ^( ANY_ELEMENT ID )
 			{
-			match(input,ANY_ELEMENT,FOLLOW_ANY_ELEMENT_in_general_element_id25736); 
+			match(input,ANY_ELEMENT,FOLLOW_ANY_ELEMENT_in_general_element_id25901); 
 			match(input, Token.DOWN, null); 
-			ID382=(CommonTree)match(input,ID,FOLLOW_ID_in_general_element_id25738); 
+			ID390=(CommonTree)match(input,ID,FOLLOW_ID_in_general_element_id25903); 
 			match(input, Token.UP, null); 
 
 			// TEMPLATE REWRITE
-			// 2477:25: -> string_literal(val=$ID.text)
+			// 2493:25: -> string_literal(val=$ID.text)
 			{
-				retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (ID382!=null?ID382.getText():null)));
+				retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (ID390!=null?ID390.getText():null)));
 			}
 
 
@@ -36619,98 +36740,98 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "constant"
-	// PLSQLPrinter.g:2484:1: constant : (v1= UNSIGNED_INTEGER -> string_literal(val=$v1.text)| ^( MINUS_SIGN v2= UNSIGNED_INTEGER ) -> string_literal(val=\"-\" + $v2.text)| EXACT_NUM_LIT -> string_literal(val=$EXACT_NUM_LIT.text)| APPROXIMATE_NUM_LIT -> string_literal(val=$APPROXIMATE_NUM_LIT.text)| CHAR_STRING -> string_literal(val=$CHAR_STRING.text)| SQL92_RESERVED_NULL -> string_literal(val=\"null\")| SQL92_RESERVED_TRUE -> string_literal(val=\"true\")| SQL92_RESERVED_FALSE -> string_literal(val=\"false\")| DBTIMEZONE_VK -> string_literal(val=\"dbtimezone\")| SESSIONTIMEZONE_VK -> string_literal(val=\"sessiontimezone\")| MINVALUE_VK -> string_literal(val=\"minvalue\")| MAXVALUE_VK -> string_literal(val=\"maxvalue\")| SQL92_RESERVED_DEFAULT -> string_literal(val=\"default\"));
+	// PLSQLPrinter.g:2500:1: constant : (v1= UNSIGNED_INTEGER -> string_literal(val=$v1.text)| ^( MINUS_SIGN v2= UNSIGNED_INTEGER ) -> string_literal(val=\"-\" + $v2.text)| EXACT_NUM_LIT -> string_literal(val=$EXACT_NUM_LIT.text)| APPROXIMATE_NUM_LIT -> string_literal(val=$APPROXIMATE_NUM_LIT.text)| CHAR_STRING -> string_literal(val=$CHAR_STRING.text)| SQL92_RESERVED_NULL -> string_literal(val=\"null\")| SQL92_RESERVED_TRUE -> string_literal(val=\"true\")| SQL92_RESERVED_FALSE -> string_literal(val=\"false\")| DBTIMEZONE_VK -> string_literal(val=\"dbtimezone\")| SESSIONTIMEZONE_VK -> string_literal(val=\"sessiontimezone\")| MINVALUE_VK -> string_literal(val=\"minvalue\")| MAXVALUE_VK -> string_literal(val=\"maxvalue\")| SQL92_RESERVED_DEFAULT -> string_literal(val=\"default\"));
 	public final PLSQLPrinter.constant_return constant() throws RecognitionException {
 		PLSQLPrinter.constant_return retval = new PLSQLPrinter.constant_return();
 		retval.start = input.LT(1);
 
 		CommonTree v1=null;
 		CommonTree v2=null;
-		CommonTree EXACT_NUM_LIT383=null;
-		CommonTree APPROXIMATE_NUM_LIT384=null;
-		CommonTree CHAR_STRING385=null;
+		CommonTree EXACT_NUM_LIT391=null;
+		CommonTree APPROXIMATE_NUM_LIT392=null;
+		CommonTree CHAR_STRING393=null;
 
 		try {
-			// PLSQLPrinter.g:2485:5: (v1= UNSIGNED_INTEGER -> string_literal(val=$v1.text)| ^( MINUS_SIGN v2= UNSIGNED_INTEGER ) -> string_literal(val=\"-\" + $v2.text)| EXACT_NUM_LIT -> string_literal(val=$EXACT_NUM_LIT.text)| APPROXIMATE_NUM_LIT -> string_literal(val=$APPROXIMATE_NUM_LIT.text)| CHAR_STRING -> string_literal(val=$CHAR_STRING.text)| SQL92_RESERVED_NULL -> string_literal(val=\"null\")| SQL92_RESERVED_TRUE -> string_literal(val=\"true\")| SQL92_RESERVED_FALSE -> string_literal(val=\"false\")| DBTIMEZONE_VK -> string_literal(val=\"dbtimezone\")| SESSIONTIMEZONE_VK -> string_literal(val=\"sessiontimezone\")| MINVALUE_VK -> string_literal(val=\"minvalue\")| MAXVALUE_VK -> string_literal(val=\"maxvalue\")| SQL92_RESERVED_DEFAULT -> string_literal(val=\"default\"))
-			int alt575=13;
+			// PLSQLPrinter.g:2501:5: (v1= UNSIGNED_INTEGER -> string_literal(val=$v1.text)| ^( MINUS_SIGN v2= UNSIGNED_INTEGER ) -> string_literal(val=\"-\" + $v2.text)| EXACT_NUM_LIT -> string_literal(val=$EXACT_NUM_LIT.text)| APPROXIMATE_NUM_LIT -> string_literal(val=$APPROXIMATE_NUM_LIT.text)| CHAR_STRING -> string_literal(val=$CHAR_STRING.text)| SQL92_RESERVED_NULL -> string_literal(val=\"null\")| SQL92_RESERVED_TRUE -> string_literal(val=\"true\")| SQL92_RESERVED_FALSE -> string_literal(val=\"false\")| DBTIMEZONE_VK -> string_literal(val=\"dbtimezone\")| SESSIONTIMEZONE_VK -> string_literal(val=\"sessiontimezone\")| MINVALUE_VK -> string_literal(val=\"minvalue\")| MAXVALUE_VK -> string_literal(val=\"maxvalue\")| SQL92_RESERVED_DEFAULT -> string_literal(val=\"default\"))
+			int alt576=13;
 			switch ( input.LA(1) ) {
 			case UNSIGNED_INTEGER:
 				{
-				alt575=1;
+				alt576=1;
 				}
 				break;
 			case MINUS_SIGN:
 				{
-				alt575=2;
+				alt576=2;
 				}
 				break;
 			case EXACT_NUM_LIT:
 				{
-				alt575=3;
+				alt576=3;
 				}
 				break;
 			case APPROXIMATE_NUM_LIT:
 				{
-				alt575=4;
+				alt576=4;
 				}
 				break;
 			case CHAR_STRING:
 				{
-				alt575=5;
+				alt576=5;
 				}
 				break;
 			case SQL92_RESERVED_NULL:
 				{
-				alt575=6;
+				alt576=6;
 				}
 				break;
 			case SQL92_RESERVED_TRUE:
 				{
-				alt575=7;
+				alt576=7;
 				}
 				break;
 			case SQL92_RESERVED_FALSE:
 				{
-				alt575=8;
+				alt576=8;
 				}
 				break;
 			case DBTIMEZONE_VK:
 				{
-				alt575=9;
+				alt576=9;
 				}
 				break;
 			case SESSIONTIMEZONE_VK:
 				{
-				alt575=10;
+				alt576=10;
 				}
 				break;
 			case MINVALUE_VK:
 				{
-				alt575=11;
+				alt576=11;
 				}
 				break;
 			case MAXVALUE_VK:
 				{
-				alt575=12;
+				alt576=12;
 				}
 				break;
 			case SQL92_RESERVED_DEFAULT:
 				{
-				alt575=13;
+				alt576=13;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 575, 0, input);
+					new NoViableAltException("", 576, 0, input);
 				throw nvae;
 			}
-			switch (alt575) {
+			switch (alt576) {
 				case 1 :
-					// PLSQLPrinter.g:2485:10: v1= UNSIGNED_INTEGER
+					// PLSQLPrinter.g:2501:10: v1= UNSIGNED_INTEGER
 					{
-					v1=(CommonTree)match(input,UNSIGNED_INTEGER,FOLLOW_UNSIGNED_INTEGER_in_constant25774); 
+					v1=(CommonTree)match(input,UNSIGNED_INTEGER,FOLLOW_UNSIGNED_INTEGER_in_constant25939); 
 					// TEMPLATE REWRITE
-					// 2485:30: -> string_literal(val=$v1.text)
+					// 2501:30: -> string_literal(val=$v1.text)
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (v1!=null?v1.getText():null)));
 					}
@@ -36720,15 +36841,15 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 2 :
-					// PLSQLPrinter.g:2486:10: ^( MINUS_SIGN v2= UNSIGNED_INTEGER )
+					// PLSQLPrinter.g:2502:10: ^( MINUS_SIGN v2= UNSIGNED_INTEGER )
 					{
-					match(input,MINUS_SIGN,FOLLOW_MINUS_SIGN_in_constant25795); 
+					match(input,MINUS_SIGN,FOLLOW_MINUS_SIGN_in_constant25960); 
 					match(input, Token.DOWN, null); 
-					v2=(CommonTree)match(input,UNSIGNED_INTEGER,FOLLOW_UNSIGNED_INTEGER_in_constant25799); 
+					v2=(CommonTree)match(input,UNSIGNED_INTEGER,FOLLOW_UNSIGNED_INTEGER_in_constant25964); 
 					match(input, Token.UP, null); 
 
 					// TEMPLATE REWRITE
-					// 2486:44: -> string_literal(val=\"-\" + $v2.text)
+					// 2502:44: -> string_literal(val=\"-\" + $v2.text)
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "-" + (v2!=null?v2.getText():null)));
 					}
@@ -36738,13 +36859,13 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 3 :
-					// PLSQLPrinter.g:2487:10: EXACT_NUM_LIT
+					// PLSQLPrinter.g:2503:10: EXACT_NUM_LIT
 					{
-					EXACT_NUM_LIT383=(CommonTree)match(input,EXACT_NUM_LIT,FOLLOW_EXACT_NUM_LIT_in_constant25820); 
+					EXACT_NUM_LIT391=(CommonTree)match(input,EXACT_NUM_LIT,FOLLOW_EXACT_NUM_LIT_in_constant25985); 
 					// TEMPLATE REWRITE
-					// 2487:24: -> string_literal(val=$EXACT_NUM_LIT.text)
+					// 2503:24: -> string_literal(val=$EXACT_NUM_LIT.text)
 					{
-						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (EXACT_NUM_LIT383!=null?EXACT_NUM_LIT383.getText():null)));
+						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (EXACT_NUM_LIT391!=null?EXACT_NUM_LIT391.getText():null)));
 					}
 
 
@@ -36752,13 +36873,13 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 4 :
-					// PLSQLPrinter.g:2488:10: APPROXIMATE_NUM_LIT
+					// PLSQLPrinter.g:2504:10: APPROXIMATE_NUM_LIT
 					{
-					APPROXIMATE_NUM_LIT384=(CommonTree)match(input,APPROXIMATE_NUM_LIT,FOLLOW_APPROXIMATE_NUM_LIT_in_constant25840); 
+					APPROXIMATE_NUM_LIT392=(CommonTree)match(input,APPROXIMATE_NUM_LIT,FOLLOW_APPROXIMATE_NUM_LIT_in_constant26005); 
 					// TEMPLATE REWRITE
-					// 2488:30: -> string_literal(val=$APPROXIMATE_NUM_LIT.text)
+					// 2504:30: -> string_literal(val=$APPROXIMATE_NUM_LIT.text)
 					{
-						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (APPROXIMATE_NUM_LIT384!=null?APPROXIMATE_NUM_LIT384.getText():null)));
+						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (APPROXIMATE_NUM_LIT392!=null?APPROXIMATE_NUM_LIT392.getText():null)));
 					}
 
 
@@ -36766,13 +36887,13 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 5 :
-					// PLSQLPrinter.g:2489:10: CHAR_STRING
+					// PLSQLPrinter.g:2505:10: CHAR_STRING
 					{
-					CHAR_STRING385=(CommonTree)match(input,CHAR_STRING,FOLLOW_CHAR_STRING_in_constant25860); 
+					CHAR_STRING393=(CommonTree)match(input,CHAR_STRING,FOLLOW_CHAR_STRING_in_constant26025); 
 					// TEMPLATE REWRITE
-					// 2489:22: -> string_literal(val=$CHAR_STRING.text)
+					// 2505:22: -> string_literal(val=$CHAR_STRING.text)
 					{
-						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (CHAR_STRING385!=null?CHAR_STRING385.getText():null)));
+						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (CHAR_STRING393!=null?CHAR_STRING393.getText():null)));
 					}
 
 
@@ -36780,11 +36901,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 6 :
-					// PLSQLPrinter.g:2490:10: SQL92_RESERVED_NULL
+					// PLSQLPrinter.g:2506:10: SQL92_RESERVED_NULL
 					{
-					match(input,SQL92_RESERVED_NULL,FOLLOW_SQL92_RESERVED_NULL_in_constant25880); 
+					match(input,SQL92_RESERVED_NULL,FOLLOW_SQL92_RESERVED_NULL_in_constant26045); 
 					// TEMPLATE REWRITE
-					// 2490:30: -> string_literal(val=\"null\")
+					// 2506:30: -> string_literal(val=\"null\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "null"));
 					}
@@ -36794,11 +36915,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 7 :
-					// PLSQLPrinter.g:2491:10: SQL92_RESERVED_TRUE
+					// PLSQLPrinter.g:2507:10: SQL92_RESERVED_TRUE
 					{
-					match(input,SQL92_RESERVED_TRUE,FOLLOW_SQL92_RESERVED_TRUE_in_constant25900); 
+					match(input,SQL92_RESERVED_TRUE,FOLLOW_SQL92_RESERVED_TRUE_in_constant26065); 
 					// TEMPLATE REWRITE
-					// 2491:30: -> string_literal(val=\"true\")
+					// 2507:30: -> string_literal(val=\"true\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "true"));
 					}
@@ -36808,11 +36929,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 8 :
-					// PLSQLPrinter.g:2492:10: SQL92_RESERVED_FALSE
+					// PLSQLPrinter.g:2508:10: SQL92_RESERVED_FALSE
 					{
-					match(input,SQL92_RESERVED_FALSE,FOLLOW_SQL92_RESERVED_FALSE_in_constant25920); 
+					match(input,SQL92_RESERVED_FALSE,FOLLOW_SQL92_RESERVED_FALSE_in_constant26085); 
 					// TEMPLATE REWRITE
-					// 2492:31: -> string_literal(val=\"false\")
+					// 2508:31: -> string_literal(val=\"false\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "false"));
 					}
@@ -36822,11 +36943,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 9 :
-					// PLSQLPrinter.g:2493:10: DBTIMEZONE_VK
+					// PLSQLPrinter.g:2509:10: DBTIMEZONE_VK
 					{
-					match(input,DBTIMEZONE_VK,FOLLOW_DBTIMEZONE_VK_in_constant25940); 
+					match(input,DBTIMEZONE_VK,FOLLOW_DBTIMEZONE_VK_in_constant26105); 
 					// TEMPLATE REWRITE
-					// 2493:25: -> string_literal(val=\"dbtimezone\")
+					// 2509:25: -> string_literal(val=\"dbtimezone\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "dbtimezone"));
 					}
@@ -36836,11 +36957,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 10 :
-					// PLSQLPrinter.g:2494:10: SESSIONTIMEZONE_VK
+					// PLSQLPrinter.g:2510:10: SESSIONTIMEZONE_VK
 					{
-					match(input,SESSIONTIMEZONE_VK,FOLLOW_SESSIONTIMEZONE_VK_in_constant25961); 
+					match(input,SESSIONTIMEZONE_VK,FOLLOW_SESSIONTIMEZONE_VK_in_constant26126); 
 					// TEMPLATE REWRITE
-					// 2494:29: -> string_literal(val=\"sessiontimezone\")
+					// 2510:29: -> string_literal(val=\"sessiontimezone\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "sessiontimezone"));
 					}
@@ -36850,11 +36971,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 11 :
-					// PLSQLPrinter.g:2495:10: MINVALUE_VK
+					// PLSQLPrinter.g:2511:10: MINVALUE_VK
 					{
-					match(input,MINVALUE_VK,FOLLOW_MINVALUE_VK_in_constant25981); 
+					match(input,MINVALUE_VK,FOLLOW_MINVALUE_VK_in_constant26146); 
 					// TEMPLATE REWRITE
-					// 2495:22: -> string_literal(val=\"minvalue\")
+					// 2511:22: -> string_literal(val=\"minvalue\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "minvalue"));
 					}
@@ -36864,11 +36985,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 12 :
-					// PLSQLPrinter.g:2496:10: MAXVALUE_VK
+					// PLSQLPrinter.g:2512:10: MAXVALUE_VK
 					{
-					match(input,MAXVALUE_VK,FOLLOW_MAXVALUE_VK_in_constant26001); 
+					match(input,MAXVALUE_VK,FOLLOW_MAXVALUE_VK_in_constant26166); 
 					// TEMPLATE REWRITE
-					// 2496:22: -> string_literal(val=\"maxvalue\")
+					// 2512:22: -> string_literal(val=\"maxvalue\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "maxvalue"));
 					}
@@ -36878,11 +36999,11 @@ public class PLSQLPrinter extends TreeParser {
 					}
 					break;
 				case 13 :
-					// PLSQLPrinter.g:2497:10: SQL92_RESERVED_DEFAULT
+					// PLSQLPrinter.g:2513:10: SQL92_RESERVED_DEFAULT
 					{
-					match(input,SQL92_RESERVED_DEFAULT,FOLLOW_SQL92_RESERVED_DEFAULT_in_constant26021); 
+					match(input,SQL92_RESERVED_DEFAULT,FOLLOW_SQL92_RESERVED_DEFAULT_in_constant26186); 
 					// TEMPLATE REWRITE
-					// 2497:33: -> string_literal(val=\"default\")
+					// 2513:33: -> string_literal(val=\"default\")
 					{
 						retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", "default"));
 					}
@@ -36914,28 +37035,28 @@ public class PLSQLPrinter extends TreeParser {
 
 
 	// $ANTLR start "id"
-	// PLSQLPrinter.g:2502:1: id : ( char_set_name )? ID -> string_literal(val=$ID.text);
+	// PLSQLPrinter.g:2518:1: id : ( char_set_name )? ID -> string_literal(val=$ID.text);
 	public final PLSQLPrinter.id_return id() throws RecognitionException {
 		PLSQLPrinter.id_return retval = new PLSQLPrinter.id_return();
 		retval.start = input.LT(1);
 
-		CommonTree ID386=null;
+		CommonTree ID394=null;
 
 		try {
-			// PLSQLPrinter.g:2503:5: ( ( char_set_name )? ID -> string_literal(val=$ID.text))
-			// PLSQLPrinter.g:2503:10: ( char_set_name )? ID
+			// PLSQLPrinter.g:2519:5: ( ( char_set_name )? ID -> string_literal(val=$ID.text))
+			// PLSQLPrinter.g:2519:10: ( char_set_name )? ID
 			{
-			// PLSQLPrinter.g:2503:10: ( char_set_name )?
-			int alt576=2;
-			int LA576_0 = input.LA(1);
-			if ( (LA576_0==CHAR_SET_NAME) ) {
-				alt576=1;
+			// PLSQLPrinter.g:2519:10: ( char_set_name )?
+			int alt577=2;
+			int LA577_0 = input.LA(1);
+			if ( (LA577_0==CHAR_SET_NAME) ) {
+				alt577=1;
 			}
-			switch (alt576) {
+			switch (alt577) {
 				case 1 :
-					// PLSQLPrinter.g:2503:10: char_set_name
+					// PLSQLPrinter.g:2519:10: char_set_name
 					{
-					pushFollow(FOLLOW_char_set_name_in_id26056);
+					pushFollow(FOLLOW_char_set_name_in_id26221);
 					char_set_name();
 					state._fsp--;
 
@@ -36944,11 +37065,11 @@ public class PLSQLPrinter extends TreeParser {
 
 			}
 
-			ID386=(CommonTree)match(input,ID,FOLLOW_ID_in_id26059); 
+			ID394=(CommonTree)match(input,ID,FOLLOW_ID_in_id26224); 
 			// TEMPLATE REWRITE
-			// 2504:5: -> string_literal(val=$ID.text)
+			// 2520:5: -> string_literal(val=$ID.text)
 			{
-				retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (ID386!=null?ID386.getText():null)));
+				retval.st = templateLib.getInstanceOf("string_literal",new STAttrMap().put("val", (ID394!=null?ID394.getText():null)));
 			}
 
 
@@ -38676,97 +38797,100 @@ public class PLSQLPrinter extends TreeParser {
 	public static final BitSet FOLLOW_PERCENT_TYPE_VK_in_type_spec24622 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_native_datatype_spec_in_type_spec24691 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_INTERVAL_DATATYPE_in_type_spec24707 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_YEAR_VK_in_type_spec24710 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000002000000000L,0x0000000000000000L,0x0080000000000000L});
-	public static final BitSet FOLLOW_DAY_VK_in_type_spec24712 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000002000000000L,0x0000000000000000L,0x0080000000000000L});
-	public static final BitSet FOLLOW_MONTH_VK_in_type_spec24716 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000010000000000L,0x0000000000000000L,0x0000000000000400L});
-	public static final BitSet FOLLOW_SECOND_VK_in_type_spec24718 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000010000000000L,0x0000000000000000L,0x0000000000000400L});
-	public static final BitSet FOLLOW_expression_in_type_spec24721 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000010000000000L,0x0000000000000000L,0x0000000000000400L});
-	public static final BitSet FOLLOW_PRECISION_in_type_precision24758 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_constant_in_type_precision24762 = new BitSet(new long[]{0x0000200008008048L,0x4020000000000000L,0x0000080040002000L,0x0100040000000000L,0x0008000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000008080000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
-	public static final BitSet FOLLOW_constant_in_type_precision24766 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0100040000000000L});
-	public static final BitSet FOLLOW_CHAR_VK_in_type_precision24772 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_BYTE_VK_in_type_precision24776 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_NATIVE_DATATYPE_in_native_datatype_spec24839 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_BFILE_VK_in_native_datatype_spec24850 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_BINARY_FLOAT_VK_in_native_datatype_spec24863 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_BINARY_INTEGER_VK_in_native_datatype_spec24876 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_BLOB_VK_in_native_datatype_spec24889 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_BOOLEAN_VK_in_native_datatype_spec24902 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_CHARACTER_VK_in_native_datatype_spec24915 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_CHAR_VK_in_native_datatype_spec24929 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_CLOB_VK_in_native_datatype_spec24942 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DATE_VK_in_native_datatype_spec24955 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_SQL92_RESERVED_DATE_in_native_datatype_spec24968 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DAY_VK_in_native_datatype_spec24981 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DECIMAL_VK_in_native_datatype_spec24992 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DEC_VK_in_native_datatype_spec25006 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DOUBLE_VK_in_native_datatype_spec25019 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DOUBLE_VK_in_native_datatype_spec25032 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000020L});
-	public static final BitSet FOLLOW_PRECISION_VK_in_native_datatype_spec25034 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_DSINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25047 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_FLOAT_VK_in_native_datatype_spec25058 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_HOUR_VK_in_native_datatype_spec25071 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_INTEGER_VK_in_native_datatype_spec25082 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_INT_VK_in_native_datatype_spec25095 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_LONG_VK_in_native_datatype_spec25108 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_LONG_VK_in_native_datatype_spec25121 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000002000L});
-	public static final BitSet FOLLOW_RAW_VK_in_native_datatype_spec25123 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_MINUTE_VK_in_native_datatype_spec25136 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_MLSLABEL_VK_in_native_datatype_spec25147 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_MONTH_VK_in_native_datatype_spec25158 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NATURALN_VK_in_native_datatype_spec25169 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NATURAL_VK_in_native_datatype_spec25180 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NCHAR_VK_in_native_datatype_spec25191 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NCLOB_VK_in_native_datatype_spec25204 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NUMBER_VK_in_native_datatype_spec25217 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NUMERIC_VK_in_native_datatype_spec25230 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_NVARCHAR2_VK_in_native_datatype_spec25243 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_PLS_INTEGER_VK_in_native_datatype_spec25256 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_POSITIVEN_VK_in_native_datatype_spec25269 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_POSITIVE_VK_in_native_datatype_spec25280 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_RAW_VK_in_native_datatype_spec25291 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_REAL_VK_in_native_datatype_spec25304 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_ROWID_VK_in_native_datatype_spec25315 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_SECOND_VK_in_native_datatype_spec25328 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_SIGNTYPE_VK_in_native_datatype_spec25339 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_SIMPLE_INTEGER_VK_in_native_datatype_spec25350 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_SMALLINT_VK_in_native_datatype_spec25361 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_STRING_VK_in_native_datatype_spec25374 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMESTAMP_LTZ_UNCONSTRAINED_VK_in_native_datatype_spec25385 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMESTAMP_TZ_UNCONSTRAINED_VK_in_native_datatype_spec25396 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMESTAMP_UNCONSTRAINED_VK_in_native_datatype_spec25407 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMESTAMP_VK_in_native_datatype_spec25418 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMEZONE_ABBR_VK_in_native_datatype_spec25431 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMEZONE_HOUR_VK_in_native_datatype_spec25442 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMEZONE_MINUTE_VK_in_native_datatype_spec25453 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIMEZONE_REGION_VK_in_native_datatype_spec25464 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_UROWID_VK_in_native_datatype_spec25475 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_VARCHAR2_VK_in_native_datatype_spec25488 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_VARCHAR_VK_in_native_datatype_spec25501 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_YEAR_VK_in_native_datatype_spec25514 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_YMINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25525 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_type_precision_in_native_datatype_spec25534 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x2000000000000000L});
-	public static final BitSet FOLLOW_TIME_VK_in_native_datatype_spec25544 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000100L});
-	public static final BitSet FOLLOW_LOCAL_VK_in_native_datatype_spec25548 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_CASCATED_ELEMENT_in_general_element25623 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_general_element_id_in_general_element25653 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000110L});
-	public static final BitSet FOLLOW_function_argument_in_general_element25673 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000110L});
-	public static final BitSet FOLLOW_ANY_ELEMENT_in_general_element_id25736 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_ID_in_general_element_id25738 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_UNSIGNED_INTEGER_in_constant25774 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_MINUS_SIGN_in_constant25795 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_UNSIGNED_INTEGER_in_constant25799 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_EXACT_NUM_LIT_in_constant25820 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_APPROXIMATE_NUM_LIT_in_constant25840 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_CHAR_STRING_in_constant25860 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SQL92_RESERVED_NULL_in_constant25880 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SQL92_RESERVED_TRUE_in_constant25900 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SQL92_RESERVED_FALSE_in_constant25920 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_DBTIMEZONE_VK_in_constant25940 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SESSIONTIMEZONE_VK_in_constant25961 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_MINVALUE_VK_in_constant25981 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_MAXVALUE_VK_in_constant26001 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SQL92_RESERVED_DEFAULT_in_constant26021 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_char_set_name_in_id26056 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000004000L});
-	public static final BitSet FOLLOW_ID_in_id26059 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_interval_type_spec_first_in_type_spec24709 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000002000000000L,0x0000000000000000L,0x0080000000000000L});
+	public static final BitSet FOLLOW_interval_type_spec_second_in_type_spec24711 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_YEAR_VK_in_interval_type_spec_first24764 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_DAY_VK_in_interval_type_spec_first24766 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expression_in_interval_type_spec_first24779 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_MONTH_VK_in_interval_type_spec_second24849 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_SECOND_VK_in_interval_type_spec_second24851 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expression_in_interval_type_spec_second24864 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_PRECISION_in_type_precision24923 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_constant_in_type_precision24927 = new BitSet(new long[]{0x0000200008008048L,0x4020000000000000L,0x0000080040002000L,0x0100040000000000L,0x0008000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000008080000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
+	public static final BitSet FOLLOW_constant_in_type_precision24931 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0100040000000000L});
+	public static final BitSet FOLLOW_CHAR_VK_in_type_precision24937 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_BYTE_VK_in_type_precision24941 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_NATIVE_DATATYPE_in_native_datatype_spec25004 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_BFILE_VK_in_native_datatype_spec25015 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_BINARY_FLOAT_VK_in_native_datatype_spec25028 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_BINARY_INTEGER_VK_in_native_datatype_spec25041 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_BLOB_VK_in_native_datatype_spec25054 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_BOOLEAN_VK_in_native_datatype_spec25067 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_CHARACTER_VK_in_native_datatype_spec25080 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_CHAR_VK_in_native_datatype_spec25094 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_CLOB_VK_in_native_datatype_spec25107 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DATE_VK_in_native_datatype_spec25120 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_SQL92_RESERVED_DATE_in_native_datatype_spec25133 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DAY_VK_in_native_datatype_spec25146 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DECIMAL_VK_in_native_datatype_spec25157 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DEC_VK_in_native_datatype_spec25171 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DOUBLE_VK_in_native_datatype_spec25184 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DOUBLE_VK_in_native_datatype_spec25197 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000020L});
+	public static final BitSet FOLLOW_PRECISION_VK_in_native_datatype_spec25199 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_DSINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25212 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_FLOAT_VK_in_native_datatype_spec25223 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_HOUR_VK_in_native_datatype_spec25236 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_INTEGER_VK_in_native_datatype_spec25247 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_INT_VK_in_native_datatype_spec25260 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_LONG_VK_in_native_datatype_spec25273 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_LONG_VK_in_native_datatype_spec25286 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000002000L});
+	public static final BitSet FOLLOW_RAW_VK_in_native_datatype_spec25288 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_MINUTE_VK_in_native_datatype_spec25301 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_MLSLABEL_VK_in_native_datatype_spec25312 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_MONTH_VK_in_native_datatype_spec25323 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NATURALN_VK_in_native_datatype_spec25334 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NATURAL_VK_in_native_datatype_spec25345 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NCHAR_VK_in_native_datatype_spec25356 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NCLOB_VK_in_native_datatype_spec25369 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NUMBER_VK_in_native_datatype_spec25382 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NUMERIC_VK_in_native_datatype_spec25395 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_NVARCHAR2_VK_in_native_datatype_spec25408 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_PLS_INTEGER_VK_in_native_datatype_spec25421 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_POSITIVEN_VK_in_native_datatype_spec25434 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_POSITIVE_VK_in_native_datatype_spec25445 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_RAW_VK_in_native_datatype_spec25456 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_REAL_VK_in_native_datatype_spec25469 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_ROWID_VK_in_native_datatype_spec25480 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_SECOND_VK_in_native_datatype_spec25493 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_SIGNTYPE_VK_in_native_datatype_spec25504 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_SIMPLE_INTEGER_VK_in_native_datatype_spec25515 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_SMALLINT_VK_in_native_datatype_spec25526 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_STRING_VK_in_native_datatype_spec25539 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMESTAMP_LTZ_UNCONSTRAINED_VK_in_native_datatype_spec25550 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMESTAMP_TZ_UNCONSTRAINED_VK_in_native_datatype_spec25561 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMESTAMP_UNCONSTRAINED_VK_in_native_datatype_spec25572 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMESTAMP_VK_in_native_datatype_spec25583 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMEZONE_ABBR_VK_in_native_datatype_spec25596 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMEZONE_HOUR_VK_in_native_datatype_spec25607 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMEZONE_MINUTE_VK_in_native_datatype_spec25618 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIMEZONE_REGION_VK_in_native_datatype_spec25629 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_UROWID_VK_in_native_datatype_spec25640 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_VARCHAR2_VK_in_native_datatype_spec25653 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_VARCHAR_VK_in_native_datatype_spec25666 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_YEAR_VK_in_native_datatype_spec25679 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_YMINTERVAL_UNCONSTRAINED_VK_in_native_datatype_spec25690 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000010L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_type_precision_in_native_datatype_spec25699 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x2000000000000000L});
+	public static final BitSet FOLLOW_TIME_VK_in_native_datatype_spec25709 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000100L});
+	public static final BitSet FOLLOW_LOCAL_VK_in_native_datatype_spec25713 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_CASCATED_ELEMENT_in_general_element25788 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_general_element_id_in_general_element25818 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000110L});
+	public static final BitSet FOLLOW_function_argument_in_general_element25838 = new BitSet(new long[]{0x0000000000000008L,0x0000000000000000L,0x0000000000000000L,0x0000000000000110L});
+	public static final BitSet FOLLOW_ANY_ELEMENT_in_general_element_id25901 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_general_element_id25903 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_UNSIGNED_INTEGER_in_constant25939 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_MINUS_SIGN_in_constant25960 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_UNSIGNED_INTEGER_in_constant25964 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_EXACT_NUM_LIT_in_constant25985 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_APPROXIMATE_NUM_LIT_in_constant26005 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CHAR_STRING_in_constant26025 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SQL92_RESERVED_NULL_in_constant26045 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SQL92_RESERVED_TRUE_in_constant26065 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SQL92_RESERVED_FALSE_in_constant26085 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_DBTIMEZONE_VK_in_constant26105 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SESSIONTIMEZONE_VK_in_constant26126 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_MINVALUE_VK_in_constant26146 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_MAXVALUE_VK_in_constant26166 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SQL92_RESERVED_DEFAULT_in_constant26186 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_char_set_name_in_id26221 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000000000004000L});
+	public static final BitSet FOLLOW_ID_in_id26224 = new BitSet(new long[]{0x0000000000000002L});
 }

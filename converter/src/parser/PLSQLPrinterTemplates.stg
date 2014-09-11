@@ -698,3 +698,15 @@ default <expression>
 xml_parse(is_document, is_content, expression, is_wellformed) ::= <<
 xmlparse(<if (is_document)>document<elseif (is_content)>content><endif> <expression><if (is_wellformed)> wellformed<endif>)
 >>
+
+interval_type_spec(left_side, right_side) ::= <<
+interval <left_side> to <right_side>
+>>
+
+interval_type_spec_first(is_year, is_day, expression) ::= <<
+<if (is_year)>year<elseif (is_day)>day<endif><if (expression)>(<expression>)<endif>
+>>
+
+interval_type_spec_second(is_month, is_second, expression) ::= <<
+<if (is_month)>month<elseif (is_second)>second<endif><if (expression)>(<expression>)<endif>
+>>

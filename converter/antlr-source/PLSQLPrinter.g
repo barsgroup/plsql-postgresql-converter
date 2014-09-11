@@ -2375,8 +2375,24 @@ type_spec
             name={$type_name.st}, is_ref={$REF_VK != null}, is_percent_rowtype={$PERCENT_ROWTYPE_VK != null},
             is_percent_type={$PERCENT_TYPE_VK != null})
     |    native_datatype_spec -> { $native_datatype_spec.st; }
-    |    ^(INTERVAL_DATATYPE (YEAR_VK|DAY_VK) (MONTH_VK|SECOND_VK) expression*)
-    ->   template() "not implemented: type_spec[INTERVAL_DATATYPE]"
+    |    ^(INTERVAL_DATATYPE interval_type_spec_first interval_type_spec_second)
+    ->   interval_type_spec(left_side={$interval_type_spec_first.st}, right_side={$interval_type_spec_second.st})
+    ;
+
+interval_type_spec_first
+    :   ^(
+          (YEAR_VK|DAY_VK)
+          expression?
+        )
+        -> interval_type_spec_first(is_year={$YEAR_VK != null}, is_day={$DAY_VK != null}, expression={$expression.st})
+    ;
+
+interval_type_spec_second
+    :   ^(
+          (MONTH_VK|SECOND_VK)
+          expression?
+        )
+        -> interval_type_spec_second(is_month={$MONTH_VK != null}, is_second={$SECOND_VK != null}, expression={$expression.st})
     ;
 
 type_precision
