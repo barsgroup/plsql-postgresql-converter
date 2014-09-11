@@ -1154,7 +1154,12 @@ standard_function
             RIGHT_PAREN!
     |    extract_key^
             LEFT_PAREN!
-                id_expression from_key! concatenation_wrapper 
+                (
+                  year_key|month_key|day_key|hour_key|minute_key
+                  |second_key|timezone_hour_key|timezone_minute_key
+                  |timezone_region_key|timezone_abbr_key
+                )
+                from_key! concatenation_wrapper 
             RIGHT_PAREN!
     |    (first_value_key^|last_value_key^) 
             LEFT_PAREN!
