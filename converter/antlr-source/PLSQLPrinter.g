@@ -2077,20 +2077,20 @@ over_clause
 
 windowing_clause
     :    ^((ROWS_VK|RANGE_VK)
-            (    ^(SQL92_RESERVED_BETWEEN windowing_elements windowing_elements)
-            |    windowing_elements+
+            (    ^(SQL92_RESERVED_BETWEEN e1=windowing_elements e2=windowing_elements)
+            |    e1=windowing_elements
             )
         )
-    ->   template() "not implemented: windowing_clause"
+    ->   windowing_clause(
+          is_rows={$ROWS_VK != null}, is_range={$RANGE_VK != null},
+          is_between={$SQL92_RESERVED_BETWEEN != null}, windowing_element_1={$e1.st}, windowing_element_2={$e2.st})
     ;
 
 windowing_elements
-    :    ^(UNBOUNDED_VK PRECEDING_VK)
-    ->   template() "not implemented: windowing_elements"
-    |    ^(CURRENT_VK ROW_VK)
-    ->   template() "not implemented: windowing_elements"
-    |    ^((PRECEDING_VK|FOLLOWING_VK) expression)
-    ->   template() "not implemented: windowing_elements"
+    :    ^(UNBOUNDED_VK PRECEDING_VK) -> windowing_elements_unbounded_preceding()
+    |    ^(CURRENT_VK ROW_VK) -> windowing_elements_current_row()
+    |    ^(PRECEDING_VK expr=expression) -> windowing_elements_rows_preceding(expression={$expr.st})
+    |    ^(FOLLOWING_VK expr=expression) -> windowing_elements_rows_following(expression={$expr.st})
     ;
 
 using_clause

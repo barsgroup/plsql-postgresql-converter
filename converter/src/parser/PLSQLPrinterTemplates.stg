@@ -753,3 +753,14 @@ rollback<if (is_work)> work<endif><if (is_to_savepoint)>
 force <force_string>
 <endif>
 >>
+
+windowing_clause(is_rows, is_range, is_between, windowing_element_1, windowing_element_2) ::= <<
+<if (is_rows)>rows<elseif (is_range)>range<endif>
+<if (is_between)> between <windowing_element_1> and <windowing_element_2>
+<else> <windowing_element_1><endif>
+>>
+
+windowing_elements_unbounded_preceding() ::= "unbounded preceding"
+windowing_elements_current_row() ::= "current row"
+windowing_elements_rows_preceding(expression) ::= "<expression> preceding"
+windowing_elements_rows_following(expression) ::= "<expression> following"
