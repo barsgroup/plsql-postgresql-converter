@@ -1751,7 +1751,7 @@ savepoint_statement
     
 pipe_row_statement
     :    ^(PIPE_ROW expression)
-    ->   template() "not implemented: pipe_row_statement"
+    ->   pipe_row_statement(expression={$expression.st})
     ;
 
 // $>
