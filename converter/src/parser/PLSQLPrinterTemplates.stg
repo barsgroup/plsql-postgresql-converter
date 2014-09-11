@@ -13,7 +13,7 @@ return <return_type>
 <if (is_pipelined)>pipelined<endif>
 
 is
-<block>
+<block>;
 >>
 
 parameter(
@@ -393,7 +393,7 @@ create_procedure_body(is_create, is_replace, name, arguments, invoker_rights_cla
 <endif>
 
 is
-<impl>
+<impl>;
 >>
 
 create_procedure_body_impl_external() ::= "external"
@@ -404,7 +404,7 @@ declare
   <declare_spec:{v|<v>
 }>
 <endif>
-<body>;
+<body>
 >>
 
 variable_declaration(name, type, is_constant, is_not_null, default_value_part) ::= <<
