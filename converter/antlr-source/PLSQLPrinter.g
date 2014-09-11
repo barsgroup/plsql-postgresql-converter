@@ -1735,20 +1735,13 @@ write_clause
 
 rollback_statement
     :     ^(ROLLBACK_VK WORK_VK? 
-            (    ^(SQL92_RESERVED_TO savepoint_name)
-              -> rollback_statement(
-                    is_work={$WORK_VK != null}, is_to_savepoint={true}, savepoint_name={$savepoint_name.st},
-                    is_force={false}, force_string={null})
-            |    ^(FORCE_VK CHAR_STRING)
-              -> rollback_statement(
-                    is_work={$WORK_VK != null}, is_to_savepoint={false}, savepoint_name={null},
-                    is_force={true}, force_string={$CHAR_STRING})
-            |
-              -> rollback_statement(
-                    is_work={$WORK_VK != null}, is_to_savepoint={false}, savepoint_name={null},
-                    is_force={false}, force_string={null})
-            )
+              (    ^(SQL92_RESERVED_TO savepoint_name)
+              |    ^(FORCE_VK CHAR_STRING)
+              )?
         )
+        -> rollback_statement(
+              is_work={$WORK_VK != null}, is_to_savepoint={$SQL92_RESERVED_TO != null}, savepoint_name={$savepoint_name.st},
+              is_force={$FORCE_VK !=null}, force_string={$CHAR_STRING.text})
     ;
 
 savepoint_statement
