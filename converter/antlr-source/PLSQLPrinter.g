@@ -1984,8 +1984,19 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(COLLECT_VK (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE)? column_name collect_order_by_part?)
     ->   template() "not implemented: standard_function"
-    |    ^(FUNCTION_ENABLING_WITHIN_OR_OVER function_argument (within_clause|over_clause)+ )
-    ->   template() "not implemented: standard_function"
+    |    ^(FUNCTION_ENABLING_WITHIN_OR_OVER
+            function_argument
+            (
+              within_clause
+              -> standard_function_enabling_within(
+                  function_name={$FUNCTION_ENABLING_WITHIN_OR_OVER.text}, function_arguments={$function_argument.st},
+                  within_clause={$within_clause.st})
+              | over_clause
+              -> standard_function_enabling_over(
+                  function_name={$FUNCTION_ENABLING_WITHIN_OR_OVER.text}, function_arguments={$function_argument.st},
+                  over_clause={$over_clause.st})
+            ) 
+          )
     |    ^(DECOMPOSE_VK expression (CANONICAL_VK|COMPATIBILITY_VK)?) 
     ->   template() "not implemented: standard_function"
     |    ^(EXTRACT_VK extract_part expression)
@@ -2123,7 +2134,7 @@ collect_order_by_part
 
 within_clause
     :    ^(WITHIN_VK order_by_clause)
-    ->   template() "not implemented: within_clause"
+    ->   within_clause(order_by_clause={$order_by_clause.st})
     ;
 
 cost_matrix_clause

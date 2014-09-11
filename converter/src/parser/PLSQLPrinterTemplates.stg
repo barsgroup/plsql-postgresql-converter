@@ -138,6 +138,14 @@ standard_function_enabling_over(function_name, function_arguments, over_clause) 
 <function_name><function_arguments><if (over_clause)> <over_clause><endif>
 >>
 
+standard_function_enabling_within(function_name, function_arguments, within_clause) ::= <<
+<function_name><function_arguments><if (within_clause)> <within_clause><endif>
+>>
+
+within_clause(order_by_clause) ::= <<
+within group (<order_by_clause>)
+>>
+
 standard_function_cast(subquery_or_expression, type_spec) ::= <<
 cast(<subquery_or_expression> as <type_spec>)
 >>
