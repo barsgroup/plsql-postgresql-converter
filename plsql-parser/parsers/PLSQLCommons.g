@@ -363,11 +363,11 @@ datatype
         precision_part?
         (with_key local_key? time_key zone_key)?
         -> ^(NATIVE_DATATYPE native_datatype_element precision_part? time_key? local_key?)
-    |    interval_key (year_key|day_key)
-                (LEFT_PAREN expression_wrapper RIGHT_PAREN)? 
-            to_key (month_key|second_key) 
-                (LEFT_PAREN expression_wrapper RIGHT_PAREN)?
-        -> ^(INTERVAL_DATATYPE[$interval_key.start] year_key? day_key? month_key? second_key? expression_wrapper*)
+    |    interval_key (i1=year_key|i1=day_key)
+                (LEFT_PAREN e1=expression_wrapper RIGHT_PAREN)? 
+            to_key (i2=month_key|i2=second_key) 
+                (LEFT_PAREN e2=expression_wrapper RIGHT_PAREN)?
+        -> ^(INTERVAL_DATATYPE[$interval_key.start] ^($i1 $e1?) ^($i2 $e2?))
     ;
 
 precision_part
