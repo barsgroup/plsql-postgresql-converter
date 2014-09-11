@@ -661,8 +661,8 @@ create_type
     :    create_key (or_key replace_key)? type_key
         ( type_definition | type_body {mode = 1;})
         SEMICOLON
-        ->{mode == 1}? ^(CREATE_TYPE_BODY[$create_key.start] replace_key? type_body)
-        -> ^(CREATE_TYPE_SPEC[$create_key.start] replace_key? type_definition)
+        ->{mode == 1}? ^(CREATE_TYPE_BODY[$create_key.start] create_key replace_key? type_body)
+        -> ^(CREATE_TYPE_SPEC[$create_key.start] create_key replace_key? type_definition)
     ;
 
 type_in_decl

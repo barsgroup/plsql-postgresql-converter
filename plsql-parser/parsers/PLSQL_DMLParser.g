@@ -674,11 +674,7 @@ values_clause
 merge_statement
     :    merge_key into_key tableview_name table_alias?
         using_key selected_tableview on_key LEFT_PAREN condition RIGHT_PAREN
-        (
-            (when_key matched_key) => merge_update_clause merge_insert_clause?
-        |
-            (when_key not_key matched_key) => merge_insert_clause merge_update_clause?
-        )?
+        merge_update_clause? merge_insert_clause?
         error_logging_clause?
         -> ^(merge_key table_alias? tableview_name ^(using_key selected_tableview ^(LOGIC_EXPR condition))
                  merge_update_clause? merge_insert_clause? error_logging_clause?)
@@ -1147,7 +1143,7 @@ standard_function
                 (distinct_key|unique_key)? concatenation_wrapper collect_order_by_part?
             RIGHT_PAREN!
     |    stantard_function_enabling_within_or_over^ 
-            function_argument within_or_over_part+
+            function_argument within_or_over_part
     |    decompose_key^
             LEFT_PAREN! 
                 concatenation_wrapper (canonical_key|compatibility_key)? 
