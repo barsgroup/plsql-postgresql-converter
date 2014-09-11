@@ -748,6 +748,23 @@ xmlelement_value_expr(expression, alias) ::= <<
 <expression><if (alias)> <alias><endif>
 >>
 
+xml_attributes_clause(is_entity_escaping, is_no_entity_escaping, is_schema_check, is_no_schema_check, xml_multiuse_expression_elements) ::=
+<<
+xmlattributes(<if (is_entity_escaping)>entityescaping 
+<elseif (is_no_entity_escaping)>noentityescaping 
+<endif><if (is_schema_check)>schemacheck 
+<elseif (is_no_schema_check)>noschemacheck <endif> 
+<xml_multiuse_expression_elements; separator=",\n">)
+>>
+
+xml_multiuse_expression_element(expression, xml_alias) ::= <<
+<expression><if (xml_alias)> <xml_alias><endif>
+>>
+
+xml_alias_id(id) ::= "as <id>"
+
+xml_alias_evalname(expression) ::= "as evalname <expression>"
+
 xmlroot(expression, xml_param_version_part, xmlroot_param_standalone_part) ::= <<
 xmlroot(<expression>, version <xml_param_version_part><if (xmlroot_param_standalone_part)>, <xmlroot_param_standalone_part><endif>)
 >>

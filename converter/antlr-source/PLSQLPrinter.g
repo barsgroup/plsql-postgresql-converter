@@ -2150,9 +2150,12 @@ xml_attributes_clause
     :    ^(XMLATTRIBUTES_VK
             (ENTITYESCAPING_VK|NOENTITYESCAPING_VK)?
             (SCHEMACHECK_VK|NOSCHEMACHECK_VK)?
-            xml_multiuse_expression_element+
+            xml_multiuse_expression_elements+=xml_multiuse_expression_element+
         )
-    ->   template() "not implemented: xml_attributes_clause"
+    ->   xml_attributes_clause(
+          is_entity_escaping={$ENTITYESCAPING_VK != null}, is_no_entity_escaping={$NOENTITYESCAPING_VK != null},
+          is_schema_check={$SCHEMACHECK_VK != null}, is_no_schema_check={$NOSCHEMACHECK_VK != null},
+          xml_multiuse_expression_elements={$xml_multiuse_expression_elements})
     ;
 
 xml_namespaces_clause
@@ -2181,14 +2184,13 @@ xml_general_default_part
 
 xml_multiuse_expression_element
     :    ^(XML_ELEMENT expression xml_alias?)
-    ->   template() "not implemented: xml_multiuse_expression_element"
+    ->   xml_multiuse_expression_element(expression={$expression.st}, xml_alias={$xml_alias.st})
     ;
 
 xml_alias
-    :    ^(XML_ALIAS ID)
-    ->   template() "not implemented: xml_alias"
+    :    ^(XML_ALIAS ID) -> xml_alias_id(id={$ID.text})
     |    ^(XML_ALIAS ^(EVALNAME_VK expression))
-    ->   template() "not implemented: xml_alias"
+    ->   xml_alias_evalname(expression={$expression.st})
     ;
 
 xml_param_version_part
