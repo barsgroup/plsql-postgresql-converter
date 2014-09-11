@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.antlr.runtime.tree.Tree;
 
+import parser.ast.transforms.AstUtil;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class SqlPrinter /*extends TreeWalker */ {
@@ -62,7 +63,7 @@ public class SqlPrinter /*extends TreeWalker */ {
 		switch (node.getType()) {
 		case PLSQLParser.SELECT_STATEMENT: return print_select_statement(node);
 		default:
-			return String.format("<Unprintable: %s>\n", ParserMain.tokenNames[node.getType()]);
+			return String.format("<Unprintable: %s>\n", AstUtil.tokenNames[node.getType()]);
 		}
 	}
 

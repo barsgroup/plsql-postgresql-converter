@@ -27,6 +27,9 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
+import parser.ast.transforms.AstPrinter;
+import parser.ast.transforms.AstUtil;
+import parser.ast.transforms.OracleOuterJoinTransformer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class ParserMain {
@@ -44,7 +47,7 @@ public class ParserMain {
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		String str;
 		str = (theTree).toStringTree();
-		str = prettyPrint(theTree);
+		str = AstPrinter.prettyPrint(theTree);
 
 		System.out.println(str.length() > 400 ? str.substring(0, 400) + "..." : str);
 		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output.txt"))) {
@@ -77,6 +80,15 @@ public class ParserMain {
 		} else {
 			System.out.println("Tree matches reparsed tree");
 		}
+		
+		OracleOuterJoinTransformer.transform(theTree.getChild(0).getChild(0));
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_converted.txt"))) {
+		    out.print(AstPrinter.prettyPrint(theTree));
+		}
+		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed_converted.txt"))) {
+		    out.print(printTreeToString(theTree, options.tree_type).text);
+		}
+		
 	}
 	
 	static class CliOptions {
@@ -264,7 +276,7 @@ public class ParserMain {
 			
 			org.antlr.runtime.tree.Tree tree = parseResult.tree;
 			String str;
-			str = prettyPrint(tree);
+			str = AstPrinter.prettyPrint(tree);
 			
 			String name = tryGuessPackageName(tree);
 			if (name == null) {
@@ -365,87 +377,7 @@ public class ParserMain {
 		return result;
 	}
 
-	static String prettyPrint(org.antlr.runtime.tree.Tree tree) {
-		StringBuilder sb = new StringBuilder();
-		prettyPrint(tree, sb, 0);
-		return sb.toString();
-	}
-
-	static void printIndent(StringBuilder sb, int indent) {
-		for (int i = 0; i < indent; ++i) {
-			sb.append("  ");
-		}
-	}
-	
-	private static void prettyPrint(org.antlr.runtime.tree.Tree tree, StringBuilder sb, int indent) {
-		sb.append('(');
-		String nodeText = prettyPrintNodeTag(tree);
-		sb.append(nodeText);
-		if (tree.getChildCount() == 1 && tree.getChild(0).getChildCount() == 0) {
-			sb.append(" ");
-			org.antlr.runtime.tree.Tree childNode = tree.getChild(0);
-			String childNodeText = prettyPrintNodeTag(childNode);
-			sb.append(childNodeText);
-		} else {
-			for (int i = 0; i < tree.getChildCount(); ++i) {
-				org.antlr.runtime.tree.Tree childNode = tree.getChild(i);
-				sb.append("\n");
-				printIndent(sb, indent + 1);
-				if (childNode.getChildCount() == 0) {
-					String childNodeText = prettyPrintNodeTag(childNode);
-					sb.append(childNodeText);
-				} else {
-					prettyPrint(childNode, sb, indent + 1);
-				}
-			}
-		}
-		sb.append(")");
-	}
-	
-	private static String prettyPrintNodeTag(Tree tree) {
-		int ttype = tree.getType();
-		String tokenName = ttype >= 0 && ttype < tokenNames.length ? tokenNames[ttype] : "";
-		String text = tree.getText();
-		if (tokenName.equals(text)) {
-			return tokenName;
-		} else {
-			//int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
-			return String.format("%s[%s]", tokenName, text);
-		}
-	}
-
 	String sql = "";
-	
-	static String[] tokenNames = getTokenNames();
-	
-	static String[] getTokenNames() {
-		Field[] fields = PLSQLParser.class.getDeclaredFields();
-		Map<Integer, String> tokenNamesMap = new HashMap<Integer, String>();
-		int maxTokenValue = 0;
-		for (Field field: fields) {
-			int mod = field.getModifiers();
-			if (Modifier.isStatic(mod) && Modifier.isFinal(mod) && field.getType() == int.class) {
-				String name = field.getName();
-				int value;
-				try {
-					value = field.getInt(null);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-				tokenNamesMap.put(value, name);
-				maxTokenValue = Math.max(maxTokenValue, value);
-			}
-		}
-		String[] result = new String[maxTokenValue + 1];
-		for (int i = 0; i < maxTokenValue; ++i) {
-			if (tokenNamesMap.containsKey(i)) {
-				result[i] = tokenNamesMap.get(i);
-			} else {
-				result[i] = "<none>";
-			}
-		}
-		return result;
-	}
 	
 	private static void printTokenStats(final Map<Integer, Integer> occurences) {
 		printTokenStats(occurences, System.out);
@@ -460,7 +392,7 @@ public class ParserMain {
 			}
 		});
 		for (int key : keys) {
-			out.printf("%s -> %d\n", tokenNames[key], occurences.get(key));
+			out.printf("%s -> %d\n", AstUtil.tokenNames[key], occurences.get(key));
 		}
 	}
 	
@@ -557,7 +489,7 @@ public class ParserMain {
 		if (tree == null) {
 			return "<missing>";
 		}
-		String result = String.format("%s '%s' at %d:%d", tokenNames[tree.getType()], tree.getText(), tree.getLine(), tree.getCharPositionInLine());
+		String result = String.format("%s '%s' at %d:%d", AstUtil.tokenNames[tree.getType()], tree.getText(), tree.getLine(), tree.getCharPositionInLine());
 		return result;
 	}
 
