@@ -98,7 +98,8 @@ public class OracleOuterJoinTransformer {
 				Tree alias = AstUtil.getChildOfType(tableRefElementNode, PLSQLParser.TABLE_ALIAS);
 				
 				Tree tableExpressionNode = AstUtil.getChildOfType(tableRefElementNode, PLSQLParser.TABLE_EXPRESSION);
-				if (tableExpressionNode.getChild(0).getType() != PLSQLParser.DIRECT_MODE) {
+				Tree directModeNode = tableExpressionNode.getChild(0);
+				if (directModeNode.getType() != PLSQLParser.DIRECT_MODE) {
 					continue;
 				}
 				
@@ -110,7 +111,13 @@ public class OracleOuterJoinTransformer {
 					idString = aliasId.getText();
 					idString = AstUtil.normalizeId(idString);
 				} else {
-					continue;
+					Tree tableviewnameNode = directModeNode.getChild(0);
+					AstUtil.assertNodeType(tableviewnameNode, PLSQLParser.TABLEVIEW_NAME);
+					Tree aliasId = tableviewnameNode.getChild(tableviewnameNode.getChildCount() - 1);
+					AstUtil.assertThat(aliasId.getType() == PLSQLParser.ID);
+					
+					idString = aliasId.getText();
+					idString = AstUtil.normalizeId(idString);
 				}
 				
 				tableRefElements.put(idString, tableRefElementNode);
