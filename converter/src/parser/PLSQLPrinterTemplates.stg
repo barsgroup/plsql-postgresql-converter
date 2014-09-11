@@ -703,6 +703,34 @@ xml_parse(is_document, is_content, expression, is_wellformed) ::= <<
 xmlparse(<if (is_document)>document<elseif (is_content)>content><endif> <expression><if (is_wellformed)> wellformed<endif>)
 >>
 
+xmlagg(expression, order_by_clause) ::= <<
+xmlagg(<expression><if (order_by_clause)> <order_by_clause><endif>)
+>>
+
+xmlelement(is_entity_escaping, is_no_entity_escaping, is_name, is_evalname, expression, xml_attributes_clause, value_expressions) ::= <<
+xmlelement(<if (is_entity_escaping)>
+entityescaping <elseif (is_no_entity_escaping)>noentityescaping <endif><if (is_name)>
+name <elseif (is_evalname)>evalname <endif><expression><if (xml_attributes_clause)>
+,
+  <xml_attributes_clause>
+<endif><if (value_expressions)>,
+  <value_expressions; separator=",\n"><endif>)
+>>
+
+xmlelement_value_expr(expression, alias) ::= <<
+<expression><if (alias)> <alias><endif>
+>>
+
+xmlroot(expression, xml_param_version_part, xmlroot_param_standalone_part) ::= <<
+xmlroot(<expression>, version <xml_param_version_part><if (xmlroot_param_standalone_part)>, <xmlroot_param_standalone_part><endif>)
+>>
+
+xml_param_version_part_novalue() ::= "no value"
+
+xmlroot_param_standalone_part_yes() ::= "yes"
+xmlroot_param_standalone_part_no() ::= "no"
+xmlroot_param_standalone_part_no_value() ::= "no value"
+
 interval_type_spec(left_side, right_side) ::= <<
 interval <left_side> to <right_side>
 >>

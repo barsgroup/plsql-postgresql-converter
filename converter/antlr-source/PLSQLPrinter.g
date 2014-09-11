@@ -1994,7 +1994,7 @@ standard_function
     ->   template() "not implemented: standard_function"
 
     |    ^(XMLAGG_VK expression order_by_clause?)
-    ->   template() "not implemented: standard_function"
+    ->   xmlagg(expression={$expression.st}, order_by_clause={$order_by_clause.st})
     |    ^((XMLCOLATTVAL_VK|XMLFOREST_VK) xml_multiuse_expression_element+)
     ->   template() "not implemented: standard_function"
     |    ^(XMLEXISTS_VK expression xml_passing_clause?)
@@ -2006,7 +2006,9 @@ standard_function
     |    ^(XMLQUERY_VK expression xml_passing_clause? SQL92_RESERVED_NULL?)
     ->   template() "not implemented: standard_function"
     |    ^(XMLROOT_VK expression xml_param_version_part xmlroot_param_standalone_part?)
-    ->   template() "not implemented: standard_function"
+    ->   xmlroot(
+          expression={$expression.st}, xml_param_version_part={$xml_param_version_part.st},
+          xmlroot_param_standalone_part={$xmlroot_param_standalone_part.st})
     |    ^(XMLTABLE_VK xml_namespaces_clause? expr=expression xml_passing_clause? xml_table_columns+=xml_table_column*)
     ->   xmltable(
           xml_namespaces_clause={$xml_namespaces_clause.st}, xquery_expression={$expr.st},
@@ -2014,9 +2016,12 @@ standard_function
     |    ^(XMLELEMENT_VK
             (ENTITYESCAPING_VK|NOENTITYESCAPING_VK)?
             (NAME_VK|EVALNAME_VK)? expression
-            xml_attributes_clause? (expression alias?)*
+            xml_attributes_clause? value_exprs+=xmlelement_value_expr*
         )
-    ->   template() "not implemented: standard_function"
+    ->   xmlelement(
+          is_entity_escaping={$ENTITYESCAPING_VK != null}, is_no_entity_escaping={$NOENTITYESCAPING_VK != null},
+          is_name={$NAME_VK != null}, is_evalname={$EVALNAME_VK != null}, expression={$expression.st},
+          xml_attributes_clause={$xml_attributes_clause.st}, value_expressions={$value_exprs})
     |    ^(XMLPI_VK
                 (    NAME_VK char_set_name? ID
                 |    EVALNAME_VK expression
@@ -2047,6 +2052,11 @@ extract_part
         | TIMEZONE_MINUTE_VK -> string_literal(val={"timezone_minute"})
         | TIMEZONE_ABBR_VK -> string_literal(val={"timezone_abbr"})
         | TIMEZONE_REGION_VK -> string_literal(val={"timezone_region"})
+    ;
+    
+xmlelement_value_expr
+    :   expression alias?
+    ->  xmlelement_value_expr(expression={$expression.st}, alias={$alias.st})
     ;
 
 over_clause
@@ -2163,13 +2173,25 @@ xml_alias
     ;
 
 xml_param_version_part
-    :    ^(VERSION_VK (NO_VK VALUE_VK|expression))
-    ->   template() "not implemented: xml_param_version_part"
+    :    ^(VERSION_VK
+            (
+              NO_VK VALUE_VK -> xml_param_version_part_novalue()
+              | expression -> {$expression.st}
+            )
+          )
     ;
 
 xmlroot_param_standalone_part
-    :    ^(STANDALONE_VK (YES_VK|NO_VK VALUE_VK?))
-    ->   template() "not implemented: xmlroot_param_standalone_part"
+    :    ^(STANDALONE_VK
+            (
+              YES_VK -> xmlroot_param_standalone_part_yes()
+              | NO_VK
+                (
+                  VALUE_VK -> xmlroot_param_standalone_part_no_value()
+                  |  -> xmlroot_param_standalone_part_no()
+                )
+            )
+          )
     ;
 
 xmlserialize_param_enconding_part
