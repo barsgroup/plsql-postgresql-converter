@@ -1730,15 +1730,24 @@ write_clause
 rollback_statement
     :     ^(ROLLBACK_VK WORK_VK? 
             (    ^(SQL92_RESERVED_TO savepoint_name)
+              -> rollback_statement(
+                    is_work={$WORK_VK != null}, is_to_savepoint={true}, savepoint_name={$savepoint_name.st},
+                    is_force={false}, force_string={null})
             |    ^(FORCE_VK CHAR_STRING)
-            )?
+              -> rollback_statement(
+                    is_work={$WORK_VK != null}, is_to_savepoint={false}, savepoint_name={null},
+                    is_force={true}, force_string={$CHAR_STRING})
+            |
+              -> rollback_statement(
+                    is_work={$WORK_VK != null}, is_to_savepoint={false}, savepoint_name={null},
+                    is_force={false}, force_string={null})
+            )
         )
-    ->   template() "not implemented: rollback_statement"
     ;
 
 savepoint_statement
     :    ^(SAVEPOINT_VK savepoint_name) 
-    ->   template() "not implemented: savepoint_statement"
+    ->   savepoint_statement(name={$savepoint_name.st})
     ;
     
 pipe_row_statement

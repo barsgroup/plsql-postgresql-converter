@@ -742,3 +742,14 @@ interval_type_spec_first(is_year, is_day, expression) ::= <<
 interval_type_spec_second(is_month, is_second, expression) ::= <<
 <if (is_month)>month<elseif (is_second)>second<endif><if (expression)>(<expression>)<endif>
 >>
+
+savepoint_statement(name) ::= "savepoint <name>"
+
+rollback_statement(is_work, is_to_savepoint, savepoint_name, is_force, force_string) ::= <<
+rollback<if (is_work)> work<endif><if (is_to_savepoint)>
+ to savepoint <savepoint_name>
+<endif>
+<if (is_force)>
+force <force_string>
+<endif>
+>>
