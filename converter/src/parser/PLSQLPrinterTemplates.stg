@@ -764,3 +764,15 @@ windowing_elements_unbounded_preceding() ::= "unbounded preceding"
 windowing_elements_current_row() ::= "current row"
 windowing_elements_rows_preceding(expression) ::= "<expression> preceding"
 windowing_elements_rows_following(expression) ::= "<expression> following"
+
+cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
+cursor <cursor_name><if (parameters)>(<parameters; separator=", ">)<endif>
+<if (type_spec)> return <type_spec><endif>
+<if (select_statement)> is
+  <select_statement>
+<endif>;
+>>
+
+parameter_spec(parameter_name, type_spec, default_value_part) ::= <<
+<parameter_name><if (type_spec)> <type_spec><endif><if (default_value_part)> <default_value_part><endif>
+>>

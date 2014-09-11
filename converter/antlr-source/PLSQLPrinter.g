@@ -774,13 +774,17 @@ subtype_range
 
 //cursor_declaration incorportates curscursor_body and cursor_spec
 cursor_declaration
-    :    ^(CURSOR_DECLARE cursor_name type_spec? select_statement? ^(PARAMETERS parameter_spec*)) 
-    ->   template() "not implemented: cursor_declaration"
+    :    ^(CURSOR_DECLARE cursor_name type_spec? select_statement? ^(PARAMETERS parameters+=parameter_spec*)) 
+    ->   cursor_declaration(
+          cursor_name={$cursor_name.st}, parameters={$parameters},
+          type_spec={$type_spec.st}, select_statement={$select_statement.st})
     ;
 
 parameter_spec
     :    ^(PARAMETER parameter_name type_spec? default_value_part?)
-    ->   template() "not implemented: parameter_spec"
+    ->   parameter_spec(
+          parameter_name={$parameter_name.st}, type_spec={$type_spec.st},
+          default_value_part={$default_value_part.st})
     ;
 
 exception_declaration 
