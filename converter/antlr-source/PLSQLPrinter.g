@@ -789,7 +789,7 @@ parameter_spec
 
 exception_declaration 
     :    ^(EXCEPTION_DECLARE exception_name)
-    ->   template() "not implemented: exception_declaration"
+    ->   exception_declaration(name={$exception_name.st})
     ;             
 
 pragma_declaration

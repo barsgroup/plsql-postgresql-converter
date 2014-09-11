@@ -448,6 +448,8 @@ field_spec(name, type_spec, is_not_null, default_value_part) ::= <<
 <name><if (type_spec)> <type_spec><endif><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>
 >>
 
+exception_declaration(name) ::= "<name> exception;"
+
 pragma_declaration(impl) ::= "pragma <impl>;"
 
 pragma_declaration_impl_serially_reusable() ::= "serially_reusable"
