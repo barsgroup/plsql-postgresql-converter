@@ -1502,34 +1502,46 @@ merge_statement
     :    ^(MERGE_VK alias? tableview_name 
             ^(PLSQL_NON_RESERVED_USING selected_tableview expression)
              merge_update_clause? merge_insert_clause? error_logging_clause?)
-    ->   template() "not implemented: merge_statement"
+    ->   merge_statement(
+          table_name={$tableview_name.st}, table_alias={$alias.st}, selected_tableview={$selected_tableview.st},
+          condition={$expression.st}, merge_update_clause={$merge_update_clause.st},
+          merge_insert_clause={$merge_insert_clause.st}, error_logging_clause={$error_logging_clause.st})
     ;
 
 // $<Merge - Specific Clauses
 
 merge_update_clause
-    :    ^(MERGE_UPDATE merge_element+ where_clause? merge_update_delete_part?)
-    ->   template() "not implemented: merge_update_clause"
+    :    ^(MERGE_UPDATE merge_elements+=merge_element+ where_clause? merge_update_delete_part?)
+    ->   merge_update_clause(
+          merge_elements={$merge_elements}, where_clause={$where_clause.st},
+          merge_update_delete_part={$merge_update_delete_part.st})
     ;
 
 merge_element
     :    ^(ASSIGN column_name expression)
-    ->   template() "not implemented: merge_element"
+    ->   merge_element(column_name={$column_name.st}, expression={$expression.st})
     ;
 
 merge_update_delete_part
     :    ^(SQL92_RESERVED_DELETE where_clause)
-    ->   template() "not implemented: merge_update_delete_part"
+    ->   merge_update_delete_part(where_clause={$where_clause.st})
     ;
 
 merge_insert_clause
-    :    ^(MERGE_INSERT ^(COLUMNS column_name*) expression_list where_clause?) 
-    ->   template() "not implemented: merge_insert_clause"
+    :    ^(MERGE_INSERT ^(COLUMNS columns+=column_name*) expression_list where_clause?) 
+    ->   merge_insert_clause(columns={$columns}, expression_list={$expression_list.st}, where_clause={$where_clause.st})
     ;
 
 selected_tableview
-    :    ^(SELECTED_TABLEVIEW alias? (tableview_name|select_statement))
-    ->   template() "not implemented: selected_tableview"
+    :    ^(SELECTED_TABLEVIEW
+            alias?
+            (
+              tableview_name
+                -> selected_tableview_table(name={$tableview_name.st}, alias={$alias.st})
+              | select_statement
+                -> selected_tableview_select_statement(select_statement={$select_statement.st}, alias={$alias.st})
+            )
+          )
     ;
 
 // $>

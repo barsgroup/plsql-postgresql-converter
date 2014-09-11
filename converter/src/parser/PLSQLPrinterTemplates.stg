@@ -836,3 +836,57 @@ pipe_row_statement(expression) ::= "pipe row(<expression>)"
 call_spec(declaration) ::= "language <declaration>"
 
 call_spec_java(name) ::= "java name <name>"
+
+merge_statement(table_name, table_alias, selected_tableview, condition, merge_update_clause, merge_insert_clause, error_logging_clause) ::= <<
+merge into <table_name><if (table_alias)> <table_alias><endif>
+using <selected_tableview>
+on (<condition>)<if (merge_update_clause)>
+
+<merge_update_clause>
+<endif><if (merge_insert_clause)>
+
+<merge_insert_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+selected_tableview_table(name, alias) ::= <<
+<name><if (alias)> <alias><endif>
+>>
+
+selected_tableview_select_statement(select_statement, alias) ::= <<
+(
+  <select_statement>
+)<if (alias)> <alias><endif>
+>>
+
+merge_update_clause(merge_elements, where_clause, merge_update_delete_part) ::= <<
+when matched then
+  update set <merge_elements; separator=",\n"><if (where_clause)>
+
+  <where_clause>
+<endif><if (merge_update_delete_part)>
+
+  <merge_update_delete_part>
+<endif>
+>>
+
+merge_element(column_name, expression) ::= <<
+<column_name> = <expression>
+>>
+
+merge_update_delete_part(where_clause) ::= <<
+delete <where_clause>
+>>
+
+merge_insert_clause(columns, expression_list, where_clause) ::= <<
+when not matched then
+  insert<if (columns)> (<columns; separator=", ">)<endif>
+  values
+    <expression_list><if (where_clause)>
+
+  <where_clause>
+<endif>
+>>
