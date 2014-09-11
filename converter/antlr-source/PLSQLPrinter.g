@@ -1290,8 +1290,10 @@ groupin_set
     ;
 
 grouping_element
-    :    ^((ROLLUP_VK|CUBE_VK) grouping_element+)
-    ->   template() "not implemented: grouping_element"
+    :    ^(ROLLUP_VK elements+=grouping_element+)
+    ->   rollup_grouping_element(elements={$elements})
+    |    ^(CUBE_VK elements+=grouping_element+)
+    ->   cube_grouping_element(elements={$elements})
     |    expression_list -> {$expression_list.st}
     |    expression -> {$expression.st}
     ;

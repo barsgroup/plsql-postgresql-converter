@@ -599,6 +599,14 @@ having_clause(condition) ::= <<
 having <condition>
 >>
 
+rollup_grouping_element(elements) ::= <<
+rollup(<elements; separator=", ">)
+>>
+
+cube_grouping_element(elements) ::= <<
+cube(<elements; separator=", ">)
+>>
+
 table_collection_expression(expression_or_subquery, is_outer_join) ::= <<
 table (<expression_or_subquery>)<if (is_outer_join)>(+)<endif>
 >>
