@@ -1980,8 +1980,8 @@ standard_function
     ->   template() "not implemented: standard_function"
     |    ^(DECOMPOSE_VK expression (CANONICAL_VK|COMPATIBILITY_VK)?) 
     ->   template() "not implemented: standard_function"
-    |    ^(EXTRACT_VK ID expression)
-    ->   template() "not implemented: standard_function"
+    |    ^(EXTRACT_VK extract_part expression)
+    ->   standard_function_extract(part={$extract_part.st}, expression={$expression.st})
     |    ^((FIRST_VALUE_VK|LAST_VALUE_VK) expression NULLS_VK? over_clause) 
     ->   template() "not implemented: standard_function"
     |    ^(PREDICTION_FUNCTION expression+ cost_matrix_clause? using_clause?)
@@ -2033,6 +2033,20 @@ standard_function
                 ((HIDE_VK|SHOW_VK) DEFAULTS_VK)?
         )
     ->   template() "not implemented: standard_function"
+    ;
+    
+extract_part
+    :
+        YEAR_VK -> string_literal(val={"year"})
+        | MONTH_VK -> string_literal(val={"month"})
+        | DAY_VK -> string_literal(val={"day"})
+        | HOUR_VK -> string_literal(val={"hour"})
+        | MINUTE_VK -> string_literal(val={"minute"})
+        | SECOND_VK -> string_literal(val={"second"})
+        | TIMEZONE_HOUR_VK -> string_literal(val={"timezone_hour"})
+        | TIMEZONE_MINUTE_VK -> string_literal(val={"timezone_minute"})
+        | TIMEZONE_ABBR_VK -> string_literal(val={"timezone_abbr"})
+        | TIMEZONE_REGION_VK -> string_literal(val={"timezone_region"})
     ;
 
 over_clause

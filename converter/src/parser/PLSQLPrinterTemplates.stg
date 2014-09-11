@@ -146,6 +146,10 @@ standard_function_xmlcast(expression, type_spec) ::= <<
 cast(<expression> as <type_spec>)
 >>
 
+standard_function_extract(part, expression) ::= <<
+extract(<part> from <expression>)
+>>
+
 for_loop(loopDefinition, statements) ::= <<
 for <loopDefinition> loop
   <statements>
