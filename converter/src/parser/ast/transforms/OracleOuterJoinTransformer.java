@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.antlr.runtime.CommonToken;
-import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -20,8 +18,31 @@ public class OracleOuterJoinTransformer {
 	 * 
 	 */
 	
+	public static boolean isDebugEnabled = true;
 	
-	public static void transform(Tree queryBlockNode) throws Exception {
+	public static void transformAllQueries(Tree tree) throws Exception {
+		List<Tree> queryBlocks = findQueryBlocks(tree);
+		for (Tree queryBlock: queryBlocks) {
+			transformQueryBlock(queryBlock);
+		}
+	}
+	
+	private static List<Tree> findQueryBlocks(Tree tree) {
+		List<Tree> result = new ArrayList<Tree>();
+		findQueryBlocks(tree, result);
+		return result;
+	}
+
+	private static void findQueryBlocks(Tree tree, List<Tree> result) {
+		if (tree.getType() == PLSQLParser.SQL92_RESERVED_SELECT) {
+			result.add(tree);
+		}
+		for (int i = 0; i < tree.getChildCount(); ++i) {
+			findQueryBlocks(tree.getChild(i), result);
+		}
+	}
+
+	public static void transformQueryBlock(Tree queryBlockNode) throws Exception {
 		OracleOuterJoinTransformer transformer = new OracleOuterJoinTransformer(queryBlockNode);
 		transformer.transform();
 	}
@@ -99,9 +120,6 @@ public class OracleOuterJoinTransformer {
 				
 				Tree tableExpressionNode = AstUtil.getChildOfType(tableRefElementNode, PLSQLParser.TABLE_EXPRESSION);
 				Tree directModeNode = tableExpressionNode.getChild(0);
-				if (directModeNode.getType() != PLSQLParser.DIRECT_MODE) {
-					continue;
-				}
 				
 				String idString;
 				if (alias != null) {
@@ -110,7 +128,7 @@ public class OracleOuterJoinTransformer {
 					
 					idString = aliasId.getText();
 					idString = AstUtil.normalizeId(idString);
-				} else {
+				} else if (directModeNode.getType() == PLSQLParser.DIRECT_MODE) {
 					Tree tableviewnameNode = directModeNode.getChild(0);
 					AstUtil.assertNodeType(tableviewnameNode, PLSQLParser.TABLEVIEW_NAME);
 					Tree aliasId = tableviewnameNode.getChild(tableviewnameNode.getChildCount() - 1);
@@ -118,11 +136,15 @@ public class OracleOuterJoinTransformer {
 					
 					idString = aliasId.getText();
 					idString = AstUtil.normalizeId(idString);
+				} else {
+					continue;
 				}
 				
 				tableRefElements.put(idString, tableRefElementNode);
 				
-				System.out.printf("Found direct table ref: alias: '%s', tree:\n%s\n", idString, AstPrinter.prettyPrint(tableRefElementNode));
+				if (isDebugEnabled) {
+					System.out.printf("Found direct table ref: alias: '%s', tree:\n%s\n", idString, AstPrinter.prettyPrint(tableRefElementNode));
+				}
 			}
 		}
 	}
@@ -141,7 +163,9 @@ public class OracleOuterJoinTransformer {
 		// (+)'s may only be joined with 'and'
 		if (node.getType() == PLSQLParser.OUTER_JOIN_SIGN) {
 			outerJoinExpressions.add(node);
-			System.out.printf("Found outer join node at:\n%s\n", AstPrinter.prettyPrint(node.getParent()));
+			if (isDebugEnabled) {
+				System.out.printf("Found outer join node at:\n%s\n", AstPrinter.prettyPrint(node.getParent()));
+			}
 			AstUtil.assertThat(node.getParent().getType() == PLSQLParser.EQUALS_OP);
 		} if (node.getType() == PLSQLParser.SQL92_RESERVED_AND || node.getType() == PLSQLParser.EQUALS_OP) {
 			findOuterJoinSigns(node.getChild(0));
@@ -160,7 +184,9 @@ public class OracleOuterJoinTransformer {
 			predicate.sourceAlias = side1.isOuterSide ? side2.alias : side1.alias;
 			predicate.targetAlias = side1.isOuterSide ? side1.alias : side2.alias;
 			predicate.equalsOpTree = parentEqualsOp;
-			System.out.printf("Analyzed join predicate: %s -> %s with:\n%s\n", predicate.sourceAlias, predicate.targetAlias, AstPrinter.prettyPrint(parentEqualsOp));
+			if (isDebugEnabled) {
+				System.out.printf("Analyzed join predicate: %s -> %s with:\n%s\n", predicate.sourceAlias, predicate.targetAlias, AstPrinter.prettyPrint(parentEqualsOp));
+			}
 			outerJoinPredicates.add(predicate);
 		}
 	}
@@ -177,12 +203,45 @@ public class OracleOuterJoinTransformer {
 			result.isOuterSide = true;
 			return result;
 		} else {
-			AstUtil.assertThat(equalsChild.getType() == PLSQLParser.CASCATED_ELEMENT);
+			// 1) Найти в CASCATED_ELEMENT внутри equalsChild
+			// 2) Отобрать из них те, которые содержат ровно два ANY_ELEMENT
+			// 3) Отобрать из них все алиасы
+			// 4) Алиас должен остаться только один
+			// 1
+			List<Tree> descendantCascadedElements_1 = AstUtil.getDescendantsOfType(equalsChild, PLSQLParser.CASCATED_ELEMENT);
+			// 2
+			List<Tree> descendantCascadedElements_2 = new ArrayList<Tree>();
+			for (Tree elt: descendantCascadedElements_1) {
+				if (AstUtil.getChildOfType(elt, PLSQLParser.ARGUMENTS) != null) {
+					continue;
+				}
+				if (elt.getChildCount() == 2 && elt.getChild(0).getType() == PLSQLParser.ANY_ELEMENT && elt.getChild(1).getType() == PLSQLParser.ANY_ELEMENT) {
+					descendantCascadedElements_2.add(elt);
+					if (isDebugEnabled) {
+						System.out.printf("Found alias candidate node: %s\n", AstPrinter.prettyPrint(elt));
+					}
+				}
+			}
+			// 3
+			Set<String> aliases = new HashSet<String>();
+			String alias = null;
+			for (Tree elt: descendantCascadedElements_2) {
+				AstUtil.assertThat(elt.getType() == PLSQLParser.CASCATED_ELEMENT);
+				List<String> cascadedIds = convertCascadedElementToIds(elt);
+				AstUtil.assertThat(cascadedIds.size() == 2, "Unexpected number of ID elements in cascaded element");
+				alias = cascadedIds.get(0);
+				aliases.add(alias);
+			}
+			// 4
+			AstUtil.assertThat(aliases.size() <= 1,
+					String.format("Argument of outer join equals expression at %d:%d uses more than one alias", equalsChild.getLine(), equalsChild.getCharPositionInLine())
+				);
+			AstUtil.assertThat(aliases.size() > 0,
+					String.format("Argument of outer join equals expression at %d:%d does not uses aliases", equalsChild.getLine(), equalsChild.getCharPositionInLine())
+				);
 			JoinSide result = new JoinSide();
 			result.exprNode = equalsChild;
-			List<String> cascadedIds = convertCascadedElementToIds(equalsChild);
-			AstUtil.assertThat(cascadedIds.size() == 2, "Unexpected number of ID elements in cascaded element");
-			result.alias = cascadedIds.get(0);
+			result.alias = alias;
 			return result;
 		}
 	}
@@ -220,7 +279,9 @@ public class OracleOuterJoinTransformer {
 		for (OuterJoinPredicate predicate: outerJoinPredicates) {
 			OuterJoinNode sourceNode = joinNodes.get(predicate.sourceAlias);
 			OuterJoinNode targetNode = joinNodes.get(predicate.targetAlias);
-			sourceNode.childNodes.add(targetNode);
+			if (!sourceNode.childNodes.contains(targetNode)) {
+				sourceNode.childNodes.add(targetNode);
+			}
 			rootNodes.remove(targetNode);
 		}
 		

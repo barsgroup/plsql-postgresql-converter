@@ -65,6 +65,21 @@ public class AstUtil {
 		return result;
 	}
 	
+	public static List<Tree> getDescendantsOfType(Tree node, int type) {
+		List<Tree> result = new ArrayList<Tree>();
+		getDescendantsOfType(node, type, result);
+		return result;
+	}
+	
+	private static void getDescendantsOfType(Tree node, int type, List<Tree> result) {
+		if (node.getType() == type) {
+			result.add(node);
+		}
+		for (int i = 0; i < node.getChildCount(); ++i) {
+			getDescendantsOfType(node.getChild(i), type, result);
+		}
+	}
+
 	public static void assertNodeType(Tree tree, int type) {
 		if (tree.getType() != type) {
 			String expectedTokenType = tokenNames[type];

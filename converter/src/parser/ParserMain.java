@@ -81,7 +81,7 @@ public class ParserMain {
 			System.out.println("Tree matches reparsed tree");
 		}
 		
-		OracleOuterJoinTransformer.transform(theTree.getChild(0).getChild(0));
+		OracleOuterJoinTransformer.transformAllQueries(theTree);
 		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_converted.txt"))) {
 		    out.print(AstPrinter.prettyPrint(theTree));
 		}
