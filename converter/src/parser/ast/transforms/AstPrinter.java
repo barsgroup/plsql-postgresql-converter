@@ -1,6 +1,20 @@
 package parser.ast.transforms;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
+
+import parser.ParserMain;
+import parser.ast.DerivedSqlPrinter;
+import parser.util.ReflectionUtil;
 
 public class AstPrinter {
 
@@ -51,5 +65,21 @@ public class AstPrinter {
 			//int ntype = Arrays.asList(PLSQLParser.tokenNames).indexOf(tree.getText());
 			return String.format("%s[%s]", tokenName, text);
 		}
+	}
+
+	public static PrintResult printTreeToString(org.antlr.runtime.tree.Tree theTree, String treeType)
+			throws IOException, RecognitionException {
+		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
+		
+		try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/ast/transforms/PLSQLPrinterTemplates.stg")) {
+			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
+			printer.setTemplateLib(templateGroup);
+		}
+		StringTemplate printedTemplate = (StringTemplate)ReflectionUtil.getField(ReflectionUtil.callMethod(printer, treeType), "st");
+		String printed = printedTemplate.toString();
+		PrintResult result = new PrintResult();
+		result.printErrors = printer.errors;
+		result.text = printed;
+		return result;
 	}
 }

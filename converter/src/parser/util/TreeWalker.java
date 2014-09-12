@@ -1,4 +1,4 @@
-package parser;
+package parser.util;
 
 import org.antlr.runtime.tree.Tree;
 

@@ -1,16 +1,16 @@
-package parser;
+package parser.ast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.TreeNodeStream;
 
-import br.com.porcelli.parser.plsql.PLSQLLexer;
+import parser.PLSQLPrinter;
 
-public class DerivedSqlLexer extends PLSQLLexer {
+public class DerivedSqlPrinter extends PLSQLPrinter {
 
-	public DerivedSqlLexer(CharStream input) {
+	public DerivedSqlPrinter(TreeNodeStream input) {
 		super(input);
 	}
 	
@@ -22,4 +22,5 @@ public class DerivedSqlLexer extends PLSQLLexer {
 		
 		errors.add(e);
 	}
+	
 }
