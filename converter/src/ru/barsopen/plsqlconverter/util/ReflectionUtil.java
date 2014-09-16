@@ -1,4 +1,4 @@
-package parser.util;
+package ru.barsopen.plsqlconverter.util;
 
 public class ReflectionUtil {
 	

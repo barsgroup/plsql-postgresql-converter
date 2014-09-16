@@ -1,4 +1,4 @@
-package parser.ast.transforms;
+package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.List;
 

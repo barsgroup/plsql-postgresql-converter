@@ -1,4 +1,4 @@
-package parser.util;
+package ru.barsopen.plsqlconverter.util;
 
 import java.util.HashMap;
 import java.util.Map;

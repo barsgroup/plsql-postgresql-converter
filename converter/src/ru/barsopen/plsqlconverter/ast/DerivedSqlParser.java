@@ -1,17 +1,18 @@
-package parser.ast;
+package ru.barsopen.plsqlconverter.ast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.TokenStream;
 
-import br.com.porcelli.parser.plsql.PLSQLLexer;
+import br.com.porcelli.parser.plsql.PLSQLParser;
 
-public class DerivedSqlLexer extends PLSQLLexer {
+public class DerivedSqlParser extends PLSQLParser {
 
-	public DerivedSqlLexer(CharStream input) {
+	public DerivedSqlParser(TokenStream input) {
 		super(input);
+		// TODO Auto-generated constructor stub
 	}
 	
 	public List<RecognitionException> errors = new ArrayList<RecognitionException>();
@@ -22,4 +23,5 @@ public class DerivedSqlLexer extends PLSQLLexer {
 		
 		errors.add(e);
 	}
+
 }

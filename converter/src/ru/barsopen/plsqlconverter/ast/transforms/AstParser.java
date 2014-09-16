@@ -1,4 +1,4 @@
-package parser.ast.transforms;
+package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 
-import parser.ast.DerivedSqlLexer;
-import parser.ast.DerivedSqlParser;
-import parser.util.ReflectionUtil;
+import ru.barsopen.plsqlconverter.ast.DerivedSqlLexer;
+import ru.barsopen.plsqlconverter.ast.DerivedSqlParser;
+import ru.barsopen.plsqlconverter.util.ReflectionUtil;
 
 public class AstParser {
 

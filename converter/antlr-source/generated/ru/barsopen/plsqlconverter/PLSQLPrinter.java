@@ -1,11 +1,11 @@
-// $ANTLR 3.5.2 PLSQLPrinter.g 2014-09-11 15:04:27
+// $ANTLR 3.5.2 PLSQLPrinter.g 2014-09-16 12:45:04
 
 /**
  * Oracle(c) PL/SQL 11g Parser  
  *
  * Copyright (c) 2014 Bars Group
  */
-package parser;
+package ru.barsopen.plsqlconverter;
 
 
 import org.antlr.runtime.*;

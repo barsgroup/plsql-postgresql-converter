@@ -1,4 +1,4 @@
-package parser.ast;
+package ru.barsopen.plsqlconverter.ast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.TreeNodeStream;
 
-import parser.PLSQLPrinter;
+import ru.barsopen.plsqlconverter.PLSQLPrinter;
 
 public class DerivedSqlPrinter extends PLSQLPrinter {
 

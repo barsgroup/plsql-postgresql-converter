@@ -1,4 +1,4 @@
-package parser;
+package ru.barsopen.plsqlconverter;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -19,17 +19,17 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
-import parser.ast.DerivedSqlPrinter;
-import parser.ast.transforms.AstParser;
-import parser.ast.transforms.AstPrinter;
-import parser.ast.transforms.AstUtil;
-import parser.ast.transforms.OracleOuterJoinTransformer;
-import parser.ast.transforms.ParseResult;
-import parser.ast.transforms.PrintResult;
-import parser.util.TokenCounter;
+import ru.barsopen.plsqlconverter.ast.DerivedSqlPrinter;
+import ru.barsopen.plsqlconverter.ast.transforms.AstParser;
+import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
+import ru.barsopen.plsqlconverter.ast.transforms.AstUtil;
+import ru.barsopen.plsqlconverter.ast.transforms.OracleOuterJoinTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
+import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
+import ru.barsopen.plsqlconverter.util.TokenCounter;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
-public class ParserMain {
+public class Main {
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -140,7 +140,7 @@ public class ParserMain {
 				boolean is_tree_walked;
 				try {
 					DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(parseResult.tree));
-					try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/PLSQLPrinterTemplates.stg")) {
+					try (InputStream templateInputStream = Main.class.getClassLoader().getResourceAsStream("ru.barsopen.plsqlconverter/PLSQLPrinterTemplates.stg")) {
 						StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 						printer.setTemplateLib(templateGroup);
 					}

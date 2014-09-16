@@ -67,7 +67,7 @@ options {
  *
  * Copyright (c) 2014 Bars Group
  */
-package parser;
+package ru.barsopen.plsqlconverter;
 }
 
 

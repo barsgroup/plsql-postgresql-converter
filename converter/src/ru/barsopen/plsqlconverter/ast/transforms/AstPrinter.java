@@ -1,4 +1,4 @@
-package parser.ast.transforms;
+package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +12,8 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
-import parser.ParserMain;
-import parser.ast.DerivedSqlPrinter;
-import parser.util.ReflectionUtil;
+import ru.barsopen.plsqlconverter.ast.DerivedSqlPrinter;
+import ru.barsopen.plsqlconverter.util.ReflectionUtil;
 
 public class AstPrinter {
 
@@ -71,7 +70,7 @@ public class AstPrinter {
 			throws IOException, RecognitionException {
 		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
 		
-		try (InputStream templateInputStream = ParserMain.class.getClassLoader().getResourceAsStream("parser/ast/transforms/PLSQLPrinterTemplates.stg")) {
+		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru.barsopen.plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
 			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 			printer.setTemplateLib(templateGroup);
 		}
