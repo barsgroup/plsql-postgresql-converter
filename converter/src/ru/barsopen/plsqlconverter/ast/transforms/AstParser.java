@@ -1,5 +1,6 @@
 package ru.barsopen.plsqlconverter.ast.transforms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -34,11 +35,14 @@ public class AstParser {
 			}
 			System.exit(0);
 		}
+		
 		DerivedSqlParser p = new DerivedSqlParser(cts);
 		Object tree = ReflectionUtil.callMethod(ReflectionUtil.callMethod(p, treeType), "getTree");
 	
 		org.antlr.runtime.tree.Tree theTree = (org.antlr.runtime.tree.Tree)tree;
 		ParseResult result = new ParseResult();
+		result.tokens = new ArrayList<Token>();
+		result.tokens.addAll(cts.getTokens());
 		result.tree = theTree;
 		result.lexerErrors = l.errors;
 		result.parserErrors = p.errors;

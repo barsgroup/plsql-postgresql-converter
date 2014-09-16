@@ -15,11 +15,15 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class AstUtil {
 	
-	public static String[] tokenNames = getTokenNames();
+	public static String[] tokenNames;
+	public static Map<Integer, String> tokenNumber2NameMap;
+	public static Map<String, Integer> tokenName2NumberMap;
 	
-	static String[] getTokenNames() {
+	static
+	{
 		Field[] fields = PLSQLParser.class.getDeclaredFields();
-		Map<Integer, String> tokenNamesMap = new HashMap<Integer, String>();
+		tokenNumber2NameMap = new HashMap<Integer, String>();
+		tokenName2NumberMap = new HashMap<String, Integer>();
 		int maxTokenValue = 0;
 		for (Field field: fields) {
 			int mod = field.getModifiers();
@@ -31,19 +35,19 @@ public class AstUtil {
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
-				tokenNamesMap.put(value, name);
+				tokenNumber2NameMap.put(value, name);
+				tokenName2NumberMap.put(name, value);
 				maxTokenValue = Math.max(maxTokenValue, value);
 			}
 		}
-		String[] result = new String[maxTokenValue + 1];
+		tokenNames = new String[maxTokenValue + 1];
 		for (int i = 0; i < maxTokenValue; ++i) {
-			if (tokenNamesMap.containsKey(i)) {
-				result[i] = tokenNamesMap.get(i);
+			if (tokenNumber2NameMap.containsKey(i)) {
+				tokenNames[i] = tokenNumber2NameMap.get(i);
 			} else {
-				result[i] = "<none>";
+				tokenNames[i] = "<none>";
 			}
 		}
-		return result;
 	}
 
 	public static Tree getChildOfType(Tree node, int type) {

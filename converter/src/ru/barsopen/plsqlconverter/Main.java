@@ -23,6 +23,7 @@ import ru.barsopen.plsqlconverter.ast.DerivedSqlPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstParser;
 import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstUtil;
+import ru.barsopen.plsqlconverter.ast.transforms.AstXml;
 import ru.barsopen.plsqlconverter.ast.transforms.OracleOuterJoinTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
 import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
@@ -43,8 +44,17 @@ public class Main {
 			return;
 		}
 		
-		String inputContent = new String(Files.readAllBytes(Paths.get(options.inputSqlPath)), Charset.forName("UTF-8"));
-		ParseResult parseResult = AstParser.parseTreeFromString(inputContent, false, options.tree_type);
+		ParseResult parseResult = null;
+		
+		if (options.inputSqlPath != null) {
+			String inputContent = new String(Files.readAllBytes(Paths.get(options.inputSqlPath)), Charset.forName("UTF-8"));
+			parseResult = AstParser.parseTreeFromString(inputContent, false, options.tree_type);
+		} else if (options.inputXmlPath != null) {
+			String inputContent = new String(Files.readAllBytes(Paths.get(options.inputXmlPath)), Charset.forName("UTF-8"));
+			parseResult = AstXml.xmlToAst(AstXml.stringToXml(inputContent));
+		} else {
+			System.err.println("No --input-sql or --input-xml specified");
+		}
 		
 		if (parseResult.lexerErrors.size() > 0 || parseResult.parserErrors.size() > 0) {
 			System.exit(1);
@@ -53,7 +63,7 @@ public class Main {
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		
 		if (options.validateReparse) {
-			String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, options.validateReparseOutputAstPath, options.tree_type);
+			String errorMessage = validatePrintedTreeMatchesParsedTree(theTree, options.validateReparseOutputAstPath, options.tree_type);
 			
 			if (errorMessage != null) {
 				System.err.printf("Error comparing after print: %s\n", errorMessage);
@@ -62,6 +72,7 @@ public class Main {
 		}
 		
 		if (options.convert) {
+			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
 			OracleOuterJoinTransformer.transformAllQueries(theTree);
 		}
 		
@@ -85,6 +96,18 @@ public class Main {
 			} else {
 				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputSqlPath))) {
 				    out.println(printResult.text);
+				}
+			}
+		}
+		
+		if (options.outputXmlPath != null) {
+			String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
+			
+			if (options.outputXmlPath.equals("-")) {
+				System.out.println(astXml);
+			} else {
+				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputXmlPath))) {
+				    out.println(astXml);
 				}
 			}
 		}
@@ -329,17 +352,6 @@ public class Main {
 		String result = String.format("Mismatch: %s <> %s", token1Description, token2Description);
 
 		return result;
-	}
-	
-	private static String validatePrintedTreeMatchesParsedTree(String inputContent, String reprintedTreeDestination, String treeType) throws Exception {
-		ParseResult parseResult = AstParser.parseTreeFromString(inputContent, false, treeType);
-		if (parseResult.lexerErrors.size() > 0) {
-			return "Lexer errors";
-		}
-		if (parseResult.parserErrors.size() > 0) {
-			return "Parser errors";
-		}
-		return validatePrintedTreeMatchesParsedTree(parseResult.tree, reprintedTreeDestination, treeType);
 	}
 	
 	static class TextPos {
