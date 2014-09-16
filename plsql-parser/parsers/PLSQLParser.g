@@ -155,8 +155,8 @@ compilation_unit
     ;
 
 sql_script
-    :   (unit_statement|sql_plus_command)* EOF
-        -> ^(SQL_SCRIPT sql_plus_command* unit_statement*)
+    :   (r+=unit_statement|r+=sql_plus_command)* EOF
+        -> ^(SQL_SCRIPT $r*)
     ;
 
 unit_statement

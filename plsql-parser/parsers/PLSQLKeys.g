@@ -46,6 +46,7 @@ tokens {
     ENABLE_VK;
     DATABASE_VK;
     DISABLE_VK;
+    NONE_VK;
     BEFORE_VK;
     REFERENCING_VK;
     LOGON_VK;
@@ -214,6 +215,7 @@ tokens {
     DAY_VK;
     HOUR_VK;
     MINUTE_VK;
+    WHENEVER_VK;
     MERGE_VK;
     REJECT_VK;
     LOG_VK;
@@ -321,6 +323,11 @@ tokens {
     XMLSERIALIZE_VK;
     ORDINALITY_VK;
     DEFAULTS_VK;
+    SQLERROR_VK;
+    OSERROR_VK;
+    SUCCESS_VK;
+    WARNING_VK;
+    FAILURE_VK;
     CHR_VK;
     COUNT_VK;
     CAST_VK;
@@ -1017,7 +1024,7 @@ identified_key
     ;
 
 none_key
-    :    {input.LT(1).getText().equalsIgnoreCase("none")}?=> REGULAR_ID
+    :    {input.LT(1).getText().equalsIgnoreCase("none")}?=> REGULAR_ID -> NONE_VK[$REGULAR_ID]
     ;
 
 before_key
@@ -1702,23 +1709,23 @@ defaults_key
     ;
 
 sqlerror_key
-    :    {input.LT(1).getText().equalsIgnoreCase("sqlerror")}? REGULAR_ID 
+    :    {input.LT(1).getText().equalsIgnoreCase("sqlerror")}? REGULAR_ID -> SQLERROR_VK[$REGULAR_ID]
     ;
 	
 oserror_key
-    :    {input.LT(1).getText().equalsIgnoreCase("oserror")}? REGULAR_ID 
+    :    {input.LT(1).getText().equalsIgnoreCase("oserror")}? REGULAR_ID -> OSERROR_VK[$REGULAR_ID]
     ;
 
 success_key
-    :    {input.LT(1).getText().equalsIgnoreCase("success")}? REGULAR_ID 
+    :    {input.LT(1).getText().equalsIgnoreCase("success")}? REGULAR_ID -> SUCCESS_VK[$REGULAR_ID]
     ;
 
 warning_key
-    :    {input.LT(1).getText().equalsIgnoreCase("warning")}? REGULAR_ID 
+    :    {input.LT(1).getText().equalsIgnoreCase("warning")}? REGULAR_ID -> WARNING_VK[$REGULAR_ID]
     ;
 
 failure_key
-    :    {input.LT(1).getText().equalsIgnoreCase("failure")}? REGULAR_ID 
+    :    {input.LT(1).getText().equalsIgnoreCase("failure")}? REGULAR_ID -> FAILURE_VK[$REGULAR_ID]
     ;
 
 insert_key
@@ -2358,7 +2365,7 @@ minute_key
     ;
 
 whenever_key
-    :    {input.LT(1).getText().equalsIgnoreCase("whenever")}? REGULAR_ID
+    :    {input.LT(1).getText().equalsIgnoreCase("whenever")}? REGULAR_ID -> WHENEVER_VK[$REGULAR_ID]
     ;
 
 is_key

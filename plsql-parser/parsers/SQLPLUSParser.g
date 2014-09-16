@@ -23,7 +23,7 @@ options {
 }
 
 sql_plus_command 
-    :    (SOLIDUS!|whenever_command|exit_command|prompt_command|set_command) SEMICOLON?
+    :    (SOLIDUS!|whenever_command|exit_command|prompt_command|set_command) SEMICOLON!?
     ;
 
 whenever_command
