@@ -76,39 +76,85 @@ public class Main {
 			OracleOuterJoinTransformer.transformAllQueries(theTree);
 		}
 		
-		if (options.outputAstPath != null) {
-			String str = AstPrinter.prettyPrint(theTree);
+		if (!options.splitLargeScript) {
+			if (options.outputAstPath != null) {
+				String str = AstPrinter.prettyPrint(theTree);
+	
+				if (options.outputAstPath.equals("-")) {
+					System.out.println(str);
+				} else {
+					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputAstPath))) {
+					    out.println(str);
+					}
+				}
+			}
+			
+			if (options.outputSqlPath != null) {
+				PrintResult printResult = AstPrinter.printTreeToString(theTree, options.tree_type);
+				
+				if (options.outputSqlPath.equals("-")) {
+					System.out.println(printResult.text);
+				} else {
+					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputSqlPath))) {
+					    out.println(printResult.text);
+					}
+				}
+			}
+			
+			if (options.outputXmlPath != null) {
+				String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
+				
+				if (options.outputXmlPath.equals("-")) {
+					System.out.println(astXml);
+				} else {
+					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputXmlPath))) {
+					    out.println(astXml);
+					}
+				}
+			}
+		} else {
+			if (theTree.getType() != PLSQLParser.SQL_SCRIPT) {
+				System.err.println("Parsed tree is not a SQL script");
+			}
+			
+			List<Tree> subroots = new ArrayList<Tree>();
+			for (int i = 0; i < theTree.getChildCount() && (options.limitAllPackages == null ? true : i < options.limitAllPackages); ++i) {
+				subroots.add(theTree.getChild(i));
+			}
+			
+			int idx = 0;
+			for (Tree subroot: subroots) {
+				Tree newScript = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(PLSQLParser.SQL_SCRIPT));
+				newScript.addChild(subroot);
+				
+				if (options.splitLargeScriptOutputAst) {
+					String str = AstPrinter.prettyPrint(newScript);
 
-			if (options.outputAstPath.equals("-")) {
-				System.out.println(str);
-			} else {
-				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputAstPath))) {
-				    out.println(str);
+					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%d.ast.txt", idx)).toString();
+					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+					    out.println(str);
+					}
 				}
-			}
-		}
-		
-		if (options.outputSqlPath != null) {
-			PrintResult printResult = AstPrinter.printTreeToString(theTree, options.tree_type);
-			
-			if (options.outputSqlPath.equals("-")) {
-				System.out.println(printResult.text);
-			} else {
-				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputSqlPath))) {
-				    out.println(printResult.text);
+				
+				if (options.splitLargeScriptOutputSql) {
+					PrintResult printResult = AstPrinter.printTreeToString(newScript, options.tree_type);
+
+					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%d.sql", idx)).toString();
+					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+					    out.println(printResult.text);
+					}
 				}
-			}
-		}
-		
-		if (options.outputXmlPath != null) {
-			String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
-			
-			if (options.outputXmlPath.equals("-")) {
-				System.out.println(astXml);
-			} else {
-				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputXmlPath))) {
-				    out.println(astXml);
-				}
+				
+				/*if (options.outputXmlPath != null) {
+					String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
+
+					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%d.ast.xml", idx)).toString();
+					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+					    out.println(astXml);
+					}
+				}*/
+				
+				++idx;
 			}
 		}
 	}

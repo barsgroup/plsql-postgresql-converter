@@ -894,3 +894,7 @@ factoring_element(query_name, column_names, subquery, order_by_clause) ::= <<
   
   <order_by_clause><endif>)
 >>
+
+nested_table_type_def(type_spec, is_not_null, table_indexed_by_part) ::= <<
+table of <type_spec><if (is_not_null)> not null<endif><if (table_indexed_by_part)> <table_indexed_by_part><endif>
+>>

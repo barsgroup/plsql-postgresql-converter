@@ -161,9 +161,9 @@ create_function_body
     :    ^(CREATE_FUNCTION SQL92_RESERVED_CREATE? REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
             ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
             (    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
-    ->   template() "not implemented: create_function_body"
+    ->   template() "not implemented: create_function_body[USING_MODE]"
             |    ^(CALL_MODE call_spec)
-    ->   template() "not implemented: create_function_body"
+    ->   template() "not implemented: create_function_body[CALL_MODE]"
             |    ^(BODY_MODE block)
                  -> create_function_body(
                       is_create={$SQL92_RESERVED_CREATE != null}, is_replace={$REPLACE_VK != null}, name_parts={$name},
@@ -545,7 +545,10 @@ object_under_part
 
 nested_table_type_def
     :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?)
-    ->   template() "not implemented: nested_table_type_def"
+    ->   nested_table_type_def(
+          type_spec={$type_spec.st}, is_not_null={$SQL92_RESERVED_NULL != null},
+          table_indexed_by_part={$table_indexed_by_part.st}
+        )
     ;
 
 sqlj_object_type

@@ -14,6 +14,11 @@ public class CliOptions {
 	public String outputSqlPath;
 	public String outputAstPath;
 	public String outputXmlPath;
+	public boolean splitLargeScript;
+	public String splitLargeScriptOutputDir;
+	public boolean splitLargeScriptOutputAst;
+	public boolean splitLargeScriptOutputXml;
+	public boolean splitLargeScriptOutputSql;
 	
 	public boolean convert;
 	
@@ -34,6 +39,10 @@ public class CliOptions {
 		out.println("  --output-sql (path|-)");
 		out.println("  --output-ast (path|-)");
 		out.println("  --output-xml (path|-)");
+		out.println("  --split-large-script-output-dir path");
+		out.println("  --split-large-script-output-xml");
+		out.println("  --split-large-script-output-ast");
+		out.println("  --split-large-script-output-sql");
 		out.println("  --debug");
 	}
 
@@ -57,6 +66,10 @@ public class CliOptions {
 			case "--output-xml": result.outputXmlPath = args[i]; ++i; break;
 			case "--convert": result.convert = true; break;
 			case "--debug": result.debug = true; break;
+			case "--split-large-script-output-dir": result.splitLargeScriptOutputDir = args[i]; ++i; result.splitLargeScript = true; break;
+			case "--split-large-script-output-xml": result.splitLargeScriptOutputXml = true; break;
+			case "--split-large-script-output-ast": result.splitLargeScriptOutputAst = true; break;
+			case "--split-large-script-output-sql": result.splitLargeScriptOutputSql = true; break;
 			default: System.err.printf("Unrecognized option: %s\n", arg); System.exit(1); break;
 			}
 		}
