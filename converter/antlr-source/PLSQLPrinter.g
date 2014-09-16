@@ -80,16 +80,46 @@ compilation_unit
     ;
 
 sql_script
-    :    ^(SQL_SCRIPT u+=unit_statement*)
+    :    ^(SQL_SCRIPT (u+=unit_statement|u+=sql_plus_command)*)
     ->  template(statements={$u})
 <<
 <statements; separator="\n\n">
 >>
     ;
+    
 
-serveroutput_declaration
-    :    ^(SET_SERVEROUTPUT (SQL92_RESERVED_ON|OFF_VK))
-    ->   template() "not implemented: serveroutput_declaration"
+sql_plus_command 
+    :   whenever_command
+    |   exit_command
+    |   prompt_command
+    |   set_command
+    ;
+
+whenever_command
+    :   ^(WHENEVER_VK
+          (SQLERROR_VK|OSERROR_VK)
+          (
+            EXIT_VK
+            (SUCCESS_VK|FAILURE_VK|WARNING_VK)
+            (COMMIT_VK|ROLLBACK_VK)
+            | CONTINUE_VK (COMMIT_VK|ROLLBACK_VK|NONE_VK)
+          )
+        )
+    ;
+
+set_command
+    :    ^(SET_VK
+            REGULAR_ID
+            (CHAR_STRING|SQL92_RESERVED_ON|OFF_VK|EXACT_NUM_LIT|REGULAR_ID)
+          )
+    ;
+
+exit_command
+    :    EXIT_VK 
+    ;
+
+prompt_command
+    :    PROMPT
     ;
 
 unit_statement
