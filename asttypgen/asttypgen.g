@@ -1,0 +1,101 @@
+grammar asttypgen;
+
+ID: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
+PERIOD: '.';
+KW_PACKAGE: '@package';
+KW_TOKEN_VOCAB: '@tokenVocab';
+COLON: ':';
+SEMICOLON: ';';
+SLASH: '/';
+QUESTION: '?';
+PLUS: '+';
+ASTERISK: '*';
+EQ: '=';
+BRACKET_L: '[';
+BRACKET_R: ']';
+CURLY_L: '{';
+CURLY_R: '}';
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) {$channel=HIDDEN;};
+
+astSpec returns [AstNodes.AstSpec spec]:
+  { $spec = new AstNodes.AstSpec(); }
+  packageNameDef[$spec]
+  tokenVocabName[$spec]
+  (r=ruleSpec { $spec.rules.add(r); })* EOF;
+  
+packageNameDef[AstNodes.AstSpec spec]:
+  KW_PACKAGE r=ID { $spec.packageName.add($r.text); } (PERIOD r=ID { $spec.packageName.add($r.text); })*;
+
+tokenVocabName[AstNodes.AstSpec spec]:
+  KW_TOKEN_VOCAB r=ID { $spec.tokenVocabName.add($r.text); } (PERIOD r=ID { $spec.tokenVocabName.add($r.text); })*;
+
+ruleSpec returns [AstNodes.RuleSpec result]:
+  r1=ruleWithoutAlternatives { $result = $r1.result; }
+  | r2=ruleWithAlternatives { $result = $r2.result; };
+
+ruleWithoutAlternatives returns [AstNodes.RuleSpec1 result]:
+  ID COLON ruleBody SEMICOLON
+  {
+    $result = new AstNodes.RuleSpec1();
+    $result.name = $ID.text;
+    $result.body = $ruleBody.result;
+  };
+  
+ruleWithAlternatives returns [AstNodes.RuleSpec2 result]:
+  ID
+  {
+    $result = new AstNodes.RuleSpec2();
+    $result.name = $ID.text;
+  }
+  (
+    ra=ruleAlternative
+    { $result.alternatives.add($ra.result); }
+  )+ SEMICOLON;
+  
+ruleAlternative returns [AstNodes.RuleAlternative result]:
+  SLASH ID COLON ruleBody
+  {
+    $result = new AstNodes.RuleAlternative();
+    $result.name = $ID.text;
+    $result.body = $ruleBody.result;
+  };
+  
+ruleBody returns [AstNodes.RuleBody result]:
+{ $result = new AstNodes.RuleBody(); }
+  (
+    r=ruleItem
+    { $result.items.add($r.result); }
+  )+;
+
+ruleItem returns [AstNodes.RuleItem result]:
+  propSpec EQ propMatchSpec
+  {
+    $result = new AstNodes.RuleItem();
+    $result.propSpec = $propSpec.result;
+    $result.propMatchSpec = $propMatchSpec.result;
+  };
+  
+propSpec returns [AstNodes.PropSpec result]:
+{ $result = new AstNodes.PropSpec(); }
+  CURLY_L
+  (
+    QUESTION { $result.isQuestion = true; }
+    | BRACKET_L BRACKET_R { $result.isArray = true; }
+    |
+  )
+  ID CURLY_R
+{ $result.name = $ID.text; };
+
+propMatchSpec returns [AstNodes.PropMatchSpec result]:
+  ID
+  { $result = new AstNodes.PropMatchSpec(); }
+  (
+    QUESTION { $result.isQuestion = true; }
+    | ASTERISK { $result.isAsterisk = true; }
+    | PLUS { $result.isPlus = true; }
+    |
+  );
