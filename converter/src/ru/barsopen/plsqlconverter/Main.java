@@ -33,74 +33,61 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception {
-		CliOptions options = parseCliOptions(args); 
+		CliOptions options = CliOptions.parseCliOptions(args);
+		if (options.help) {
+			CliOptions.printUsage(System.out);
+			return;
+		}
 		if (options.allPackages) {
-			parseByParts(options.path, options.validateReparse, options.limitAllPackages);
+			parseByParts(options.inputSqlPath, options.validateReparse, options.limitAllPackages);
 			return;
 		}
 		
-		String inputContent = new String(Files.readAllBytes(Paths.get(options.path)), Charset.forName("UTF-8"));
+		String inputContent = new String(Files.readAllBytes(Paths.get(options.inputSqlPath)), Charset.forName("UTF-8"));
 		ParseResult parseResult = AstParser.parseTreeFromString(inputContent, false, options.tree_type);
+		
+		if (parseResult.lexerErrors.size() > 0 || parseResult.parserErrors.size() > 0) {
+			System.exit(1);
+		}
+		
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
-		String str;
-		str = (theTree).toStringTree();
-		str = AstPrinter.prettyPrint(theTree);
-
-		System.out.println(str.length() > 400 ? str.substring(0, 400) + "..." : str);
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output.txt"))) {
-		    out.print(str);
-		}
 		
-		PrintResult printResult = AstPrinter.printTreeToString(theTree, options.tree_type);
-		String printed = printResult.text;
-
-		System.out.println(printed.length() > 400 ? printed.substring(0, 400) + "..." : printed);
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed.txt"))) {
-		    out.print(printed);
-		}
-		
-		String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, "workdir/output_reprinted.txt", options.tree_type);
-		
-		if (errorMessage != null) {
-			System.out.printf("Error comparing after print: %s\n", errorMessage);
-		} else {
-			System.out.println("Tree matches reparsed tree");
-		}
-		
-		OracleOuterJoinTransformer.transformAllQueries(theTree);
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_converted.txt"))) {
-		    out.print(AstPrinter.prettyPrint(theTree));
-		}
-		try (PrintStream out = new PrintStream(new FileOutputStream("workdir/output_printed_converted.txt"))) {
-		    out.print(AstPrinter.printTreeToString(theTree, options.tree_type).text);
-		}
-		
-	}
-	
-	static class CliOptions {
-		public boolean allPackages;
-		public boolean validateReparse;
-		public Integer limitAllPackages;
-		public String path;
-		public String tree_type = "sql_script";
-	}
-	
-	private static CliOptions parseCliOptions(String[] args) {
-		CliOptions result = new CliOptions();
-		int i = 0;
-		while (i < args.length) {
-			String arg = args[i];
-			++i;
-			switch (arg) {
-			case "--all-packages": result.allPackages = true; break;
-			case "--validate-reparse": result.validateReparse = true; break;
-			case "--no-validate-reparse": result.validateReparse = false; break;
-			case "--limit-all-packages": result.limitAllPackages = Integer.valueOf(args[i]); ++i; break;
-			case "--tree-type": result.tree_type = args[i]; ++i; break;
-			default: result.path = arg;
+		if (options.validateReparse) {
+			String errorMessage = validatePrintedTreeMatchesParsedTree(inputContent, options.validateReparseOutputAstPath, options.tree_type);
+			
+			if (errorMessage != null) {
+				System.err.printf("Error comparing after print: %s\n", errorMessage);
+				System.exit(1);
 			}
 		}
-		return result;
+		
+		if (options.convert) {
+			OracleOuterJoinTransformer.transformAllQueries(theTree);
+		}
+		
+		if (options.outputAstPath != null) {
+			String str = AstPrinter.prettyPrint(theTree);
+
+			if (options.outputAstPath.equals("-")) {
+				System.out.println(str);
+			} else {
+				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputAstPath))) {
+				    out.println(str);
+				}
+			}
+		}
+		
+		if (options.outputSqlPath != null) {
+			PrintResult printResult = AstPrinter.printTreeToString(theTree, options.tree_type);
+			
+			if (options.outputSqlPath.equals("-")) {
+				System.out.println(printResult.text);
+			} else {
+				try (PrintStream out = new PrintStream(new FileOutputStream(options.outputSqlPath))) {
+				    out.println(printResult.text);
+				}
+			}
+		}
 	}
 
 	private static void parseByParts(String path, boolean validateReparse, Integer limit) throws Exception {
@@ -311,8 +298,12 @@ public class Main {
 		}
 		PrintResult reprintResult = AstPrinter.printTreeToString(reparseResult.tree, treeType);
 		if (reprintedTreeDestination != null) {
-			try (PrintStream out = new PrintStream(new FileOutputStream(reprintedTreeDestination))) {
-			    out.print(reprintResult.text);
+			if (reprintedTreeDestination.equals("-")) {
+				System.out.println(reprintResult.text);
+			} else {
+				try (PrintStream out = new PrintStream(new FileOutputStream(reprintedTreeDestination))) {
+				    out.println(reprintResult.text);
+				}
 			}
 		}
 		if (reprintResult.printErrors.size() > 0) {

@@ -70,7 +70,7 @@ public class AstPrinter {
 			throws IOException, RecognitionException {
 		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
 		
-		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru.barsopen.plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
+		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
 			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
 			printer.setTemplateLib(templateGroup);
 		}
