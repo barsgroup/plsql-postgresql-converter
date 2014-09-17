@@ -62,5 +62,13 @@ public class AstNodes {
     public boolean isToken() {
       return name != null && Character.isUpperCase(name.charAt(0));
     }
+    
+    public PropSpec createDefaultPropSpec() {
+      PropSpec result = new PropSpec();
+      result.name = (isPlus || isAsterisk) ? name + "s" : name;
+      result.isQuestion = isQuestion;
+      result.isArray = isAsterisk || isPlus;
+      return result;
+    }
   }
 }

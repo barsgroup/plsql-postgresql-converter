@@ -77,11 +77,15 @@ ruleBody returns [AstNodes.RuleBody result]:
   )*;
 
 ruleItem returns [AstNodes.RuleItem result]:
-  propSpec EQ propMatchSpec
+  (propSpec EQ)? propMatchSpec
   {
     $result = new AstNodes.RuleItem();
-    $result.propSpec = $propSpec.result;
     $result.propMatchSpec = $propMatchSpec.result;
+    if ($propSpec.result != null) {
+      $result.propSpec = $propSpec.result;
+    } else {
+      $result.propSpec = $result.propMatchSpec.createDefaultPropSpec();
+    }
   };
   
 propSpec returns [AstNodes.PropSpec result]:
