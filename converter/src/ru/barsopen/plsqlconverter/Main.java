@@ -24,9 +24,13 @@ import ru.barsopen.plsqlconverter.ast.transforms.AstParser;
 import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstUtil;
 import ru.barsopen.plsqlconverter.ast.transforms.AstXml;
+import ru.barsopen.plsqlconverter.ast.transforms.DatatypeConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.OracleOuterJoinTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.PackageConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
 import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
+import ru.barsopen.plsqlconverter.ast.transforms.ProcedurePerformConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.ProcedureToFunctionConversionTransformer;
 import ru.barsopen.plsqlconverter.util.TokenCounter;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
@@ -74,6 +78,10 @@ public class Main {
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
 			OracleOuterJoinTransformer.transformAllQueries(theTree);
+			PackageConversionTransformer.transformAllPackages(theTree);
+			DatatypeConversionTransformer.transformAll(theTree);
+			ProcedureToFunctionConversionTransformer.transformAll(theTree);
+			ProcedurePerformConversionTransformer.transformAll(theTree);
 		}
 		
 		if (!options.splitLargeScript) {
@@ -90,7 +98,12 @@ public class Main {
 			}
 			
 			if (options.outputSqlPath != null) {
-				PrintResult printResult = AstPrinter.printTreeToString(theTree, options.tree_type);
+				PrintResult printResult;
+				if (options.usePgSql) {
+					printResult = AstPrinter.printTreeToPostgresqlString(theTree, options.tree_type);
+				} else {
+					printResult = AstPrinter.printTreeToOracleString(theTree, options.tree_type);
+				}
 				
 				if (options.outputSqlPath.equals("-")) {
 					System.out.println(printResult.text);
@@ -137,7 +150,7 @@ public class Main {
 				}
 				
 				if (options.splitLargeScriptOutputSql) {
-					PrintResult printResult = AstPrinter.printTreeToString(newScript, options.tree_type);
+					PrintResult printResult = AstPrinter.printTreeToOracleString(newScript, options.tree_type);
 
 					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%d.sql", idx)).toString();
 					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
@@ -351,7 +364,7 @@ public class Main {
 	}
 	
 	private static String validatePrintedTreeMatchesParsedTree(Tree tree, String reprintedTreeDestination, String treeType) throws Exception {
-		PrintResult printResult = AstPrinter.printTreeToString(tree, treeType);
+		PrintResult printResult = AstPrinter.printTreeToOracleString(tree, treeType);
 		if (printResult.printErrors.size() > 0) {
 			return "Printer errors";
 		}
@@ -365,7 +378,7 @@ public class Main {
 		if (reparseResult.parserErrors.size() > 0) {
 			return "Parser errors (on printed tree)";
 		}
-		PrintResult reprintResult = AstPrinter.printTreeToString(reparseResult.tree, treeType);
+		PrintResult reprintResult = AstPrinter.printTreeToOracleString(reparseResult.tree, treeType);
 		if (reprintedTreeDestination != null) {
 			if (reprintedTreeDestination.equals("-")) {
 				System.out.println(reprintResult.text);

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.tree.BaseTree;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.Tree;
 
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -176,6 +177,12 @@ public class AstUtil {
 			parent.insertChild(idx, replacementNode);
 			++idx;
 		}
+	}
+	
+	static CommonTreeAdaptor adaptor = new CommonTreeAdaptor();
+	
+	public static Tree cloneTree(Tree node) {
+		return (Tree)adaptor.dupTree(node);
 	}
 
 }

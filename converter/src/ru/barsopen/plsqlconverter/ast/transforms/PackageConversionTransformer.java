@@ -75,19 +75,7 @@ public class PackageConversionTransformer {
 		String name = AstUtil.normalizeId(item.procedure_name.ids.get(item.procedure_name.ids.size() - 1).value);
 		name = packageName + "8" + name;
 		item.procedure_name = parser.make_procedure_name(null, Arrays.asList(parser.make_id(name)));
-		create_function_body func = parser.make_create_function_body(
-			AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_CREATE),
-			AstUtil.createAstNode(PLSQLParser.REPLACE_VK),
-			parser.make_function_name(null, Arrays.asList(parser.make_id(name))),
-			parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("void"))), null, null),
-			item.parameters,
-			null,
-			null,
-			null,
-			null,
-			null,
-			(function_impl)item.create_procedure_body_impl);
-		packageContents.add(func.unparse());
+		packageContents.add(item.unparse());
 	}
 
 	private void findPackageName() {

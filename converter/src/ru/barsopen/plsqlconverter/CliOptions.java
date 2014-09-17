@@ -19,6 +19,7 @@ public class CliOptions {
 	public boolean splitLargeScriptOutputAst;
 	public boolean splitLargeScriptOutputXml;
 	public boolean splitLargeScriptOutputSql;
+	public boolean usePgSql;
 	
 	public boolean convert;
 	
@@ -36,6 +37,7 @@ public class CliOptions {
 		out.println("  --input-sql path");
 		out.println("  --input-xml path");
 		out.println("  --convert");
+		out.println("  --use-pgsql");
 		out.println("  --output-sql (path|-)");
 		out.println("  --output-ast (path|-)");
 		out.println("  --output-xml (path|-)");
@@ -66,6 +68,7 @@ public class CliOptions {
 			case "--output-xml": result.outputXmlPath = args[i]; ++i; break;
 			case "--convert": result.convert = true; break;
 			case "--debug": result.debug = true; break;
+			case "--use-pgsql": result.usePgSql = true; break;
 			case "--split-large-script-output-dir": result.splitLargeScriptOutputDir = args[i]; ++i; result.splitLargeScript = true; break;
 			case "--split-large-script-output-xml": result.splitLargeScriptOutputXml = true; break;
 			case "--split-large-script-output-ast": result.splitLargeScriptOutputAst = true; break;
