@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 
+import ru.barsopen.plsqlconverter.ast.typed.parser;
+import ru.barsopen.plsqlconverter.ast.typed.query_block;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class OracleOuterJoinTransformer {
@@ -47,6 +49,8 @@ public class OracleOuterJoinTransformer {
 		transformer.transform();
 	}
 	
+
+	query_block query;
 	Tree queryBlockNode;
 	
 	private OracleOuterJoinTransformer(Tree queryBlockNode) throws Exception {
@@ -54,6 +58,7 @@ public class OracleOuterJoinTransformer {
 			throw new Exception("Wrong queryBlockNode.type");
 		}
 		this.queryBlockNode = queryBlockNode;
+		query = parser.parsequery_block(queryBlockNode);
 	}
 
 	private void transform() {

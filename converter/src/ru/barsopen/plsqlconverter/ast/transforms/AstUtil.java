@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
+import org.antlr.runtime.tree.BaseTree;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
@@ -69,6 +70,14 @@ public class AstUtil {
 		return result;
 	}
 	
+	public static List<Tree> getChildren(Tree node) {
+		List<Tree> result = new ArrayList<Tree>();
+		for (int i = 0; i < node.getChildCount(); ++i) {
+			result.add(node.getChild(i));
+		}
+		return result;
+	}
+	
 	public static List<Tree> getDescendantsOfType(Tree node, int type) {
 		List<Tree> result = new ArrayList<Tree>();
 		getDescendantsOfType(node, type, result);
@@ -125,6 +134,48 @@ public class AstUtil {
 			 tree.addChild(child);
 		 }
 	 	return tree;
+	}
+
+	public static Tree createAstNode(int type, String text, Tree... children) {
+		 Tree tree = new CommonTree(new CommonToken(type, text));
+		 for (Tree child: children) {
+			 tree.addChild(child);
+		 }
+	 	return tree;
+	}
+
+	public static Tree createAstNode(int type, String text, List<Tree> children) {
+		 Tree tree = new CommonTree(new CommonToken(type, text));
+		 for (Tree child: children) {
+			 tree.addChild(child);
+		 }
+	 	return tree;
+	}
+
+	public static void replaceNode(Tree node, Tree replacement) {
+		Tree parent = node.getParent();
+		int idx = node.getChildIndex();
+		parent.replaceChildren(idx, idx, replacement);
+	}
+
+	public static void replaceNode(Tree node, List<Tree> replacement) {
+		BaseTree parent = (BaseTree)node.getParent();
+		int idx = node.getChildIndex();
+		parent.deleteChild(idx);
+		for (Tree replacementNode: replacement) {
+			parent.insertChild(idx, replacementNode);
+			++idx;
+		}
+	}
+
+	public static void replaceNode(Tree node, Tree... replacement) {
+		BaseTree parent = (BaseTree)node.getParent();
+		int idx = node.getChildIndex();
+		parent.deleteChild(idx);
+		for (Tree replacementNode: replacement) {
+			parent.insertChild(idx, replacementNode);
+			++idx;
+		}
 	}
 
 }

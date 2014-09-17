@@ -1,0 +1,5 @@
+package ru.barsopen.plsqlconverter.ast.typed;
+public interface constant extends expression_element {
+  // implemented by: constant_unsigned, constant_minus_unsigned, constant_exact_num, constant_approx_num, constant_char_string, constant_null, constant_true, constant_false, constant_dbtimezone, constant_sessiontimezone, constant_minvalue, constant_maxvalue, constant_default
+  org.antlr.runtime.tree.Tree unparse();
+}
