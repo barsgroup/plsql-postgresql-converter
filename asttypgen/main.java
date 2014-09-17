@@ -150,10 +150,49 @@ public class main {
       }
     }
     out.println();
+    out.printf("  public void _walk(_visitor visitor) {\n");
+    out.printf("    visitor.visit(this);\n");
+      
+    for (AstNodes.RuleItem item: rule.body.items) {
+      AstNodes.PropSpec propSpec = item.propSpec;
+      boolean isToken = item.propMatchSpec.isToken();
+      boolean isText = item.propMatchSpec.isTokenText;
+      boolean isArray = propSpec.isArray;
+      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : item.propMatchSpec.name;
+      
+      if (isText) {
+        continue;
+      } else if (propSpec.isArray) {
+        out.printf("    for (%s _value: this.%s) {\n", itemType, propSpec.name);
+        if (isToken) {
+          out.printf("      visitor.visit(_value);\n");
+        } else {
+          out.printf("      _value._walk(visitor);\n");
+        }
+        out.printf("    }\n");
+      } else {
+        out.printf("    if (this.%s != null) {\n", propSpec.name);
+        if (isToken) {
+          out.printf("      visitor.visit(this.%s);\n", propSpec.name);
+        } else {
+          out.printf("      this.%s._walk(visitor);\n", propSpec.name);
+        }
+        out.printf("    }\n");
+      }
+    }
+    out.printf("  }\n");
   }
   
   public static void generateBaseClass() throws Exception {
-    File file = path.resolve("_baseNode.java").toFile();
+    File file = path.resolve("_visitor.java").toFile();
+    try (PrintStream out = new PrintStream(file, "UTF-8")) {
+      out.printf("package %s;\n", packageName);
+      out.printf("public interface _visitor {\n");
+      out.printf("  void visit(_baseNode node);\n");
+      out.printf("  void visit(org.antlr.runtime.tree.Tree nonNode);\n");
+      out.printf("}\n");
+    }
+    file = path.resolve("_baseNode.java").toFile();
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
       out.printf("public interface _baseNode {\n");
@@ -164,6 +203,7 @@ public class main {
       out.printf("  int _getTokenStartIndex();\n");
       out.printf("  int _getTokenStopIndex();\n");
       out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
+      out.printf("  void _walk(_visitor visitor);\n");
       out.printf("}\n");
     }
   }
