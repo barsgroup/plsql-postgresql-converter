@@ -72,7 +72,7 @@ case <expression>
   <case_when_parts; separator="\n"><if (case_else_part)>
   
   <case_else_part><endif>
-end
+end case
 >>
 
 case_statement_searched(case_when_parts, case_else_part) ::= <<
@@ -80,7 +80,7 @@ case
   <case_when_parts; separator="\n"><if (case_else_part)>
   
   <case_else_part><endif>
-end
+end case
 >>
 
 case_when_part_statements(condition, seq_of_statements) ::= <<

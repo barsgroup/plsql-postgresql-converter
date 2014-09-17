@@ -64,6 +64,9 @@ public class PackageConversionTransformer {
 		String name = AstUtil.normalizeId(item.function_name.ids.get(item.function_name.ids.size() - 1).value);
 		name = packageName + "8" + name;
 		item.function_name = parser.make_function_name(null, Arrays.asList(parser.make_id(name)));
+		if (item.function_impl instanceof body_mode) {
+			((body_mode)item.function_impl).block.body.set_label_name(null);
+		}
 		packageContents.add(item.unparse());
 	}
 
@@ -75,6 +78,9 @@ public class PackageConversionTransformer {
 		String name = AstUtil.normalizeId(item.procedure_name.ids.get(item.procedure_name.ids.size() - 1).value);
 		name = packageName + "8" + name;
 		item.procedure_name = parser.make_procedure_name(null, Arrays.asList(parser.make_id(name)));
+		if (item.create_procedure_body_impl instanceof body_mode) {
+			((body_mode)item.create_procedure_body_impl).block.body.set_label_name(null);
+		}
 		packageContents.add(item.unparse());
 	}
 
