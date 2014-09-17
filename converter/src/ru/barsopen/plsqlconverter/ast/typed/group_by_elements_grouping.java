@@ -1,10 +1,33 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class group_by_elements_grouping implements group_by_elements {
+public class group_by_elements_grouping implements group_by_elements, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public java.util.List<groupin_set> groupin_sets = new java.util.ArrayList<groupin_set>();
+  public java.util.List<groupin_set> get_groupin_sets() { return this.groupin_sets; }
+  public void add_groupin_sets(groupin_set value) {
+    insert_groupin_sets(groupin_sets.size(), value);
+  }
+  public void insert_groupin_sets(int pos, groupin_set value) {
+    this.groupin_sets.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_groupin_sets(int pos) {
+    this.groupin_sets.get(pos)._setParent(null);
+    this.groupin_sets.remove(pos);
+  }
+  public void remove_groupin_sets(groupin_set value) {
+    this.remove_groupin_sets(this.groupin_sets.indexOf(value));
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.GROUPING_VK);

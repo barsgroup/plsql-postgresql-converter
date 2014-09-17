@@ -1,11 +1,40 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class group_by_clause {
+public class group_by_clause implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public java.util.List<group_by_element> group_by_elements = new java.util.ArrayList<group_by_element>();
+  public java.util.List<group_by_element> get_group_by_elements() { return this.group_by_elements; }
+  public void add_group_by_elements(group_by_element value) {
+    insert_group_by_elements(group_by_elements.size(), value);
+  }
+  public void insert_group_by_elements(int pos, group_by_element value) {
+    this.group_by_elements.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_group_by_elements(int pos) {
+    this.group_by_elements.get(pos)._setParent(null);
+    this.group_by_elements.remove(pos);
+  }
+  public void remove_group_by_elements(group_by_element value) {
+    this.remove_group_by_elements(this.group_by_elements.indexOf(value));
+  }
   public having_clause having_clause = null;
+  public having_clause get_having_clause() { return this.having_clause; }
+  public void set_having_clause(having_clause value) {
+    if (this.having_clause != null) { this.having_clause._setParent(null); }
+    this.having_clause = value;
+    if (this.having_clause != null) { this.having_clause._setParent(this); }
+  }
   public boolean is_having_clause() { return this.having_clause != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

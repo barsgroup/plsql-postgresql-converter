@@ -1,10 +1,33 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class exception_clause {
+public class exception_clause implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public java.util.List<exception_handler> exception_handlers = new java.util.ArrayList<exception_handler>();
+  public java.util.List<exception_handler> get_exception_handlers() { return this.exception_handlers; }
+  public void add_exception_handlers(exception_handler value) {
+    insert_exception_handlers(exception_handlers.size(), value);
+  }
+  public void insert_exception_handlers(int pos, exception_handler value) {
+    this.exception_handlers.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_exception_handlers(int pos) {
+    this.exception_handlers.get(pos)._setParent(null);
+    this.exception_handlers.remove(pos);
+  }
+  public void remove_exception_handlers(exception_handler value) {
+    this.remove_exception_handlers(this.exception_handlers.indexOf(value));
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_EXCEPTION);

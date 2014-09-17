@@ -1,10 +1,24 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class merge_update_delete_part {
+public class merge_update_delete_part implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public where_clause where_clause = null;
+  public where_clause get_where_clause() { return this.where_clause; }
+  public void set_where_clause(where_clause value) {
+    if (this.where_clause != null) { this.where_clause._setParent(null); }
+    this.where_clause = value;
+    if (this.where_clause != null) { this.where_clause._setParent(this); }
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DELETE);

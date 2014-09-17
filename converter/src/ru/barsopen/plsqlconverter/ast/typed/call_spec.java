@@ -1,10 +1,24 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class call_spec {
+public class call_spec implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public call_spec_decl call_spec_decl = null;
+  public call_spec_decl get_call_spec_decl() { return this.call_spec_decl; }
+  public void set_call_spec_decl(call_spec_decl value) {
+    if (this.call_spec_decl != null) { this.call_spec_decl._setParent(null); }
+    this.call_spec_decl = value;
+    if (this.call_spec_decl != null) { this.call_spec_decl._setParent(this); }
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LANGUAGE_VK);

@@ -1,12 +1,38 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class standard_function_root implements standard_function {
+public class standard_function_root implements standard_function, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public expression expression = null;
+  public expression get_expression() { return this.expression; }
+  public void set_expression(expression value) {
+    if (this.expression != null) { this.expression._setParent(null); }
+    this.expression = value;
+    if (this.expression != null) { this.expression._setParent(this); }
+  }
   public xml_param_version_part xml_param_version_part = null;
+  public xml_param_version_part get_xml_param_version_part() { return this.xml_param_version_part; }
+  public void set_xml_param_version_part(xml_param_version_part value) {
+    if (this.xml_param_version_part != null) { this.xml_param_version_part._setParent(null); }
+    this.xml_param_version_part = value;
+    if (this.xml_param_version_part != null) { this.xml_param_version_part._setParent(this); }
+  }
   public xmlroot_param_standalone_part xmlroot_param_standalone_part = null;
+  public xmlroot_param_standalone_part get_xmlroot_param_standalone_part() { return this.xmlroot_param_standalone_part; }
+  public void set_xmlroot_param_standalone_part(xmlroot_param_standalone_part value) {
+    if (this.xmlroot_param_standalone_part != null) { this.xmlroot_param_standalone_part._setParent(null); }
+    this.xmlroot_param_standalone_part = value;
+    if (this.xmlroot_param_standalone_part != null) { this.xmlroot_param_standalone_part._setParent(this); }
+  }
   public boolean is_xmlroot_param_standalone_part() { return this.xmlroot_param_standalone_part != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

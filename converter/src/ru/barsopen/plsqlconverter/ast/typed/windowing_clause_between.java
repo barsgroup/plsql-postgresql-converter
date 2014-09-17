@@ -1,11 +1,31 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class windowing_clause_between implements windowing_clause_spec {
+public class windowing_clause_between implements windowing_clause_spec, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public windowing_elements e1 = null;
+  public windowing_elements get_e1() { return this.e1; }
+  public void set_e1(windowing_elements value) {
+    if (this.e1 != null) { this.e1._setParent(null); }
+    this.e1 = value;
+    if (this.e1 != null) { this.e1._setParent(this); }
+  }
   public windowing_elements e2 = null;
+  public windowing_elements get_e2() { return this.e2; }
+  public void set_e2(windowing_elements value) {
+    if (this.e2 != null) { this.e2._setParent(null); }
+    this.e2 = value;
+    if (this.e2 != null) { this.e2._setParent(this); }
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN);

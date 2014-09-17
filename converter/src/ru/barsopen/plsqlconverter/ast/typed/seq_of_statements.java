@@ -1,10 +1,33 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class seq_of_statements implements expression_or_seq_of_statements {
+public class seq_of_statements implements expression_or_seq_of_statements, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public java.util.List<stat_or_label> stat_or_labels = new java.util.ArrayList<stat_or_label>();
+  public java.util.List<stat_or_label> get_stat_or_labels() { return this.stat_or_labels; }
+  public void add_stat_or_labels(stat_or_label value) {
+    insert_stat_or_labels(stat_or_labels.size(), value);
+  }
+  public void insert_stat_or_labels(int pos, stat_or_label value) {
+    this.stat_or_labels.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_stat_or_labels(int pos) {
+    this.stat_or_labels.get(pos)._setParent(null);
+    this.stat_or_labels.remove(pos);
+  }
+  public void remove_stat_or_labels(stat_or_label value) {
+    this.remove_stat_or_labels(this.stat_or_labels.indexOf(value));
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.STATEMENTS);

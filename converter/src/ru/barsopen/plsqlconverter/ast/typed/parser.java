@@ -18,7 +18,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParseunit_statement(tree.getChild(_i)))) {
-      _result.unit_statements.add(parseunit_statement(tree.getChild(_i)));
+      _result.add_unit_statements(parseunit_statement(tree.getChild(_i)));
       ++_i;
     }
 
@@ -26,9 +26,10 @@ public class parser {
     return _result;
   }
 
-  public static compilation_unit make_compilation_unit(java.util.List<unit_statement> unit_statements) {
+  public static compilation_unit make_compilation_unit(java.util.List<ru.barsopen.plsqlconverter.ast.typed.unit_statement> unit_statements) {
     compilation_unit _result = new compilation_unit();
-    if (unit_statements != null) {      _result.unit_statements = unit_statements;
+    if (unit_statements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.unit_statement _value: unit_statements) { _result.add_unit_statements(_value); }
     }
     return _result;
   }
@@ -51,16 +52,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsesql_script_item(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.sql_script_item = parsesql_script_item(tree.getChild(_i));
+    _result.set_sql_script_item(parsesql_script_item(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static sql_script make_sql_script(sql_script_item sql_script_item) {
+  public static sql_script make_sql_script(ru.barsopen.plsqlconverter.ast.typed.sql_script_item sql_script_item) {
     sql_script _result = new sql_script();
-    _result.sql_script_item = sql_script_item;
+    _result.set_sql_script_item(sql_script_item);
     return _result;
   }
 
@@ -113,7 +114,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (true))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -123,7 +124,8 @@ public class parser {
 
   public static whenever_command make_whenever_command(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     whenever_command _result = new whenever_command();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -146,7 +148,7 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (true))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.content = tree.getChild(_i);
+    _result.set_content(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -155,7 +157,7 @@ public class parser {
 
   public static set_command make_set_command(org.antlr.runtime.tree.Tree content) {
     set_command _result = new set_command();
-    _result.content = content;
+    _result.set_content(content);
     return _result;
   }
 
@@ -259,16 +261,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsefunction_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_name = parsefunction_name(tree.getChild(_i));
+    _result.set_function_name(parsefunction_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static drop_function make_drop_function(function_name function_name) {
+  public static drop_function make_drop_function(ru.barsopen.plsqlconverter.ast.typed.function_name function_name) {
     drop_function _result = new drop_function();
-    _result.function_name = function_name;
+    _result.set_function_name(function_name);
     return _result;
   }
 
@@ -290,21 +292,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsefunction_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_name = parsefunction_name(tree.getChild(_i));
+    _result.set_function_name(parsefunction_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DEBUG_VK)) {
-      _result.DEBUG_VK = tree.getChild(_i);
+      _result.set_DEBUG_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REUSE_VK)) {
-      _result.REUSE_VK = tree.getChild(_i);
+      _result.set_REUSE_VK(tree.getChild(_i));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsecompiler_parameters_clause(tree.getChild(_i)))) {
-      _result.compiler_parameters_clauses.add(parsecompiler_parameters_clause(tree.getChild(_i)));
+      _result.add_compiler_parameters_clauses(parsecompiler_parameters_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -312,15 +314,16 @@ public class parser {
     return _result;
   }
 
-  public static alter_function make_alter_function(function_name function_name,
+  public static alter_function make_alter_function(ru.barsopen.plsqlconverter.ast.typed.function_name function_name,
       org.antlr.runtime.tree.Tree DEBUG_VK,
       org.antlr.runtime.tree.Tree REUSE_VK,
-      java.util.List<compiler_parameters_clause> compiler_parameters_clauses) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.compiler_parameters_clause> compiler_parameters_clauses) {
     alter_function _result = new alter_function();
-    _result.function_name = function_name;
-    _result.DEBUG_VK = DEBUG_VK;
-    _result.REUSE_VK = REUSE_VK;
-    if (compiler_parameters_clauses != null) {      _result.compiler_parameters_clauses = compiler_parameters_clauses;
+    _result.set_function_name(function_name);
+    _result.set_DEBUG_VK(DEBUG_VK);
+    _result.set_REUSE_VK(REUSE_VK);
+    if (compiler_parameters_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.compiler_parameters_clause _value: compiler_parameters_clauses) { _result.add_compiler_parameters_clauses(_value); }
     }
     return _result;
   }
@@ -343,54 +346,54 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CREATE)) {
-      _result.SQL92_RESERVED_CREATE = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
-      _result.REPLACE_VK = tree.getChild(_i);
+      _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsefunction_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_name = parsefunction_name(tree.getChild(_i));
+    _result.set_function_name(parsefunction_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseparameters(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameters = parseparameters(tree.getChild(_i));
+    _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParseinvoker_rights_clause(tree.getChild(_i)))) {
-      _result.invoker_rights_clauses.add(parseinvoker_rights_clause(tree.getChild(_i)));
+      _result.add_invoker_rights_clauses(parseinvoker_rights_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParseparallel_enable_clause(tree.getChild(_i)))) {
-      _result.parallel_enable_clauses.add(parseparallel_enable_clause(tree.getChild(_i)));
+      _result.add_parallel_enable_clauses(parseparallel_enable_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParseresult_cache_clause(tree.getChild(_i)))) {
-      _result.result_cache_clauses.add(parseresult_cache_clause(tree.getChild(_i)));
+      _result.add_result_cache_clauses(parseresult_cache_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DETERMINISTIC_VK)) {
-      _result.DETERMINISTIC_VKs.add(tree.getChild(_i));
+      _result.add_DETERMINISTIC_VKs(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIPELINED_VK)) {
-      _result.PIPELINED_VK = tree.getChild(_i);
+      _result.set_PIPELINED_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsefunction_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_impl = parsefunction_impl(tree.getChild(_i));
+    _result.set_function_impl(parsefunction_impl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -399,31 +402,35 @@ public class parser {
 
   public static create_function_body make_create_function_body(org.antlr.runtime.tree.Tree SQL92_RESERVED_CREATE,
       org.antlr.runtime.tree.Tree REPLACE_VK,
-      function_name function_name,
-      type_spec type_spec,
-      parameters parameters,
-      java.util.List<invoker_rights_clause> invoker_rights_clauses,
-      java.util.List<parallel_enable_clause> parallel_enable_clauses,
-      java.util.List<result_cache_clause> result_cache_clauses,
+      ru.barsopen.plsqlconverter.ast.typed.function_name function_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.parameters parameters,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause> invoker_rights_clauses,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.parallel_enable_clause> parallel_enable_clauses,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.result_cache_clause> result_cache_clauses,
       java.util.List<org.antlr.runtime.tree.Tree> DETERMINISTIC_VKs,
       org.antlr.runtime.tree.Tree PIPELINED_VK,
-      function_impl function_impl) {
+      ru.barsopen.plsqlconverter.ast.typed.function_impl function_impl) {
     create_function_body _result = new create_function_body();
-    _result.SQL92_RESERVED_CREATE = SQL92_RESERVED_CREATE;
-    _result.REPLACE_VK = REPLACE_VK;
-    _result.function_name = function_name;
-    _result.type_spec = type_spec;
-    _result.parameters = parameters;
-    if (invoker_rights_clauses != null) {      _result.invoker_rights_clauses = invoker_rights_clauses;
+    _result.set_SQL92_RESERVED_CREATE(SQL92_RESERVED_CREATE);
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_function_name(function_name);
+    _result.set_type_spec(type_spec);
+    _result.set_parameters(parameters);
+    if (invoker_rights_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause _value: invoker_rights_clauses) { _result.add_invoker_rights_clauses(_value); }
     }
-    if (parallel_enable_clauses != null) {      _result.parallel_enable_clauses = parallel_enable_clauses;
+    if (parallel_enable_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.parallel_enable_clause _value: parallel_enable_clauses) { _result.add_parallel_enable_clauses(_value); }
     }
-    if (result_cache_clauses != null) {      _result.result_cache_clauses = result_cache_clauses;
+    if (result_cache_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.result_cache_clause _value: result_cache_clauses) { _result.add_result_cache_clauses(_value); }
     }
-    if (DETERMINISTIC_VKs != null) {      _result.DETERMINISTIC_VKs = DETERMINISTIC_VKs;
+    if (DETERMINISTIC_VKs != null) {
+      for (org.antlr.runtime.tree.Tree _value: DETERMINISTIC_VKs) { _result.add_DETERMINISTIC_VKs(_value); }
     }
-    _result.PIPELINED_VK = PIPELINED_VK;
-    _result.function_impl = function_impl;
+    _result.set_PIPELINED_VK(PIPELINED_VK);
+    _result.set_function_impl(function_impl);
     return _result;
   }
 
@@ -445,7 +452,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParseparameter(tree.getChild(_i)))) {
-      _result.parameters.add(parseparameter(tree.getChild(_i)));
+      _result.add_parameters(parseparameter(tree.getChild(_i)));
       ++_i;
     }
 
@@ -453,9 +460,10 @@ public class parser {
     return _result;
   }
 
-  public static parameters make_parameters(java.util.List<parameter> parameters) {
+  public static parameters make_parameters(java.util.List<ru.barsopen.plsqlconverter.ast.typed.parameter> parameters) {
     parameters _result = new parameters();
-    if (parameters != null) {      _result.parameters = parameters;
+    if (parameters != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.parameter _value: parameters) { _result.add_parameters(_value); }
     }
     return _result;
   }
@@ -493,12 +501,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.AGGREGATE_VK)) {
-      _result.AGGREGATE_VK = tree.getChild(_i);
+      _result.set_AGGREGATE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseimplementation_type_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.implementation_type_name = parseimplementation_type_name(tree.getChild(_i));
+    _result.set_implementation_type_name(parseimplementation_type_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -506,10 +514,10 @@ public class parser {
   }
 
   public static function_impl_using make_function_impl_using(org.antlr.runtime.tree.Tree AGGREGATE_VK,
-      implementation_type_name implementation_type_name) {
+      ru.barsopen.plsqlconverter.ast.typed.implementation_type_name implementation_type_name) {
     function_impl_using _result = new function_impl_using();
-    _result.AGGREGATE_VK = AGGREGATE_VK;
-    _result.implementation_type_name = implementation_type_name;
+    _result.set_AGGREGATE_VK(AGGREGATE_VK);
+    _result.set_implementation_type_name(implementation_type_name);
     return _result;
   }
 
@@ -531,16 +539,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecall_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.call_spec = parsecall_spec(tree.getChild(_i));
+    _result.set_call_spec(parsecall_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static call_mode make_call_mode(call_spec call_spec) {
+  public static call_mode make_call_mode(ru.barsopen.plsqlconverter.ast.typed.call_spec call_spec) {
     call_mode _result = new call_mode();
-    _result.call_spec = call_spec;
+    _result.set_call_spec(call_spec);
     return _result;
   }
 
@@ -562,16 +570,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseblock(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.block = parseblock(tree.getChild(_i));
+    _result.set_block(parseblock(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static body_mode make_body_mode(block block) {
+  public static body_mode make_body_mode(ru.barsopen.plsqlconverter.ast.typed.block block) {
     body_mode _result = new body_mode();
-    _result.block = block;
+    _result.set_block(block);
     return _result;
   }
 
@@ -593,7 +601,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsepartition_by_clause(tree.getChild(_i)))) {
-      _result.partition_by_clause = parsepartition_by_clause(tree.getChild(_i));
+      _result.set_partition_by_clause(parsepartition_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -601,9 +609,9 @@ public class parser {
     return _result;
   }
 
-  public static parallel_enable_clause make_parallel_enable_clause(partition_by_clause partition_by_clause) {
+  public static parallel_enable_clause make_parallel_enable_clause(ru.barsopen.plsqlconverter.ast.typed.partition_by_clause partition_by_clause) {
     parallel_enable_clause _result = new parallel_enable_clause();
-    _result.partition_by_clause = partition_by_clause;
+    _result.set_partition_by_clause(partition_by_clause);
     return _result;
   }
 
@@ -625,7 +633,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -635,7 +643,8 @@ public class parser {
 
   public static partition_by_clause make_partition_by_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     partition_by_clause _result = new partition_by_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -658,7 +667,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParserelies_on_part(tree.getChild(_i)))) {
-      _result.relies_on_part = parserelies_on_part(tree.getChild(_i));
+      _result.set_relies_on_part(parserelies_on_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -666,9 +675,9 @@ public class parser {
     return _result;
   }
 
-  public static result_cache_clause make_result_cache_clause(relies_on_part relies_on_part) {
+  public static result_cache_clause make_result_cache_clause(ru.barsopen.plsqlconverter.ast.typed.relies_on_part relies_on_part) {
     result_cache_clause _result = new result_cache_clause();
-    _result.relies_on_part = relies_on_part;
+    _result.set_relies_on_part(relies_on_part);
     return _result;
   }
 
@@ -691,7 +700,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i)))) {
-      _result.tableview_names.add(parsetableview_name(tree.getChild(_i)));
+      _result.add_tableview_names(parsetableview_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -699,9 +708,10 @@ public class parser {
     return _result;
   }
 
-  public static relies_on_part make_relies_on_part(java.util.List<tableview_name> tableview_names) {
+  public static relies_on_part make_relies_on_part(java.util.List<ru.barsopen.plsqlconverter.ast.typed.tableview_name> tableview_names) {
     relies_on_part _result = new relies_on_part();
-    if (tableview_names != null) {      _result.tableview_names = tableview_names;
+    if (tableview_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.tableview_name _value: tableview_names) { _result.add_tableview_names(_value); }
     }
     return _result;
   }
@@ -724,7 +734,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -734,7 +744,8 @@ public class parser {
 
   public static streaming_clause make_streaming_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     streaming_clause _result = new streaming_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -757,11 +768,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsepackage_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.package_name = parsepackage_name(tree.getChild(_i));
+    _result.set_package_name(parsepackage_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BODY_VK)) {
-      _result.BODY_VK = tree.getChild(_i);
+      _result.set_BODY_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -769,11 +780,11 @@ public class parser {
     return _result;
   }
 
-  public static drop_package make_drop_package(package_name package_name,
+  public static drop_package make_drop_package(ru.barsopen.plsqlconverter.ast.typed.package_name package_name,
       org.antlr.runtime.tree.Tree BODY_VK) {
     drop_package _result = new drop_package();
-    _result.package_name = package_name;
-    _result.BODY_VK = BODY_VK;
+    _result.set_package_name(package_name);
+    _result.set_BODY_VK(BODY_VK);
     return _result;
   }
 
@@ -795,7 +806,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -805,7 +816,8 @@ public class parser {
 
   public static alter_package make_alter_package(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_package _result = new alter_package();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -842,21 +854,21 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
-      _result.REPLACE_VK = tree.getChild(_i);
+      _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsepackage_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.package_name = parsepackage_name(tree.getChild(_i));
+    _result.set_package_name(parsepackage_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseinvoker_rights_clause(tree.getChild(_i)))) {
-      _result.invoker_rights_clause = parseinvoker_rights_clause(tree.getChild(_i));
+      _result.set_invoker_rights_clause(parseinvoker_rights_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsepackage_obj_spec(tree.getChild(_i)))) {
-      _result.package_obj_specs.add(parsepackage_obj_spec(tree.getChild(_i)));
+      _result.add_package_obj_specs(parsepackage_obj_spec(tree.getChild(_i)));
       ++_i;
     }
 
@@ -865,14 +877,15 @@ public class parser {
   }
 
   public static create_package_spec make_create_package_spec(org.antlr.runtime.tree.Tree REPLACE_VK,
-      package_name package_name,
-      invoker_rights_clause invoker_rights_clause,
-      java.util.List<package_obj_spec> package_obj_specs) {
+      ru.barsopen.plsqlconverter.ast.typed.package_name package_name,
+      ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause invoker_rights_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.package_obj_spec> package_obj_specs) {
     create_package_spec _result = new create_package_spec();
-    _result.REPLACE_VK = REPLACE_VK;
-    _result.package_name = package_name;
-    _result.invoker_rights_clause = invoker_rights_clause;
-    if (package_obj_specs != null) {      _result.package_obj_specs = package_obj_specs;
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_package_name(package_name);
+    _result.set_invoker_rights_clause(invoker_rights_clause);
+    if (package_obj_specs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.package_obj_spec _value: package_obj_specs) { _result.add_package_obj_specs(_value); }
     }
     return _result;
   }
@@ -895,26 +908,26 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
-      _result.REPLACE_VK = tree.getChild(_i);
+      _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsepackage_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.package_name = parsepackage_name(tree.getChild(_i));
+    _result.set_package_name(parsepackage_name(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsepackage_obj_body(tree.getChild(_i)))) {
-      _result.package_obj_bodys.add(parsepackage_obj_body(tree.getChild(_i)));
+      _result.add_package_obj_bodys(parsepackage_obj_body(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i)))) {
-      _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+      _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexception_clause(tree.getChild(_i)))) {
-      _result.exception_clause = parseexception_clause(tree.getChild(_i));
+      _result.set_exception_clause(parseexception_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -923,17 +936,18 @@ public class parser {
   }
 
   public static create_package_body make_create_package_body(org.antlr.runtime.tree.Tree REPLACE_VK,
-      package_name package_name,
-      java.util.List<package_obj_body> package_obj_bodys,
-      seq_of_statements seq_of_statements,
-      exception_clause exception_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.package_name package_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.package_obj_body> package_obj_bodys,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements,
+      ru.barsopen.plsqlconverter.ast.typed.exception_clause exception_clause) {
     create_package_body _result = new create_package_body();
-    _result.REPLACE_VK = REPLACE_VK;
-    _result.package_name = package_name;
-    if (package_obj_bodys != null) {      _result.package_obj_bodys = package_obj_bodys;
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_package_name(package_name);
+    if (package_obj_bodys != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.package_obj_body _value: package_obj_bodys) { _result.add_package_obj_bodys(_value); }
     }
-    _result.seq_of_statements = seq_of_statements;
-    _result.exception_clause = exception_clause;
+    _result.set_seq_of_statements(seq_of_statements);
+    _result.set_exception_clause(exception_clause);
     return _result;
   }
 
@@ -976,15 +990,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseprocedure_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.procedure_name = parseprocedure_name(tree.getChild(_i));
+    _result.set_procedure_name(parseprocedure_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseparameters(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameters = parseparameters(tree.getChild(_i));
+    _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsecall_mode(tree.getChild(_i)))) {
-      _result.call_mode = parsecall_mode(tree.getChild(_i));
+      _result.set_call_mode(parsecall_mode(tree.getChild(_i)));
       ++_i;
     }
 
@@ -992,13 +1006,13 @@ public class parser {
     return _result;
   }
 
-  public static procedure_spec make_procedure_spec(procedure_name procedure_name,
-      parameters parameters,
-      call_mode call_mode) {
+  public static procedure_spec make_procedure_spec(ru.barsopen.plsqlconverter.ast.typed.procedure_name procedure_name,
+      ru.barsopen.plsqlconverter.ast.typed.parameters parameters,
+      ru.barsopen.plsqlconverter.ast.typed.call_mode call_mode) {
     procedure_spec _result = new procedure_spec();
-    _result.procedure_name = procedure_name;
-    _result.parameters = parameters;
-    _result.call_mode = call_mode;
+    _result.set_procedure_name(procedure_name);
+    _result.set_parameters(parameters);
+    _result.set_call_mode(call_mode);
     return _result;
   }
 
@@ -1020,29 +1034,29 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsefunction_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_name = parsefunction_name(tree.getChild(_i));
+    _result.set_function_name(parsefunction_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseparameters(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameters = parseparameters(tree.getChild(_i));
+    _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIPELINED_VK)) {
-      _result.PIPELINED_VK = tree.getChild(_i);
+      _result.set_PIPELINED_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RESULT_CACHE_VK)) {
-      _result.RESULT_CACHE_VK = tree.getChild(_i);
+      _result.set_RESULT_CACHE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DETERMINISTIC_VK)) {
-      _result.DETERMINISTIC_VK = tree.getChild(_i);
+      _result.set_DETERMINISTIC_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -1050,19 +1064,19 @@ public class parser {
     return _result;
   }
 
-  public static function_spec make_function_spec(function_name function_name,
-      type_spec type_spec,
-      parameters parameters,
+  public static function_spec make_function_spec(ru.barsopen.plsqlconverter.ast.typed.function_name function_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.parameters parameters,
       org.antlr.runtime.tree.Tree PIPELINED_VK,
       org.antlr.runtime.tree.Tree RESULT_CACHE_VK,
       org.antlr.runtime.tree.Tree DETERMINISTIC_VK) {
     function_spec _result = new function_spec();
-    _result.function_name = function_name;
-    _result.type_spec = type_spec;
-    _result.parameters = parameters;
-    _result.PIPELINED_VK = PIPELINED_VK;
-    _result.RESULT_CACHE_VK = RESULT_CACHE_VK;
-    _result.DETERMINISTIC_VK = DETERMINISTIC_VK;
+    _result.set_function_name(function_name);
+    _result.set_type_spec(type_spec);
+    _result.set_parameters(parameters);
+    _result.set_PIPELINED_VK(PIPELINED_VK);
+    _result.set_RESULT_CACHE_VK(RESULT_CACHE_VK);
+    _result.set_DETERMINISTIC_VK(DETERMINISTIC_VK);
     return _result;
   }
 
@@ -1107,16 +1121,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseprocedure_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.procedure_name = parseprocedure_name(tree.getChild(_i));
+    _result.set_procedure_name(parseprocedure_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static drop_procedure make_drop_procedure(procedure_name procedure_name) {
+  public static drop_procedure make_drop_procedure(ru.barsopen.plsqlconverter.ast.typed.procedure_name procedure_name) {
     drop_procedure _result = new drop_procedure();
-    _result.procedure_name = procedure_name;
+    _result.set_procedure_name(procedure_name);
     return _result;
   }
 
@@ -1138,21 +1152,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseprocedure_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.procedure_name = parseprocedure_name(tree.getChild(_i));
+    _result.set_procedure_name(parseprocedure_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DEBUG_VK)) {
-      _result.DEBUG_VK = tree.getChild(_i);
+      _result.set_DEBUG_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REUSE_VK)) {
-      _result.REUSE_VK = tree.getChild(_i);
+      _result.set_REUSE_VK(tree.getChild(_i));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsecompiler_parameters_clause(tree.getChild(_i)))) {
-      _result.compiler_parameters_clauses.add(parsecompiler_parameters_clause(tree.getChild(_i)));
+      _result.add_compiler_parameters_clauses(parsecompiler_parameters_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -1160,15 +1174,16 @@ public class parser {
     return _result;
   }
 
-  public static alter_procedure make_alter_procedure(procedure_name procedure_name,
+  public static alter_procedure make_alter_procedure(ru.barsopen.plsqlconverter.ast.typed.procedure_name procedure_name,
       org.antlr.runtime.tree.Tree DEBUG_VK,
       org.antlr.runtime.tree.Tree REUSE_VK,
-      java.util.List<compiler_parameters_clause> compiler_parameters_clauses) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.compiler_parameters_clause> compiler_parameters_clauses) {
     alter_procedure _result = new alter_procedure();
-    _result.procedure_name = procedure_name;
-    _result.DEBUG_VK = DEBUG_VK;
-    _result.REUSE_VK = REUSE_VK;
-    if (compiler_parameters_clauses != null) {      _result.compiler_parameters_clauses = compiler_parameters_clauses;
+    _result.set_procedure_name(procedure_name);
+    _result.set_DEBUG_VK(DEBUG_VK);
+    _result.set_REUSE_VK(REUSE_VK);
+    if (compiler_parameters_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.compiler_parameters_clause _value: compiler_parameters_clauses) { _result.add_compiler_parameters_clauses(_value); }
     }
     return _result;
   }
@@ -1191,30 +1206,30 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CREATE)) {
-      _result.SQL92_RESERVED_CREATE = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
-      _result.REPLACE_VK = tree.getChild(_i);
+      _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseprocedure_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.procedure_name = parseprocedure_name(tree.getChild(_i));
+    _result.set_procedure_name(parseprocedure_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseparameters(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameters = parseparameters(tree.getChild(_i));
+    _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseinvoker_rights_clause(tree.getChild(_i)))) {
-      _result.invoker_rights_clause = parseinvoker_rights_clause(tree.getChild(_i));
+      _result.set_invoker_rights_clause(parseinvoker_rights_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsecreate_procedure_body_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.create_procedure_body_impl = parsecreate_procedure_body_impl(tree.getChild(_i));
+    _result.set_create_procedure_body_impl(parsecreate_procedure_body_impl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -1223,17 +1238,17 @@ public class parser {
 
   public static create_procedure_body make_create_procedure_body(org.antlr.runtime.tree.Tree SQL92_RESERVED_CREATE,
       org.antlr.runtime.tree.Tree REPLACE_VK,
-      procedure_name procedure_name,
-      parameters parameters,
-      invoker_rights_clause invoker_rights_clause,
-      create_procedure_body_impl create_procedure_body_impl) {
+      ru.barsopen.plsqlconverter.ast.typed.procedure_name procedure_name,
+      ru.barsopen.plsqlconverter.ast.typed.parameters parameters,
+      ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause invoker_rights_clause,
+      ru.barsopen.plsqlconverter.ast.typed.create_procedure_body_impl create_procedure_body_impl) {
     create_procedure_body _result = new create_procedure_body();
-    _result.SQL92_RESERVED_CREATE = SQL92_RESERVED_CREATE;
-    _result.REPLACE_VK = REPLACE_VK;
-    _result.procedure_name = procedure_name;
-    _result.parameters = parameters;
-    _result.invoker_rights_clause = invoker_rights_clause;
-    _result.create_procedure_body_impl = create_procedure_body_impl;
+    _result.set_SQL92_RESERVED_CREATE(SQL92_RESERVED_CREATE);
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_procedure_name(procedure_name);
+    _result.set_parameters(parameters);
+    _result.set_invoker_rights_clause(invoker_rights_clause);
+    _result.set_create_procedure_body_impl(create_procedure_body_impl);
     return _result;
   }
 
@@ -1296,16 +1311,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetrigger_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.trigger_name = parsetrigger_name(tree.getChild(_i));
+    _result.set_trigger_name(parsetrigger_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static drop_trigger make_drop_trigger(trigger_name trigger_name) {
+  public static drop_trigger make_drop_trigger(ru.barsopen.plsqlconverter.ast.typed.trigger_name trigger_name) {
     drop_trigger _result = new drop_trigger();
-    _result.trigger_name = trigger_name;
+    _result.set_trigger_name(trigger_name);
     return _result;
   }
 
@@ -1327,7 +1342,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1337,7 +1352,8 @@ public class parser {
 
   public static alter_trigger make_alter_trigger(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_trigger _result = new alter_trigger();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1360,7 +1376,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1370,7 +1386,8 @@ public class parser {
 
   public static create_trigger make_create_trigger(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     create_trigger _result = new create_trigger();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1393,7 +1410,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1403,7 +1420,8 @@ public class parser {
 
   public static trigger_follows_clause make_trigger_follows_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     trigger_follows_clause _result = new trigger_follows_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1426,7 +1444,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1436,7 +1454,8 @@ public class parser {
 
   public static trigger_when_clause make_trigger_when_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     trigger_when_clause _result = new trigger_when_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1511,7 +1530,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1521,7 +1540,8 @@ public class parser {
 
   public static non_dml_trigger make_non_dml_trigger(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     non_dml_trigger _result = new non_dml_trigger();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1544,7 +1564,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1554,7 +1574,8 @@ public class parser {
 
   public static trigger_body make_trigger_body(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     trigger_body _result = new trigger_body();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1577,7 +1598,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1587,7 +1608,8 @@ public class parser {
 
   public static timing_point_section make_timing_point_section(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     timing_point_section _result = new timing_point_section();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1610,7 +1632,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1620,7 +1642,8 @@ public class parser {
 
   public static non_dml_event make_non_dml_event(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     non_dml_event _result = new non_dml_event();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1643,7 +1666,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1653,7 +1676,8 @@ public class parser {
 
   public static dml_event_clause make_dml_event_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     dml_event_clause _result = new dml_event_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1676,7 +1700,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1686,7 +1710,8 @@ public class parser {
 
   public static dml_event_element make_dml_event_element(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     dml_event_element _result = new dml_event_element();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1709,7 +1734,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1719,7 +1744,8 @@ public class parser {
 
   public static dml_event_nested_clause make_dml_event_nested_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     dml_event_nested_clause _result = new dml_event_nested_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1742,7 +1768,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1752,7 +1778,8 @@ public class parser {
 
   public static referencing_clause make_referencing_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     referencing_clause _result = new referencing_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1775,7 +1802,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1785,7 +1812,8 @@ public class parser {
 
   public static referencing_element make_referencing_element(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     referencing_element _result = new referencing_element();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1808,7 +1836,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1818,7 +1846,8 @@ public class parser {
 
   public static drop_type make_drop_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     drop_type _result = new drop_type();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1841,7 +1870,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1851,7 +1880,8 @@ public class parser {
 
   public static alter_type make_alter_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_type _result = new alter_type();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1874,7 +1904,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1884,7 +1914,8 @@ public class parser {
 
   public static alter_method_element make_alter_method_element(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_method_element _result = new alter_method_element();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1907,7 +1938,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1917,7 +1948,8 @@ public class parser {
 
   public static attribute_definition make_attribute_definition(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     attribute_definition _result = new attribute_definition();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1940,7 +1972,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1950,7 +1982,8 @@ public class parser {
 
   public static alter_collection_clauses make_alter_collection_clauses(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_collection_clauses _result = new alter_collection_clauses();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -1973,7 +2006,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -1983,7 +2016,8 @@ public class parser {
 
   public static dependent_handling_clause make_dependent_handling_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     dependent_handling_clause _result = new dependent_handling_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2006,7 +2040,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2016,7 +2050,8 @@ public class parser {
 
   public static dependent_exceptions_part make_dependent_exceptions_part(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     dependent_exceptions_part _result = new dependent_exceptions_part();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2039,7 +2074,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2049,7 +2084,8 @@ public class parser {
 
   public static create_type make_create_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     create_type _result = new create_type();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2072,7 +2108,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2082,7 +2118,8 @@ public class parser {
 
   public static object_type_def make_object_type_def(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     object_type_def _result = new object_type_def();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2105,7 +2142,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2115,7 +2152,8 @@ public class parser {
 
   public static object_as_part make_object_as_part(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     object_as_part _result = new object_as_part();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2138,7 +2176,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2148,7 +2186,8 @@ public class parser {
 
   public static object_under_part make_object_under_part(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     object_under_part _result = new object_under_part();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2171,7 +2210,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2181,7 +2220,8 @@ public class parser {
 
   public static nested_table_type_def make_nested_table_type_def(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     nested_table_type_def _result = new nested_table_type_def();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2204,7 +2244,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2214,7 +2254,8 @@ public class parser {
 
   public static sqlj_object_type make_sqlj_object_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     sqlj_object_type _result = new sqlj_object_type();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2237,7 +2278,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2247,7 +2288,8 @@ public class parser {
 
   public static type_body_elements make_type_body_elements(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     type_body_elements _result = new type_body_elements();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2270,7 +2312,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2280,7 +2322,8 @@ public class parser {
 
   public static map_order_func_declaration make_map_order_func_declaration(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     map_order_func_declaration _result = new map_order_func_declaration();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2303,7 +2346,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2313,7 +2356,8 @@ public class parser {
 
   public static subprog_decl_in_type make_subprog_decl_in_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     subprog_decl_in_type _result = new subprog_decl_in_type();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2336,7 +2380,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2346,7 +2390,8 @@ public class parser {
 
   public static constructor_declaration make_constructor_declaration(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     constructor_declaration _result = new constructor_declaration();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2369,7 +2414,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2379,7 +2424,8 @@ public class parser {
 
   public static modifier_clause make_modifier_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     modifier_clause _result = new modifier_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2402,7 +2448,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2412,7 +2458,8 @@ public class parser {
 
   public static sqlj_object_type_attr make_sqlj_object_type_attr(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     sqlj_object_type_attr _result = new sqlj_object_type_attr();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2435,7 +2482,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2445,7 +2492,8 @@ public class parser {
 
   public static element_spec make_element_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     element_spec _result = new element_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2468,7 +2516,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2478,7 +2526,8 @@ public class parser {
 
   public static element_spec_options make_element_spec_options(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     element_spec_options _result = new element_spec_options();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2501,7 +2550,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2511,7 +2560,8 @@ public class parser {
 
   public static subprogram_spec make_subprogram_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     subprogram_spec _result = new subprogram_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2534,7 +2584,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2544,7 +2594,8 @@ public class parser {
 
   public static constructor_spec make_constructor_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     constructor_spec _result = new constructor_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2567,7 +2618,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2577,7 +2628,8 @@ public class parser {
 
   public static constructor_call_mode make_constructor_call_mode(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     constructor_call_mode _result = new constructor_call_mode();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2600,7 +2652,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2610,7 +2662,8 @@ public class parser {
 
   public static map_order_function_spec make_map_order_function_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     map_order_function_spec _result = new map_order_function_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2633,7 +2686,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2643,7 +2696,8 @@ public class parser {
 
   public static pragma_clause make_pragma_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     pragma_clause _result = new pragma_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2666,7 +2720,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2676,7 +2730,8 @@ public class parser {
 
   public static pragma_elements make_pragma_elements(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     pragma_elements _result = new pragma_elements();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2699,7 +2754,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2709,7 +2764,8 @@ public class parser {
 
   public static type_elements_parameter make_type_elements_parameter(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     type_elements_parameter _result = new type_elements_parameter();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2732,7 +2788,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2742,7 +2798,8 @@ public class parser {
 
   public static drop_sequence make_drop_sequence(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     drop_sequence _result = new drop_sequence();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2765,7 +2822,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2775,7 +2832,8 @@ public class parser {
 
   public static alter_sequence make_alter_sequence(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     alter_sequence _result = new alter_sequence();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2798,7 +2856,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2808,7 +2866,8 @@ public class parser {
 
   public static create_sequence make_create_sequence(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     create_sequence _result = new create_sequence();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2831,7 +2890,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2841,7 +2900,8 @@ public class parser {
 
   public static sequence_spec make_sequence_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     sequence_spec _result = new sequence_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2864,7 +2924,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2874,7 +2934,8 @@ public class parser {
 
   public static invoker_rights_clause make_invoker_rights_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     invoker_rights_clause _result = new invoker_rights_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2897,7 +2958,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -2907,7 +2968,8 @@ public class parser {
 
   public static compiler_parameters_clause make_compiler_parameters_clause(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     compiler_parameters_clause _result = new compiler_parameters_clause();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -2930,16 +2992,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecall_spec_decl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.call_spec_decl = parsecall_spec_decl(tree.getChild(_i));
+    _result.set_call_spec_decl(parsecall_spec_decl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static call_spec make_call_spec(call_spec_decl call_spec_decl) {
+  public static call_spec make_call_spec(ru.barsopen.plsqlconverter.ast.typed.call_spec_decl call_spec_decl) {
     call_spec _result = new call_spec();
-    _result.call_spec_decl = call_spec_decl;
+    _result.set_call_spec_decl(call_spec_decl);
     return _result;
   }
 
@@ -2975,7 +3037,7 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.CHAR_STRING = tree.getChild(_i);
+    _result.set_CHAR_STRING(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -2984,7 +3046,7 @@ public class parser {
 
   public static java_spec make_java_spec(org.antlr.runtime.tree.Tree CHAR_STRING) {
     java_spec _result = new java_spec();
-    _result.CHAR_STRING = CHAR_STRING;
+    _result.set_CHAR_STRING(CHAR_STRING);
     return _result;
   }
 
@@ -3006,7 +3068,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (true)) {
-      _result.contents.add(tree.getChild(_i));
+      _result.add_contents(tree.getChild(_i));
       ++_i;
     }
 
@@ -3016,7 +3078,8 @@ public class parser {
 
   public static c_spec make_c_spec(java.util.List<org.antlr.runtime.tree.Tree> contents) {
     c_spec _result = new c_spec();
-    if (contents != null) {      _result.contents = contents;
+    if (contents != null) {
+      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
     }
     return _result;
   }
@@ -3091,21 +3154,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseparameter_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameter_name = parseparameter_name(tree.getChild(_i));
+    _result.set_parameter_name(parseparameter_name(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParseparameter_dir_spec(tree.getChild(_i)))) {
-      _result.parameter_dir_specs.add(parseparameter_dir_spec(tree.getChild(_i)));
+      _result.add_parameter_dir_specs(parseparameter_dir_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
-      _result.type_spec = parsetype_spec(tree.getChild(_i));
+      _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsedefault_value_part(tree.getChild(_i)))) {
-      _result.default_value_part = parsedefault_value_part(tree.getChild(_i));
+      _result.set_default_value_part(parsedefault_value_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3113,16 +3176,17 @@ public class parser {
     return _result;
   }
 
-  public static parameter make_parameter(parameter_name parameter_name,
-      java.util.List<parameter_dir_spec> parameter_dir_specs,
-      type_spec type_spec,
-      default_value_part default_value_part) {
+  public static parameter make_parameter(ru.barsopen.plsqlconverter.ast.typed.parameter_name parameter_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.parameter_dir_spec> parameter_dir_specs,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.default_value_part default_value_part) {
     parameter _result = new parameter();
-    _result.parameter_name = parameter_name;
-    if (parameter_dir_specs != null) {      _result.parameter_dir_specs = parameter_dir_specs;
+    _result.set_parameter_name(parameter_name);
+    if (parameter_dir_specs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.parameter_dir_spec _value: parameter_dir_specs) { _result.add_parameter_dir_specs(_value); }
     }
-    _result.type_spec = type_spec;
-    _result.default_value_part = default_value_part;
+    _result.set_type_spec(type_spec);
+    _result.set_default_value_part(default_value_part);
     return _result;
   }
 
@@ -3237,16 +3301,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static default_value_part make_default_value_part(expression expression) {
+  public static default_value_part make_default_value_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     default_value_part _result = new default_value_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -3290,25 +3354,25 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsevariable_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.variable_name = parsevariable_name(tree.getChild(_i));
+    _result.set_variable_name(parsevariable_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONSTANT_VK)) {
-      _result.CONSTANT_VK = tree.getChild(_i);
+      _result.set_CONSTANT_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
-      _result.SQL92_RESERVED_NULL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsedefault_value_part(tree.getChild(_i)))) {
-      _result.default_value_part = parsedefault_value_part(tree.getChild(_i));
+      _result.set_default_value_part(parsedefault_value_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3316,17 +3380,17 @@ public class parser {
     return _result;
   }
 
-  public static variable_declaration make_variable_declaration(variable_name variable_name,
-      type_spec type_spec,
+  public static variable_declaration make_variable_declaration(ru.barsopen.plsqlconverter.ast.typed.variable_name variable_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
       org.antlr.runtime.tree.Tree CONSTANT_VK,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_NULL,
-      default_value_part default_value_part) {
+      ru.barsopen.plsqlconverter.ast.typed.default_value_part default_value_part) {
     variable_declaration _result = new variable_declaration();
-    _result.variable_name = variable_name;
-    _result.type_spec = type_spec;
-    _result.CONSTANT_VK = CONSTANT_VK;
-    _result.SQL92_RESERVED_NULL = SQL92_RESERVED_NULL;
-    _result.default_value_part = default_value_part;
+    _result.set_variable_name(variable_name);
+    _result.set_type_spec(type_spec);
+    _result.set_CONSTANT_VK(CONSTANT_VK);
+    _result.set_SQL92_RESERVED_NULL(SQL92_RESERVED_NULL);
+    _result.set_default_value_part(default_value_part);
     return _result;
   }
 
@@ -3348,20 +3412,20 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
-      _result.SQL92_RESERVED_NULL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsesubtype_range(tree.getChild(_i)))) {
-      _result.subtype_range = parsesubtype_range(tree.getChild(_i));
+      _result.set_subtype_range(parsesubtype_range(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3369,15 +3433,15 @@ public class parser {
     return _result;
   }
 
-  public static subtype_declaration make_subtype_declaration(type_name type_name,
-      type_spec type_spec,
+  public static subtype_declaration make_subtype_declaration(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_NULL,
-      subtype_range subtype_range) {
+      ru.barsopen.plsqlconverter.ast.typed.subtype_range subtype_range) {
     subtype_declaration _result = new subtype_declaration();
-    _result.type_name = type_name;
-    _result.type_spec = type_spec;
-    _result.SQL92_RESERVED_NULL = SQL92_RESERVED_NULL;
-    _result.subtype_range = subtype_range;
+    _result.set_type_name(type_name);
+    _result.set_type_spec(type_spec);
+    _result.set_SQL92_RESERVED_NULL(SQL92_RESERVED_NULL);
+    _result.set_subtype_range(subtype_range);
     return _result;
   }
 
@@ -3399,22 +3463,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.e1 = parseexpression(tree.getChild(_i));
+    _result.set_e1(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.e2 = parseexpression(tree.getChild(_i));
+    _result.set_e2(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static subtype_range make_subtype_range(expression e1,
-      expression e2) {
+  public static subtype_range make_subtype_range(ru.barsopen.plsqlconverter.ast.typed.expression e1,
+      ru.barsopen.plsqlconverter.ast.typed.expression e2) {
     subtype_range _result = new subtype_range();
-    _result.e1 = e1;
-    _result.e2 = e2;
+    _result.set_e1(e1);
+    _result.set_e2(e2);
     return _result;
   }
 
@@ -3436,36 +3500,36 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
-      _result.type_spec = parsetype_spec(tree.getChild(_i));
+      _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseselect_statement(tree.getChild(_i)))) {
-      _result.select_statement = parseselect_statement(tree.getChild(_i));
+      _result.set_select_statement(parseselect_statement(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseparameters(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.parameters = parseparameters(tree.getChild(_i));
+    _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static cursor_declaration make_cursor_declaration(cursor_name cursor_name,
-      type_spec type_spec,
-      select_statement select_statement,
-      parameters parameters) {
+  public static cursor_declaration make_cursor_declaration(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.select_statement select_statement,
+      ru.barsopen.plsqlconverter.ast.typed.parameters parameters) {
     cursor_declaration _result = new cursor_declaration();
-    _result.cursor_name = cursor_name;
-    _result.type_spec = type_spec;
-    _result.select_statement = select_statement;
-    _result.parameters = parameters;
+    _result.set_cursor_name(cursor_name);
+    _result.set_type_spec(type_spec);
+    _result.set_select_statement(select_statement);
+    _result.set_parameters(parameters);
     return _result;
   }
 
@@ -3487,16 +3551,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexception_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.exception_name = parseexception_name(tree.getChild(_i));
+    _result.set_exception_name(parseexception_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static exception_declaration make_exception_declaration(exception_name exception_name) {
+  public static exception_declaration make_exception_declaration(ru.barsopen.plsqlconverter.ast.typed.exception_name exception_name) {
     exception_declaration _result = new exception_declaration();
-    _result.exception_name = exception_name;
+    _result.set_exception_name(exception_name);
     return _result;
   }
 
@@ -3518,16 +3582,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsepragma_declaration_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pragma_declaration_impl = parsepragma_declaration_impl(tree.getChild(_i));
+    _result.set_pragma_declaration_impl(parsepragma_declaration_impl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static pragma_declaration make_pragma_declaration(pragma_declaration_impl pragma_declaration_impl) {
+  public static pragma_declaration make_pragma_declaration(ru.barsopen.plsqlconverter.ast.typed.pragma_declaration_impl pragma_declaration_impl) {
     pragma_declaration _result = new pragma_declaration();
-    _result.pragma_declaration_impl = pragma_declaration_impl;
+    _result.set_pragma_declaration_impl(pragma_declaration_impl);
     return _result;
   }
 
@@ -3618,22 +3682,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexception_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.exception_name = parseexception_name(tree.getChild(_i));
+    _result.set_exception_name(parseexception_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseconstant(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.constant = parseconstant(tree.getChild(_i));
+    _result.set_constant(parseconstant(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static pragma_declaration_exception_init make_pragma_declaration_exception_init(exception_name exception_name,
-      constant constant) {
+  public static pragma_declaration_exception_init make_pragma_declaration_exception_init(ru.barsopen.plsqlconverter.ast.typed.exception_name exception_name,
+      ru.barsopen.plsqlconverter.ast.typed.constant constant) {
     pragma_declaration_exception_init _result = new pragma_declaration_exception_init();
-    _result.exception_name = exception_name;
-    _result.constant = constant;
+    _result.set_exception_name(exception_name);
+    _result.set_constant(constant);
     return _result;
   }
 
@@ -3655,22 +3719,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static pragma_declaration_inline make_pragma_declaration_inline(id id,
-      expression expression) {
+  public static pragma_declaration_inline make_pragma_declaration_inline(ru.barsopen.plsqlconverter.ast.typed.id id,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     pragma_declaration_inline _result = new pragma_declaration_inline();
-    _result.id = id;
-    _result.expression = expression;
+    _result.set_id(id);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -3692,13 +3756,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DEFAULT)) {
-      _result.SQL92_RESERVED_DEFAULT = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_DEFAULT(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3707,10 +3771,11 @@ public class parser {
   }
 
   public static pragma_declaration_restrict_references make_pragma_declaration_restrict_references(org.antlr.runtime.tree.Tree SQL92_RESERVED_DEFAULT,
-      java.util.List<id> ids) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     pragma_declaration_restrict_references _result = new pragma_declaration_restrict_references();
-    _result.SQL92_RESERVED_DEFAULT = SQL92_RESERVED_DEFAULT;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_SQL92_RESERVED_DEFAULT(SQL92_RESERVED_DEFAULT);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -3761,11 +3826,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsefield_specs(tree.getChild(_i)))) {
-      _result.field_specs = parsefield_specs(tree.getChild(_i));
+      _result.set_field_specs(parsefield_specs(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3773,11 +3838,11 @@ public class parser {
     return _result;
   }
 
-  public static record_type_dec_record make_record_type_dec_record(type_name type_name,
-      field_specs field_specs) {
+  public static record_type_dec_record make_record_type_dec_record(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      ru.barsopen.plsqlconverter.ast.typed.field_specs field_specs) {
     record_type_dec_record _result = new record_type_dec_record();
-    _result.type_name = type_name;
-    _result.field_specs = field_specs;
+    _result.set_type_name(type_name);
+    _result.set_field_specs(field_specs);
     return _result;
   }
 
@@ -3799,7 +3864,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParsefield_spec(tree.getChild(_i)))) {
-      _result.field_specs.add(parsefield_spec(tree.getChild(_i)));
+      _result.add_field_specs(parsefield_spec(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3807,9 +3872,10 @@ public class parser {
     return _result;
   }
 
-  public static field_specs make_field_specs(java.util.List<field_spec> field_specs) {
+  public static field_specs make_field_specs(java.util.List<ru.barsopen.plsqlconverter.ast.typed.field_spec> field_specs) {
     field_specs _result = new field_specs();
-    if (field_specs != null) {      _result.field_specs = field_specs;
+    if (field_specs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.field_spec _value: field_specs) { _result.add_field_specs(_value); }
     }
     return _result;
   }
@@ -3832,15 +3898,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REF_VK))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.REF_VK = tree.getChild(_i);
+    _result.set_REF_VK(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
-      _result.type_spec = parsetype_spec(tree.getChild(_i));
+      _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3848,13 +3914,13 @@ public class parser {
     return _result;
   }
 
-  public static record_type_dec_refcursor make_record_type_dec_refcursor(type_name type_name,
+  public static record_type_dec_refcursor make_record_type_dec_refcursor(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
       org.antlr.runtime.tree.Tree REF_VK,
-      type_spec type_spec) {
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     record_type_dec_refcursor _result = new record_type_dec_refcursor();
-    _result.type_name = type_name;
-    _result.REF_VK = REF_VK;
-    _result.type_spec = type_spec;
+    _result.set_type_name(type_name);
+    _result.set_REF_VK(REF_VK);
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -3876,21 +3942,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.column_name = parsecolumn_name(tree.getChild(_i));
+    _result.set_column_name(parsecolumn_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
-      _result.type_spec = parsetype_spec(tree.getChild(_i));
+      _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
-      _result.SQL92_RESERVED_NULL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsedefault_value_part(tree.getChild(_i)))) {
-      _result.default_value_part = parsedefault_value_part(tree.getChild(_i));
+      _result.set_default_value_part(parsedefault_value_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -3898,15 +3964,15 @@ public class parser {
     return _result;
   }
 
-  public static field_spec make_field_spec(column_name column_name,
-      type_spec type_spec,
+  public static field_spec make_field_spec(ru.barsopen.plsqlconverter.ast.typed.column_name column_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_NULL,
-      default_value_part default_value_part) {
+      ru.barsopen.plsqlconverter.ast.typed.default_value_part default_value_part) {
     field_spec _result = new field_spec();
-    _result.column_name = column_name;
-    _result.type_spec = type_spec;
-    _result.SQL92_RESERVED_NULL = SQL92_RESERVED_NULL;
-    _result.default_value_part = default_value_part;
+    _result.set_column_name(column_name);
+    _result.set_type_spec(type_spec);
+    _result.set_SQL92_RESERVED_NULL(SQL92_RESERVED_NULL);
+    _result.set_default_value_part(default_value_part);
     return _result;
   }
 
@@ -3928,28 +3994,28 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParserecord_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.record_name = parserecord_name(tree.getChild(_i));
+    _result.set_record_name(parserecord_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsepercent_type_or_rowtype(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.percent_type_or_rowtype = parsepercent_type_or_rowtype(tree.getChild(_i));
+    _result.set_percent_type_or_rowtype(parsepercent_type_or_rowtype(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static record_var_dec make_record_var_dec(record_name record_name,
-      type_name type_name,
-      percent_type_or_rowtype percent_type_or_rowtype) {
+  public static record_var_dec make_record_var_dec(ru.barsopen.plsqlconverter.ast.typed.record_name record_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      ru.barsopen.plsqlconverter.ast.typed.percent_type_or_rowtype percent_type_or_rowtype) {
     record_var_dec _result = new record_var_dec();
-    _result.record_name = record_name;
-    _result.type_name = type_name;
-    _result.percent_type_or_rowtype = percent_type_or_rowtype;
+    _result.set_record_name(record_name);
+    _result.set_type_name(type_name);
+    _result.set_percent_type_or_rowtype(percent_type_or_rowtype);
     return _result;
   }
 
@@ -4051,29 +4117,29 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
-      _result.SQL92_RESERVED_NULL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsetable_type_dec_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_type_dec_impl = parsetable_type_dec_impl(tree.getChild(_i));
+    _result.set_table_type_dec_impl(parsetable_type_dec_impl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static table_type_dec make_table_type_dec(type_name type_name,
+  public static table_type_dec make_table_type_dec(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_NULL,
-      table_type_dec_impl table_type_dec_impl) {
+      ru.barsopen.plsqlconverter.ast.typed.table_type_dec_impl table_type_dec_impl) {
     table_type_dec _result = new table_type_dec();
-    _result.type_name = type_name;
-    _result.SQL92_RESERVED_NULL = SQL92_RESERVED_NULL;
-    _result.table_type_dec_impl = table_type_dec_impl;
+    _result.set_type_name(type_name);
+    _result.set_SQL92_RESERVED_NULL(SQL92_RESERVED_NULL);
+    _result.set_table_type_dec_impl(table_type_dec_impl);
     return _result;
   }
 
@@ -4109,11 +4175,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsetable_indexed_by_part(tree.getChild(_i)))) {
-      _result.table_indexed_by_part = parsetable_indexed_by_part(tree.getChild(_i));
+      _result.set_table_indexed_by_part(parsetable_indexed_by_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -4121,11 +4187,11 @@ public class parser {
     return _result;
   }
 
-  public static table_type_dec_table_of make_table_type_dec_table_of(type_spec type_spec,
-      table_indexed_by_part table_indexed_by_part) {
+  public static table_type_dec_table_of make_table_type_dec_table_of(ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.table_indexed_by_part table_indexed_by_part) {
     table_type_dec_table_of _result = new table_type_dec_table_of();
-    _result.type_spec = type_spec;
-    _result.table_indexed_by_part = table_indexed_by_part;
+    _result.set_type_spec(type_spec);
+    _result.set_table_indexed_by_part(table_indexed_by_part);
     return _result;
   }
 
@@ -4147,16 +4213,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static table_indexed_by_part make_table_indexed_by_part(type_spec type_spec) {
+  public static table_indexed_by_part make_table_indexed_by_part(ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     table_indexed_by_part _result = new table_indexed_by_part();
-    _result.type_spec = type_spec;
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -4178,22 +4244,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static varray_type_def make_varray_type_def(expression expression,
-      type_spec type_spec) {
+  public static varray_type_def make_varray_type_def(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     varray_type_def _result = new varray_type_def();
-    _result.expression = expression;
-    _result.type_spec = type_spec;
+    _result.set_expression(expression);
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -4215,22 +4281,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetable_var_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_var_name = parsetable_var_name(tree.getChild(_i));
+    _result.set_table_var_name(parsetable_var_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static table_var_dec make_table_var_dec(table_var_name table_var_name,
-      type_spec type_spec) {
+  public static table_var_dec make_table_var_dec(ru.barsopen.plsqlconverter.ast.typed.table_var_name table_var_name,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     table_var_dec _result = new table_var_dec();
-    _result.table_var_name = table_var_name;
-    _result.type_spec = type_spec;
+    _result.set_table_var_name(table_var_name);
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -4253,7 +4319,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsestat_or_label(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsestat_or_label(tree.getChild(_i)))) {
-      _result.stat_or_labels.add(parsestat_or_label(tree.getChild(_i)));
+      _result.add_stat_or_labels(parsestat_or_label(tree.getChild(_i)));
       ++_i;
     }
 
@@ -4261,9 +4327,10 @@ public class parser {
     return _result;
   }
 
-  public static seq_of_statements make_seq_of_statements(java.util.List<stat_or_label> stat_or_labels) {
+  public static seq_of_statements make_seq_of_statements(java.util.List<ru.barsopen.plsqlconverter.ast.typed.stat_or_label> stat_or_labels) {
     seq_of_statements _result = new seq_of_statements();
-    if (stat_or_labels != null) {      _result.stat_or_labels = stat_or_labels;
+    if (stat_or_labels != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.stat_or_label _value: stat_or_labels) { _result.add_stat_or_labels(_value); }
     }
     return _result;
   }
@@ -4300,22 +4367,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParselabel_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.label_name = parselabel_name(tree.getChild(_i));
+    _result.set_label_name(parselabel_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsestatement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.statement = parsestatement(tree.getChild(_i));
+    _result.set_statement(parsestatement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static labeled_statement make_labeled_statement(label_name label_name,
-      statement statement) {
+  public static labeled_statement make_labeled_statement(ru.barsopen.plsqlconverter.ast.typed.label_name label_name,
+      ru.barsopen.plsqlconverter.ast.typed.statement statement) {
     labeled_statement _result = new labeled_statement();
-    _result.label_name = label_name;
-    _result.statement = statement;
+    _result.set_label_name(label_name);
+    _result.set_statement(statement);
     return _result;
   }
 
@@ -4365,22 +4432,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseassignment_target(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.assignment_target = parseassignment_target(tree.getChild(_i));
+    _result.set_assignment_target(parseassignment_target(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static assignment_statement make_assignment_statement(assignment_target assignment_target,
-      expression expression) {
+  public static assignment_statement make_assignment_statement(ru.barsopen.plsqlconverter.ast.typed.assignment_target assignment_target,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     assignment_statement _result = new assignment_statement();
-    _result.assignment_target = assignment_target;
-    _result.expression = expression;
+    _result.set_assignment_target(assignment_target);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -4416,12 +4483,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParselabel_name(tree.getChild(_i)))) {
-      _result.label_name = parselabel_name(tree.getChild(_i));
+      _result.set_label_name(parselabel_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsegeneral_when(tree.getChild(_i)))) {
-      _result.general_when = parsegeneral_when(tree.getChild(_i));
+      _result.set_general_when(parsegeneral_when(tree.getChild(_i)));
       ++_i;
     }
 
@@ -4429,11 +4496,11 @@ public class parser {
     return _result;
   }
 
-  public static continue_statement make_continue_statement(label_name label_name,
-      general_when general_when) {
+  public static continue_statement make_continue_statement(ru.barsopen.plsqlconverter.ast.typed.label_name label_name,
+      ru.barsopen.plsqlconverter.ast.typed.general_when general_when) {
     continue_statement _result = new continue_statement();
-    _result.label_name = label_name;
-    _result.general_when = general_when;
+    _result.set_label_name(label_name);
+    _result.set_general_when(general_when);
     return _result;
   }
 
@@ -4455,16 +4522,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static general_when make_general_when(expression expression) {
+  public static general_when make_general_when(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     general_when _result = new general_when();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -4486,12 +4553,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParselabel_name(tree.getChild(_i)))) {
-      _result.label_name = parselabel_name(tree.getChild(_i));
+      _result.set_label_name(parselabel_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsegeneral_when(tree.getChild(_i)))) {
-      _result.general_when = parsegeneral_when(tree.getChild(_i));
+      _result.set_general_when(parsegeneral_when(tree.getChild(_i)));
       ++_i;
     }
 
@@ -4499,11 +4566,11 @@ public class parser {
     return _result;
   }
 
-  public static exit_statement make_exit_statement(label_name label_name,
-      general_when general_when) {
+  public static exit_statement make_exit_statement(ru.barsopen.plsqlconverter.ast.typed.label_name label_name,
+      ru.barsopen.plsqlconverter.ast.typed.general_when general_when) {
     exit_statement _result = new exit_statement();
-    _result.label_name = label_name;
-    _result.general_when = general_when;
+    _result.set_label_name(label_name);
+    _result.set_general_when(general_when);
     return _result;
   }
 
@@ -4525,16 +4592,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParselabel_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.label_name = parselabel_name(tree.getChild(_i));
+    _result.set_label_name(parselabel_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static goto_statement make_goto_statement(label_name label_name) {
+  public static goto_statement make_goto_statement(ru.barsopen.plsqlconverter.ast.typed.label_name label_name) {
     goto_statement _result = new goto_statement();
-    _result.label_name = label_name;
+    _result.set_label_name(label_name);
     return _result;
   }
 
@@ -4556,20 +4623,20 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParseelsif_part(tree.getChild(_i)))) {
-      _result.elsif_parts.add(parseelsif_part(tree.getChild(_i)));
+      _result.add_elsif_parts(parseelsif_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseelse_part(tree.getChild(_i)))) {
-      _result.else_part = parseelse_part(tree.getChild(_i));
+      _result.set_else_part(parseelse_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -4577,16 +4644,17 @@ public class parser {
     return _result;
   }
 
-  public static if_statement make_if_statement(expression expression,
-      seq_of_statements seq_of_statements,
-      java.util.List<elsif_part> elsif_parts,
-      else_part else_part) {
+  public static if_statement make_if_statement(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.elsif_part> elsif_parts,
+      ru.barsopen.plsqlconverter.ast.typed.else_part else_part) {
     if_statement _result = new if_statement();
-    _result.expression = expression;
-    _result.seq_of_statements = seq_of_statements;
-    if (elsif_parts != null) {      _result.elsif_parts = elsif_parts;
+    _result.set_expression(expression);
+    _result.set_seq_of_statements(seq_of_statements);
+    if (elsif_parts != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.elsif_part _value: elsif_parts) { _result.add_elsif_parts(_value); }
     }
-    _result.else_part = else_part;
+    _result.set_else_part(else_part);
     return _result;
   }
 
@@ -4608,22 +4676,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static elsif_part make_elsif_part(expression expression,
-      seq_of_statements seq_of_statements) {
+  public static elsif_part make_elsif_part(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     elsif_part _result = new elsif_part();
-    _result.expression = expression;
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_expression(expression);
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -4645,16 +4713,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static else_part make_else_part(seq_of_statements seq_of_statements) {
+  public static else_part make_else_part(ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     else_part _result = new else_part();
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -4691,22 +4759,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static while_loop make_while_loop(expression expression,
-      seq_of_statements seq_of_statements) {
+  public static while_loop make_while_loop(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     while_loop _result = new while_loop();
-    _result.expression = expression;
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_expression(expression);
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -4728,22 +4796,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_loop_param(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_loop_param = parsecursor_loop_param(tree.getChild(_i));
+    _result.set_cursor_loop_param(parsecursor_loop_param(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static for_loop make_for_loop(cursor_loop_param cursor_loop_param,
-      seq_of_statements seq_of_statements) {
+  public static for_loop make_for_loop(ru.barsopen.plsqlconverter.ast.typed.cursor_loop_param cursor_loop_param,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     for_loop _result = new for_loop();
-    _result.cursor_loop_param = cursor_loop_param;
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_cursor_loop_param(cursor_loop_param);
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -4765,16 +4833,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static simple_loop make_simple_loop(seq_of_statements seq_of_statements) {
+  public static simple_loop make_simple_loop(ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     simple_loop _result = new simple_loop();
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -4811,29 +4879,29 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseindex_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.index_name = parseindex_name(tree.getChild(_i));
+    _result.set_index_name(parseindex_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REVERSE_VK)) {
-      _result.REVERSE_VK = tree.getChild(_i);
+      _result.set_REVERSE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseindexed_for_bounds(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.indexed_for_bounds = parseindexed_for_bounds(tree.getChild(_i));
+    _result.set_indexed_for_bounds(parseindexed_for_bounds(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static indexed_for make_indexed_for(index_name index_name,
+  public static indexed_for make_indexed_for(ru.barsopen.plsqlconverter.ast.typed.index_name index_name,
       org.antlr.runtime.tree.Tree REVERSE_VK,
-      indexed_for_bounds indexed_for_bounds) {
+      ru.barsopen.plsqlconverter.ast.typed.indexed_for_bounds indexed_for_bounds) {
     indexed_for _result = new indexed_for();
-    _result.index_name = index_name;
-    _result.REVERSE_VK = REVERSE_VK;
-    _result.indexed_for_bounds = indexed_for_bounds;
+    _result.set_index_name(index_name);
+    _result.set_REVERSE_VK(REVERSE_VK);
+    _result.set_indexed_for_bounds(indexed_for_bounds);
     return _result;
   }
 
@@ -4855,22 +4923,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParserecord_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.record_name = parserecord_name(tree.getChild(_i));
+    _result.set_record_name(parserecord_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.general_element = parsegeneral_element(tree.getChild(_i));
+    _result.set_general_element(parsegeneral_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static cursor_based_for make_cursor_based_for(record_name record_name,
-      general_element general_element) {
+  public static cursor_based_for make_cursor_based_for(ru.barsopen.plsqlconverter.ast.typed.record_name record_name,
+      ru.barsopen.plsqlconverter.ast.typed.general_element general_element) {
     cursor_based_for _result = new cursor_based_for();
-    _result.record_name = record_name;
-    _result.general_element = general_element;
+    _result.set_record_name(record_name);
+    _result.set_general_element(general_element);
     return _result;
   }
 
@@ -4892,22 +4960,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParserecord_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.record_name = parserecord_name(tree.getChild(_i));
+    _result.set_record_name(parserecord_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseselect_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.select_statement = parseselect_statement(tree.getChild(_i));
+    _result.set_select_statement(parseselect_statement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static select_based_for make_select_based_for(record_name record_name,
-      select_statement select_statement) {
+  public static select_based_for make_select_based_for(ru.barsopen.plsqlconverter.ast.typed.record_name record_name,
+      ru.barsopen.plsqlconverter.ast.typed.select_statement select_statement) {
     select_based_for _result = new select_based_for();
-    _result.record_name = record_name;
-    _result.select_statement = select_statement;
+    _result.set_record_name(record_name);
+    _result.set_select_statement(select_statement);
     return _result;
   }
 
@@ -4929,22 +4997,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.b1 = parseexpression(tree.getChild(_i));
+    _result.set_b1(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.b2 = parseexpression(tree.getChild(_i));
+    _result.set_b2(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static indexed_for_bounds make_indexed_for_bounds(expression b1,
-      expression b2) {
+  public static indexed_for_bounds make_indexed_for_bounds(ru.barsopen.plsqlconverter.ast.typed.expression b1,
+      ru.barsopen.plsqlconverter.ast.typed.expression b2) {
     indexed_for_bounds _result = new indexed_for_bounds();
-    _result.b1 = b1;
-    _result.b2 = b2;
+    _result.set_b1(b1);
+    _result.set_b2(b2);
     return _result;
   }
 
@@ -4966,19 +5034,19 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseindex_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.index_name = parseindex_name(tree.getChild(_i));
+    _result.set_index_name(parseindex_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsebounds_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.bounds_clause = parsebounds_clause(tree.getChild(_i));
+    _result.set_bounds_clause(parsebounds_clause(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsesql_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.sql_statement = parsesql_statement(tree.getChild(_i));
+    _result.set_sql_statement(parsesql_statement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTIONS_VK)) {
-      _result.EXCEPTIONS_VK = tree.getChild(_i);
+      _result.set_EXCEPTIONS_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -4986,15 +5054,15 @@ public class parser {
     return _result;
   }
 
-  public static forall_statement make_forall_statement(index_name index_name,
-      bounds_clause bounds_clause,
-      sql_statement sql_statement,
+  public static forall_statement make_forall_statement(ru.barsopen.plsqlconverter.ast.typed.index_name index_name,
+      ru.barsopen.plsqlconverter.ast.typed.bounds_clause bounds_clause,
+      ru.barsopen.plsqlconverter.ast.typed.sql_statement sql_statement,
       org.antlr.runtime.tree.Tree EXCEPTIONS_VK) {
     forall_statement _result = new forall_statement();
-    _result.index_name = index_name;
-    _result.bounds_clause = bounds_clause;
-    _result.sql_statement = sql_statement;
-    _result.EXCEPTIONS_VK = EXCEPTIONS_VK;
+    _result.set_index_name(index_name);
+    _result.set_bounds_clause(bounds_clause);
+    _result.set_sql_statement(sql_statement);
+    _result.set_EXCEPTIONS_VK(EXCEPTIONS_VK);
     return _result;
   }
 
@@ -5094,7 +5162,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexception_name(tree.getChild(_i)))) {
-      _result.exception_name = parseexception_name(tree.getChild(_i));
+      _result.set_exception_name(parseexception_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5102,9 +5170,9 @@ public class parser {
     return _result;
   }
 
-  public static raise_statement make_raise_statement(exception_name exception_name) {
+  public static raise_statement make_raise_statement(ru.barsopen.plsqlconverter.ast.typed.exception_name exception_name) {
     raise_statement _result = new raise_statement();
-    _result.exception_name = exception_name;
+    _result.set_exception_name(exception_name);
     return _result;
   }
 
@@ -5126,7 +5194,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5134,9 +5202,9 @@ public class parser {
     return _result;
   }
 
-  public static return_statement make_return_statement(expression expression) {
+  public static return_statement make_return_statement(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     return_statement _result = new return_statement();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -5158,16 +5226,16 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParselabel_name(tree.getChild(_i)))) {
-      _result.label_name = parselabel_name(tree.getChild(_i));
+      _result.set_label_name(parselabel_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexception_clause(tree.getChild(_i)))) {
-      _result.exception_clause = parseexception_clause(tree.getChild(_i));
+      _result.set_exception_clause(parseexception_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5175,13 +5243,13 @@ public class parser {
     return _result;
   }
 
-  public static body make_body(label_name label_name,
-      seq_of_statements seq_of_statements,
-      exception_clause exception_clause) {
+  public static body make_body(ru.barsopen.plsqlconverter.ast.typed.label_name label_name,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements,
+      ru.barsopen.plsqlconverter.ast.typed.exception_clause exception_clause) {
     body _result = new body();
-    _result.label_name = label_name;
-    _result.seq_of_statements = seq_of_statements;
-    _result.exception_clause = exception_clause;
+    _result.set_label_name(label_name);
+    _result.set_seq_of_statements(seq_of_statements);
+    _result.set_exception_clause(exception_clause);
     return _result;
   }
 
@@ -5204,7 +5272,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseexception_handler(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseexception_handler(tree.getChild(_i)))) {
-      _result.exception_handlers.add(parseexception_handler(tree.getChild(_i)));
+      _result.add_exception_handlers(parseexception_handler(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5212,9 +5280,10 @@ public class parser {
     return _result;
   }
 
-  public static exception_clause make_exception_clause(java.util.List<exception_handler> exception_handlers) {
+  public static exception_clause make_exception_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.exception_handler> exception_handlers) {
     exception_clause _result = new exception_clause();
-    if (exception_handlers != null) {      _result.exception_handlers = exception_handlers;
+    if (exception_handlers != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.exception_handler _value: exception_handlers) { _result.add_exception_handlers(_value); }
     }
     return _result;
   }
@@ -5238,24 +5307,25 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseexception_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseexception_name(tree.getChild(_i)))) {
-      _result.exception_names.add(parseexception_name(tree.getChild(_i)));
+      _result.add_exception_names(parseexception_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseseq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.seq_of_statements = parseseq_of_statements(tree.getChild(_i));
+    _result.set_seq_of_statements(parseseq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static exception_handler make_exception_handler(java.util.List<exception_name> exception_names,
-      seq_of_statements seq_of_statements) {
+  public static exception_handler make_exception_handler(java.util.List<ru.barsopen.plsqlconverter.ast.typed.exception_name> exception_names,
+      ru.barsopen.plsqlconverter.ast.typed.seq_of_statements seq_of_statements) {
     exception_handler _result = new exception_handler();
-    if (exception_names != null) {      _result.exception_names = exception_names;
+    if (exception_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.exception_name _value: exception_names) { _result.add_exception_names(_value); }
     }
-    _result.seq_of_statements = seq_of_statements;
+    _result.set_seq_of_statements(seq_of_statements);
     return _result;
   }
 
@@ -5277,24 +5347,25 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParsedeclare_spec(tree.getChild(_i)))) {
-      _result.declare_specs.add(parsedeclare_spec(tree.getChild(_i)));
+      _result.add_declare_specs(parsedeclare_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsebody(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.body = parsebody(tree.getChild(_i));
+    _result.set_body(parsebody(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static block make_block(java.util.List<declare_spec> declare_specs,
-      body body) {
+  public static block make_block(java.util.List<ru.barsopen.plsqlconverter.ast.typed.declare_spec> declare_specs,
+      ru.barsopen.plsqlconverter.ast.typed.body body) {
     block _result = new block();
-    if (declare_specs != null) {      _result.declare_specs = declare_specs;
+    if (declare_specs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.declare_spec _value: declare_specs) { _result.add_declare_specs(_value); }
     }
-    _result.body = body;
+    _result.set_body(body);
     return _result;
   }
 
@@ -5332,21 +5403,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseinto_clause(tree.getChild(_i)))) {
-      _result.into_clause = parseinto_clause(tree.getChild(_i));
+      _result.set_into_clause(parseinto_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseusing_clause(tree.getChild(_i)))) {
-      _result.using_clause = parseusing_clause(tree.getChild(_i));
+      _result.set_using_clause(parseusing_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsedynamic_returning_clause(tree.getChild(_i)))) {
-      _result.dynamic_returning_clause = parsedynamic_returning_clause(tree.getChild(_i));
+      _result.set_dynamic_returning_clause(parsedynamic_returning_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5354,15 +5425,15 @@ public class parser {
     return _result;
   }
 
-  public static execute_immediate make_execute_immediate(expression expression,
-      into_clause into_clause,
-      using_clause using_clause,
-      dynamic_returning_clause dynamic_returning_clause) {
+  public static execute_immediate make_execute_immediate(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.into_clause into_clause,
+      ru.barsopen.plsqlconverter.ast.typed.using_clause using_clause,
+      ru.barsopen.plsqlconverter.ast.typed.dynamic_returning_clause dynamic_returning_clause) {
     execute_immediate _result = new execute_immediate();
-    _result.expression = expression;
-    _result.into_clause = into_clause;
-    _result.using_clause = using_clause;
-    _result.dynamic_returning_clause = dynamic_returning_clause;
+    _result.set_expression(expression);
+    _result.set_into_clause(into_clause);
+    _result.set_using_clause(using_clause);
+    _result.set_dynamic_returning_clause(dynamic_returning_clause);
     return _result;
   }
 
@@ -5384,16 +5455,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinto_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.into_clause = parseinto_clause(tree.getChild(_i));
+    _result.set_into_clause(parseinto_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static dynamic_returning_clause make_dynamic_returning_clause(into_clause into_clause) {
+  public static dynamic_returning_clause make_dynamic_returning_clause(ru.barsopen.plsqlconverter.ast.typed.into_clause into_clause) {
     dynamic_returning_clause _result = new dynamic_returning_clause();
-    _result.into_clause = into_clause;
+    _result.set_into_clause(into_clause);
     return _result;
   }
 
@@ -5433,21 +5504,21 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsesubquery_factoring_clause(tree.getChild(_i)))) {
-      _result.subquery_factoring_clause = parsesubquery_factoring_clause(tree.getChild(_i));
+      _result.set_subquery_factoring_clause(parsesubquery_factoring_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsesubquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery = parsesubquery(tree.getChild(_i));
+    _result.set_subquery(parsesubquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseorder_by_clause(tree.getChild(_i)))) {
-      _result.order_by_clause = parseorder_by_clause(tree.getChild(_i));
+      _result.set_order_by_clause(parseorder_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsefor_update_clause(tree.getChild(_i)))) {
-      _result.for_update_clause = parsefor_update_clause(tree.getChild(_i));
+      _result.set_for_update_clause(parsefor_update_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5455,15 +5526,15 @@ public class parser {
     return _result;
   }
 
-  public static select_statement make_select_statement(subquery_factoring_clause subquery_factoring_clause,
-      subquery subquery,
-      order_by_clause order_by_clause,
-      for_update_clause for_update_clause) {
+  public static select_statement make_select_statement(ru.barsopen.plsqlconverter.ast.typed.subquery_factoring_clause subquery_factoring_clause,
+      ru.barsopen.plsqlconverter.ast.typed.subquery subquery,
+      ru.barsopen.plsqlconverter.ast.typed.order_by_clause order_by_clause,
+      ru.barsopen.plsqlconverter.ast.typed.for_update_clause for_update_clause) {
     select_statement _result = new select_statement();
-    _result.subquery_factoring_clause = subquery_factoring_clause;
-    _result.subquery = subquery;
-    _result.order_by_clause = order_by_clause;
-    _result.for_update_clause = for_update_clause;
+    _result.set_subquery_factoring_clause(subquery_factoring_clause);
+    _result.set_subquery(subquery);
+    _result.set_order_by_clause(order_by_clause);
+    _result.set_for_update_clause(for_update_clause);
     return _result;
   }
 
@@ -5485,13 +5556,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECURSIVE_VK)) {
-      _result.RECURSIVE_VK = tree.getChild(_i);
+      _result.set_RECURSIVE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsefactoring_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsefactoring_element(tree.getChild(_i)))) {
-      _result.factoring_elements.add(parsefactoring_element(tree.getChild(_i)));
+      _result.add_factoring_elements(parsefactoring_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5500,10 +5571,11 @@ public class parser {
   }
 
   public static subquery_factoring_clause make_subquery_factoring_clause(org.antlr.runtime.tree.Tree RECURSIVE_VK,
-      java.util.List<factoring_element> factoring_elements) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.factoring_element> factoring_elements) {
     subquery_factoring_clause _result = new subquery_factoring_clause();
-    _result.RECURSIVE_VK = RECURSIVE_VK;
-    if (factoring_elements != null) {      _result.factoring_elements = factoring_elements;
+    _result.set_RECURSIVE_VK(RECURSIVE_VK);
+    if (factoring_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.factoring_element _value: factoring_elements) { _result.add_factoring_elements(_value); }
     }
     return _result;
   }
@@ -5526,20 +5598,20 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsequery_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.query_name = parsequery_name(tree.getChild(_i));
+    _result.set_query_name(parsequery_name(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsesubquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery = parsesubquery(tree.getChild(_i));
+    _result.set_subquery(parsesubquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseorder_by_clause(tree.getChild(_i)))) {
-      _result.order_by_clause = parseorder_by_clause(tree.getChild(_i));
+      _result.set_order_by_clause(parseorder_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5547,16 +5619,17 @@ public class parser {
     return _result;
   }
 
-  public static factoring_element make_factoring_element(query_name query_name,
-      java.util.List<column_name> column_names,
-      subquery subquery,
-      order_by_clause order_by_clause) {
+  public static factoring_element make_factoring_element(ru.barsopen.plsqlconverter.ast.typed.query_name query_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names,
+      ru.barsopen.plsqlconverter.ast.typed.subquery subquery,
+      ru.barsopen.plsqlconverter.ast.typed.order_by_clause order_by_clause) {
     factoring_element _result = new factoring_element();
-    _result.query_name = query_name;
-    if (column_names != null) {      _result.column_names = column_names;
+    _result.set_query_name(query_name);
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
-    _result.subquery = subquery;
-    _result.order_by_clause = order_by_clause;
+    _result.set_subquery(subquery);
+    _result.set_order_by_clause(order_by_clause);
     return _result;
   }
 
@@ -5578,11 +5651,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsesubquery_basic_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery_basic_elements = parsesubquery_basic_elements(tree.getChild(_i));
+    _result.set_subquery_basic_elements(parsesubquery_basic_elements(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsesubquery_operation_part(tree.getChild(_i)))) {
-      _result.subquery_operation_parts.add(parsesubquery_operation_part(tree.getChild(_i)));
+      _result.add_subquery_operation_parts(parsesubquery_operation_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5590,11 +5663,12 @@ public class parser {
     return _result;
   }
 
-  public static subquery make_subquery(subquery_basic_elements subquery_basic_elements,
-      java.util.List<subquery_operation_part> subquery_operation_parts) {
+  public static subquery make_subquery(ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements subquery_basic_elements,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.subquery_operation_part> subquery_operation_parts) {
     subquery _result = new subquery();
-    _result.subquery_basic_elements = subquery_basic_elements;
-    if (subquery_operation_parts != null) {      _result.subquery_operation_parts = subquery_operation_parts;
+    _result.set_subquery_basic_elements(subquery_basic_elements);
+    if (subquery_operation_parts != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.subquery_operation_part _value: subquery_operation_parts) { _result.add_subquery_operation_parts(_value); }
     }
     return _result;
   }
@@ -5632,12 +5706,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsesubquery_basic_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery_basic_elements = parsesubquery_basic_elements(tree.getChild(_i));
+    _result.set_subquery_basic_elements(parsesubquery_basic_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -5645,10 +5719,10 @@ public class parser {
   }
 
   public static subquery_operation_union make_subquery_operation_union(org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
-      subquery_basic_elements subquery_basic_elements) {
+      ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements subquery_basic_elements) {
     subquery_operation_union _result = new subquery_operation_union();
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.subquery_basic_elements = subquery_basic_elements;
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_subquery_basic_elements(subquery_basic_elements);
     return _result;
   }
 
@@ -5670,12 +5744,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsesubquery_basic_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery_basic_elements = parsesubquery_basic_elements(tree.getChild(_i));
+    _result.set_subquery_basic_elements(parsesubquery_basic_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -5683,10 +5757,10 @@ public class parser {
   }
 
   public static subquery_operation_intersect make_subquery_operation_intersect(org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
-      subquery_basic_elements subquery_basic_elements) {
+      ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements subquery_basic_elements) {
     subquery_operation_intersect _result = new subquery_operation_intersect();
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.subquery_basic_elements = subquery_basic_elements;
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_subquery_basic_elements(subquery_basic_elements);
     return _result;
   }
 
@@ -5708,12 +5782,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsesubquery_basic_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery_basic_elements = parsesubquery_basic_elements(tree.getChild(_i));
+    _result.set_subquery_basic_elements(parsesubquery_basic_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -5721,10 +5795,10 @@ public class parser {
   }
 
   public static subquery_operation_minus make_subquery_operation_minus(org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
-      subquery_basic_elements subquery_basic_elements) {
+      ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements subquery_basic_elements) {
     subquery_operation_minus _result = new subquery_operation_minus();
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.subquery_basic_elements = subquery_basic_elements;
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_subquery_basic_elements(subquery_basic_elements);
     return _result;
   }
 
@@ -5760,50 +5834,50 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsefrom_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.from_clause = parsefrom_clause(tree.getChild(_i));
+    _result.set_from_clause(parsefrom_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DISTINCT)) {
-      _result.SQL92_RESERVED_DISTINCT = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_DISTINCT(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UNIQUE)) {
-      _result.SQL92_RESERVED_UNIQUE = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_UNIQUE(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsequery_block_projection(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.query_block_projection = parsequery_block_projection(tree.getChild(_i));
+    _result.set_query_block_projection(parsequery_block_projection(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseinto_clause(tree.getChild(_i)))) {
-      _result.into_clause = parseinto_clause(tree.getChild(_i));
+      _result.set_into_clause(parseinto_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i)))) {
-      _result.where_clause = parsewhere_clause(tree.getChild(_i));
+      _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsehierarchical_query_clause(tree.getChild(_i)))) {
-      _result.hierarchical_query_clause = parsehierarchical_query_clause(tree.getChild(_i));
+      _result.set_hierarchical_query_clause(parsehierarchical_query_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsegroup_by_clause(tree.getChild(_i)))) {
-      _result.group_by_clause = parsegroup_by_clause(tree.getChild(_i));
+      _result.set_group_by_clause(parsegroup_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsemodel_clause(tree.getChild(_i)))) {
-      _result.model_clause = parsemodel_clause(tree.getChild(_i));
+      _result.set_model_clause(parsemodel_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5811,27 +5885,27 @@ public class parser {
     return _result;
   }
 
-  public static query_block make_query_block(from_clause from_clause,
+  public static query_block make_query_block(ru.barsopen.plsqlconverter.ast.typed.from_clause from_clause,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_DISTINCT,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_UNIQUE,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
-      query_block_projection query_block_projection,
-      into_clause into_clause,
-      where_clause where_clause,
-      hierarchical_query_clause hierarchical_query_clause,
-      group_by_clause group_by_clause,
-      model_clause model_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.query_block_projection query_block_projection,
+      ru.barsopen.plsqlconverter.ast.typed.into_clause into_clause,
+      ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause,
+      ru.barsopen.plsqlconverter.ast.typed.hierarchical_query_clause hierarchical_query_clause,
+      ru.barsopen.plsqlconverter.ast.typed.group_by_clause group_by_clause,
+      ru.barsopen.plsqlconverter.ast.typed.model_clause model_clause) {
     query_block _result = new query_block();
-    _result.from_clause = from_clause;
-    _result.SQL92_RESERVED_DISTINCT = SQL92_RESERVED_DISTINCT;
-    _result.SQL92_RESERVED_UNIQUE = SQL92_RESERVED_UNIQUE;
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.query_block_projection = query_block_projection;
-    _result.into_clause = into_clause;
-    _result.where_clause = where_clause;
-    _result.hierarchical_query_clause = hierarchical_query_clause;
-    _result.group_by_clause = group_by_clause;
-    _result.model_clause = model_clause;
+    _result.set_from_clause(from_clause);
+    _result.set_SQL92_RESERVED_DISTINCT(SQL92_RESERVED_DISTINCT);
+    _result.set_SQL92_RESERVED_UNIQUE(SQL92_RESERVED_UNIQUE);
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_query_block_projection(query_block_projection);
+    _result.set_into_clause(into_clause);
+    _result.set_where_clause(where_clause);
+    _result.set_hierarchical_query_clause(hierarchical_query_clause);
+    _result.set_group_by_clause(group_by_clause);
+    _result.set_model_clause(model_clause);
     return _result;
   }
 
@@ -5894,7 +5968,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseselected_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseselected_element(tree.getChild(_i)))) {
-      _result.selected_elements.add(parseselected_element(tree.getChild(_i)));
+      _result.add_selected_elements(parseselected_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5902,9 +5976,10 @@ public class parser {
     return _result;
   }
 
-  public static projection_list make_projection_list(java.util.List<selected_element> selected_elements) {
+  public static projection_list make_projection_list(java.util.List<ru.barsopen.plsqlconverter.ast.typed.selected_element> selected_elements) {
     projection_list _result = new projection_list();
-    if (selected_elements != null) {      _result.selected_elements = selected_elements;
+    if (selected_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.selected_element _value: selected_elements) { _result.add_selected_elements(_value); }
     }
     return _result;
   }
@@ -5927,11 +6002,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5939,11 +6014,11 @@ public class parser {
     return _result;
   }
 
-  public static selected_element make_selected_element(expression expression,
-      alias alias) {
+  public static selected_element make_selected_element(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.alias alias) {
     selected_element _result = new selected_element();
-    _result.expression = expression;
-    _result.alias = alias;
+    _result.set_expression(expression);
+    _result.set_alias(alias);
     return _result;
   }
 
@@ -5966,7 +6041,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsetable_ref(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsetable_ref(tree.getChild(_i)))) {
-      _result.table_refs.add(parsetable_ref(tree.getChild(_i)));
+      _result.add_table_refs(parsetable_ref(tree.getChild(_i)));
       ++_i;
     }
 
@@ -5974,9 +6049,10 @@ public class parser {
     return _result;
   }
 
-  public static from_clause make_from_clause(java.util.List<table_ref> table_refs) {
+  public static from_clause make_from_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.table_ref> table_refs) {
     from_clause _result = new from_clause();
-    if (table_refs != null) {      _result.table_refs = table_refs;
+    if (table_refs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.table_ref _value: table_refs) { _result.add_table_refs(_value); }
     }
     return _result;
   }
@@ -5999,11 +6075,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetable_ref_aux(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_ref_aux = parsetable_ref_aux(tree.getChild(_i));
+    _result.set_table_ref_aux(parsetable_ref_aux(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsejoin_clause(tree.getChild(_i)))) {
-      _result.join_clauses.add(parsejoin_clause(tree.getChild(_i)));
+      _result.add_join_clauses(parsejoin_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6011,11 +6087,12 @@ public class parser {
     return _result;
   }
 
-  public static table_ref make_table_ref(table_ref_aux table_ref_aux,
-      java.util.List<join_clause> join_clauses) {
+  public static table_ref make_table_ref(ru.barsopen.plsqlconverter.ast.typed.table_ref_aux table_ref_aux,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.join_clause> join_clauses) {
     table_ref _result = new table_ref();
-    _result.table_ref_aux = table_ref_aux;
-    if (join_clauses != null) {      _result.join_clauses = join_clauses;
+    _result.set_table_ref_aux(table_ref_aux);
+    if (join_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.join_clause _value: join_clauses) { _result.add_join_clauses(_value); }
     }
     return _result;
   }
@@ -6038,31 +6115,31 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsedml_table_expression_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.dml_table_expression_clause = parsedml_table_expression_clause(tree.getChild(_i));
+    _result.set_dml_table_expression_clause(parsedml_table_expression_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ONLY_VK)) {
-      _result.ONLY_VK = tree.getChild(_i);
+      _result.set_ONLY_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsepivot_clause(tree.getChild(_i)))) {
-      _result.pivot_clause = parsepivot_clause(tree.getChild(_i));
+      _result.set_pivot_clause(parsepivot_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseunpivot_clause(tree.getChild(_i)))) {
-      _result.unpivot_clause = parseunpivot_clause(tree.getChild(_i));
+      _result.set_unpivot_clause(parseunpivot_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParseflashback_query_clause(tree.getChild(_i)))) {
-      _result.flashback_query_clauses.add(parseflashback_query_clause(tree.getChild(_i)));
+      _result.add_flashback_query_clauses(parseflashback_query_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6070,19 +6147,20 @@ public class parser {
     return _result;
   }
 
-  public static table_ref_aux make_table_ref_aux(alias alias,
-      dml_table_expression_clause dml_table_expression_clause,
+  public static table_ref_aux make_table_ref_aux(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.dml_table_expression_clause dml_table_expression_clause,
       org.antlr.runtime.tree.Tree ONLY_VK,
-      pivot_clause pivot_clause,
-      unpivot_clause unpivot_clause,
-      java.util.List<flashback_query_clause> flashback_query_clauses) {
+      ru.barsopen.plsqlconverter.ast.typed.pivot_clause pivot_clause,
+      ru.barsopen.plsqlconverter.ast.typed.unpivot_clause unpivot_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.flashback_query_clause> flashback_query_clauses) {
     table_ref_aux _result = new table_ref_aux();
-    _result.alias = alias;
-    _result.dml_table_expression_clause = dml_table_expression_clause;
-    _result.ONLY_VK = ONLY_VK;
-    _result.pivot_clause = pivot_clause;
-    _result.unpivot_clause = unpivot_clause;
-    if (flashback_query_clauses != null) {      _result.flashback_query_clauses = flashback_query_clauses;
+    _result.set_alias(alias);
+    _result.set_dml_table_expression_clause(dml_table_expression_clause);
+    _result.set_ONLY_VK(ONLY_VK);
+    _result.set_pivot_clause(pivot_clause);
+    _result.set_unpivot_clause(unpivot_clause);
+    if (flashback_query_clauses != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.flashback_query_clause _value: flashback_query_clauses) { _result.add_flashback_query_clauses(_value); }
     }
     return _result;
   }
@@ -6105,56 +6183,56 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsequery_partition_clause(tree.getChild(_i)))) {
-      _result.qpc1 = parsequery_partition_clause(tree.getChild(_i));
+      _result.set_qpc1(parsequery_partition_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CROSS_VK)) {
-      _result.CROSS_VK = tree.getChild(_i);
+      _result.set_CROSS_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NATURAL_VK)) {
-      _result.NATURAL_VK = tree.getChild(_i);
+      _result.set_NATURAL_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.INNER_VK)) {
-      _result.INNER_VK = tree.getChild(_i);
+      _result.set_INNER_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FULL_VK)) {
-      _result.FULL_VK = tree.getChild(_i);
+      _result.set_FULL_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LEFT_VK)) {
-      _result.LEFT_VK = tree.getChild(_i);
+      _result.set_LEFT_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RIGHT_VK)) {
-      _result.RIGHT_VK = tree.getChild(_i);
+      _result.set_RIGHT_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsetable_ref_aux(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_ref_aux = parsetable_ref_aux(tree.getChild(_i));
+    _result.set_table_ref_aux(parsetable_ref_aux(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsequery_partition_clause(tree.getChild(_i)))) {
-      _result.qpc2 = parsequery_partition_clause(tree.getChild(_i));
+      _result.set_qpc2(parsequery_partition_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsejoin_on_part(tree.getChild(_i)))) {
-      _result.join_on_part = parsejoin_on_part(tree.getChild(_i));
+      _result.set_join_on_part(parsejoin_on_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsejoin_using_part(tree.getChild(_i)))) {
-      _result.join_using_part = parsejoin_using_part(tree.getChild(_i));
+      _result.set_join_using_part(parsejoin_using_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6162,29 +6240,29 @@ public class parser {
     return _result;
   }
 
-  public static join_clause make_join_clause(query_partition_clause qpc1,
+  public static join_clause make_join_clause(ru.barsopen.plsqlconverter.ast.typed.query_partition_clause qpc1,
       org.antlr.runtime.tree.Tree CROSS_VK,
       org.antlr.runtime.tree.Tree NATURAL_VK,
       org.antlr.runtime.tree.Tree INNER_VK,
       org.antlr.runtime.tree.Tree FULL_VK,
       org.antlr.runtime.tree.Tree LEFT_VK,
       org.antlr.runtime.tree.Tree RIGHT_VK,
-      table_ref_aux table_ref_aux,
-      query_partition_clause qpc2,
-      join_on_part join_on_part,
-      join_using_part join_using_part) {
+      ru.barsopen.plsqlconverter.ast.typed.table_ref_aux table_ref_aux,
+      ru.barsopen.plsqlconverter.ast.typed.query_partition_clause qpc2,
+      ru.barsopen.plsqlconverter.ast.typed.join_on_part join_on_part,
+      ru.barsopen.plsqlconverter.ast.typed.join_using_part join_using_part) {
     join_clause _result = new join_clause();
-    _result.qpc1 = qpc1;
-    _result.CROSS_VK = CROSS_VK;
-    _result.NATURAL_VK = NATURAL_VK;
-    _result.INNER_VK = INNER_VK;
-    _result.FULL_VK = FULL_VK;
-    _result.LEFT_VK = LEFT_VK;
-    _result.RIGHT_VK = RIGHT_VK;
-    _result.table_ref_aux = table_ref_aux;
-    _result.qpc2 = qpc2;
-    _result.join_on_part = join_on_part;
-    _result.join_using_part = join_using_part;
+    _result.set_qpc1(qpc1);
+    _result.set_CROSS_VK(CROSS_VK);
+    _result.set_NATURAL_VK(NATURAL_VK);
+    _result.set_INNER_VK(INNER_VK);
+    _result.set_FULL_VK(FULL_VK);
+    _result.set_LEFT_VK(LEFT_VK);
+    _result.set_RIGHT_VK(RIGHT_VK);
+    _result.set_table_ref_aux(table_ref_aux);
+    _result.set_qpc2(qpc2);
+    _result.set_join_on_part(join_on_part);
+    _result.set_join_using_part(join_using_part);
     return _result;
   }
 
@@ -6206,16 +6284,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static join_on_part make_join_on_part(expression expression) {
+  public static join_on_part make_join_on_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     join_on_part _result = new join_on_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6238,7 +6316,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6246,9 +6324,10 @@ public class parser {
     return _result;
   }
 
-  public static join_using_part make_join_using_part(java.util.List<column_name> column_names) {
+  public static join_using_part make_join_using_part(java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names) {
     join_using_part _result = new join_using_part();
-    if (column_names != null) {      _result.column_names = column_names;
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
     return _result;
   }
@@ -6271,16 +6350,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsequery_partition_clause_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.query_partition_clause_impl = parsequery_partition_clause_impl(tree.getChild(_i));
+    _result.set_query_partition_clause_impl(parsequery_partition_clause_impl(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static query_partition_clause make_query_partition_clause(query_partition_clause_impl query_partition_clause_impl) {
+  public static query_partition_clause make_query_partition_clause(ru.barsopen.plsqlconverter.ast.typed.query_partition_clause_impl query_partition_clause_impl) {
     query_partition_clause _result = new query_partition_clause();
-    _result.query_partition_clause_impl = query_partition_clause_impl;
+    _result.set_query_partition_clause_impl(query_partition_clause_impl);
     return _result;
   }
 
@@ -6330,17 +6409,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCN_VK)) {
-      _result.SCN_VK = tree.getChild(_i);
+      _result.set_SCN_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMESTAMP_VK)) {
-      _result.TIMESTAMP_VK = tree.getChild(_i);
+      _result.set_TIMESTAMP_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -6349,11 +6428,11 @@ public class parser {
 
   public static flashback_query_clause_versions make_flashback_query_clause_versions(org.antlr.runtime.tree.Tree SCN_VK,
       org.antlr.runtime.tree.Tree TIMESTAMP_VK,
-      expression expression) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     flashback_query_clause_versions _result = new flashback_query_clause_versions();
-    _result.SCN_VK = SCN_VK;
-    _result.TIMESTAMP_VK = TIMESTAMP_VK;
-    _result.expression = expression;
+    _result.set_SCN_VK(SCN_VK);
+    _result.set_TIMESTAMP_VK(TIMESTAMP_VK);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6375,17 +6454,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCN_VK)) {
-      _result.SCN_VK = tree.getChild(_i);
+      _result.set_SCN_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMESTAMP_VK)) {
-      _result.TIMESTAMP_VK = tree.getChild(_i);
+      _result.set_TIMESTAMP_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -6394,11 +6473,11 @@ public class parser {
 
   public static flashback_query_clause_as make_flashback_query_clause_as(org.antlr.runtime.tree.Tree SCN_VK,
       org.antlr.runtime.tree.Tree TIMESTAMP_VK,
-      expression expression) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     flashback_query_clause_as _result = new flashback_query_clause_as();
-    _result.SCN_VK = SCN_VK;
-    _result.TIMESTAMP_VK = TIMESTAMP_VK;
-    _result.expression = expression;
+    _result.set_SCN_VK(SCN_VK);
+    _result.set_TIMESTAMP_VK(TIMESTAMP_VK);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6420,22 +6499,22 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_VK)) {
-      _result.XML_VK = tree.getChild(_i);
+      _result.set_XML_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsepivot_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsepivot_element(tree.getChild(_i)))) {
-      _result.pivot_elements.add(parsepivot_element(tree.getChild(_i)));
+      _result.add_pivot_elements(parsepivot_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsepivot_for_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pivot_for_clause = parsepivot_for_clause(tree.getChild(_i));
+    _result.set_pivot_for_clause(parsepivot_for_clause(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsepivot_in_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pivot_in_clause = parsepivot_in_clause(tree.getChild(_i));
+    _result.set_pivot_in_clause(parsepivot_in_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -6443,15 +6522,16 @@ public class parser {
   }
 
   public static pivot_clause make_pivot_clause(org.antlr.runtime.tree.Tree XML_VK,
-      java.util.List<pivot_element> pivot_elements,
-      pivot_for_clause pivot_for_clause,
-      pivot_in_clause pivot_in_clause) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.pivot_element> pivot_elements,
+      ru.barsopen.plsqlconverter.ast.typed.pivot_for_clause pivot_for_clause,
+      ru.barsopen.plsqlconverter.ast.typed.pivot_in_clause pivot_in_clause) {
     pivot_clause _result = new pivot_clause();
-    _result.XML_VK = XML_VK;
-    if (pivot_elements != null) {      _result.pivot_elements = pivot_elements;
+    _result.set_XML_VK(XML_VK);
+    if (pivot_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.pivot_element _value: pivot_elements) { _result.add_pivot_elements(_value); }
     }
-    _result.pivot_for_clause = pivot_for_clause;
-    _result.pivot_in_clause = pivot_in_clause;
+    _result.set_pivot_for_clause(pivot_for_clause);
+    _result.set_pivot_in_clause(pivot_in_clause);
     return _result;
   }
 
@@ -6473,23 +6553,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static pivot_element make_pivot_element(alias alias,
-      expression expression) {
+  public static pivot_element make_pivot_element(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     pivot_element _result = new pivot_element();
-    _result.alias = alias;
-    _result.expression = expression;
+    _result.set_alias(alias);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6512,7 +6592,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6520,9 +6600,10 @@ public class parser {
     return _result;
   }
 
-  public static pivot_for_clause make_pivot_for_clause(java.util.List<column_name> column_names) {
+  public static pivot_for_clause make_pivot_for_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names) {
     pivot_for_clause _result = new pivot_for_clause();
-    if (column_names != null) {      _result.column_names = column_names;
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
     return _result;
   }
@@ -6675,23 +6756,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsestart_part(tree.getChild(_i)))) {
-      _result.start_part = parsestart_part(tree.getChild(_i));
+      _result.set_start_part(parsestart_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsehierarchical_query_clause_connect(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.hierarchical_query_clause_connect = parsehierarchical_query_clause_connect(tree.getChild(_i));
+    _result.set_hierarchical_query_clause_connect(parsehierarchical_query_clause_connect(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static hierarchical_query_clause make_hierarchical_query_clause(start_part start_part,
-      hierarchical_query_clause_connect hierarchical_query_clause_connect) {
+  public static hierarchical_query_clause make_hierarchical_query_clause(ru.barsopen.plsqlconverter.ast.typed.start_part start_part,
+      ru.barsopen.plsqlconverter.ast.typed.hierarchical_query_clause_connect hierarchical_query_clause_connect) {
     hierarchical_query_clause _result = new hierarchical_query_clause();
-    _result.start_part = start_part;
-    _result.hierarchical_query_clause_connect = hierarchical_query_clause_connect;
+    _result.set_start_part(start_part);
+    _result.set_hierarchical_query_clause_connect(hierarchical_query_clause_connect);
     return _result;
   }
 
@@ -6713,12 +6794,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOCYCLE_VK)) {
-      _result.NOCYCLE_VK = tree.getChild(_i);
+      _result.set_NOCYCLE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -6726,10 +6807,10 @@ public class parser {
   }
 
   public static hierarchical_query_clause_connect make_hierarchical_query_clause_connect(org.antlr.runtime.tree.Tree NOCYCLE_VK,
-      expression expression) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     hierarchical_query_clause_connect _result = new hierarchical_query_clause_connect();
-    _result.NOCYCLE_VK = NOCYCLE_VK;
-    _result.expression = expression;
+    _result.set_NOCYCLE_VK(NOCYCLE_VK);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6751,16 +6832,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static start_part make_start_part(expression expression) {
+  public static start_part make_start_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     start_part _result = new start_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -6783,12 +6864,12 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegroup_by_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegroup_by_element(tree.getChild(_i)))) {
-      _result.group_by_elements.add(parsegroup_by_element(tree.getChild(_i)));
+      _result.add_group_by_elements(parsegroup_by_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsehaving_clause(tree.getChild(_i)))) {
-      _result.having_clause = parsehaving_clause(tree.getChild(_i));
+      _result.set_having_clause(parsehaving_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6796,12 +6877,13 @@ public class parser {
     return _result;
   }
 
-  public static group_by_clause make_group_by_clause(java.util.List<group_by_element> group_by_elements,
-      having_clause having_clause) {
+  public static group_by_clause make_group_by_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.group_by_element> group_by_elements,
+      ru.barsopen.plsqlconverter.ast.typed.having_clause having_clause) {
     group_by_clause _result = new group_by_clause();
-    if (group_by_elements != null) {      _result.group_by_elements = group_by_elements;
+    if (group_by_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.group_by_element _value: group_by_elements) { _result.add_group_by_elements(_value); }
     }
-    _result.having_clause = having_clause;
+    _result.set_having_clause(having_clause);
     return _result;
   }
 
@@ -6823,16 +6905,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsegroup_by_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.group_by_elements = parsegroup_by_elements(tree.getChild(_i));
+    _result.set_group_by_elements(parsegroup_by_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static group_by_element make_group_by_element(group_by_elements group_by_elements) {
+  public static group_by_element make_group_by_element(ru.barsopen.plsqlconverter.ast.typed.group_by_elements group_by_elements) {
     group_by_element _result = new group_by_element();
-    _result.group_by_elements = group_by_elements;
+    _result.set_group_by_elements(group_by_elements);
     return _result;
   }
 
@@ -6869,7 +6951,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegroupin_set(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegroupin_set(tree.getChild(_i)))) {
-      _result.groupin_sets.add(parsegroupin_set(tree.getChild(_i)));
+      _result.add_groupin_sets(parsegroupin_set(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6877,9 +6959,10 @@ public class parser {
     return _result;
   }
 
-  public static group_by_elements_grouping make_group_by_elements_grouping(java.util.List<groupin_set> groupin_sets) {
+  public static group_by_elements_grouping make_group_by_elements_grouping(java.util.List<ru.barsopen.plsqlconverter.ast.typed.groupin_set> groupin_sets) {
     group_by_elements_grouping _result = new group_by_elements_grouping();
-    if (groupin_sets != null) {      _result.groupin_sets = groupin_sets;
+    if (groupin_sets != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.groupin_set _value: groupin_sets) { _result.add_groupin_sets(_value); }
     }
     return _result;
   }
@@ -6902,16 +6985,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsegrouping_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.grouping_element = parsegrouping_element(tree.getChild(_i));
+    _result.set_grouping_element(parsegrouping_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static groupin_set make_groupin_set(grouping_element grouping_element) {
+  public static groupin_set make_groupin_set(ru.barsopen.plsqlconverter.ast.typed.grouping_element grouping_element) {
     groupin_set _result = new groupin_set();
-    _result.grouping_element = grouping_element;
+    _result.set_grouping_element(grouping_element);
     return _result;
   }
 
@@ -6950,7 +7033,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegrouping_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegrouping_element(tree.getChild(_i)))) {
-      _result.grouping_elements.add(parsegrouping_element(tree.getChild(_i)));
+      _result.add_grouping_elements(parsegrouping_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6958,9 +7041,10 @@ public class parser {
     return _result;
   }
 
-  public static grouping_element_rollup make_grouping_element_rollup(java.util.List<grouping_element> grouping_elements) {
+  public static grouping_element_rollup make_grouping_element_rollup(java.util.List<ru.barsopen.plsqlconverter.ast.typed.grouping_element> grouping_elements) {
     grouping_element_rollup _result = new grouping_element_rollup();
-    if (grouping_elements != null) {      _result.grouping_elements = grouping_elements;
+    if (grouping_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.grouping_element _value: grouping_elements) { _result.add_grouping_elements(_value); }
     }
     return _result;
   }
@@ -6984,7 +7068,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegrouping_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegrouping_element(tree.getChild(_i)))) {
-      _result.grouping_elements.add(parsegrouping_element(tree.getChild(_i)));
+      _result.add_grouping_elements(parsegrouping_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -6992,9 +7076,10 @@ public class parser {
     return _result;
   }
 
-  public static grouping_element_cube make_grouping_element_cube(java.util.List<grouping_element> grouping_elements) {
+  public static grouping_element_cube make_grouping_element_cube(java.util.List<ru.barsopen.plsqlconverter.ast.typed.grouping_element> grouping_elements) {
     grouping_element_cube _result = new grouping_element_cube();
-    if (grouping_elements != null) {      _result.grouping_elements = grouping_elements;
+    if (grouping_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.grouping_element _value: grouping_elements) { _result.add_grouping_elements(_value); }
     }
     return _result;
   }
@@ -7017,16 +7102,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static having_clause make_having_clause(expression expression) {
+  public static having_clause make_having_clause(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     having_clause _result = new having_clause();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -7048,21 +7133,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsemain_model(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.main_model = parsemain_model(tree.getChild(_i));
+    _result.set_main_model(parsemain_model(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsecell_reference_options(tree.getChild(_i)))) {
-      _result.cell_reference_optionss.add(parsecell_reference_options(tree.getChild(_i)));
+      _result.add_cell_reference_optionss(parsecell_reference_options(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsereturn_rows_clause(tree.getChild(_i)))) {
-      _result.return_rows_clause = parsereturn_rows_clause(tree.getChild(_i));
+      _result.set_return_rows_clause(parsereturn_rows_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsereference_model(tree.getChild(_i)))) {
-      _result.reference_models.add(parsereference_model(tree.getChild(_i)));
+      _result.add_reference_models(parsereference_model(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7070,16 +7155,18 @@ public class parser {
     return _result;
   }
 
-  public static model_clause make_model_clause(main_model main_model,
-      java.util.List<cell_reference_options> cell_reference_optionss,
-      return_rows_clause return_rows_clause,
-      java.util.List<reference_model> reference_models) {
+  public static model_clause make_model_clause(ru.barsopen.plsqlconverter.ast.typed.main_model main_model,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.cell_reference_options> cell_reference_optionss,
+      ru.barsopen.plsqlconverter.ast.typed.return_rows_clause return_rows_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.reference_model> reference_models) {
     model_clause _result = new model_clause();
-    _result.main_model = main_model;
-    if (cell_reference_optionss != null) {      _result.cell_reference_optionss = cell_reference_optionss;
+    _result.set_main_model(main_model);
+    if (cell_reference_optionss != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.cell_reference_options _value: cell_reference_optionss) { _result.add_cell_reference_optionss(_value); }
     }
-    _result.return_rows_clause = return_rows_clause;
-    if (reference_models != null) {      _result.reference_models = reference_models;
+    _result.set_return_rows_clause(return_rows_clause);
+    if (reference_models != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.reference_model _value: reference_models) { _result.add_reference_models(_value); }
     }
     return _result;
   }
@@ -7128,12 +7215,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UPDATED_VK)) {
-      _result.UPDATED_VK = tree.getChild(_i);
+      _result.set_UPDATED_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
@@ -7144,8 +7231,8 @@ public class parser {
   public static return_rows_clause make_return_rows_clause(org.antlr.runtime.tree.Tree UPDATED_VK,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL) {
     return_rows_clause _result = new return_rows_clause();
-    _result.UPDATED_VK = UPDATED_VK;
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
+    _result.set_UPDATED_VK(UPDATED_VK);
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
     return _result;
   }
 
@@ -7167,19 +7254,19 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsereference_model_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.reference_model_name = parsereference_model_name(tree.getChild(_i));
+    _result.set_reference_model_name(parsereference_model_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsesubquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.subquery = parsesubquery(tree.getChild(_i));
+    _result.set_subquery(parsesubquery(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_clauses(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_clauses = parsemodel_column_clauses(tree.getChild(_i));
+    _result.set_model_column_clauses(parsemodel_column_clauses(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsecell_reference_options(tree.getChild(_i)))) {
-      _result.cell_reference_optionss.add(parsecell_reference_options(tree.getChild(_i)));
+      _result.add_cell_reference_optionss(parsecell_reference_options(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7187,15 +7274,16 @@ public class parser {
     return _result;
   }
 
-  public static reference_model make_reference_model(reference_model_name reference_model_name,
-      subquery subquery,
-      model_column_clauses model_column_clauses,
-      java.util.List<cell_reference_options> cell_reference_optionss) {
+  public static reference_model make_reference_model(ru.barsopen.plsqlconverter.ast.typed.reference_model_name reference_model_name,
+      ru.barsopen.plsqlconverter.ast.typed.subquery subquery,
+      ru.barsopen.plsqlconverter.ast.typed.model_column_clauses model_column_clauses,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.cell_reference_options> cell_reference_optionss) {
     reference_model _result = new reference_model();
-    _result.reference_model_name = reference_model_name;
-    _result.subquery = subquery;
-    _result.model_column_clauses = model_column_clauses;
-    if (cell_reference_optionss != null) {      _result.cell_reference_optionss = cell_reference_optionss;
+    _result.set_reference_model_name(reference_model_name);
+    _result.set_subquery(subquery);
+    _result.set_model_column_clauses(model_column_clauses);
+    if (cell_reference_optionss != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.cell_reference_options _value: cell_reference_optionss) { _result.add_cell_reference_optionss(_value); }
     }
     return _result;
   }
@@ -7218,20 +7306,20 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsemain_model_name(tree.getChild(_i)))) {
-      _result.main_model_name = parsemain_model_name(tree.getChild(_i));
+      _result.set_main_model_name(parsemain_model_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_clauses(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_clauses = parsemodel_column_clauses(tree.getChild(_i));
+    _result.set_model_column_clauses(parsemodel_column_clauses(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_rules_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_rules_clause = parsemodel_rules_clause(tree.getChild(_i));
+    _result.set_model_rules_clause(parsemodel_rules_clause(tree.getChild(_i)));
     ++_i;
 
     while (_i < tree.getChildCount() && (canParsecell_reference_options(tree.getChild(_i)))) {
-      _result.cell_reference_optionss.add(parsecell_reference_options(tree.getChild(_i)));
+      _result.add_cell_reference_optionss(parsecell_reference_options(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7239,15 +7327,16 @@ public class parser {
     return _result;
   }
 
-  public static main_model make_main_model(main_model_name main_model_name,
-      model_column_clauses model_column_clauses,
-      model_rules_clause model_rules_clause,
-      java.util.List<cell_reference_options> cell_reference_optionss) {
+  public static main_model make_main_model(ru.barsopen.plsqlconverter.ast.typed.main_model_name main_model_name,
+      ru.barsopen.plsqlconverter.ast.typed.model_column_clauses model_column_clauses,
+      ru.barsopen.plsqlconverter.ast.typed.model_rules_clause model_rules_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.cell_reference_options> cell_reference_optionss) {
     main_model _result = new main_model();
-    _result.main_model_name = main_model_name;
-    _result.model_column_clauses = model_column_clauses;
-    _result.model_rules_clause = model_rules_clause;
-    if (cell_reference_optionss != null) {      _result.cell_reference_optionss = cell_reference_optionss;
+    _result.set_main_model_name(main_model_name);
+    _result.set_model_column_clauses(model_column_clauses);
+    _result.set_model_rules_clause(model_rules_clause);
+    if (cell_reference_optionss != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.cell_reference_options _value: cell_reference_optionss) { _result.add_cell_reference_optionss(_value); }
     }
     return _result;
   }
@@ -7270,15 +7359,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_clauses_dimension(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_clauses_dimension = parsemodel_column_clauses_dimension(tree.getChild(_i));
+    _result.set_model_column_clauses_dimension(parsemodel_column_clauses_dimension(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_clauses_measures(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_clauses_measures = parsemodel_column_clauses_measures(tree.getChild(_i));
+    _result.set_model_column_clauses_measures(parsemodel_column_clauses_measures(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsemodel_column_partition_part(tree.getChild(_i)))) {
-      _result.model_column_partition_part = parsemodel_column_partition_part(tree.getChild(_i));
+      _result.set_model_column_partition_part(parsemodel_column_partition_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7286,13 +7375,13 @@ public class parser {
     return _result;
   }
 
-  public static model_column_clauses make_model_column_clauses(model_column_clauses_dimension model_column_clauses_dimension,
-      model_column_clauses_measures model_column_clauses_measures,
-      model_column_partition_part model_column_partition_part) {
+  public static model_column_clauses make_model_column_clauses(ru.barsopen.plsqlconverter.ast.typed.model_column_clauses_dimension model_column_clauses_dimension,
+      ru.barsopen.plsqlconverter.ast.typed.model_column_clauses_measures model_column_clauses_measures,
+      ru.barsopen.plsqlconverter.ast.typed.model_column_partition_part model_column_partition_part) {
     model_column_clauses _result = new model_column_clauses();
-    _result.model_column_clauses_dimension = model_column_clauses_dimension;
-    _result.model_column_clauses_measures = model_column_clauses_measures;
-    _result.model_column_partition_part = model_column_partition_part;
+    _result.set_model_column_clauses_dimension(model_column_clauses_dimension);
+    _result.set_model_column_clauses_measures(model_column_clauses_measures);
+    _result.set_model_column_partition_part(model_column_partition_part);
     return _result;
   }
 
@@ -7314,16 +7403,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_list = parsemodel_column_list(tree.getChild(_i));
+    _result.set_model_column_list(parsemodel_column_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static model_column_clauses_dimension make_model_column_clauses_dimension(model_column_list model_column_list) {
+  public static model_column_clauses_dimension make_model_column_clauses_dimension(ru.barsopen.plsqlconverter.ast.typed.model_column_list model_column_list) {
     model_column_clauses_dimension _result = new model_column_clauses_dimension();
-    _result.model_column_list = model_column_list;
+    _result.set_model_column_list(model_column_list);
     return _result;
   }
 
@@ -7345,16 +7434,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_list = parsemodel_column_list(tree.getChild(_i));
+    _result.set_model_column_list(parsemodel_column_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static model_column_clauses_measures make_model_column_clauses_measures(model_column_list model_column_list) {
+  public static model_column_clauses_measures make_model_column_clauses_measures(ru.barsopen.plsqlconverter.ast.typed.model_column_list model_column_list) {
     model_column_clauses_measures _result = new model_column_clauses_measures();
-    _result.model_column_list = model_column_list;
+    _result.set_model_column_list(model_column_list);
     return _result;
   }
 
@@ -7376,16 +7465,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.model_column_list = parsemodel_column_list(tree.getChild(_i));
+    _result.set_model_column_list(parsemodel_column_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static model_column_partition_part make_model_column_partition_part(model_column_list model_column_list) {
+  public static model_column_partition_part make_model_column_partition_part(ru.barsopen.plsqlconverter.ast.typed.model_column_list model_column_list) {
     model_column_partition_part _result = new model_column_partition_part();
-    _result.model_column_list = model_column_list;
+    _result.set_model_column_list(model_column_list);
     return _result;
   }
 
@@ -7408,7 +7497,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsemodel_column(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemodel_column(tree.getChild(_i)))) {
-      _result.model_columns.add(parsemodel_column(tree.getChild(_i)));
+      _result.add_model_columns(parsemodel_column(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7416,9 +7505,10 @@ public class parser {
     return _result;
   }
 
-  public static model_column_list make_model_column_list(java.util.List<model_column> model_columns) {
+  public static model_column_list make_model_column_list(java.util.List<ru.barsopen.plsqlconverter.ast.typed.model_column> model_columns) {
     model_column_list _result = new model_column_list();
-    if (model_columns != null) {      _result.model_columns = model_columns;
+    if (model_columns != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.model_column _value: model_columns) { _result.add_model_columns(_value); }
     }
     return _result;
   }
@@ -7441,23 +7531,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static model_column make_model_column(alias alias,
-      expression expression) {
+  public static model_column make_model_column(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     model_column _result = new model_column();
-    _result.alias = alias;
-    _result.expression = expression;
+    _result.set_alias(alias);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -7480,12 +7570,12 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsemodel_rules_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemodel_rules_element(tree.getChild(_i)))) {
-      _result.model_rules_elements.add(parsemodel_rules_element(tree.getChild(_i)));
+      _result.add_model_rules_elements(parsemodel_rules_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsemodel_rules_part(tree.getChild(_i)))) {
-      _result.model_rules_part = parsemodel_rules_part(tree.getChild(_i));
+      _result.set_model_rules_part(parsemodel_rules_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7493,12 +7583,13 @@ public class parser {
     return _result;
   }
 
-  public static model_rules_clause make_model_rules_clause(java.util.List<model_rules_element> model_rules_elements,
-      model_rules_part model_rules_part) {
+  public static model_rules_clause make_model_rules_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.model_rules_element> model_rules_elements,
+      ru.barsopen.plsqlconverter.ast.typed.model_rules_part model_rules_part) {
     model_rules_clause _result = new model_rules_clause();
-    if (model_rules_elements != null) {      _result.model_rules_elements = model_rules_elements;
+    if (model_rules_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.model_rules_element _value: model_rules_elements) { _result.add_model_rules_elements(_value); }
     }
-    _result.model_rules_part = model_rules_part;
+    _result.set_model_rules_part(model_rules_part);
     return _result;
   }
 
@@ -7572,11 +7663,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseuntil_part(tree.getChild(_i)))) {
-      _result.until_part = parseuntil_part(tree.getChild(_i));
+      _result.set_until_part(parseuntil_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7584,11 +7675,11 @@ public class parser {
     return _result;
   }
 
-  public static model_iterate_clause make_model_iterate_clause(expression expression,
-      until_part until_part) {
+  public static model_iterate_clause make_model_iterate_clause(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.until_part until_part) {
     model_iterate_clause _result = new model_iterate_clause();
-    _result.expression = expression;
-    _result.until_part = until_part;
+    _result.set_expression(expression);
+    _result.set_until_part(until_part);
     return _result;
   }
 
@@ -7610,16 +7701,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static until_part make_until_part(expression expression) {
+  public static until_part make_until_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     until_part _result = new until_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -7641,12 +7732,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIBLINGS_VK)) {
-      _result.SIBLINGS_VK = tree.getChild(_i);
+      _result.set_SIBLINGS_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseorder_by_elements_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.order_by_elements_list = parseorder_by_elements_list(tree.getChild(_i));
+    _result.set_order_by_elements_list(parseorder_by_elements_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -7654,10 +7745,10 @@ public class parser {
   }
 
   public static order_by_clause make_order_by_clause(org.antlr.runtime.tree.Tree SIBLINGS_VK,
-      order_by_elements_list order_by_elements_list) {
+      ru.barsopen.plsqlconverter.ast.typed.order_by_elements_list order_by_elements_list) {
     order_by_clause _result = new order_by_clause();
-    _result.SIBLINGS_VK = SIBLINGS_VK;
-    _result.order_by_elements_list = order_by_elements_list;
+    _result.set_SIBLINGS_VK(SIBLINGS_VK);
+    _result.set_order_by_elements_list(order_by_elements_list);
     return _result;
   }
 
@@ -7680,7 +7771,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseorder_by_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseorder_by_elements(tree.getChild(_i)))) {
-      _result.elements.add(parseorder_by_elements(tree.getChild(_i)));
+      _result.add_elements(parseorder_by_elements(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7688,9 +7779,10 @@ public class parser {
     return _result;
   }
 
-  public static order_by_elements_list make_order_by_elements_list(java.util.List<order_by_elements> elements) {
+  public static order_by_elements_list make_order_by_elements_list(java.util.List<ru.barsopen.plsqlconverter.ast.typed.order_by_elements> elements) {
     order_by_elements_list _result = new order_by_elements_list();
-    if (elements != null) {      _result.elements = elements;
+    if (elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.order_by_elements _value: elements) { _result.add_elements(_value); }
     }
     return _result;
   }
@@ -7713,31 +7805,31 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ASC)) {
-      _result.SQL92_RESERVED_ASC = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ASC(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DESC)) {
-      _result.SQL92_RESERVED_DESC = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_DESC(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NULLS_VK)) {
-      _result.NULLS_VK = tree.getChild(_i);
+      _result.set_NULLS_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIRST_VK)) {
-      _result.FIRST_VK = tree.getChild(_i);
+      _result.set_FIRST_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LAST_VK)) {
-      _result.LAST_VK = tree.getChild(_i);
+      _result.set_LAST_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -7745,19 +7837,19 @@ public class parser {
     return _result;
   }
 
-  public static order_by_elements make_order_by_elements(expression expression,
+  public static order_by_elements make_order_by_elements(ru.barsopen.plsqlconverter.ast.typed.expression expression,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_ASC,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_DESC,
       org.antlr.runtime.tree.Tree NULLS_VK,
       org.antlr.runtime.tree.Tree FIRST_VK,
       org.antlr.runtime.tree.Tree LAST_VK) {
     order_by_elements _result = new order_by_elements();
-    _result.expression = expression;
-    _result.SQL92_RESERVED_ASC = SQL92_RESERVED_ASC;
-    _result.SQL92_RESERVED_DESC = SQL92_RESERVED_DESC;
-    _result.NULLS_VK = NULLS_VK;
-    _result.FIRST_VK = FIRST_VK;
-    _result.LAST_VK = LAST_VK;
+    _result.set_expression(expression);
+    _result.set_SQL92_RESERVED_ASC(SQL92_RESERVED_ASC);
+    _result.set_SQL92_RESERVED_DESC(SQL92_RESERVED_DESC);
+    _result.set_NULLS_VK(NULLS_VK);
+    _result.set_FIRST_VK(FIRST_VK);
+    _result.set_LAST_VK(LAST_VK);
     return _result;
   }
 
@@ -7779,12 +7871,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsefor_update_of_part(tree.getChild(_i)))) {
-      _result.for_update_of_part = parsefor_update_of_part(tree.getChild(_i));
+      _result.set_for_update_of_part(parsefor_update_of_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsefor_update_options(tree.getChild(_i)))) {
-      _result.for_update_options = parsefor_update_options(tree.getChild(_i));
+      _result.set_for_update_options(parsefor_update_options(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7792,11 +7884,11 @@ public class parser {
     return _result;
   }
 
-  public static for_update_clause make_for_update_clause(for_update_of_part for_update_of_part,
-      for_update_options for_update_options) {
+  public static for_update_clause make_for_update_clause(ru.barsopen.plsqlconverter.ast.typed.for_update_of_part for_update_of_part,
+      ru.barsopen.plsqlconverter.ast.typed.for_update_options for_update_options) {
     for_update_clause _result = new for_update_clause();
-    _result.for_update_of_part = for_update_of_part;
-    _result.for_update_options = for_update_options;
+    _result.set_for_update_of_part(for_update_of_part);
+    _result.set_for_update_options(for_update_options);
     return _result;
   }
 
@@ -7819,7 +7911,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7827,9 +7919,10 @@ public class parser {
     return _result;
   }
 
-  public static for_update_of_part make_for_update_of_part(java.util.List<column_name> column_names) {
+  public static for_update_of_part make_for_update_of_part(java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names) {
     for_update_of_part _result = new for_update_of_part();
-    if (column_names != null) {      _result.column_names = column_names;
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
     return _result;
   }
@@ -7919,16 +8012,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static for_update_options_wait make_for_update_options_wait(expression expression) {
+  public static for_update_options_wait make_for_update_options_wait(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     for_update_options_wait _result = new for_update_options_wait();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -7950,25 +8043,25 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_table_ref(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.general_table_ref = parsegeneral_table_ref(tree.getChild(_i));
+    _result.set_general_table_ref(parsegeneral_table_ref(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseupdate_statement_set(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.update_statement_set = parseupdate_statement_set(tree.getChild(_i));
+    _result.set_update_statement_set(parseupdate_statement_set(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i)))) {
-      _result.where_clause = parsewhere_clause(tree.getChild(_i));
+      _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsestatic_returning_clause(tree.getChild(_i)))) {
-      _result.static_returning_clause = parsestatic_returning_clause(tree.getChild(_i));
+      _result.set_static_returning_clause(parsestatic_returning_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_clause(tree.getChild(_i)))) {
-      _result.error_logging_clause = parseerror_logging_clause(tree.getChild(_i));
+      _result.set_error_logging_clause(parseerror_logging_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -7976,17 +8069,17 @@ public class parser {
     return _result;
   }
 
-  public static update_statement make_update_statement(general_table_ref general_table_ref,
-      update_statement_set update_statement_set,
-      where_clause where_clause,
-      static_returning_clause static_returning_clause,
-      error_logging_clause error_logging_clause) {
+  public static update_statement make_update_statement(ru.barsopen.plsqlconverter.ast.typed.general_table_ref general_table_ref,
+      ru.barsopen.plsqlconverter.ast.typed.update_statement_set update_statement_set,
+      ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause,
+      ru.barsopen.plsqlconverter.ast.typed.static_returning_clause static_returning_clause,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_clause error_logging_clause) {
     update_statement _result = new update_statement();
-    _result.general_table_ref = general_table_ref;
-    _result.update_statement_set = update_statement_set;
-    _result.where_clause = where_clause;
-    _result.static_returning_clause = static_returning_clause;
-    _result.error_logging_clause = error_logging_clause;
+    _result.set_general_table_ref(general_table_ref);
+    _result.set_update_statement_set(update_statement_set);
+    _result.set_where_clause(where_clause);
+    _result.set_static_returning_clause(static_returning_clause);
+    _result.set_error_logging_clause(error_logging_clause);
     return _result;
   }
 
@@ -8009,7 +8102,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseupdate_set_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseupdate_set_elements(tree.getChild(_i)))) {
-      _result.update_set_elementss.add(parseupdate_set_elements(tree.getChild(_i)));
+      _result.add_update_set_elementss(parseupdate_set_elements(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8017,9 +8110,10 @@ public class parser {
     return _result;
   }
 
-  public static update_statement_set make_update_statement_set(java.util.List<update_set_elements> update_set_elementss) {
+  public static update_statement_set make_update_statement_set(java.util.List<ru.barsopen.plsqlconverter.ast.typed.update_set_elements> update_set_elementss) {
     update_statement_set _result = new update_statement_set();
-    if (update_set_elementss != null) {      _result.update_set_elementss = update_set_elementss;
+    if (update_set_elementss != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.update_set_elements _value: update_set_elementss) { _result.add_update_set_elementss(_value); }
     }
     return _result;
   }
@@ -8057,24 +8151,25 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static update_set_elements_assign make_update_set_elements_assign(java.util.List<column_name> column_names,
-      expression_or_subquery expression_or_subquery) {
+  public static update_set_elements_assign make_update_set_elements_assign(java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names,
+      ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     update_set_elements_assign _result = new update_set_elements_assign();
-    if (column_names != null) {      _result.column_names = column_names;
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -8110,29 +8205,29 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static update_set_elements_value make_update_set_elements_value(char_set_name char_set_name,
-      id id,
-      expression expression) {
+  public static update_set_elements_value make_update_set_elements_value(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     update_set_elements_value _result = new update_set_elements_value();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
-    _result.expression = expression;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -8154,21 +8249,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_table_ref(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.general_table_ref = parsegeneral_table_ref(tree.getChild(_i));
+    _result.set_general_table_ref(parsegeneral_table_ref(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i)))) {
-      _result.where_clause = parsewhere_clause(tree.getChild(_i));
+      _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsestatic_returning_clause(tree.getChild(_i)))) {
-      _result.static_returning_clause = parsestatic_returning_clause(tree.getChild(_i));
+      _result.set_static_returning_clause(parsestatic_returning_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_clause(tree.getChild(_i)))) {
-      _result.error_logging_clause = parseerror_logging_clause(tree.getChild(_i));
+      _result.set_error_logging_clause(parseerror_logging_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8176,15 +8271,15 @@ public class parser {
     return _result;
   }
 
-  public static delete_statement make_delete_statement(general_table_ref general_table_ref,
-      where_clause where_clause,
-      static_returning_clause static_returning_clause,
-      error_logging_clause error_logging_clause) {
+  public static delete_statement make_delete_statement(ru.barsopen.plsqlconverter.ast.typed.general_table_ref general_table_ref,
+      ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause,
+      ru.barsopen.plsqlconverter.ast.typed.static_returning_clause static_returning_clause,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_clause error_logging_clause) {
     delete_statement _result = new delete_statement();
-    _result.general_table_ref = general_table_ref;
-    _result.where_clause = where_clause;
-    _result.static_returning_clause = static_returning_clause;
-    _result.error_logging_clause = error_logging_clause;
+    _result.set_general_table_ref(general_table_ref);
+    _result.set_where_clause(where_clause);
+    _result.set_static_returning_clause(static_returning_clause);
+    _result.set_error_logging_clause(error_logging_clause);
     return _result;
   }
 
@@ -8206,16 +8301,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinsert_statement_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.insert_statement_spec = parseinsert_statement_spec(tree.getChild(_i));
+    _result.set_insert_statement_spec(parseinsert_statement_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static insert_statement make_insert_statement(insert_statement_spec insert_statement_spec) {
+  public static insert_statement make_insert_statement(ru.barsopen.plsqlconverter.ast.typed.insert_statement_spec insert_statement_spec) {
     insert_statement _result = new insert_statement();
-    _result.insert_statement_spec = insert_statement_spec;
+    _result.set_insert_statement_spec(insert_statement_spec);
     return _result;
   }
 
@@ -8251,26 +8346,26 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinsert_into_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.insert_into_clause = parseinsert_into_clause(tree.getChild(_i));
+    _result.set_insert_into_clause(parseinsert_into_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsevalues_clause(tree.getChild(_i)))) {
-      _result.values_clause = parsevalues_clause(tree.getChild(_i));
+      _result.set_values_clause(parsevalues_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsestatic_returning_clause(tree.getChild(_i)))) {
-      _result.static_returning_clause = parsestatic_returning_clause(tree.getChild(_i));
+      _result.set_static_returning_clause(parsestatic_returning_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseselect_statement(tree.getChild(_i)))) {
-      _result.select_statement = parseselect_statement(tree.getChild(_i));
+      _result.set_select_statement(parseselect_statement(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_clause(tree.getChild(_i)))) {
-      _result.error_logging_clause = parseerror_logging_clause(tree.getChild(_i));
+      _result.set_error_logging_clause(parseerror_logging_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8278,17 +8373,17 @@ public class parser {
     return _result;
   }
 
-  public static single_table_insert make_single_table_insert(insert_into_clause insert_into_clause,
-      values_clause values_clause,
-      static_returning_clause static_returning_clause,
-      select_statement select_statement,
-      error_logging_clause error_logging_clause) {
+  public static single_table_insert make_single_table_insert(ru.barsopen.plsqlconverter.ast.typed.insert_into_clause insert_into_clause,
+      ru.barsopen.plsqlconverter.ast.typed.values_clause values_clause,
+      ru.barsopen.plsqlconverter.ast.typed.static_returning_clause static_returning_clause,
+      ru.barsopen.plsqlconverter.ast.typed.select_statement select_statement,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_clause error_logging_clause) {
     single_table_insert _result = new single_table_insert();
-    _result.insert_into_clause = insert_into_clause;
-    _result.values_clause = values_clause;
-    _result.static_returning_clause = static_returning_clause;
-    _result.select_statement = select_statement;
-    _result.error_logging_clause = error_logging_clause;
+    _result.set_insert_into_clause(insert_into_clause);
+    _result.set_values_clause(values_clause);
+    _result.set_static_returning_clause(static_returning_clause);
+    _result.set_select_statement(select_statement);
+    _result.set_error_logging_clause(error_logging_clause);
     return _result;
   }
 
@@ -8310,16 +8405,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseselect_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.select_statement = parseselect_statement(tree.getChild(_i));
+    _result.set_select_statement(parseselect_statement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseconditional_insert_clause(tree.getChild(_i)))) {
-      _result.conditional_insert_clause = parseconditional_insert_clause(tree.getChild(_i));
+      _result.set_conditional_insert_clause(parseconditional_insert_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsemulti_table_element(tree.getChild(_i)))) {
-      _result.multi_table_elements.add(parsemulti_table_element(tree.getChild(_i)));
+      _result.add_multi_table_elements(parsemulti_table_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8327,13 +8422,14 @@ public class parser {
     return _result;
   }
 
-  public static multi_table_insert make_multi_table_insert(select_statement select_statement,
-      conditional_insert_clause conditional_insert_clause,
-      java.util.List<multi_table_element> multi_table_elements) {
+  public static multi_table_insert make_multi_table_insert(ru.barsopen.plsqlconverter.ast.typed.select_statement select_statement,
+      ru.barsopen.plsqlconverter.ast.typed.conditional_insert_clause conditional_insert_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.multi_table_element> multi_table_elements) {
     multi_table_insert _result = new multi_table_insert();
-    _result.select_statement = select_statement;
-    _result.conditional_insert_clause = conditional_insert_clause;
-    if (multi_table_elements != null) {      _result.multi_table_elements = multi_table_elements;
+    _result.set_select_statement(select_statement);
+    _result.set_conditional_insert_clause(conditional_insert_clause);
+    if (multi_table_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.multi_table_element _value: multi_table_elements) { _result.add_multi_table_elements(_value); }
     }
     return _result;
   }
@@ -8356,16 +8452,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinsert_into_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.insert_into_clause = parseinsert_into_clause(tree.getChild(_i));
+    _result.set_insert_into_clause(parseinsert_into_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsevalues_clause(tree.getChild(_i)))) {
-      _result.values_clause = parsevalues_clause(tree.getChild(_i));
+      _result.set_values_clause(parsevalues_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_clause(tree.getChild(_i)))) {
-      _result.error_logging_clause = parseerror_logging_clause(tree.getChild(_i));
+      _result.set_error_logging_clause(parseerror_logging_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8373,13 +8469,13 @@ public class parser {
     return _result;
   }
 
-  public static multi_table_element make_multi_table_element(insert_into_clause insert_into_clause,
-      values_clause values_clause,
-      error_logging_clause error_logging_clause) {
+  public static multi_table_element make_multi_table_element(ru.barsopen.plsqlconverter.ast.typed.insert_into_clause insert_into_clause,
+      ru.barsopen.plsqlconverter.ast.typed.values_clause values_clause,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_clause error_logging_clause) {
     multi_table_element _result = new multi_table_element();
-    _result.insert_into_clause = insert_into_clause;
-    _result.values_clause = values_clause;
-    _result.error_logging_clause = error_logging_clause;
+    _result.set_insert_into_clause(insert_into_clause);
+    _result.set_values_clause(values_clause);
+    _result.set_error_logging_clause(error_logging_clause);
     return _result;
   }
 
@@ -8401,23 +8497,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIRST_VK)) {
-      _result.FIRST_VK = tree.getChild(_i);
+      _result.set_FIRST_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseconditional_insert_when_part(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseconditional_insert_when_part(tree.getChild(_i)))) {
-      _result.conditional_insert_when_parts.add(parseconditional_insert_when_part(tree.getChild(_i)));
+      _result.add_conditional_insert_when_parts(parseconditional_insert_when_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseconditional_insert_else_part(tree.getChild(_i)))) {
-      _result.conditional_insert_else_part = parseconditional_insert_else_part(tree.getChild(_i));
+      _result.set_conditional_insert_else_part(parseconditional_insert_else_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8427,14 +8523,15 @@ public class parser {
 
   public static conditional_insert_clause make_conditional_insert_clause(org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
       org.antlr.runtime.tree.Tree FIRST_VK,
-      java.util.List<conditional_insert_when_part> conditional_insert_when_parts,
-      conditional_insert_else_part conditional_insert_else_part) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.conditional_insert_when_part> conditional_insert_when_parts,
+      ru.barsopen.plsqlconverter.ast.typed.conditional_insert_else_part conditional_insert_else_part) {
     conditional_insert_clause _result = new conditional_insert_clause();
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.FIRST_VK = FIRST_VK;
-    if (conditional_insert_when_parts != null) {      _result.conditional_insert_when_parts = conditional_insert_when_parts;
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_FIRST_VK(FIRST_VK);
+    if (conditional_insert_when_parts != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.conditional_insert_when_part _value: conditional_insert_when_parts) { _result.add_conditional_insert_when_parts(_value); }
     }
-    _result.conditional_insert_else_part = conditional_insert_else_part;
+    _result.set_conditional_insert_else_part(conditional_insert_else_part);
     return _result;
   }
 
@@ -8456,12 +8553,12 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemulti_table_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemulti_table_element(tree.getChild(_i)))) {
-      _result.multi_table_elements.add(parsemulti_table_element(tree.getChild(_i)));
+      _result.add_multi_table_elements(parsemulti_table_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8469,11 +8566,12 @@ public class parser {
     return _result;
   }
 
-  public static conditional_insert_when_part make_conditional_insert_when_part(expression expression,
-      java.util.List<multi_table_element> multi_table_elements) {
+  public static conditional_insert_when_part make_conditional_insert_when_part(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.multi_table_element> multi_table_elements) {
     conditional_insert_when_part _result = new conditional_insert_when_part();
-    _result.expression = expression;
-    if (multi_table_elements != null) {      _result.multi_table_elements = multi_table_elements;
+    _result.set_expression(expression);
+    if (multi_table_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.multi_table_element _value: multi_table_elements) { _result.add_multi_table_elements(_value); }
     }
     return _result;
   }
@@ -8497,7 +8595,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsemulti_table_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemulti_table_element(tree.getChild(_i)))) {
-      _result.multi_table_elements.add(parsemulti_table_element(tree.getChild(_i)));
+      _result.add_multi_table_elements(parsemulti_table_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8505,9 +8603,10 @@ public class parser {
     return _result;
   }
 
-  public static conditional_insert_else_part make_conditional_insert_else_part(java.util.List<multi_table_element> multi_table_elements) {
+  public static conditional_insert_else_part make_conditional_insert_else_part(java.util.List<ru.barsopen.plsqlconverter.ast.typed.multi_table_element> multi_table_elements) {
     conditional_insert_else_part _result = new conditional_insert_else_part();
-    if (multi_table_elements != null) {      _result.multi_table_elements = multi_table_elements;
+    if (multi_table_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.multi_table_element _value: multi_table_elements) { _result.add_multi_table_elements(_value); }
     }
     return _result;
   }
@@ -8530,22 +8629,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_table_ref(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.general_table_ref = parsegeneral_table_ref(tree.getChild(_i));
+    _result.set_general_table_ref(parsegeneral_table_ref(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseinsert_into_clause_columns(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.insert_into_clause_columns = parseinsert_into_clause_columns(tree.getChild(_i));
+    _result.set_insert_into_clause_columns(parseinsert_into_clause_columns(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static insert_into_clause make_insert_into_clause(general_table_ref general_table_ref,
-      insert_into_clause_columns insert_into_clause_columns) {
+  public static insert_into_clause make_insert_into_clause(ru.barsopen.plsqlconverter.ast.typed.general_table_ref general_table_ref,
+      ru.barsopen.plsqlconverter.ast.typed.insert_into_clause_columns insert_into_clause_columns) {
     insert_into_clause _result = new insert_into_clause();
-    _result.general_table_ref = general_table_ref;
-    _result.insert_into_clause_columns = insert_into_clause_columns;
+    _result.set_general_table_ref(general_table_ref);
+    _result.set_insert_into_clause_columns(insert_into_clause_columns);
     return _result;
   }
 
@@ -8567,7 +8666,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i)))) {
-      _result.column_names.add(parsecolumn_name(tree.getChild(_i)));
+      _result.add_column_names(parsecolumn_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8575,9 +8674,10 @@ public class parser {
     return _result;
   }
 
-  public static insert_into_clause_columns make_insert_into_clause_columns(java.util.List<column_name> column_names) {
+  public static insert_into_clause_columns make_insert_into_clause_columns(java.util.List<ru.barsopen.plsqlconverter.ast.typed.column_name> column_names) {
     insert_into_clause_columns _result = new insert_into_clause_columns();
-    if (column_names != null) {      _result.column_names = column_names;
+    if (column_names != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.column_name _value: column_names) { _result.add_column_names(_value); }
     }
     return _result;
   }
@@ -8600,16 +8700,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_expression_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_expression_list = parseexpression_or_expression_list(tree.getChild(_i));
+    _result.set_expression_or_expression_list(parseexpression_or_expression_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static values_clause make_values_clause(expression_or_expression_list expression_or_expression_list) {
+  public static values_clause make_values_clause(ru.barsopen.plsqlconverter.ast.typed.expression_or_expression_list expression_or_expression_list) {
     values_clause _result = new values_clause();
-    _result.expression_or_expression_list = expression_or_expression_list;
+    _result.set_expression_or_expression_list(expression_or_expression_list);
     return _result;
   }
 
@@ -8645,30 +8745,30 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.tableview_name = parsetableview_name(tree.getChild(_i));
+    _result.set_tableview_name(parsetableview_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemerge_using_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.merge_using_clause = parsemerge_using_clause(tree.getChild(_i));
+    _result.set_merge_using_clause(parsemerge_using_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsemerge_update_clause(tree.getChild(_i)))) {
-      _result.merge_update_clause = parsemerge_update_clause(tree.getChild(_i));
+      _result.set_merge_update_clause(parsemerge_update_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsemerge_insert_clause(tree.getChild(_i)))) {
-      _result.merge_insert_clause = parsemerge_insert_clause(tree.getChild(_i));
+      _result.set_merge_insert_clause(parsemerge_insert_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_clause(tree.getChild(_i)))) {
-      _result.error_logging_clause = parseerror_logging_clause(tree.getChild(_i));
+      _result.set_error_logging_clause(parseerror_logging_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8676,19 +8776,19 @@ public class parser {
     return _result;
   }
 
-  public static merge_statement make_merge_statement(alias alias,
-      tableview_name tableview_name,
-      merge_using_clause merge_using_clause,
-      merge_update_clause merge_update_clause,
-      merge_insert_clause merge_insert_clause,
-      error_logging_clause error_logging_clause) {
+  public static merge_statement make_merge_statement(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.tableview_name tableview_name,
+      ru.barsopen.plsqlconverter.ast.typed.merge_using_clause merge_using_clause,
+      ru.barsopen.plsqlconverter.ast.typed.merge_update_clause merge_update_clause,
+      ru.barsopen.plsqlconverter.ast.typed.merge_insert_clause merge_insert_clause,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_clause error_logging_clause) {
     merge_statement _result = new merge_statement();
-    _result.alias = alias;
-    _result.tableview_name = tableview_name;
-    _result.merge_using_clause = merge_using_clause;
-    _result.merge_update_clause = merge_update_clause;
-    _result.merge_insert_clause = merge_insert_clause;
-    _result.error_logging_clause = error_logging_clause;
+    _result.set_alias(alias);
+    _result.set_tableview_name(tableview_name);
+    _result.set_merge_using_clause(merge_using_clause);
+    _result.set_merge_update_clause(merge_update_clause);
+    _result.set_merge_insert_clause(merge_insert_clause);
+    _result.set_error_logging_clause(error_logging_clause);
     return _result;
   }
 
@@ -8710,22 +8810,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseselected_tableview(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.selected_tableview = parseselected_tableview(tree.getChild(_i));
+    _result.set_selected_tableview(parseselected_tableview(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static merge_using_clause make_merge_using_clause(selected_tableview selected_tableview,
-      expression expression) {
+  public static merge_using_clause make_merge_using_clause(ru.barsopen.plsqlconverter.ast.typed.selected_tableview selected_tableview,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     merge_using_clause _result = new merge_using_clause();
-    _result.selected_tableview = selected_tableview;
-    _result.expression = expression;
+    _result.set_selected_tableview(selected_tableview);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -8748,17 +8848,17 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsemerge_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemerge_element(tree.getChild(_i)))) {
-      _result.merge_elements.add(parsemerge_element(tree.getChild(_i)));
+      _result.add_merge_elements(parsemerge_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i)))) {
-      _result.where_clause = parsewhere_clause(tree.getChild(_i));
+      _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsemerge_update_delete_part(tree.getChild(_i)))) {
-      _result.merge_update_delete_part = parsemerge_update_delete_part(tree.getChild(_i));
+      _result.set_merge_update_delete_part(parsemerge_update_delete_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8766,14 +8866,15 @@ public class parser {
     return _result;
   }
 
-  public static merge_update_clause make_merge_update_clause(java.util.List<merge_element> merge_elements,
-      where_clause where_clause,
-      merge_update_delete_part merge_update_delete_part) {
+  public static merge_update_clause make_merge_update_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.merge_element> merge_elements,
+      ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause,
+      ru.barsopen.plsqlconverter.ast.typed.merge_update_delete_part merge_update_delete_part) {
     merge_update_clause _result = new merge_update_clause();
-    if (merge_elements != null) {      _result.merge_elements = merge_elements;
+    if (merge_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.merge_element _value: merge_elements) { _result.add_merge_elements(_value); }
     }
-    _result.where_clause = where_clause;
-    _result.merge_update_delete_part = merge_update_delete_part;
+    _result.set_where_clause(where_clause);
+    _result.set_merge_update_delete_part(merge_update_delete_part);
     return _result;
   }
 
@@ -8795,22 +8896,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecolumn_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.column_name = parsecolumn_name(tree.getChild(_i));
+    _result.set_column_name(parsecolumn_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static merge_element make_merge_element(column_name column_name,
-      expression expression) {
+  public static merge_element make_merge_element(ru.barsopen.plsqlconverter.ast.typed.column_name column_name,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     merge_element _result = new merge_element();
-    _result.column_name = column_name;
-    _result.expression = expression;
+    _result.set_column_name(column_name);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -8832,16 +8933,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.where_clause = parsewhere_clause(tree.getChild(_i));
+    _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static merge_update_delete_part make_merge_update_delete_part(where_clause where_clause) {
+  public static merge_update_delete_part make_merge_update_delete_part(ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause) {
     merge_update_delete_part _result = new merge_update_delete_part();
-    _result.where_clause = where_clause;
+    _result.set_where_clause(where_clause);
     return _result;
   }
 
@@ -8863,15 +8964,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinsert_into_clause_columns(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.insert_into_clause_columns = parseinsert_into_clause_columns(tree.getChild(_i));
+    _result.set_insert_into_clause_columns(parseinsert_into_clause_columns(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_list(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_list = parseexpression_list(tree.getChild(_i));
+    _result.set_expression_list(parseexpression_list(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsewhere_clause(tree.getChild(_i)))) {
-      _result.where_clause = parsewhere_clause(tree.getChild(_i));
+      _result.set_where_clause(parsewhere_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8879,13 +8980,13 @@ public class parser {
     return _result;
   }
 
-  public static merge_insert_clause make_merge_insert_clause(insert_into_clause_columns insert_into_clause_columns,
-      expression_list expression_list,
-      where_clause where_clause) {
+  public static merge_insert_clause make_merge_insert_clause(ru.barsopen.plsqlconverter.ast.typed.insert_into_clause_columns insert_into_clause_columns,
+      ru.barsopen.plsqlconverter.ast.typed.expression_list expression_list,
+      ru.barsopen.plsqlconverter.ast.typed.where_clause where_clause) {
     merge_insert_clause _result = new merge_insert_clause();
-    _result.insert_into_clause_columns = insert_into_clause_columns;
-    _result.expression_list = expression_list;
-    _result.where_clause = where_clause;
+    _result.set_insert_into_clause_columns(insert_into_clause_columns);
+    _result.set_expression_list(expression_list);
+    _result.set_where_clause(where_clause);
     return _result;
   }
 
@@ -8907,23 +9008,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseselected_tableview_src(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.selected_tableview_src = parseselected_tableview_src(tree.getChild(_i));
+    _result.set_selected_tableview_src(parseselected_tableview_src(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static selected_tableview make_selected_tableview(alias alias,
-      selected_tableview_src selected_tableview_src) {
+  public static selected_tableview make_selected_tableview(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.selected_tableview_src selected_tableview_src) {
     selected_tableview _result = new selected_tableview();
-    _result.alias = alias;
-    _result.selected_tableview_src = selected_tableview_src;
+    _result.set_alias(alias);
+    _result.set_selected_tableview_src(selected_tableview_src);
     return _result;
   }
 
@@ -8960,16 +9061,16 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParselock_table_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParselock_table_element(tree.getChild(_i)))) {
-      _result.lock_table_elements.add(parselock_table_element(tree.getChild(_i)));
+      _result.add_lock_table_elements(parselock_table_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParselock_mode(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lock_mode = parselock_mode(tree.getChild(_i));
+    _result.set_lock_mode(parselock_mode(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsewait_nowait_part(tree.getChild(_i)))) {
-      _result.wait_nowait_part = parsewait_nowait_part(tree.getChild(_i));
+      _result.set_wait_nowait_part(parsewait_nowait_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -8977,14 +9078,15 @@ public class parser {
     return _result;
   }
 
-  public static lock_table_statement make_lock_table_statement(java.util.List<lock_table_element> lock_table_elements,
-      lock_mode lock_mode,
-      wait_nowait_part wait_nowait_part) {
+  public static lock_table_statement make_lock_table_statement(java.util.List<ru.barsopen.plsqlconverter.ast.typed.lock_table_element> lock_table_elements,
+      ru.barsopen.plsqlconverter.ast.typed.lock_mode lock_mode,
+      ru.barsopen.plsqlconverter.ast.typed.wait_nowait_part wait_nowait_part) {
     lock_table_statement _result = new lock_table_statement();
-    if (lock_table_elements != null) {      _result.lock_table_elements = lock_table_elements;
+    if (lock_table_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.lock_table_element _value: lock_table_elements) { _result.add_lock_table_elements(_value); }
     }
-    _result.lock_mode = lock_mode;
-    _result.wait_nowait_part = wait_nowait_part;
+    _result.set_lock_mode(lock_mode);
+    _result.set_wait_nowait_part(wait_nowait_part);
     return _result;
   }
 
@@ -9032,11 +9134,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.tableview_name = parsetableview_name(tree.getChild(_i));
+    _result.set_tableview_name(parsetableview_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsepartition_extension_clause(tree.getChild(_i)))) {
-      _result.partition_extension_clause = parsepartition_extension_clause(tree.getChild(_i));
+      _result.set_partition_extension_clause(parsepartition_extension_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9044,11 +9146,11 @@ public class parser {
     return _result;
   }
 
-  public static lock_table_element make_lock_table_element(tableview_name tableview_name,
-      partition_extension_clause partition_extension_clause) {
+  public static lock_table_element make_lock_table_element(ru.barsopen.plsqlconverter.ast.typed.tableview_name tableview_name,
+      ru.barsopen.plsqlconverter.ast.typed.partition_extension_clause partition_extension_clause) {
     lock_table_element _result = new lock_table_element();
-    _result.tableview_name = tableview_name;
-    _result.partition_extension_clause = partition_extension_clause;
+    _result.set_tableview_name(tableview_name);
+    _result.set_partition_extension_clause(partition_extension_clause);
     return _result;
   }
 
@@ -9096,16 +9198,16 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsedml_table_expression_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.dml_table_expression_clause = parsedml_table_expression_clause(tree.getChild(_i));
+    _result.set_dml_table_expression_clause(parsedml_table_expression_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ONLY_VK)) {
-      _result.ONLY_VK = tree.getChild(_i);
+      _result.set_ONLY_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -9113,13 +9215,13 @@ public class parser {
     return _result;
   }
 
-  public static general_table_ref make_general_table_ref(alias alias,
-      dml_table_expression_clause dml_table_expression_clause,
+  public static general_table_ref make_general_table_ref(ru.barsopen.plsqlconverter.ast.typed.alias alias,
+      ru.barsopen.plsqlconverter.ast.typed.dml_table_expression_clause dml_table_expression_clause,
       org.antlr.runtime.tree.Tree ONLY_VK) {
     general_table_ref _result = new general_table_ref();
-    _result.alias = alias;
-    _result.dml_table_expression_clause = dml_table_expression_clause;
-    _result.ONLY_VK = ONLY_VK;
+    _result.set_alias(alias);
+    _result.set_dml_table_expression_clause(dml_table_expression_clause);
+    _result.set_ONLY_VK(ONLY_VK);
     return _result;
   }
 
@@ -9142,24 +9244,25 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expressions.add(parseexpression(tree.getChild(_i)));
+      _result.add_expressions(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseinto_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.into_clause = parseinto_clause(tree.getChild(_i));
+    _result.set_into_clause(parseinto_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static static_returning_clause make_static_returning_clause(java.util.List<expression> expressions,
-      into_clause into_clause) {
+  public static static_returning_clause make_static_returning_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.expression> expressions,
+      ru.barsopen.plsqlconverter.ast.typed.into_clause into_clause) {
     static_returning_clause _result = new static_returning_clause();
-    if (expressions != null) {      _result.expressions = expressions;
+    if (expressions != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.expression _value: expressions) { _result.add_expressions(_value); }
     }
-    _result.into_clause = into_clause;
+    _result.set_into_clause(into_clause);
     return _result;
   }
 
@@ -9181,17 +9284,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseerror_logging_into_part(tree.getChild(_i)))) {
-      _result.error_logging_into_part = parseerror_logging_into_part(tree.getChild(_i));
+      _result.set_error_logging_into_part(parseerror_logging_into_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseerror_logging_reject_part(tree.getChild(_i)))) {
-      _result.error_logging_reject_part = parseerror_logging_reject_part(tree.getChild(_i));
+      _result.set_error_logging_reject_part(parseerror_logging_reject_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9199,13 +9302,13 @@ public class parser {
     return _result;
   }
 
-  public static error_logging_clause make_error_logging_clause(error_logging_into_part error_logging_into_part,
-      expression expression,
-      error_logging_reject_part error_logging_reject_part) {
+  public static error_logging_clause make_error_logging_clause(ru.barsopen.plsqlconverter.ast.typed.error_logging_into_part error_logging_into_part,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.error_logging_reject_part error_logging_reject_part) {
     error_logging_clause _result = new error_logging_clause();
-    _result.error_logging_into_part = error_logging_into_part;
-    _result.expression = expression;
-    _result.error_logging_reject_part = error_logging_reject_part;
+    _result.set_error_logging_into_part(error_logging_into_part);
+    _result.set_expression(expression);
+    _result.set_error_logging_reject_part(error_logging_reject_part);
     return _result;
   }
 
@@ -9227,16 +9330,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.tableview_name = parsetableview_name(tree.getChild(_i));
+    _result.set_tableview_name(parsetableview_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static error_logging_into_part make_error_logging_into_part(tableview_name tableview_name) {
+  public static error_logging_into_part make_error_logging_into_part(ru.barsopen.plsqlconverter.ast.typed.tableview_name tableview_name) {
     error_logging_into_part _result = new error_logging_into_part();
-    _result.tableview_name = tableview_name;
+    _result.set_tableview_name(tableview_name);
     return _result;
   }
 
@@ -9258,12 +9361,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNLIMITED_VK)) {
-      _result.UNLIMITED_VK = tree.getChild(_i);
+      _result.set_UNLIMITED_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9272,10 +9375,10 @@ public class parser {
   }
 
   public static error_logging_reject_part make_error_logging_reject_part(org.antlr.runtime.tree.Tree UNLIMITED_VK,
-      expression expression) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     error_logging_reject_part _result = new error_logging_reject_part();
-    _result.UNLIMITED_VK = UNLIMITED_VK;
-    _result.expression = expression;
+    _result.set_UNLIMITED_VK(UNLIMITED_VK);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -9311,16 +9414,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetable_expression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_expression_element = parsetable_expression_element(tree.getChild(_i));
+    _result.set_table_expression_element(parsetable_expression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static tabe_expression make_tabe_expression(table_expression_element table_expression_element) {
+  public static tabe_expression make_tabe_expression(ru.barsopen.plsqlconverter.ast.typed.table_expression_element table_expression_element) {
     tabe_expression _result = new tabe_expression();
-    _result.table_expression_element = table_expression_element;
+    _result.set_table_expression_element(table_expression_element);
     return _result;
   }
 
@@ -9359,16 +9462,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetable_collection_expression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.table_collection_expression = parsetable_collection_expression(tree.getChild(_i));
+    _result.set_table_collection_expression(parsetable_collection_expression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static collection_mode make_collection_mode(table_collection_expression table_collection_expression) {
+  public static collection_mode make_collection_mode(ru.barsopen.plsqlconverter.ast.typed.table_collection_expression table_collection_expression) {
     collection_mode _result = new collection_mode();
-    _result.table_collection_expression = table_collection_expression;
+    _result.set_table_collection_expression(table_collection_expression);
     return _result;
   }
 
@@ -9390,11 +9493,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseselect_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.select_statement = parseselect_statement(tree.getChild(_i));
+    _result.set_select_statement(parseselect_statement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsesubquery_restriction_clause(tree.getChild(_i)))) {
-      _result.subquery_restriction_clause = parsesubquery_restriction_clause(tree.getChild(_i));
+      _result.set_subquery_restriction_clause(parsesubquery_restriction_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9402,11 +9505,11 @@ public class parser {
     return _result;
   }
 
-  public static select_mode make_select_mode(select_statement select_statement,
-      subquery_restriction_clause subquery_restriction_clause) {
+  public static select_mode make_select_mode(ru.barsopen.plsqlconverter.ast.typed.select_statement select_statement,
+      ru.barsopen.plsqlconverter.ast.typed.subquery_restriction_clause subquery_restriction_clause) {
     select_mode _result = new select_mode();
-    _result.select_statement = select_statement;
-    _result.subquery_restriction_clause = subquery_restriction_clause;
+    _result.set_select_statement(select_statement);
+    _result.set_subquery_restriction_clause(subquery_restriction_clause);
     return _result;
   }
 
@@ -9428,11 +9531,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.tableview_name = parsetableview_name(tree.getChild(_i));
+    _result.set_tableview_name(parsetableview_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsesample_clause(tree.getChild(_i)))) {
-      _result.sample_clause = parsesample_clause(tree.getChild(_i));
+      _result.set_sample_clause(parsesample_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9440,11 +9543,11 @@ public class parser {
     return _result;
   }
 
-  public static direct_mode make_direct_mode(tableview_name tableview_name,
-      sample_clause sample_clause) {
+  public static direct_mode make_direct_mode(ru.barsopen.plsqlconverter.ast.typed.tableview_name tableview_name,
+      ru.barsopen.plsqlconverter.ast.typed.sample_clause sample_clause) {
     direct_mode _result = new direct_mode();
-    _result.tableview_name = tableview_name;
-    _result.sample_clause = sample_clause;
+    _result.set_tableview_name(tableview_name);
+    _result.set_sample_clause(sample_clause);
     return _result;
   }
 
@@ -9481,16 +9584,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static outer_join_sign_table_expr make_outer_join_sign_table_expr(expression_or_subquery expression_or_subquery) {
+  public static outer_join_sign_table_expr make_outer_join_sign_table_expr(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     outer_join_sign_table_expr _result = new outer_join_sign_table_expr();
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -9538,16 +9641,16 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BLOCK_VK)) {
-      _result.BLOCK_VK = tree.getChild(_i);
+      _result.set_BLOCK_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseseed_part(tree.getChild(_i)))) {
-      _result.seed_part = parseseed_part(tree.getChild(_i));
+      _result.set_seed_part(parseseed_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9556,12 +9659,12 @@ public class parser {
   }
 
   public static sample_clause make_sample_clause(org.antlr.runtime.tree.Tree BLOCK_VK,
-      expression expression,
-      seed_part seed_part) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.seed_part seed_part) {
     sample_clause _result = new sample_clause();
-    _result.BLOCK_VK = BLOCK_VK;
-    _result.expression = expression;
-    _result.seed_part = seed_part;
+    _result.set_BLOCK_VK(BLOCK_VK);
+    _result.set_expression(expression);
+    _result.set_seed_part(seed_part);
     return _result;
   }
 
@@ -9583,16 +9686,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static seed_part make_seed_part(expression expression) {
+  public static seed_part make_seed_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     seed_part _result = new seed_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -9630,16 +9733,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static close_statement make_close_statement(cursor_name cursor_name) {
+  public static close_statement make_close_statement(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name) {
     close_statement _result = new close_statement();
-    _result.cursor_name = cursor_name;
+    _result.set_cursor_name(cursor_name);
     return _result;
   }
 
@@ -9661,11 +9764,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_list(tree.getChild(_i)))) {
-      _result.expression_list = parseexpression_list(tree.getChild(_i));
+      _result.set_expression_list(parseexpression_list(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9673,11 +9776,11 @@ public class parser {
     return _result;
   }
 
-  public static open_statement make_open_statement(cursor_name cursor_name,
-      expression_list expression_list) {
+  public static open_statement make_open_statement(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name,
+      ru.barsopen.plsqlconverter.ast.typed.expression_list expression_list) {
     open_statement _result = new open_statement();
-    _result.cursor_name = cursor_name;
-    _result.expression_list = expression_list;
+    _result.set_cursor_name(cursor_name);
+    _result.set_expression_list(expression_list);
     return _result;
   }
 
@@ -9699,22 +9802,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseinto_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.into_clause = parseinto_clause(tree.getChild(_i));
+    _result.set_into_clause(parseinto_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static fetch_statement make_fetch_statement(cursor_name cursor_name,
-      into_clause into_clause) {
+  public static fetch_statement make_fetch_statement(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name,
+      ru.barsopen.plsqlconverter.ast.typed.into_clause into_clause) {
     fetch_statement _result = new fetch_statement();
-    _result.cursor_name = cursor_name;
-    _result.into_clause = into_clause;
+    _result.set_cursor_name(cursor_name);
+    _result.set_into_clause(into_clause);
     return _result;
   }
 
@@ -9736,15 +9839,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsevariable_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.variable_name = parsevariable_name(tree.getChild(_i));
+    _result.set_variable_name(parsevariable_name(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_select_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_select_statement = parseexpression_or_select_statement(tree.getChild(_i));
+    _result.set_expression_or_select_statement(parseexpression_or_select_statement(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseusing_clause(tree.getChild(_i)))) {
-      _result.using_clause = parseusing_clause(tree.getChild(_i));
+      _result.set_using_clause(parseusing_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9752,13 +9855,13 @@ public class parser {
     return _result;
   }
 
-  public static open_for_statement make_open_for_statement(variable_name variable_name,
-      expression_or_select_statement expression_or_select_statement,
-      using_clause using_clause) {
+  public static open_for_statement make_open_for_statement(ru.barsopen.plsqlconverter.ast.typed.variable_name variable_name,
+      ru.barsopen.plsqlconverter.ast.typed.expression_or_select_statement expression_or_select_statement,
+      ru.barsopen.plsqlconverter.ast.typed.using_clause using_clause) {
     open_for_statement _result = new open_for_statement();
-    _result.variable_name = variable_name;
-    _result.expression_or_select_statement = expression_or_select_statement;
-    _result.using_clause = using_clause;
+    _result.set_variable_name(variable_name);
+    _result.set_expression_or_select_statement(expression_or_select_statement);
+    _result.set_using_clause(using_clause);
     return _result;
   }
 
@@ -9863,17 +9966,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WORK_VK)) {
-      _result.WORK_VK = tree.getChild(_i);
+      _result.set_WORK_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsecommit_statement_additional(tree.getChild(_i)))) {
-      _result.commit_statement_additional = parsecommit_statement_additional(tree.getChild(_i));
+      _result.set_commit_statement_additional(parsecommit_statement_additional(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsewrite_clause(tree.getChild(_i)))) {
-      _result.write_clause = parsewrite_clause(tree.getChild(_i));
+      _result.set_write_clause(parsewrite_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -9882,12 +9985,12 @@ public class parser {
   }
 
   public static commit_statement make_commit_statement(org.antlr.runtime.tree.Tree WORK_VK,
-      commit_statement_additional commit_statement_additional,
-      write_clause write_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.commit_statement_additional commit_statement_additional,
+      ru.barsopen.plsqlconverter.ast.typed.write_clause write_clause) {
     commit_statement _result = new commit_statement();
-    _result.WORK_VK = WORK_VK;
-    _result.commit_statement_additional = commit_statement_additional;
-    _result.write_clause = write_clause;
+    _result.set_WORK_VK(WORK_VK);
+    _result.set_commit_statement_additional(commit_statement_additional);
+    _result.set_write_clause(write_clause);
     return _result;
   }
 
@@ -9923,16 +10026,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.comment_expr = parseexpression(tree.getChild(_i));
+    _result.set_comment_expr(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static commit_comment make_commit_comment(expression comment_expr) {
+  public static commit_comment make_commit_comment(ru.barsopen.plsqlconverter.ast.typed.expression comment_expr) {
     commit_comment _result = new commit_comment();
-    _result.comment_expr = comment_expr;
+    _result.set_comment_expr(comment_expr);
     return _result;
   }
 
@@ -9954,16 +10057,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecommit_force_content(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.commit_force_content = parsecommit_force_content(tree.getChild(_i));
+    _result.set_commit_force_content(parsecommit_force_content(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static commit_force make_commit_force(commit_force_content commit_force_content) {
+  public static commit_force make_commit_force(ru.barsopen.plsqlconverter.ast.typed.commit_force_content commit_force_content) {
     commit_force _result = new commit_force();
-    _result.commit_force_content = commit_force_content;
+    _result.set_commit_force_content(commit_force_content);
     return _result;
   }
 
@@ -10000,16 +10103,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static commit_force_xid make_commit_force_xid(expression expression) {
+  public static commit_force_xid make_commit_force_xid(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     commit_force_xid _result = new commit_force_xid();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -10070,22 +10173,22 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WAIT_VK)) {
-      _result.WAIT_VK = tree.getChild(_i);
+      _result.set_WAIT_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_NOWAIT)) {
-      _result.PLSQL_RESERVED_NOWAIT = tree.getChild(_i);
+      _result.set_PLSQL_RESERVED_NOWAIT(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.IMMEDIATE_VK)) {
-      _result.IMMEDIATE_VK = tree.getChild(_i);
+      _result.set_IMMEDIATE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BATCH_VK)) {
-      _result.BATCH_VK = tree.getChild(_i);
+      _result.set_BATCH_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -10098,10 +10201,10 @@ public class parser {
       org.antlr.runtime.tree.Tree IMMEDIATE_VK,
       org.antlr.runtime.tree.Tree BATCH_VK) {
     write_clause _result = new write_clause();
-    _result.WAIT_VK = WAIT_VK;
-    _result.PLSQL_RESERVED_NOWAIT = PLSQL_RESERVED_NOWAIT;
-    _result.IMMEDIATE_VK = IMMEDIATE_VK;
-    _result.BATCH_VK = BATCH_VK;
+    _result.set_WAIT_VK(WAIT_VK);
+    _result.set_PLSQL_RESERVED_NOWAIT(PLSQL_RESERVED_NOWAIT);
+    _result.set_IMMEDIATE_VK(IMMEDIATE_VK);
+    _result.set_BATCH_VK(BATCH_VK);
     return _result;
   }
 
@@ -10123,12 +10226,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WORK_VK)) {
-      _result.WORK_VK = tree.getChild(_i);
+      _result.set_WORK_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParserollback_statement_additional(tree.getChild(_i)))) {
-      _result.rollback_statement_additional = parserollback_statement_additional(tree.getChild(_i));
+      _result.set_rollback_statement_additional(parserollback_statement_additional(tree.getChild(_i)));
       ++_i;
     }
 
@@ -10137,10 +10240,10 @@ public class parser {
   }
 
   public static rollback_statement make_rollback_statement(org.antlr.runtime.tree.Tree WORK_VK,
-      rollback_statement_additional rollback_statement_additional) {
+      ru.barsopen.plsqlconverter.ast.typed.rollback_statement_additional rollback_statement_additional) {
     rollback_statement _result = new rollback_statement();
-    _result.WORK_VK = WORK_VK;
-    _result.rollback_statement_additional = rollback_statement_additional;
+    _result.set_WORK_VK(WORK_VK);
+    _result.set_rollback_statement_additional(rollback_statement_additional);
     return _result;
   }
 
@@ -10176,16 +10279,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsesavepoint_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.savepoint_name = parsesavepoint_name(tree.getChild(_i));
+    _result.set_savepoint_name(parsesavepoint_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static rollback_statement_to make_rollback_statement_to(savepoint_name savepoint_name) {
+  public static rollback_statement_to make_rollback_statement_to(ru.barsopen.plsqlconverter.ast.typed.savepoint_name savepoint_name) {
     rollback_statement_to _result = new rollback_statement_to();
-    _result.savepoint_name = savepoint_name;
+    _result.set_savepoint_name(savepoint_name);
     return _result;
   }
 
@@ -10207,7 +10310,7 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.CHAR_STRING = tree.getChild(_i);
+    _result.set_CHAR_STRING(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -10216,7 +10319,7 @@ public class parser {
 
   public static rollback_statement_force make_rollback_statement_force(org.antlr.runtime.tree.Tree CHAR_STRING) {
     rollback_statement_force _result = new rollback_statement_force();
-    _result.CHAR_STRING = CHAR_STRING;
+    _result.set_CHAR_STRING(CHAR_STRING);
     return _result;
   }
 
@@ -10238,16 +10341,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsesavepoint_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.savepoint_name = parsesavepoint_name(tree.getChild(_i));
+    _result.set_savepoint_name(parsesavepoint_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static savepoint_statement make_savepoint_statement(savepoint_name savepoint_name) {
+  public static savepoint_statement make_savepoint_statement(ru.barsopen.plsqlconverter.ast.typed.savepoint_name savepoint_name) {
     savepoint_statement _result = new savepoint_statement();
-    _result.savepoint_name = savepoint_name;
+    _result.set_savepoint_name(savepoint_name);
     return _result;
   }
 
@@ -10269,16 +10372,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static pipe_row_statement make_pipe_row_statement(expression expression) {
+  public static pipe_row_statement make_pipe_row_statement(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     pipe_row_statement _result = new pipe_row_statement();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -10300,7 +10403,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expressions.add(parseexpression(tree.getChild(_i)));
+      _result.add_expressions(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -10308,9 +10411,10 @@ public class parser {
     return _result;
   }
 
-  public static expression_list make_expression_list(java.util.List<expression> expressions) {
+  public static expression_list make_expression_list(java.util.List<ru.barsopen.plsqlconverter.ast.typed.expression> expressions) {
     expression_list _result = new expression_list();
-    if (expressions != null) {      _result.expressions = expressions;
+    if (expressions != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.expression _value: expressions) { _result.add_expressions(_value); }
     }
     return _result;
   }
@@ -10347,16 +10451,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_element = parseexpression_element(tree.getChild(_i));
+    _result.set_expression_element(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static logic_expression make_logic_expression(expression_element expression_element) {
+  public static logic_expression make_logic_expression(ru.barsopen.plsqlconverter.ast.typed.expression_element expression_element) {
     logic_expression _result = new logic_expression();
-    _result.expression_element = expression_element;
+    _result.set_expression_element(expression_element);
     return _result;
   }
 
@@ -10378,16 +10482,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_element = parseexpression_element(tree.getChild(_i));
+    _result.set_expression_element(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static general_expression make_general_expression(expression_element expression_element) {
+  public static general_expression make_general_expression(ru.barsopen.plsqlconverter.ast.typed.expression_element expression_element) {
     general_expression _result = new general_expression();
-    _result.expression_element = expression_element;
+    _result.set_expression_element(expression_element);
     return _result;
   }
 
@@ -10477,22 +10581,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_or make_expression_element_or(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_or make_expression_element_or(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_or _result = new expression_element_or();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10514,22 +10618,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_and make_expression_element_and(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_and make_expression_element_and(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_and _result = new expression_element_and();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10551,22 +10655,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_eq make_expression_element_eq(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_eq make_expression_element_eq(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_eq _result = new expression_element_eq();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10588,22 +10692,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_neq make_expression_element_neq(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_neq make_expression_element_neq(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_neq _result = new expression_element_neq();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10625,22 +10729,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_lt make_expression_element_lt(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_lt make_expression_element_lt(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_lt _result = new expression_element_lt();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10662,22 +10766,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_gt make_expression_element_gt(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_gt make_expression_element_gt(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_gt _result = new expression_element_gt();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10699,22 +10803,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_lte make_expression_element_lte(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_lte make_expression_element_lte(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_lte _result = new expression_element_lte();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10736,22 +10840,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_gte make_expression_element_gte(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_gte make_expression_element_gte(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_gte _result = new expression_element_gte();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10773,22 +10877,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_concat make_expression_element_concat(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_concat make_expression_element_concat(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_concat _result = new expression_element_concat();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10810,22 +10914,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_plus make_expression_element_plus(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_plus make_expression_element_plus(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_plus _result = new expression_element_plus();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10847,22 +10951,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_minus make_expression_element_minus(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_minus make_expression_element_minus(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_minus _result = new expression_element_minus();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10884,22 +10988,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_asterisk make_expression_element_asterisk(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_asterisk make_expression_element_asterisk(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_asterisk _result = new expression_element_asterisk();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10921,22 +11025,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_solidus make_expression_element_solidus(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_solidus make_expression_element_solidus(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_solidus _result = new expression_element_solidus();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10958,22 +11062,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_percent make_expression_element_percent(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_percent make_expression_element_percent(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_percent _result = new expression_element_percent();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -10995,22 +11099,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_mod make_expression_element_mod(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_mod make_expression_element_mod(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_mod _result = new expression_element_mod();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -11032,22 +11136,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.lhs = parseexpression_element(tree.getChild(_i));
+    _result.set_lhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.rhs = parseexpression_element(tree.getChild(_i));
+    _result.set_rhs(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_div make_expression_element_div(expression_element lhs,
-      expression_element rhs) {
+  public static expression_element_div make_expression_element_div(ru.barsopen.plsqlconverter.ast.typed.expression_element lhs,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element rhs) {
     expression_element_div _result = new expression_element_div();
-    _result.lhs = lhs;
-    _result.rhs = rhs;
+    _result.set_lhs(lhs);
+    _result.set_rhs(rhs);
     return _result;
   }
 
@@ -11069,16 +11173,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not make_expression_element_not(expression_element arg) {
+  public static expression_element_not make_expression_element_not(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not _result = new expression_element_not();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11100,16 +11204,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_null make_expression_element_not_null(expression_element arg) {
+  public static expression_element_not_null make_expression_element_not_null(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_null _result = new expression_element_not_null();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11131,16 +11235,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_null make_expression_element_null(expression_element arg) {
+  public static expression_element_null make_expression_element_null(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_null _result = new expression_element_null();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11162,16 +11266,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_nan make_expression_element_not_nan(expression_element arg) {
+  public static expression_element_not_nan make_expression_element_not_nan(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_nan _result = new expression_element_not_nan();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11193,16 +11297,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_nan make_expression_element_nan(expression_element arg) {
+  public static expression_element_nan make_expression_element_nan(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_nan _result = new expression_element_nan();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11224,16 +11328,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_present make_expression_element_not_present(expression_element arg) {
+  public static expression_element_not_present make_expression_element_not_present(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_present _result = new expression_element_not_present();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11255,16 +11359,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_present make_expression_element_present(expression_element arg) {
+  public static expression_element_present make_expression_element_present(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_present _result = new expression_element_present();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11286,16 +11390,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_infinite make_expression_element_not_infinite(expression_element arg) {
+  public static expression_element_not_infinite make_expression_element_not_infinite(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_infinite _result = new expression_element_not_infinite();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11317,16 +11421,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_infinite make_expression_element_infinite(expression_element arg) {
+  public static expression_element_infinite make_expression_element_infinite(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_infinite _result = new expression_element_infinite();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11348,16 +11452,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_a_set make_expression_element_not_a_set(expression_element arg) {
+  public static expression_element_not_a_set make_expression_element_not_a_set(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_a_set _result = new expression_element_not_a_set();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11379,16 +11483,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_a_set make_expression_element_a_set(expression_element arg) {
+  public static expression_element_a_set make_expression_element_a_set(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_a_set _result = new expression_element_a_set();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11410,16 +11514,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_empty make_expression_element_not_empty(expression_element arg) {
+  public static expression_element_not_empty make_expression_element_not_empty(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_not_empty _result = new expression_element_not_empty();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11441,16 +11545,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_empty make_expression_element_empty(expression_element arg) {
+  public static expression_element_empty make_expression_element_empty(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_empty _result = new expression_element_empty();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11472,22 +11576,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsein_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.in_elements = parsein_elements(tree.getChild(_i));
+    _result.set_in_elements(parsein_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_in make_expression_element_not_in(expression_element arg,
-      in_elements in_elements) {
+  public static expression_element_not_in make_expression_element_not_in(ru.barsopen.plsqlconverter.ast.typed.expression_element arg,
+      ru.barsopen.plsqlconverter.ast.typed.in_elements in_elements) {
     expression_element_not_in _result = new expression_element_not_in();
-    _result.arg = arg;
-    _result.in_elements = in_elements;
+    _result.set_arg(arg);
+    _result.set_in_elements(in_elements);
     return _result;
   }
 
@@ -11509,22 +11613,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsein_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.in_elements = parsein_elements(tree.getChild(_i));
+    _result.set_in_elements(parsein_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_in make_expression_element_in(expression_element arg,
-      in_elements in_elements) {
+  public static expression_element_in make_expression_element_in(ru.barsopen.plsqlconverter.ast.typed.expression_element arg,
+      ru.barsopen.plsqlconverter.ast.typed.in_elements in_elements) {
     expression_element_in _result = new expression_element_in();
-    _result.arg = arg;
-    _result.in_elements = in_elements;
+    _result.set_arg(arg);
+    _result.set_in_elements(in_elements);
     return _result;
   }
 
@@ -11546,28 +11650,28 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_low = parseexpression_element(tree.getChild(_i));
+    _result.set_expr_low(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_high = parseexpression_element(tree.getChild(_i));
+    _result.set_expr_high(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_not_between make_expression_element_not_between(expression_element arg,
-      expression_element expr_low,
-      expression_element expr_high) {
+  public static expression_element_not_between make_expression_element_not_between(ru.barsopen.plsqlconverter.ast.typed.expression_element arg,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element expr_low,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element expr_high) {
     expression_element_not_between _result = new expression_element_not_between();
-    _result.arg = arg;
-    _result.expr_low = expr_low;
-    _result.expr_high = expr_high;
+    _result.set_arg(arg);
+    _result.set_expr_low(expr_low);
+    _result.set_expr_high(expr_high);
     return _result;
   }
 
@@ -11589,28 +11693,28 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_low = parseexpression_element(tree.getChild(_i));
+    _result.set_expr_low(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_high = parseexpression_element(tree.getChild(_i));
+    _result.set_expr_high(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_between make_expression_element_between(expression_element arg,
-      expression_element expr_low,
-      expression_element expr_high) {
+  public static expression_element_between make_expression_element_between(ru.barsopen.plsqlconverter.ast.typed.expression_element arg,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element expr_low,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element expr_high) {
     expression_element_between _result = new expression_element_between();
-    _result.arg = arg;
-    _result.expr_low = expr_low;
-    _result.expr_high = expr_high;
+    _result.set_arg(arg);
+    _result.set_expr_low(expr_low);
+    _result.set_expr_high(expr_high);
     return _result;
   }
 
@@ -11632,15 +11736,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text = parseexpression_element(tree.getChild(_i));
+    _result.set_text(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pattern = parseexpression_element(tree.getChild(_i));
+    _result.set_pattern(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.escape = parseexpression_element(tree.getChild(_i));
+      _result.set_escape(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -11648,13 +11752,13 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_like make_expression_element_like(expression_element text,
-      expression_element pattern,
-      expression_element escape) {
+  public static expression_element_like make_expression_element_like(ru.barsopen.plsqlconverter.ast.typed.expression_element text,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element pattern,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element escape) {
     expression_element_like _result = new expression_element_like();
-    _result.text = text;
-    _result.pattern = pattern;
-    _result.escape = escape;
+    _result.set_text(text);
+    _result.set_pattern(pattern);
+    _result.set_escape(escape);
     return _result;
   }
 
@@ -11676,15 +11780,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text = parseexpression_element(tree.getChild(_i));
+    _result.set_text(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pattern = parseexpression_element(tree.getChild(_i));
+    _result.set_pattern(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.escape = parseexpression_element(tree.getChild(_i));
+      _result.set_escape(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -11692,13 +11796,13 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_likec make_expression_element_likec(expression_element text,
-      expression_element pattern,
-      expression_element escape) {
+  public static expression_element_likec make_expression_element_likec(ru.barsopen.plsqlconverter.ast.typed.expression_element text,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element pattern,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element escape) {
     expression_element_likec _result = new expression_element_likec();
-    _result.text = text;
-    _result.pattern = pattern;
-    _result.escape = escape;
+    _result.set_text(text);
+    _result.set_pattern(pattern);
+    _result.set_escape(escape);
     return _result;
   }
 
@@ -11720,15 +11824,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text = parseexpression_element(tree.getChild(_i));
+    _result.set_text(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pattern = parseexpression_element(tree.getChild(_i));
+    _result.set_pattern(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.escape = parseexpression_element(tree.getChild(_i));
+      _result.set_escape(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -11736,13 +11840,13 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_like2 make_expression_element_like2(expression_element text,
-      expression_element pattern,
-      expression_element escape) {
+  public static expression_element_like2 make_expression_element_like2(ru.barsopen.plsqlconverter.ast.typed.expression_element text,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element pattern,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element escape) {
     expression_element_like2 _result = new expression_element_like2();
-    _result.text = text;
-    _result.pattern = pattern;
-    _result.escape = escape;
+    _result.set_text(text);
+    _result.set_pattern(pattern);
+    _result.set_escape(escape);
     return _result;
   }
 
@@ -11764,15 +11868,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text = parseexpression_element(tree.getChild(_i));
+    _result.set_text(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pattern = parseexpression_element(tree.getChild(_i));
+    _result.set_pattern(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.escape = parseexpression_element(tree.getChild(_i));
+      _result.set_escape(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -11780,13 +11884,13 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_like4 make_expression_element_like4(expression_element text,
-      expression_element pattern,
-      expression_element escape) {
+  public static expression_element_like4 make_expression_element_like4(ru.barsopen.plsqlconverter.ast.typed.expression_element text,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element pattern,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element escape) {
     expression_element_like4 _result = new expression_element_like4();
-    _result.text = text;
-    _result.pattern = pattern;
-    _result.escape = escape;
+    _result.set_text(text);
+    _result.set_pattern(pattern);
+    _result.set_escape(escape);
     return _result;
   }
 
@@ -11808,15 +11912,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text = parseexpression_element(tree.getChild(_i));
+    _result.set_text(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.pattern = parseexpression_element(tree.getChild(_i));
+    _result.set_pattern(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.escape = parseexpression_element(tree.getChild(_i));
+      _result.set_escape(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -11824,13 +11928,13 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_not_like make_expression_element_not_like(expression_element text,
-      expression_element pattern,
-      expression_element escape) {
+  public static expression_element_not_like make_expression_element_not_like(ru.barsopen.plsqlconverter.ast.typed.expression_element text,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element pattern,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element escape) {
     expression_element_not_like _result = new expression_element_not_like();
-    _result.text = text;
-    _result.pattern = pattern;
-    _result.escape = escape;
+    _result.set_text(text);
+    _result.set_pattern(pattern);
+    _result.set_escape(escape);
     return _result;
   }
 
@@ -11854,7 +11958,7 @@ public class parser {
     _result.op = tree.getText();
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -11862,10 +11966,10 @@ public class parser {
   }
 
   public static expression_element_unary make_expression_element_unary(String op,
-      expression_element arg) {
+      ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_unary _result = new expression_element_unary();
-    _result.op = op;
-    _result.arg = arg;
+    _result.set_op(op);
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11887,16 +11991,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.arg = parseexpression_element(tree.getChild(_i));
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_prior make_expression_element_prior(expression_element arg) {
+  public static expression_element_prior make_expression_element_prior(ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
     expression_element_prior _result = new expression_element_prior();
-    _result.arg = arg;
+    _result.set_arg(arg);
     return _result;
   }
 
@@ -11918,16 +12022,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsestandard_function(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.standard_function = parsestandard_function(tree.getChild(_i));
+    _result.set_standard_function(parsestandard_function(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_stanrd make_expression_element_stanrd(standard_function standard_function) {
+  public static expression_element_stanrd make_expression_element_stanrd(ru.barsopen.plsqlconverter.ast.typed.standard_function standard_function) {
     expression_element_stanrd _result = new expression_element_stanrd();
-    _result.standard_function = standard_function;
+    _result.set_standard_function(standard_function);
     return _result;
   }
 
@@ -11949,16 +12053,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_some make_expression_element_some(expression_or_subquery expression_or_subquery) {
+  public static expression_element_some make_expression_element_some(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     expression_element_some _result = new expression_element_some();
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -11980,16 +12084,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_exists make_expression_element_exists(expression_or_subquery expression_or_subquery) {
+  public static expression_element_exists make_expression_element_exists(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     expression_element_exists _result = new expression_element_exists();
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -12011,16 +12115,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_all make_expression_element_all(expression_or_subquery expression_or_subquery) {
+  public static expression_element_all make_expression_element_all(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     expression_element_all _result = new expression_element_all();
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -12042,16 +12146,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_any make_expression_element_any(expression_or_subquery expression_or_subquery) {
+  public static expression_element_any make_expression_element_any(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery) {
     expression_element_any _result = new expression_element_any();
-    _result.expression_or_subquery = expression_or_subquery;
+    _result.set_expression_or_subquery(expression_or_subquery);
     return _result;
   }
 
@@ -12073,16 +12177,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetableview_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.tableview_name = parsetableview_name(tree.getChild(_i));
+    _result.set_tableview_name(parsetableview_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_dot_asterisk make_expression_element_dot_asterisk(tableview_name tableview_name) {
+  public static expression_element_dot_asterisk make_expression_element_dot_asterisk(ru.barsopen.plsqlconverter.ast.typed.tableview_name tableview_name) {
     expression_element_dot_asterisk _result = new expression_element_dot_asterisk();
-    _result.tableview_name = tableview_name;
+    _result.set_tableview_name(tableview_name);
     return _result;
   }
 
@@ -12104,16 +12208,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_found make_expression_element_found(cursor_name cursor_name) {
+  public static expression_element_found make_expression_element_found(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name) {
     expression_element_found _result = new expression_element_found();
-    _result.cursor_name = cursor_name;
+    _result.set_cursor_name(cursor_name);
     return _result;
   }
 
@@ -12135,16 +12239,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_notfound make_expression_element_notfound(cursor_name cursor_name) {
+  public static expression_element_notfound make_expression_element_notfound(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name) {
     expression_element_notfound _result = new expression_element_notfound();
-    _result.cursor_name = cursor_name;
+    _result.set_cursor_name(cursor_name);
     return _result;
   }
 
@@ -12166,16 +12270,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_rowcount make_expression_element_rowcount(cursor_name cursor_name) {
+  public static expression_element_rowcount make_expression_element_rowcount(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name) {
     expression_element_rowcount _result = new expression_element_rowcount();
-    _result.cursor_name = cursor_name;
+    _result.set_cursor_name(cursor_name);
     return _result;
   }
 
@@ -12197,16 +12301,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsecursor_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.cursor_name = parsecursor_name(tree.getChild(_i));
+    _result.set_cursor_name(parsecursor_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_isopen make_expression_element_isopen(cursor_name cursor_name) {
+  public static expression_element_isopen make_expression_element_isopen(ru.barsopen.plsqlconverter.ast.typed.cursor_name cursor_name) {
     expression_element_isopen _result = new expression_element_isopen();
-    _result.cursor_name = cursor_name;
+    _result.set_cursor_name(cursor_name);
     return _result;
   }
 
@@ -12228,16 +12332,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr = parseexpression_element(tree.getChild(_i));
+    _result.set_expr(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static expression_element_outer_join_sign make_expression_element_outer_join_sign(expression_element expr) {
+  public static expression_element_outer_join_sign make_expression_element_outer_join_sign(ru.barsopen.plsqlconverter.ast.typed.expression_element expr) {
     expression_element_outer_join_sign _result = new expression_element_outer_join_sign();
-    _result.expr = expr;
+    _result.set_expr(expr);
     return _result;
   }
 
@@ -12300,12 +12404,12 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_element = parseexpression_element(tree.getChild(_i));
+    _result.set_expression_element(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsemodel_expression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsemodel_expression_element(tree.getChild(_i)))) {
-      _result.model_expression_elements.add(parsemodel_expression_element(tree.getChild(_i)));
+      _result.add_model_expression_elements(parsemodel_expression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12313,11 +12417,12 @@ public class parser {
     return _result;
   }
 
-  public static model_expression make_model_expression(expression_element expression_element,
-      java.util.List<model_expression_element> model_expression_elements) {
+  public static model_expression make_model_expression(ru.barsopen.plsqlconverter.ast.typed.expression_element expression_element,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.model_expression_element> model_expression_elements) {
     model_expression _result = new model_expression();
-    _result.expression_element = expression_element;
-    if (model_expression_elements != null) {      _result.model_expression_elements = model_expression_elements;
+    _result.set_expression_element(expression_element);
+    if (model_expression_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.model_expression_element _value: model_expression_elements) { _result.add_model_expression_elements(_value); }
     }
     return _result;
   }
@@ -12432,17 +12537,17 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsecase_when_part(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecase_when_part(tree.getChild(_i)))) {
-      _result.case_when_parts.add(parsecase_when_part(tree.getChild(_i)));
+      _result.add_case_when_parts(parsecase_when_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsecase_else_part(tree.getChild(_i)))) {
-      _result.case_else_part = parsecase_else_part(tree.getChild(_i));
+      _result.set_case_else_part(parsecase_else_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12450,14 +12555,15 @@ public class parser {
     return _result;
   }
 
-  public static case_statement_simple make_case_statement_simple(expression expression,
-      java.util.List<case_when_part> case_when_parts,
-      case_else_part case_else_part) {
+  public static case_statement_simple make_case_statement_simple(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.case_when_part> case_when_parts,
+      ru.barsopen.plsqlconverter.ast.typed.case_else_part case_else_part) {
     case_statement_simple _result = new case_statement_simple();
-    _result.expression = expression;
-    if (case_when_parts != null) {      _result.case_when_parts = case_when_parts;
+    _result.set_expression(expression);
+    if (case_when_parts != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.case_when_part _value: case_when_parts) { _result.add_case_when_parts(_value); }
     }
-    _result.case_else_part = case_else_part;
+    _result.set_case_else_part(case_else_part);
     return _result;
   }
 
@@ -12480,12 +12586,12 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsecase_when_part(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsecase_when_part(tree.getChild(_i)))) {
-      _result.case_when_parts.add(parsecase_when_part(tree.getChild(_i)));
+      _result.add_case_when_parts(parsecase_when_part(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsecase_else_part(tree.getChild(_i)))) {
-      _result.case_else_part = parsecase_else_part(tree.getChild(_i));
+      _result.set_case_else_part(parsecase_else_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12493,12 +12599,13 @@ public class parser {
     return _result;
   }
 
-  public static case_statement_searched make_case_statement_searched(java.util.List<case_when_part> case_when_parts,
-      case_else_part case_else_part) {
+  public static case_statement_searched make_case_statement_searched(java.util.List<ru.barsopen.plsqlconverter.ast.typed.case_when_part> case_when_parts,
+      ru.barsopen.plsqlconverter.ast.typed.case_else_part case_else_part) {
     case_statement_searched _result = new case_statement_searched();
-    if (case_when_parts != null) {      _result.case_when_parts = case_when_parts;
+    if (case_when_parts != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.case_when_part _value: case_when_parts) { _result.add_case_when_parts(_value); }
     }
-    _result.case_else_part = case_else_part;
+    _result.set_case_else_part(case_else_part);
     return _result;
   }
 
@@ -12520,22 +12627,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.condition = parseexpression(tree.getChild(_i));
+    _result.set_condition(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_seq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_seq_of_statements = parseexpression_or_seq_of_statements(tree.getChild(_i));
+    _result.set_expression_or_seq_of_statements(parseexpression_or_seq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static case_when_part make_case_when_part(expression condition,
-      expression_or_seq_of_statements expression_or_seq_of_statements) {
+  public static case_when_part make_case_when_part(ru.barsopen.plsqlconverter.ast.typed.expression condition,
+      ru.barsopen.plsqlconverter.ast.typed.expression_or_seq_of_statements expression_or_seq_of_statements) {
     case_when_part _result = new case_when_part();
-    _result.condition = condition;
-    _result.expression_or_seq_of_statements = expression_or_seq_of_statements;
+    _result.set_condition(condition);
+    _result.set_expression_or_seq_of_statements(expression_or_seq_of_statements);
     return _result;
   }
 
@@ -12571,16 +12678,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_seq_of_statements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_seq_of_statements = parseexpression_or_seq_of_statements(tree.getChild(_i));
+    _result.set_expression_or_seq_of_statements(parseexpression_or_seq_of_statements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static case_else_part make_case_else_part(expression_or_seq_of_statements expression_or_seq_of_statements) {
+  public static case_else_part make_case_else_part(ru.barsopen.plsqlconverter.ast.typed.expression_or_seq_of_statements expression_or_seq_of_statements) {
     case_else_part _result = new case_else_part();
-    _result.expression_or_seq_of_statements = expression_or_seq_of_statements;
+    _result.set_expression_or_seq_of_statements(expression_or_seq_of_statements);
     return _result;
   }
 
@@ -12629,11 +12736,11 @@ public class parser {
     _result.name = tree.getText();
 
     if (!(_i < tree.getChildCount() && (canParsefunction_argument(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_argument = parsefunction_argument(tree.getChild(_i));
+    _result.set_function_argument(parsefunction_argument(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseover_clause(tree.getChild(_i)))) {
-      _result.over_clause = parseover_clause(tree.getChild(_i));
+      _result.set_over_clause(parseover_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12642,12 +12749,12 @@ public class parser {
   }
 
   public static standard_function_enabling_over make_standard_function_enabling_over(String name,
-      function_argument function_argument,
-      over_clause over_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.function_argument function_argument,
+      ru.barsopen.plsqlconverter.ast.typed.over_clause over_clause) {
     standard_function_enabling_over _result = new standard_function_enabling_over();
-    _result.name = name;
-    _result.function_argument = function_argument;
-    _result.over_clause = over_clause;
+    _result.set_name(name);
+    _result.set_function_argument(function_argument);
+    _result.set_over_clause(over_clause);
     return _result;
   }
 
@@ -12669,32 +12776,32 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DISTINCT)) {
-      _result.SQL92_RESERVED_DISTINCT = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_DISTINCT(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UNIQUE)) {
-      _result.SQL92_RESERVED_UNIQUE = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_UNIQUE(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
-      _result.SQL92_RESERVED_ALL = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK)) {
-      _result.ASTERISK = tree.getChild(_i);
+      _result.set_ASTERISK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseover_clause(tree.getChild(_i)))) {
-      _result.over_clause = parseover_clause(tree.getChild(_i));
+      _result.set_over_clause(parseover_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12706,15 +12813,15 @@ public class parser {
       org.antlr.runtime.tree.Tree SQL92_RESERVED_UNIQUE,
       org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL,
       org.antlr.runtime.tree.Tree ASTERISK,
-      expression expression,
-      over_clause over_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.over_clause over_clause) {
     standard_function_count _result = new standard_function_count();
-    _result.SQL92_RESERVED_DISTINCT = SQL92_RESERVED_DISTINCT;
-    _result.SQL92_RESERVED_UNIQUE = SQL92_RESERVED_UNIQUE;
-    _result.SQL92_RESERVED_ALL = SQL92_RESERVED_ALL;
-    _result.ASTERISK = ASTERISK;
-    _result.expression = expression;
-    _result.over_clause = over_clause;
+    _result.set_SQL92_RESERVED_DISTINCT(SQL92_RESERVED_DISTINCT);
+    _result.set_SQL92_RESERVED_UNIQUE(SQL92_RESERVED_UNIQUE);
+    _result.set_SQL92_RESERVED_ALL(SQL92_RESERVED_ALL);
+    _result.set_ASTERISK(ASTERISK);
+    _result.set_expression(expression);
+    _result.set_over_clause(over_clause);
     return _result;
   }
 
@@ -12736,22 +12843,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static standard_function_xmlcast make_standard_function_xmlcast(expression expression,
-      type_spec type_spec) {
+  public static standard_function_xmlcast make_standard_function_xmlcast(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     standard_function_xmlcast _result = new standard_function_xmlcast();
-    _result.expression = expression;
-    _result.type_spec = type_spec;
+    _result.set_expression(expression);
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -12773,22 +12880,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_or_subquery(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression_or_subquery = parseexpression_or_subquery(tree.getChild(_i));
+    _result.set_expression_or_subquery(parseexpression_or_subquery(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_spec = parsetype_spec(tree.getChild(_i));
+    _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static standard_function_case make_standard_function_case(expression_or_subquery expression_or_subquery,
-      type_spec type_spec) {
+  public static standard_function_case make_standard_function_case(ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery expression_or_subquery,
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     standard_function_case _result = new standard_function_case();
-    _result.expression_or_subquery = expression_or_subquery;
-    _result.type_spec = type_spec;
+    _result.set_expression_or_subquery(expression_or_subquery);
+    _result.set_type_spec(type_spec);
     return _result;
   }
 
@@ -12812,16 +12919,16 @@ public class parser {
     _result.name = tree.getText();
 
     if (!(_i < tree.getChildCount() && (canParsefunction_argument(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.function_argument = parsefunction_argument(tree.getChild(_i));
+    _result.set_function_argument(parsefunction_argument(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsewithin_clause(tree.getChild(_i)))) {
-      _result.within_clause = parsewithin_clause(tree.getChild(_i));
+      _result.set_within_clause(parsewithin_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseover_clause(tree.getChild(_i)))) {
-      _result.over_clause = parseover_clause(tree.getChild(_i));
+      _result.set_over_clause(parseover_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -12830,14 +12937,14 @@ public class parser {
   }
 
   public static standard_function_enabling_within_or_over make_standard_function_enabling_within_or_over(String name,
-      function_argument function_argument,
-      within_clause within_clause,
-      over_clause over_clause) {
+      ru.barsopen.plsqlconverter.ast.typed.function_argument function_argument,
+      ru.barsopen.plsqlconverter.ast.typed.within_clause within_clause,
+      ru.barsopen.plsqlconverter.ast.typed.over_clause over_clause) {
     standard_function_enabling_within_or_over _result = new standard_function_enabling_within_or_over();
-    _result.name = name;
-    _result.function_argument = function_argument;
-    _result.within_clause = within_clause;
-    _result.over_clause = over_clause;
+    _result.set_name(name);
+    _result.set_function_argument(function_argument);
+    _result.set_within_clause(within_clause);
+    _result.set_over_clause(over_clause);
     return _result;
   }
 
@@ -12859,22 +12966,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseextract_part(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.extract_part = parseextract_part(tree.getChild(_i));
+    _result.set_extract_part(parseextract_part(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static standard_function_extract make_standard_function_extract(extract_part extract_part,
-      expression expression) {
+  public static standard_function_extract make_standard_function_extract(ru.barsopen.plsqlconverter.ast.typed.extract_part extract_part,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     standard_function_extract _result = new standard_function_extract();
-    _result.extract_part = extract_part;
-    _result.expression = expression;
+    _result.set_extract_part(extract_part);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -12896,28 +13003,28 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr = parseexpression(tree.getChild(_i));
+    _result.set_expr(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_from = parseexpression(tree.getChild(_i));
+    _result.set_expr_from(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expr_to = parseexpression(tree.getChild(_i));
+    _result.set_expr_to(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static standard_function_translate make_standard_function_translate(expression expr,
-      expression expr_from,
-      expression expr_to) {
+  public static standard_function_translate make_standard_function_translate(ru.barsopen.plsqlconverter.ast.typed.expression expr,
+      ru.barsopen.plsqlconverter.ast.typed.expression expr_from,
+      ru.barsopen.plsqlconverter.ast.typed.expression expr_to) {
     standard_function_translate _result = new standard_function_translate();
-    _result.expr = expr;
-    _result.expr_from = expr_from;
-    _result.expr_to = expr_to;
+    _result.set_expr(expr);
+    _result.set_expr_from(expr_from);
+    _result.set_expr_to(expr_to);
     return _result;
   }
 
@@ -12939,26 +13046,26 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.text_expr = parseexpression_element(tree.getChild(_i));
+    _result.set_text_expr(parseexpression_element(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i)))) {
-      _result.trim_char_expr = parseexpression_element(tree.getChild(_i));
+      _result.set_trim_char_expr(parseexpression_element(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LEADING_VK)) {
-      _result.LEADING_VK = tree.getChild(_i);
+      _result.set_LEADING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TRAILING_VK)) {
-      _result.TRAILING_VK = tree.getChild(_i);
+      _result.set_TRAILING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BOTH_VK)) {
-      _result.BOTH_VK = tree.getChild(_i);
+      _result.set_BOTH_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -12966,17 +13073,17 @@ public class parser {
     return _result;
   }
 
-  public static standard_function_trim make_standard_function_trim(expression_element text_expr,
-      expression_element trim_char_expr,
+  public static standard_function_trim make_standard_function_trim(ru.barsopen.plsqlconverter.ast.typed.expression_element text_expr,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element trim_char_expr,
       org.antlr.runtime.tree.Tree LEADING_VK,
       org.antlr.runtime.tree.Tree TRAILING_VK,
       org.antlr.runtime.tree.Tree BOTH_VK) {
     standard_function_trim _result = new standard_function_trim();
-    _result.text_expr = text_expr;
-    _result.trim_char_expr = trim_char_expr;
-    _result.LEADING_VK = LEADING_VK;
-    _result.TRAILING_VK = TRAILING_VK;
-    _result.BOTH_VK = BOTH_VK;
+    _result.set_text_expr(text_expr);
+    _result.set_trim_char_expr(trim_char_expr);
+    _result.set_LEADING_VK(LEADING_VK);
+    _result.set_TRAILING_VK(TRAILING_VK);
+    _result.set_BOTH_VK(BOTH_VK);
     return _result;
   }
 
@@ -12998,11 +13105,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseorder_by_clause(tree.getChild(_i)))) {
-      _result.order_by_clause = parseorder_by_clause(tree.getChild(_i));
+      _result.set_order_by_clause(parseorder_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13010,11 +13117,11 @@ public class parser {
     return _result;
   }
 
-  public static standard_function_xmlagg make_standard_function_xmlagg(expression expression,
-      order_by_clause order_by_clause) {
+  public static standard_function_xmlagg make_standard_function_xmlagg(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.order_by_clause order_by_clause) {
     standard_function_xmlagg _result = new standard_function_xmlagg();
-    _result.expression = expression;
-    _result.order_by_clause = order_by_clause;
+    _result.set_expression(expression);
+    _result.set_order_by_clause(order_by_clause);
     return _result;
   }
 
@@ -13036,15 +13143,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsexmlparse_document_or_content(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.xmlparse_document_or_content = parsexmlparse_document_or_content(tree.getChild(_i));
+    _result.set_xmlparse_document_or_content(parsexmlparse_document_or_content(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WELLFORMED_VK)) {
-      _result.WELLFORMED_VK = tree.getChild(_i);
+      _result.set_WELLFORMED_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -13052,13 +13159,13 @@ public class parser {
     return _result;
   }
 
-  public static standard_function_xmlparse make_standard_function_xmlparse(xmlparse_document_or_content xmlparse_document_or_content,
-      expression expression,
+  public static standard_function_xmlparse make_standard_function_xmlparse(ru.barsopen.plsqlconverter.ast.typed.xmlparse_document_or_content xmlparse_document_or_content,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
       org.antlr.runtime.tree.Tree WELLFORMED_VK) {
     standard_function_xmlparse _result = new standard_function_xmlparse();
-    _result.xmlparse_document_or_content = xmlparse_document_or_content;
-    _result.expression = expression;
-    _result.WELLFORMED_VK = WELLFORMED_VK;
+    _result.set_xmlparse_document_or_content(xmlparse_document_or_content);
+    _result.set_expression(expression);
+    _result.set_WELLFORMED_VK(WELLFORMED_VK);
     return _result;
   }
 
@@ -13146,15 +13253,15 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsexml_param_version_part(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.xml_param_version_part = parsexml_param_version_part(tree.getChild(_i));
+    _result.set_xml_param_version_part(parsexml_param_version_part(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsexmlroot_param_standalone_part(tree.getChild(_i)))) {
-      _result.xmlroot_param_standalone_part = parsexmlroot_param_standalone_part(tree.getChild(_i));
+      _result.set_xmlroot_param_standalone_part(parsexmlroot_param_standalone_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13162,13 +13269,13 @@ public class parser {
     return _result;
   }
 
-  public static standard_function_root make_standard_function_root(expression expression,
-      xml_param_version_part xml_param_version_part,
-      xmlroot_param_standalone_part xmlroot_param_standalone_part) {
+  public static standard_function_root make_standard_function_root(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.xml_param_version_part xml_param_version_part,
+      ru.barsopen.plsqlconverter.ast.typed.xmlroot_param_standalone_part xmlroot_param_standalone_part) {
     standard_function_root _result = new standard_function_root();
-    _result.expression = expression;
-    _result.xml_param_version_part = xml_param_version_part;
-    _result.xmlroot_param_standalone_part = xmlroot_param_standalone_part;
+    _result.set_expression(expression);
+    _result.set_xml_param_version_part(xml_param_version_part);
+    _result.set_xmlroot_param_standalone_part(xmlroot_param_standalone_part);
     return _result;
   }
 
@@ -13190,21 +13297,21 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsexml_namespaces_clause(tree.getChild(_i)))) {
-      _result.xml_namespaces_clause = parsexml_namespaces_clause(tree.getChild(_i));
+      _result.set_xml_namespaces_clause(parsexml_namespaces_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsexml_passing_clause(tree.getChild(_i)))) {
-      _result.xml_passing_clause = parsexml_passing_clause(tree.getChild(_i));
+      _result.set_xml_passing_clause(parsexml_passing_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsexml_table_column(tree.getChild(_i)))) {
-      _result.xml_table_columns.add(parsexml_table_column(tree.getChild(_i)));
+      _result.add_xml_table_columns(parsexml_table_column(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13212,15 +13319,16 @@ public class parser {
     return _result;
   }
 
-  public static standard_function_table make_standard_function_table(xml_namespaces_clause xml_namespaces_clause,
-      expression expression,
-      xml_passing_clause xml_passing_clause,
-      java.util.List<xml_table_column> xml_table_columns) {
+  public static standard_function_table make_standard_function_table(ru.barsopen.plsqlconverter.ast.typed.xml_namespaces_clause xml_namespaces_clause,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.xml_passing_clause xml_passing_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.xml_table_column> xml_table_columns) {
     standard_function_table _result = new standard_function_table();
-    _result.xml_namespaces_clause = xml_namespaces_clause;
-    _result.expression = expression;
-    _result.xml_passing_clause = xml_passing_clause;
-    if (xml_table_columns != null) {      _result.xml_table_columns = xml_table_columns;
+    _result.set_xml_namespaces_clause(xml_namespaces_clause);
+    _result.set_expression(expression);
+    _result.set_xml_passing_clause(xml_passing_clause);
+    if (xml_table_columns != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.xml_table_column _value: xml_table_columns) { _result.add_xml_table_columns(_value); }
     }
     return _result;
   }
@@ -13243,36 +13351,36 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ENTITYESCAPING_VK)) {
-      _result.ENTITYESCAPING_VK = tree.getChild(_i);
+      _result.set_ENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOENTITYESCAPING_VK)) {
-      _result.NOENTITYESCAPING_VK = tree.getChild(_i);
+      _result.set_NOENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NAME_VK)) {
-      _result.NAME_VK = tree.getChild(_i);
+      _result.set_NAME_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.EVALNAME_VK)) {
-      _result.EVALNAME_VK = tree.getChild(_i);
+      _result.set_EVALNAME_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsexml_attributes_clause(tree.getChild(_i)))) {
-      _result.xml_attributes_clause = parsexml_attributes_clause(tree.getChild(_i));
+      _result.set_xml_attributes_clause(parsexml_attributes_clause(tree.getChild(_i)));
       ++_i;
     }
 
     while (_i < tree.getChildCount() && (canParsexmlelement_value_expr(tree.getChild(_i)))) {
-      _result.xmlelement_value_exprs.add(parsexmlelement_value_expr(tree.getChild(_i)));
+      _result.add_xmlelement_value_exprs(parsexmlelement_value_expr(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13284,17 +13392,18 @@ public class parser {
       org.antlr.runtime.tree.Tree NOENTITYESCAPING_VK,
       org.antlr.runtime.tree.Tree NAME_VK,
       org.antlr.runtime.tree.Tree EVALNAME_VK,
-      expression expression,
-      xml_attributes_clause xml_attributes_clause,
-      java.util.List<xmlelement_value_expr> xmlelement_value_exprs) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.xml_attributes_clause xml_attributes_clause,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.xmlelement_value_expr> xmlelement_value_exprs) {
     standard_function_xmlelement _result = new standard_function_xmlelement();
-    _result.ENTITYESCAPING_VK = ENTITYESCAPING_VK;
-    _result.NOENTITYESCAPING_VK = NOENTITYESCAPING_VK;
-    _result.NAME_VK = NAME_VK;
-    _result.EVALNAME_VK = EVALNAME_VK;
-    _result.expression = expression;
-    _result.xml_attributes_clause = xml_attributes_clause;
-    if (xmlelement_value_exprs != null) {      _result.xmlelement_value_exprs = xmlelement_value_exprs;
+    _result.set_ENTITYESCAPING_VK(ENTITYESCAPING_VK);
+    _result.set_NOENTITYESCAPING_VK(NOENTITYESCAPING_VK);
+    _result.set_NAME_VK(NAME_VK);
+    _result.set_EVALNAME_VK(EVALNAME_VK);
+    _result.set_expression(expression);
+    _result.set_xml_attributes_clause(xml_attributes_clause);
+    if (xmlelement_value_exprs != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.xmlelement_value_expr _value: xmlelement_value_exprs) { _result.add_xmlelement_value_exprs(_value); }
     }
     return _result;
   }
@@ -13612,17 +13721,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsequery_partition_clause(tree.getChild(_i)))) {
-      _result.query_partition_clause = parsequery_partition_clause(tree.getChild(_i));
+      _result.set_query_partition_clause(parsequery_partition_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseorder_by_clause(tree.getChild(_i)))) {
-      _result.order_by_clause = parseorder_by_clause(tree.getChild(_i));
+      _result.set_order_by_clause(parseorder_by_clause(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsewindowing_clause(tree.getChild(_i)))) {
-      _result.windowing_clause = parsewindowing_clause(tree.getChild(_i));
+      _result.set_windowing_clause(parsewindowing_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13630,13 +13739,13 @@ public class parser {
     return _result;
   }
 
-  public static over_clause make_over_clause(query_partition_clause query_partition_clause,
-      order_by_clause order_by_clause,
-      windowing_clause windowing_clause) {
+  public static over_clause make_over_clause(ru.barsopen.plsqlconverter.ast.typed.query_partition_clause query_partition_clause,
+      ru.barsopen.plsqlconverter.ast.typed.order_by_clause order_by_clause,
+      ru.barsopen.plsqlconverter.ast.typed.windowing_clause windowing_clause) {
     over_clause _result = new over_clause();
-    _result.query_partition_clause = query_partition_clause;
-    _result.order_by_clause = order_by_clause;
-    _result.windowing_clause = windowing_clause;
+    _result.set_query_partition_clause(query_partition_clause);
+    _result.set_order_by_clause(order_by_clause);
+    _result.set_windowing_clause(windowing_clause);
     return _result;
   }
 
@@ -13672,16 +13781,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsewindowing_clause_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.windowing_clause_spec = parsewindowing_clause_spec(tree.getChild(_i));
+    _result.set_windowing_clause_spec(parsewindowing_clause_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static windowing_clause_rows make_windowing_clause_rows(windowing_clause_spec windowing_clause_spec) {
+  public static windowing_clause_rows make_windowing_clause_rows(ru.barsopen.plsqlconverter.ast.typed.windowing_clause_spec windowing_clause_spec) {
     windowing_clause_rows _result = new windowing_clause_rows();
-    _result.windowing_clause_spec = windowing_clause_spec;
+    _result.set_windowing_clause_spec(windowing_clause_spec);
     return _result;
   }
 
@@ -13703,16 +13812,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsewindowing_clause_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.windowing_clause_spec = parsewindowing_clause_spec(tree.getChild(_i));
+    _result.set_windowing_clause_spec(parsewindowing_clause_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static windowing_clause_range make_windowing_clause_range(windowing_clause_spec windowing_clause_spec) {
+  public static windowing_clause_range make_windowing_clause_range(ru.barsopen.plsqlconverter.ast.typed.windowing_clause_spec windowing_clause_spec) {
     windowing_clause_range _result = new windowing_clause_range();
-    _result.windowing_clause_spec = windowing_clause_spec;
+    _result.set_windowing_clause_spec(windowing_clause_spec);
     return _result;
   }
 
@@ -13748,22 +13857,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsewindowing_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.e1 = parsewindowing_elements(tree.getChild(_i));
+    _result.set_e1(parsewindowing_elements(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParsewindowing_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.e2 = parsewindowing_elements(tree.getChild(_i));
+    _result.set_e2(parsewindowing_elements(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static windowing_clause_between make_windowing_clause_between(windowing_elements e1,
-      windowing_elements e2) {
+  public static windowing_clause_between make_windowing_clause_between(ru.barsopen.plsqlconverter.ast.typed.windowing_elements e1,
+      ru.barsopen.plsqlconverter.ast.typed.windowing_elements e2) {
     windowing_clause_between _result = new windowing_clause_between();
-    _result.e1 = e1;
-    _result.e2 = e2;
+    _result.set_e1(e1);
+    _result.set_e2(e2);
     return _result;
   }
 
@@ -13801,7 +13910,7 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PRECEDING_VK))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.PRECEDING_VK = tree.getChild(_i);
+    _result.set_PRECEDING_VK(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -13810,7 +13919,7 @@ public class parser {
 
   public static windowing_elements_unbounded_preceding make_windowing_elements_unbounded_preceding(org.antlr.runtime.tree.Tree PRECEDING_VK) {
     windowing_elements_unbounded_preceding _result = new windowing_elements_unbounded_preceding();
-    _result.PRECEDING_VK = PRECEDING_VK;
+    _result.set_PRECEDING_VK(PRECEDING_VK);
     return _result;
   }
 
@@ -13832,7 +13941,7 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROW_VK))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.ROW_VK = tree.getChild(_i);
+    _result.set_ROW_VK(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -13841,7 +13950,7 @@ public class parser {
 
   public static windowing_elements_current_row make_windowing_elements_current_row(org.antlr.runtime.tree.Tree ROW_VK) {
     windowing_elements_current_row _result = new windowing_elements_current_row();
-    _result.ROW_VK = ROW_VK;
+    _result.set_ROW_VK(ROW_VK);
     return _result;
   }
 
@@ -13863,16 +13972,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static windowing_elements_preceding make_windowing_elements_preceding(expression expression) {
+  public static windowing_elements_preceding make_windowing_elements_preceding(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     windowing_elements_preceding _result = new windowing_elements_preceding();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -13894,16 +14003,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static windowing_elements_following make_windowing_elements_following(expression expression) {
+  public static windowing_elements_following make_windowing_elements_following(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     windowing_elements_following _result = new windowing_elements_following();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -13926,7 +14035,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseusing_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseusing_element(tree.getChild(_i)))) {
-      _result.using_elements.add(parseusing_element(tree.getChild(_i)));
+      _result.add_using_elements(parseusing_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13934,9 +14043,10 @@ public class parser {
     return _result;
   }
 
-  public static using_clause make_using_clause(java.util.List<using_element> using_elements) {
+  public static using_clause make_using_clause(java.util.List<ru.barsopen.plsqlconverter.ast.typed.using_element> using_elements) {
     using_clause _result = new using_clause();
-    if (using_elements != null) {      _result.using_elements = using_elements;
+    if (using_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.using_element _value: using_elements) { _result.add_using_elements(_value); }
     }
     return _result;
   }
@@ -13973,21 +14083,21 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN)) {
-      _result.SQL92_RESERVED_IN = tree.getChild(_i);
+      _result.set_SQL92_RESERVED_IN(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.OUT_VK)) {
-      _result.OUT_VK = tree.getChild(_i);
+      _result.set_OUT_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsealias(tree.getChild(_i)))) {
-      _result.alias = parsealias(tree.getChild(_i));
+      _result.set_alias(parsealias(tree.getChild(_i)));
       ++_i;
     }
 
@@ -13997,13 +14107,13 @@ public class parser {
 
   public static using_element_element make_using_element_element(org.antlr.runtime.tree.Tree SQL92_RESERVED_IN,
       org.antlr.runtime.tree.Tree OUT_VK,
-      expression expression,
-      alias alias) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.alias alias) {
     using_element_element _result = new using_element_element();
-    _result.SQL92_RESERVED_IN = SQL92_RESERVED_IN;
-    _result.OUT_VK = OUT_VK;
-    _result.expression = expression;
-    _result.alias = alias;
+    _result.set_SQL92_RESERVED_IN(SQL92_RESERVED_IN);
+    _result.set_OUT_VK(OUT_VK);
+    _result.set_expression(expression);
+    _result.set_alias(alias);
     return _result;
   }
 
@@ -14051,16 +14161,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static collect_order_by_part make_collect_order_by_part(expression expression) {
+  public static collect_order_by_part make_collect_order_by_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     collect_order_by_part _result = new collect_order_by_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14082,16 +14192,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseorder_by_clause(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.order_by_clause = parseorder_by_clause(tree.getChild(_i));
+    _result.set_order_by_clause(parseorder_by_clause(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static within_clause make_within_clause(order_by_clause order_by_clause) {
+  public static within_clause make_within_clause(ru.barsopen.plsqlconverter.ast.typed.order_by_clause order_by_clause) {
     within_clause _result = new within_clause();
-    _result.order_by_clause = order_by_clause;
+    _result.set_order_by_clause(order_by_clause);
     return _result;
   }
 
@@ -14139,12 +14249,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
-      _result.VALUE_VK = tree.getChild(_i);
+      _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsexml_passing_clause_expr(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.xml_passing_clause_expr = parsexml_passing_clause_expr(tree.getChild(_i));
+    _result.set_xml_passing_clause_expr(parsexml_passing_clause_expr(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
@@ -14152,10 +14262,10 @@ public class parser {
   }
 
   public static xml_passing_clause make_xml_passing_clause(org.antlr.runtime.tree.Tree VALUE_VK,
-      xml_passing_clause_expr xml_passing_clause_expr) {
+      ru.barsopen.plsqlconverter.ast.typed.xml_passing_clause_expr xml_passing_clause_expr) {
     xml_passing_clause _result = new xml_passing_clause();
-    _result.VALUE_VK = VALUE_VK;
-    _result.xml_passing_clause_expr = xml_passing_clause_expr;
+    _result.set_VALUE_VK(VALUE_VK);
+    _result.set_xml_passing_clause_expr(xml_passing_clause_expr);
     return _result;
   }
 
@@ -14190,28 +14300,28 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ENTITYESCAPING_VK)) {
-      _result.ENTITYESCAPING_VK = tree.getChild(_i);
+      _result.set_ENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOENTITYESCAPING_VK)) {
-      _result.NOENTITYESCAPING_VK = tree.getChild(_i);
+      _result.set_NOENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCHEMACHECK_VK)) {
-      _result.SCHEMACHECK_VK = tree.getChild(_i);
+      _result.set_SCHEMACHECK_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOSCHEMACHECK_VK)) {
-      _result.NOSCHEMACHECK_VK = tree.getChild(_i);
+      _result.set_NOSCHEMACHECK_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParsexml_multiuse_expression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsexml_multiuse_expression_element(tree.getChild(_i)))) {
-      _result.xml_multiuse_expression_elements.add(parsexml_multiuse_expression_element(tree.getChild(_i)));
+      _result.add_xml_multiuse_expression_elements(parsexml_multiuse_expression_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14223,13 +14333,14 @@ public class parser {
       org.antlr.runtime.tree.Tree NOENTITYESCAPING_VK,
       org.antlr.runtime.tree.Tree SCHEMACHECK_VK,
       org.antlr.runtime.tree.Tree NOSCHEMACHECK_VK,
-      java.util.List<xml_multiuse_expression_element> xml_multiuse_expression_elements) {
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.xml_multiuse_expression_element> xml_multiuse_expression_elements) {
     xml_attributes_clause _result = new xml_attributes_clause();
-    _result.ENTITYESCAPING_VK = ENTITYESCAPING_VK;
-    _result.NOENTITYESCAPING_VK = NOENTITYESCAPING_VK;
-    _result.SCHEMACHECK_VK = SCHEMACHECK_VK;
-    _result.NOSCHEMACHECK_VK = NOSCHEMACHECK_VK;
-    if (xml_multiuse_expression_elements != null) {      _result.xml_multiuse_expression_elements = xml_multiuse_expression_elements;
+    _result.set_ENTITYESCAPING_VK(ENTITYESCAPING_VK);
+    _result.set_NOENTITYESCAPING_VK(NOENTITYESCAPING_VK);
+    _result.set_SCHEMACHECK_VK(SCHEMACHECK_VK);
+    _result.set_NOSCHEMACHECK_VK(NOSCHEMACHECK_VK);
+    if (xml_multiuse_expression_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.xml_multiuse_expression_element _value: xml_multiuse_expression_elements) { _result.add_xml_multiuse_expression_elements(_value); }
     }
     return _result;
   }
@@ -14278,26 +14389,26 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsexml_column_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.xml_column_name = parsexml_column_name(tree.getChild(_i));
+    _result.set_xml_column_name(parsexml_column_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ORDINALITY_VK)) {
-      _result.ORDINALITY_VK = tree.getChild(_i);
+      _result.set_ORDINALITY_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
-      _result.type_spec = parsetype_spec(tree.getChild(_i));
+      _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsexml_general_default_part(tree.getChild(_i)))) {
-      _result.xml_general_default_part = parsexml_general_default_part(tree.getChild(_i));
+      _result.set_xml_general_default_part(parsexml_general_default_part(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14305,17 +14416,17 @@ public class parser {
     return _result;
   }
 
-  public static xml_table_column make_xml_table_column(xml_column_name xml_column_name,
+  public static xml_table_column make_xml_table_column(ru.barsopen.plsqlconverter.ast.typed.xml_column_name xml_column_name,
       org.antlr.runtime.tree.Tree ORDINALITY_VK,
-      type_spec type_spec,
-      expression expression,
-      xml_general_default_part xml_general_default_part) {
+      ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec,
+      ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.xml_general_default_part xml_general_default_part) {
     xml_table_column _result = new xml_table_column();
-    _result.xml_column_name = xml_column_name;
-    _result.ORDINALITY_VK = ORDINALITY_VK;
-    _result.type_spec = type_spec;
-    _result.expression = expression;
-    _result.xml_general_default_part = xml_general_default_part;
+    _result.set_xml_column_name(xml_column_name);
+    _result.set_ORDINALITY_VK(ORDINALITY_VK);
+    _result.set_type_spec(type_spec);
+    _result.set_expression(expression);
+    _result.set_xml_general_default_part(xml_general_default_part);
     return _result;
   }
 
@@ -14337,16 +14448,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static xml_general_default_part make_xml_general_default_part(expression expression) {
+  public static xml_general_default_part make_xml_general_default_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     xml_general_default_part _result = new xml_general_default_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14368,11 +14479,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsexml_alias(tree.getChild(_i)))) {
-      _result.xml_alias = parsexml_alias(tree.getChild(_i));
+      _result.set_xml_alias(parsexml_alias(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14380,11 +14491,11 @@ public class parser {
     return _result;
   }
 
-  public static xml_multiuse_expression_element make_xml_multiuse_expression_element(expression expression,
-      xml_alias xml_alias) {
+  public static xml_multiuse_expression_element make_xml_multiuse_expression_element(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.xml_alias xml_alias) {
     xml_multiuse_expression_element _result = new xml_multiuse_expression_element();
-    _result.expression = expression;
-    _result.xml_alias = xml_alias;
+    _result.set_expression(expression);
+    _result.set_xml_alias(xml_alias);
     return _result;
   }
 
@@ -14406,16 +14517,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseid_or_evalname(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id_or_evalname = parseid_or_evalname(tree.getChild(_i));
+    _result.set_id_or_evalname(parseid_or_evalname(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static xml_alias make_xml_alias(id_or_evalname id_or_evalname) {
+  public static xml_alias make_xml_alias(ru.barsopen.plsqlconverter.ast.typed.id_or_evalname id_or_evalname) {
     xml_alias _result = new xml_alias();
-    _result.id_or_evalname = id_or_evalname;
+    _result.set_id_or_evalname(id_or_evalname);
     return _result;
   }
 
@@ -14451,16 +14562,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static xml_alias_evalname make_xml_alias_evalname(expression expression) {
+  public static xml_alias_evalname make_xml_alias_evalname(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     xml_alias_evalname _result = new xml_alias_evalname();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14482,17 +14593,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NO_VK)) {
-      _result.NO_VK = tree.getChild(_i);
+      _result.set_NO_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
-      _result.VALUE_VK = tree.getChild(_i);
+      _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14502,11 +14613,11 @@ public class parser {
 
   public static xml_param_version_part make_xml_param_version_part(org.antlr.runtime.tree.Tree NO_VK,
       org.antlr.runtime.tree.Tree VALUE_VK,
-      expression expression) {
+      ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     xml_param_version_part _result = new xml_param_version_part();
-    _result.NO_VK = NO_VK;
-    _result.VALUE_VK = VALUE_VK;
-    _result.expression = expression;
+    _result.set_NO_VK(NO_VK);
+    _result.set_VALUE_VK(VALUE_VK);
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14528,17 +14639,17 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.YES_VK)) {
-      _result.YES_VK = tree.getChild(_i);
+      _result.set_YES_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NO_VK)) {
-      _result.NO_VK = tree.getChild(_i);
+      _result.set_NO_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
-      _result.VALUE_VK = tree.getChild(_i);
+      _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -14550,9 +14661,9 @@ public class parser {
       org.antlr.runtime.tree.Tree NO_VK,
       org.antlr.runtime.tree.Tree VALUE_VK) {
     xmlroot_param_standalone_part _result = new xmlroot_param_standalone_part();
-    _result.YES_VK = YES_VK;
-    _result.NO_VK = NO_VK;
-    _result.VALUE_VK = VALUE_VK;
+    _result.set_YES_VK(YES_VK);
+    _result.set_NO_VK(NO_VK);
+    _result.set_VALUE_VK(VALUE_VK);
     return _result;
   }
 
@@ -14574,16 +14685,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static xmlserialize_param_enconding_part make_xmlserialize_param_enconding_part(expression expression) {
+  public static xmlserialize_param_enconding_part make_xmlserialize_param_enconding_part(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     xmlserialize_param_enconding_part _result = new xmlserialize_param_enconding_part();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14671,23 +14782,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static column_alias make_column_alias(char_set_name char_set_name,
-      id id) {
+  public static column_alias make_column_alias(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     column_alias _result = new column_alias();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -14709,23 +14820,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static table_alias make_table_alias(char_set_name char_set_name,
-      id id) {
+  public static table_alias make_table_alias(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     table_alias _result = new table_alias();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -14747,16 +14858,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static where_clause make_where_clause(expression expression) {
+  public static where_clause make_where_clause(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     where_clause _result = new where_clause();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -14793,7 +14904,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i)))) {
-      _result.general_elements.add(parsegeneral_element(tree.getChild(_i)));
+      _result.add_general_elements(parsegeneral_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14801,9 +14912,10 @@ public class parser {
     return _result;
   }
 
-  public static into_clause_normal make_into_clause_normal(java.util.List<general_element> general_elements) {
+  public static into_clause_normal make_into_clause_normal(java.util.List<ru.barsopen.plsqlconverter.ast.typed.general_element> general_elements) {
     into_clause_normal _result = new into_clause_normal();
-    if (general_elements != null) {      _result.general_elements = general_elements;
+    if (general_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.general_element _value: general_elements) { _result.add_general_elements(_value); }
     }
     return _result;
   }
@@ -14827,7 +14939,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i)))) {
-      _result.general_elements.add(parsegeneral_element(tree.getChild(_i)));
+      _result.add_general_elements(parsegeneral_element(tree.getChild(_i)));
       ++_i;
     }
 
@@ -14835,9 +14947,10 @@ public class parser {
     return _result;
   }
 
-  public static into_clause_bulk make_into_clause_bulk(java.util.List<general_element> general_elements) {
+  public static into_clause_bulk make_into_clause_bulk(java.util.List<ru.barsopen.plsqlconverter.ast.typed.general_element> general_elements) {
     into_clause_bulk _result = new into_clause_bulk();
-    if (general_elements != null) {      _result.general_elements = general_elements;
+    if (general_elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.general_element _value: general_elements) { _result.add_general_elements(_value); }
     }
     return _result;
   }
@@ -14860,23 +14973,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static xml_column_name make_xml_column_name(char_set_name char_set_name,
-      id id) {
+  public static xml_column_name make_xml_column_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     xml_column_name _result = new xml_column_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -14898,23 +15011,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static cost_class_name make_cost_class_name(char_set_name char_set_name,
-      id id) {
+  public static cost_class_name make_cost_class_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     cost_class_name _result = new cost_class_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -14936,23 +15049,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static attribute_name make_attribute_name(char_set_name char_set_name,
-      id id) {
+  public static attribute_name make_attribute_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     attribute_name _result = new attribute_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -14974,23 +15087,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static savepoint_name make_savepoint_name(char_set_name char_set_name,
-      id id) {
+  public static savepoint_name make_savepoint_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     savepoint_name _result = new savepoint_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15012,23 +15125,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static rollback_segment_name make_rollback_segment_name(char_set_name char_set_name,
-      id id) {
+  public static rollback_segment_name make_rollback_segment_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     rollback_segment_name _result = new rollback_segment_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15050,23 +15163,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static table_var_name make_table_var_name(char_set_name char_set_name,
-      id id) {
+  public static table_var_name make_table_var_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     table_var_name _result = new table_var_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15088,23 +15201,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static schema_name make_schema_name(char_set_name char_set_name,
-      id id) {
+  public static schema_name make_schema_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     schema_name _result = new schema_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15126,18 +15239,18 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParselink_name(tree.getChild(_i)))) {
-      _result.link_name = parselink_name(tree.getChild(_i));
+      _result.set_link_name(parselink_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15145,14 +15258,15 @@ public class parser {
     return _result;
   }
 
-  public static routine_name make_routine_name(char_set_name char_set_name,
-      java.util.List<id> ids,
-      link_name link_name) {
+  public static routine_name make_routine_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids,
+      ru.barsopen.plsqlconverter.ast.typed.link_name link_name) {
     routine_name _result = new routine_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
-    _result.link_name = link_name;
+    _result.set_link_name(link_name);
     return _result;
   }
 
@@ -15174,13 +15288,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15188,11 +15302,12 @@ public class parser {
     return _result;
   }
 
-  public static package_name make_package_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static package_name make_package_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     package_name _result = new package_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15215,13 +15330,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15229,11 +15344,12 @@ public class parser {
     return _result;
   }
 
-  public static implementation_type_name make_implementation_type_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static implementation_type_name make_implementation_type_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     implementation_type_name _result = new implementation_type_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15256,23 +15372,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static parameter_name make_parameter_name(char_set_name char_set_name,
-      id id) {
+  public static parameter_name make_parameter_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     parameter_name _result = new parameter_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15294,23 +15410,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static reference_model_name make_reference_model_name(char_set_name char_set_name,
-      id id) {
+  public static reference_model_name make_reference_model_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     reference_model_name _result = new reference_model_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15332,23 +15448,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static main_model_name make_main_model_name(char_set_name char_set_name,
-      id id) {
+  public static main_model_name make_main_model_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     main_model_name _result = new main_model_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15370,23 +15486,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static query_name make_query_name(char_set_name char_set_name,
-      id id) {
+  public static query_name make_query_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     query_name _result = new query_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15408,18 +15524,18 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParselink_name(tree.getChild(_i)))) {
-      _result.link_name = parselink_name(tree.getChild(_i));
+      _result.set_link_name(parselink_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15427,14 +15543,15 @@ public class parser {
     return _result;
   }
 
-  public static constraint_name make_constraint_name(char_set_name char_set_name,
-      java.util.List<id> ids,
-      link_name link_name) {
+  public static constraint_name make_constraint_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids,
+      ru.barsopen.plsqlconverter.ast.typed.link_name link_name) {
     constraint_name _result = new constraint_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
-    _result.link_name = link_name;
+    _result.set_link_name(link_name);
     return _result;
   }
 
@@ -15456,16 +15573,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static label_name make_label_name(id id) {
+  public static label_name make_label_name(ru.barsopen.plsqlconverter.ast.typed.id id) {
     label_name _result = new label_name();
-    _result.id = id;
+    _result.set_id(id);
     return _result;
   }
 
@@ -15488,7 +15605,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15496,9 +15613,10 @@ public class parser {
     return _result;
   }
 
-  public static type_name make_type_name(java.util.List<id> ids) {
+  public static type_name make_type_name(java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     type_name _result = new type_name();
-    if (ids != null) {      _result.ids = ids;
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15522,7 +15640,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15530,9 +15648,10 @@ public class parser {
     return _result;
   }
 
-  public static sequence_name make_sequence_name(java.util.List<id> ids) {
+  public static sequence_name make_sequence_name(java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     sequence_name _result = new sequence_name();
-    if (ids != null) {      _result.ids = ids;
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15555,13 +15674,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15569,11 +15688,12 @@ public class parser {
     return _result;
   }
 
-  public static exception_name make_exception_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static exception_name make_exception_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     exception_name _result = new exception_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15596,13 +15716,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15610,11 +15730,12 @@ public class parser {
     return _result;
   }
 
-  public static function_name make_function_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static function_name make_function_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     function_name _result = new function_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15637,13 +15758,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15651,11 +15772,12 @@ public class parser {
     return _result;
   }
 
-  public static procedure_name make_procedure_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static procedure_name make_procedure_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     procedure_name _result = new procedure_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15678,13 +15800,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15692,11 +15814,12 @@ public class parser {
     return _result;
   }
 
-  public static trigger_name make_trigger_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static trigger_name make_trigger_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     trigger_name _result = new trigger_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15719,12 +15842,12 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BINDVAR)) {
-      _result.BINDVAR = tree.getChild(_i);
+      _result.set_BINDVAR(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNSIGNED_INTEGER)) {
-      _result.UNSIGNED_INTEGER = tree.getChild(_i);
+      _result.set_UNSIGNED_INTEGER(tree.getChild(_i));
       ++_i;
     }
 
@@ -15735,8 +15858,8 @@ public class parser {
   public static hosted_variable_name make_hosted_variable_name(org.antlr.runtime.tree.Tree BINDVAR,
       org.antlr.runtime.tree.Tree UNSIGNED_INTEGER) {
     hosted_variable_name _result = new hosted_variable_name();
-    _result.BINDVAR = BINDVAR;
-    _result.UNSIGNED_INTEGER = UNSIGNED_INTEGER;
+    _result.set_BINDVAR(BINDVAR);
+    _result.set_UNSIGNED_INTEGER(UNSIGNED_INTEGER);
     return _result;
   }
 
@@ -15758,13 +15881,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15772,11 +15895,12 @@ public class parser {
     return _result;
   }
 
-  public static variable_name make_variable_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static variable_name make_variable_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     variable_name _result = new variable_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15799,23 +15923,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static index_name make_index_name(char_set_name char_set_name,
-      id id) {
+  public static index_name make_index_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     index_name _result = new index_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15837,23 +15961,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static cursor_name make_cursor_name(char_set_name char_set_name,
-      id id) {
+  public static cursor_name make_cursor_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     cursor_name _result = new cursor_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15875,23 +15999,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static record_name make_record_name(char_set_name char_set_name,
-      id id) {
+  public static record_name make_record_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     record_name _result = new record_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15913,13 +16037,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -15927,11 +16051,12 @@ public class parser {
     return _result;
   }
 
-  public static collection_name make_collection_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static collection_name make_collection_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     collection_name _result = new collection_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -15954,23 +16079,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static link_name make_link_name(char_set_name char_set_name,
-      id id) {
+  public static link_name make_link_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      ru.barsopen.plsqlconverter.ast.typed.id id) {
     link_name _result = new link_name();
-    _result.char_set_name = char_set_name;
-    _result.id = id;
+    _result.set_char_set_name(char_set_name);
+    _result.set_id(id);
     return _result;
   }
 
@@ -15992,13 +16117,13 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16006,11 +16131,12 @@ public class parser {
     return _result;
   }
 
-  public static column_name make_column_name(char_set_name char_set_name,
-      java.util.List<id> ids) {
+  public static column_name make_column_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     column_name _result = new column_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -16033,23 +16159,23 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParsechar_set_name(tree.getChild(_i)))) {
-      _result.char_set_name = parsechar_set_name(tree.getChild(_i));
+      _result.set_char_set_name(parsechar_set_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParselink_name(tree.getChild(_i)))) {
-      _result.link_name = parselink_name(tree.getChild(_i));
+      _result.set_link_name(parselink_name(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsepartition_extension_clause(tree.getChild(_i)))) {
-      _result.partition_extension_clause = parsepartition_extension_clause(tree.getChild(_i));
+      _result.set_partition_extension_clause(parsepartition_extension_clause(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16057,16 +16183,17 @@ public class parser {
     return _result;
   }
 
-  public static tableview_name make_tableview_name(char_set_name char_set_name,
-      java.util.List<id> ids,
-      link_name link_name,
-      partition_extension_clause partition_extension_clause) {
+  public static tableview_name make_tableview_name(ru.barsopen.plsqlconverter.ast.typed.char_set_name char_set_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids,
+      ru.barsopen.plsqlconverter.ast.typed.link_name link_name,
+      ru.barsopen.plsqlconverter.ast.typed.partition_extension_clause partition_extension_clause) {
     tableview_name _result = new tableview_name();
-    _result.char_set_name = char_set_name;
-    if (ids != null) {      _result.ids = ids;
+    _result.set_char_set_name(char_set_name);
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
-    _result.link_name = link_name;
-    _result.partition_extension_clause = partition_extension_clause;
+    _result.set_link_name(link_name);
+    _result.set_partition_extension_clause(partition_extension_clause);
     return _result;
   }
 
@@ -16089,7 +16216,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParseid(tree.getChild(_i)))) {
-      _result.ids.add(parseid(tree.getChild(_i)));
+      _result.add_ids(parseid(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16097,9 +16224,10 @@ public class parser {
     return _result;
   }
 
-  public static char_set_name make_char_set_name(java.util.List<id> ids) {
+  public static char_set_name make_char_set_name(java.util.List<ru.barsopen.plsqlconverter.ast.typed.id> ids) {
     char_set_name _result = new char_set_name();
-    if (ids != null) {      _result.ids = ids;
+    if (ids != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.id _value: ids) { _result.add_ids(_value); }
     }
     return _result;
   }
@@ -16122,7 +16250,7 @@ public class parser {
     int _i = 0;
 
     while (_i < tree.getChildCount() && (canParseargument(tree.getChild(_i)))) {
-      _result.arguments.add(parseargument(tree.getChild(_i)));
+      _result.add_arguments(parseargument(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16130,9 +16258,10 @@ public class parser {
     return _result;
   }
 
-  public static function_argument make_function_argument(java.util.List<argument> arguments) {
+  public static function_argument make_function_argument(java.util.List<ru.barsopen.plsqlconverter.ast.typed.argument> arguments) {
     function_argument _result = new function_argument();
-    if (arguments != null) {      _result.arguments = arguments;
+    if (arguments != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.argument _value: arguments) { _result.add_arguments(_value); }
     }
     return _result;
   }
@@ -16155,11 +16284,11 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.expression = parseexpression(tree.getChild(_i));
+    _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseparameter_name(tree.getChild(_i)))) {
-      _result.parameter_name = parseparameter_name(tree.getChild(_i));
+      _result.set_parameter_name(parseparameter_name(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16167,11 +16296,11 @@ public class parser {
     return _result;
   }
 
-  public static argument make_argument(expression expression,
-      parameter_name parameter_name) {
+  public static argument make_argument(ru.barsopen.plsqlconverter.ast.typed.expression expression,
+      ru.barsopen.plsqlconverter.ast.typed.parameter_name parameter_name) {
     argument _result = new argument();
-    _result.expression = expression;
-    _result.parameter_name = parameter_name;
+    _result.set_expression(expression);
+    _result.set_parameter_name(parameter_name);
     return _result;
   }
 
@@ -16208,16 +16337,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.type_name = parsetype_name(tree.getChild(_i));
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REF_VK)) {
-      _result.REF_VK = tree.getChild(_i);
+      _result.set_REF_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (canParsepercent_type_or_rowtype(tree.getChild(_i)))) {
-      _result.percent_type_or_rowtype = parsepercent_type_or_rowtype(tree.getChild(_i));
+      _result.set_percent_type_or_rowtype(parsepercent_type_or_rowtype(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16225,13 +16354,13 @@ public class parser {
     return _result;
   }
 
-  public static type_spec_custom make_type_spec_custom(type_name type_name,
+  public static type_spec_custom make_type_spec_custom(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
       org.antlr.runtime.tree.Tree REF_VK,
-      percent_type_or_rowtype percent_type_or_rowtype) {
+      ru.barsopen.plsqlconverter.ast.typed.percent_type_or_rowtype percent_type_or_rowtype) {
     type_spec_custom _result = new type_spec_custom();
-    _result.type_name = type_name;
-    _result.REF_VK = REF_VK;
-    _result.percent_type_or_rowtype = percent_type_or_rowtype;
+    _result.set_type_name(type_name);
+    _result.set_REF_VK(REF_VK);
+    _result.set_percent_type_or_rowtype(percent_type_or_rowtype);
     return _result;
   }
 
@@ -16253,22 +16382,22 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseinterval_type_spec_first(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.interval_type_spec_first = parseinterval_type_spec_first(tree.getChild(_i));
+    _result.set_interval_type_spec_first(parseinterval_type_spec_first(tree.getChild(_i)));
     ++_i;
 
     if (!(_i < tree.getChildCount() && (canParseinterval_type_spec_second(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.interval_type_spec_second = parseinterval_type_spec_second(tree.getChild(_i));
+    _result.set_interval_type_spec_second(parseinterval_type_spec_second(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static type_spec_interval make_type_spec_interval(interval_type_spec_first interval_type_spec_first,
-      interval_type_spec_second interval_type_spec_second) {
+  public static type_spec_interval make_type_spec_interval(ru.barsopen.plsqlconverter.ast.typed.interval_type_spec_first interval_type_spec_first,
+      ru.barsopen.plsqlconverter.ast.typed.interval_type_spec_second interval_type_spec_second) {
     type_spec_interval _result = new type_spec_interval();
-    _result.interval_type_spec_first = interval_type_spec_first;
-    _result.interval_type_spec_second = interval_type_spec_second;
+    _result.set_interval_type_spec_first(interval_type_spec_first);
+    _result.set_interval_type_spec_second(interval_type_spec_second);
     return _result;
   }
 
@@ -16304,7 +16433,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16312,9 +16441,9 @@ public class parser {
     return _result;
   }
 
-  public static interval_type_spec_first_year make_interval_type_spec_first_year(expression expression) {
+  public static interval_type_spec_first_year make_interval_type_spec_first_year(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     interval_type_spec_first_year _result = new interval_type_spec_first_year();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -16336,7 +16465,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16344,9 +16473,9 @@ public class parser {
     return _result;
   }
 
-  public static interval_type_spec_first_day make_interval_type_spec_first_day(expression expression) {
+  public static interval_type_spec_first_day make_interval_type_spec_first_day(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     interval_type_spec_first_day _result = new interval_type_spec_first_day();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -16382,7 +16511,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16390,9 +16519,9 @@ public class parser {
     return _result;
   }
 
-  public static interval_type_spec_second_month make_interval_type_spec_second_month(expression expression) {
+  public static interval_type_spec_second_month make_interval_type_spec_second_month(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     interval_type_spec_second_month _result = new interval_type_spec_second_month();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -16414,7 +16543,7 @@ public class parser {
     int _i = 0;
 
     if (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
-      _result.expression = parseexpression(tree.getChild(_i));
+      _result.set_expression(parseexpression(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16422,9 +16551,9 @@ public class parser {
     return _result;
   }
 
-  public static interval_type_spec_second_second make_interval_type_spec_second_second(expression expression) {
+  public static interval_type_spec_second_second make_interval_type_spec_second_second(ru.barsopen.plsqlconverter.ast.typed.expression expression) {
     interval_type_spec_second_second _result = new interval_type_spec_second_second();
-    _result.expression = expression;
+    _result.set_expression(expression);
     return _result;
   }
 
@@ -16446,21 +16575,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseconstant(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.size1 = parseconstant(tree.getChild(_i));
+    _result.set_size1(parseconstant(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParseconstant(tree.getChild(_i)))) {
-      _result.size2 = parseconstant(tree.getChild(_i));
+      _result.set_size2(parseconstant(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_VK)) {
-      _result.CHAR_VK = tree.getChild(_i);
+      _result.set_CHAR_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BYTE_VK)) {
-      _result.BYTE_VK = tree.getChild(_i);
+      _result.set_BYTE_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -16468,15 +16597,15 @@ public class parser {
     return _result;
   }
 
-  public static type_precision make_type_precision(constant size1,
-      constant size2,
+  public static type_precision make_type_precision(ru.barsopen.plsqlconverter.ast.typed.constant size1,
+      ru.barsopen.plsqlconverter.ast.typed.constant size2,
       org.antlr.runtime.tree.Tree CHAR_VK,
       org.antlr.runtime.tree.Tree BYTE_VK) {
     type_precision _result = new type_precision();
-    _result.size1 = size1;
-    _result.size2 = size2;
-    _result.CHAR_VK = CHAR_VK;
-    _result.BYTE_VK = BYTE_VK;
+    _result.set_size1(size1);
+    _result.set_size2(size2);
+    _result.set_CHAR_VK(CHAR_VK);
+    _result.set_BYTE_VK(BYTE_VK);
     return _result;
   }
 
@@ -16498,21 +16627,21 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (true))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.name = tree.getChild(_i);
+    _result.set_name(tree.getChild(_i));
     ++_i;
 
     if (_i < tree.getChildCount() && (canParsetype_precision(tree.getChild(_i)))) {
-      _result.type_precision = parsetype_precision(tree.getChild(_i));
+      _result.set_type_precision(parsetype_precision(tree.getChild(_i)));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIME_VK)) {
-      _result.TIME_VK = tree.getChild(_i);
+      _result.set_TIME_VK(tree.getChild(_i));
       ++_i;
     }
 
     if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOCAL_VK)) {
-      _result.LOCAL_VK = tree.getChild(_i);
+      _result.set_LOCAL_VK(tree.getChild(_i));
       ++_i;
     }
 
@@ -16521,14 +16650,14 @@ public class parser {
   }
 
   public static native_datatype_spec make_native_datatype_spec(org.antlr.runtime.tree.Tree name,
-      type_precision type_precision,
+      ru.barsopen.plsqlconverter.ast.typed.type_precision type_precision,
       org.antlr.runtime.tree.Tree TIME_VK,
       org.antlr.runtime.tree.Tree LOCAL_VK) {
     native_datatype_spec _result = new native_datatype_spec();
-    _result.name = name;
-    _result.type_precision = type_precision;
-    _result.TIME_VK = TIME_VK;
-    _result.LOCAL_VK = LOCAL_VK;
+    _result.set_name(name);
+    _result.set_type_precision(type_precision);
+    _result.set_TIME_VK(TIME_VK);
+    _result.set_LOCAL_VK(LOCAL_VK);
     return _result;
   }
 
@@ -16551,7 +16680,7 @@ public class parser {
 
     if (!(_i < tree.getChildCount() && (canParsegeneral_element_item(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegeneral_element_item(tree.getChild(_i)))) {
-      _result.general_element_items.add(parsegeneral_element_item(tree.getChild(_i)));
+      _result.add_general_element_items(parsegeneral_element_item(tree.getChild(_i)));
       ++_i;
     }
 
@@ -16559,9 +16688,10 @@ public class parser {
     return _result;
   }
 
-  public static general_element make_general_element(java.util.List<general_element_item> general_element_items) {
+  public static general_element make_general_element(java.util.List<ru.barsopen.plsqlconverter.ast.typed.general_element_item> general_element_items) {
     general_element _result = new general_element();
-    if (general_element_items != null) {      _result.general_element_items = general_element_items;
+    if (general_element_items != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.general_element_item _value: general_element_items) { _result.add_general_element_items(_value); }
     }
     return _result;
   }
@@ -16598,16 +16728,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseid(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.id = parseid(tree.getChild(_i));
+    _result.set_id(parseid(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static general_element_id make_general_element_id(id id) {
+  public static general_element_id make_general_element_id(ru.barsopen.plsqlconverter.ast.typed.id id) {
     general_element_id _result = new general_element_id();
-    _result.id = id;
+    _result.set_id(id);
     return _result;
   }
 
@@ -16661,7 +16791,7 @@ public class parser {
 
   public static constant_unsigned make_constant_unsigned(String value) {
     constant_unsigned _result = new constant_unsigned();
-    _result.value = value;
+    _result.set_value(value);
     return _result;
   }
 
@@ -16683,16 +16813,16 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParseconstant_unsigned(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.constant_unsigned = parseconstant_unsigned(tree.getChild(_i));
+    _result.set_constant_unsigned(parseconstant_unsigned(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static constant_minus_unsigned make_constant_minus_unsigned(constant_unsigned constant_unsigned) {
+  public static constant_minus_unsigned make_constant_minus_unsigned(ru.barsopen.plsqlconverter.ast.typed.constant_unsigned constant_unsigned) {
     constant_minus_unsigned _result = new constant_minus_unsigned();
-    _result.constant_unsigned = constant_unsigned;
+    _result.set_constant_unsigned(constant_unsigned);
     return _result;
   }
 
@@ -16721,7 +16851,7 @@ public class parser {
 
   public static constant_exact_num make_constant_exact_num(String value) {
     constant_exact_num _result = new constant_exact_num();
-    _result.value = value;
+    _result.set_value(value);
     return _result;
   }
 
@@ -16750,7 +16880,7 @@ public class parser {
 
   public static constant_approx_num make_constant_approx_num(String value) {
     constant_approx_num _result = new constant_approx_num();
-    _result.value = value;
+    _result.set_value(value);
     return _result;
   }
 
@@ -16779,7 +16909,7 @@ public class parser {
 
   public static constant_char_string make_constant_char_string(String value) {
     constant_char_string _result = new constant_char_string();
-    _result.value = value;
+    _result.set_value(value);
     return _result;
   }
 
@@ -17016,7 +17146,7 @@ public class parser {
 
   public static id make_id(String value) {
     id _result = new id();
-    _result.value = value;
+    _result.set_value(value);
     return _result;
   }
 

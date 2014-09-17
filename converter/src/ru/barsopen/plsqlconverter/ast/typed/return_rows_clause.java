@@ -1,12 +1,28 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class return_rows_clause {
+public class return_rows_clause implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public org.antlr.runtime.tree.Tree UPDATED_VK = null;
+  public org.antlr.runtime.tree.Tree get_UPDATED_VK() { return this.UPDATED_VK; }
+  public void set_UPDATED_VK(org.antlr.runtime.tree.Tree value) {
+    this.UPDATED_VK = value;
+  }
   public boolean is_UPDATED_VK() { return this.UPDATED_VK != null; }
   public org.antlr.runtime.tree.Tree SQL92_RESERVED_ALL = null;
+  public org.antlr.runtime.tree.Tree get_SQL92_RESERVED_ALL() { return this.SQL92_RESERVED_ALL; }
+  public void set_SQL92_RESERVED_ALL(org.antlr.runtime.tree.Tree value) {
+    this.SQL92_RESERVED_ALL = value;
+  }
   public boolean is_SQL92_RESERVED_ALL() { return this.SQL92_RESERVED_ALL != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

@@ -1,13 +1,37 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class type_spec_custom implements type_spec {
+public class type_spec_custom implements type_spec, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public type_name type_name = null;
+  public type_name get_type_name() { return this.type_name; }
+  public void set_type_name(type_name value) {
+    if (this.type_name != null) { this.type_name._setParent(null); }
+    this.type_name = value;
+    if (this.type_name != null) { this.type_name._setParent(this); }
+  }
   public org.antlr.runtime.tree.Tree REF_VK = null;
+  public org.antlr.runtime.tree.Tree get_REF_VK() { return this.REF_VK; }
+  public void set_REF_VK(org.antlr.runtime.tree.Tree value) {
+    this.REF_VK = value;
+  }
   public boolean is_REF_VK() { return this.REF_VK != null; }
   public percent_type_or_rowtype percent_type_or_rowtype = null;
+  public percent_type_or_rowtype get_percent_type_or_rowtype() { return this.percent_type_or_rowtype; }
+  public void set_percent_type_or_rowtype(percent_type_or_rowtype value) {
+    if (this.percent_type_or_rowtype != null) { this.percent_type_or_rowtype._setParent(null); }
+    this.percent_type_or_rowtype = value;
+    if (this.percent_type_or_rowtype != null) { this.percent_type_or_rowtype._setParent(this); }
+  }
   public boolean is_percent_type_or_rowtype() { return this.percent_type_or_rowtype != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

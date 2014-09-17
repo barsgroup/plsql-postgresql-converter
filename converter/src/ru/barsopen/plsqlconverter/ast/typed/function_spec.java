@@ -1,17 +1,55 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class function_spec implements package_obj_spec, package_obj_body {
+public class function_spec implements package_obj_spec, package_obj_body, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public function_name function_name = null;
+  public function_name get_function_name() { return this.function_name; }
+  public void set_function_name(function_name value) {
+    if (this.function_name != null) { this.function_name._setParent(null); }
+    this.function_name = value;
+    if (this.function_name != null) { this.function_name._setParent(this); }
+  }
   public type_spec type_spec = null;
+  public type_spec get_type_spec() { return this.type_spec; }
+  public void set_type_spec(type_spec value) {
+    if (this.type_spec != null) { this.type_spec._setParent(null); }
+    this.type_spec = value;
+    if (this.type_spec != null) { this.type_spec._setParent(this); }
+  }
   public parameters parameters = null;
+  public parameters get_parameters() { return this.parameters; }
+  public void set_parameters(parameters value) {
+    if (this.parameters != null) { this.parameters._setParent(null); }
+    this.parameters = value;
+    if (this.parameters != null) { this.parameters._setParent(this); }
+  }
   public org.antlr.runtime.tree.Tree PIPELINED_VK = null;
+  public org.antlr.runtime.tree.Tree get_PIPELINED_VK() { return this.PIPELINED_VK; }
+  public void set_PIPELINED_VK(org.antlr.runtime.tree.Tree value) {
+    this.PIPELINED_VK = value;
+  }
   public boolean is_PIPELINED_VK() { return this.PIPELINED_VK != null; }
   public org.antlr.runtime.tree.Tree RESULT_CACHE_VK = null;
+  public org.antlr.runtime.tree.Tree get_RESULT_CACHE_VK() { return this.RESULT_CACHE_VK; }
+  public void set_RESULT_CACHE_VK(org.antlr.runtime.tree.Tree value) {
+    this.RESULT_CACHE_VK = value;
+  }
   public boolean is_RESULT_CACHE_VK() { return this.RESULT_CACHE_VK != null; }
   public org.antlr.runtime.tree.Tree DETERMINISTIC_VK = null;
+  public org.antlr.runtime.tree.Tree get_DETERMINISTIC_VK() { return this.DETERMINISTIC_VK; }
+  public void set_DETERMINISTIC_VK(org.antlr.runtime.tree.Tree value) {
+    this.DETERMINISTIC_VK = value;
+  }
   public boolean is_DETERMINISTIC_VK() { return this.DETERMINISTIC_VK != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

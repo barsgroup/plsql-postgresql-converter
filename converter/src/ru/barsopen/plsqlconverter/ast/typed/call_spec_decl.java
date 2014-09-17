@@ -1,5 +1,4 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public interface call_spec_decl {
+public interface call_spec_decl extends _baseNode {
   // implemented by: java_spec, c_spec
-  org.antlr.runtime.tree.Tree unparse();
 }

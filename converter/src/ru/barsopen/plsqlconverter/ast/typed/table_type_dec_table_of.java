@@ -1,11 +1,31 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class table_type_dec_table_of implements table_type_dec_impl {
+public class table_type_dec_table_of implements table_type_dec_impl, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public type_spec type_spec = null;
+  public type_spec get_type_spec() { return this.type_spec; }
+  public void set_type_spec(type_spec value) {
+    if (this.type_spec != null) { this.type_spec._setParent(null); }
+    this.type_spec = value;
+    if (this.type_spec != null) { this.type_spec._setParent(this); }
+  }
   public table_indexed_by_part table_indexed_by_part = null;
+  public table_indexed_by_part get_table_indexed_by_part() { return this.table_indexed_by_part; }
+  public void set_table_indexed_by_part(table_indexed_by_part value) {
+    if (this.table_indexed_by_part != null) { this.table_indexed_by_part._setParent(null); }
+    this.table_indexed_by_part = value;
+    if (this.table_indexed_by_part != null) { this.table_indexed_by_part._setParent(this); }
+  }
   public boolean is_table_indexed_by_part() { return this.table_indexed_by_part != null; }
 
   public org.antlr.runtime.tree.Tree unparse() {

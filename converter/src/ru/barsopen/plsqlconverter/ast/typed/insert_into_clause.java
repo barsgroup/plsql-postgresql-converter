@@ -1,11 +1,31 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class insert_into_clause {
+public class insert_into_clause implements _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
   public int _tokenStopIndex = -1;
+  public _baseNode _parent = null;
+  public _baseNode _getParent() { return _parent; }
+  public void _setParent(_baseNode value) { _parent = value; }
+  public void _setBaseNode(_baseNode value) { this._parent = value; }
+  public int _getLine() { return _line; }
+  public int _getCol() { return _col; }
+  public int _getTokenStartIndex() { return _tokenStartIndex; }
+  public int _getTokenStopIndex() { return _tokenStopIndex; }
   public general_table_ref general_table_ref = null;
+  public general_table_ref get_general_table_ref() { return this.general_table_ref; }
+  public void set_general_table_ref(general_table_ref value) {
+    if (this.general_table_ref != null) { this.general_table_ref._setParent(null); }
+    this.general_table_ref = value;
+    if (this.general_table_ref != null) { this.general_table_ref._setParent(this); }
+  }
   public insert_into_clause_columns insert_into_clause_columns = null;
+  public insert_into_clause_columns get_insert_into_clause_columns() { return this.insert_into_clause_columns; }
+  public void set_insert_into_clause_columns(insert_into_clause_columns value) {
+    if (this.insert_into_clause_columns != null) { this.insert_into_clause_columns._setParent(null); }
+    this.insert_into_clause_columns = value;
+    if (this.insert_into_clause_columns != null) { this.insert_into_clause_columns._setParent(this); }
+  }
 
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO);
