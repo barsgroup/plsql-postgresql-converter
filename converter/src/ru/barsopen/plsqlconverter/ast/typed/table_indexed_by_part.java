@@ -20,6 +20,12 @@ public class table_indexed_by_part implements _baseNode {
     if (this.type_spec != null) { this.type_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_BY);
     _token.setLine(_line);

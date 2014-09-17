@@ -25,6 +25,15 @@ public class return_rows_clause implements _baseNode {
   }
   public boolean is_SQL92_RESERVED_ALL() { return this.SQL92_RESERVED_ALL != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.UPDATED_VK != null) {
+      visitor.visit(this.UPDATED_VK);
+    }
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RETURN_VK);
     _token.setLine(_line);

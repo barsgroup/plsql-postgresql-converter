@@ -28,6 +28,15 @@ public class standard_function_xmlagg implements standard_function, _baseNode {
   }
   public boolean is_order_by_clause() { return this.order_by_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.order_by_clause != null) {
+      this.order_by_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLAGG_VK);
     _token.setLine(_line);

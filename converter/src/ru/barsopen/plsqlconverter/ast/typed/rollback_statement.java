@@ -27,6 +27,15 @@ public class rollback_statement implements transaction_control_statements, _base
   }
   public boolean is_rollback_statement_additional() { return this.rollback_statement_additional != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.WORK_VK != null) {
+      visitor.visit(this.WORK_VK);
+    }
+    if (this.rollback_statement_additional != null) {
+      this.rollback_statement_additional._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ROLLBACK_VK);
     _token.setLine(_line);

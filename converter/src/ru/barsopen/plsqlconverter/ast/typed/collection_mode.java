@@ -20,6 +20,12 @@ public class collection_mode implements table_expression_element, _baseNode {
     if (this.table_collection_expression != null) { this.table_collection_expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.table_collection_expression != null) {
+      this.table_collection_expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COLLECTION_MODE);
     _token.setLine(_line);

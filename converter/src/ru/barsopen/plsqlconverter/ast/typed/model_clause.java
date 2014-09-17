@@ -60,6 +60,21 @@ public class model_clause implements _baseNode {
     this.remove_reference_models(this.reference_models.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.main_model != null) {
+      this.main_model._walk(visitor);
+    }
+    for (cell_reference_options _value: this.cell_reference_optionss) {
+      _value._walk(visitor);
+    }
+    if (this.return_rows_clause != null) {
+      this.return_rows_clause._walk(visitor);
+    }
+    for (reference_model _value: this.reference_models) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_MODEL);
     _token.setLine(_line);

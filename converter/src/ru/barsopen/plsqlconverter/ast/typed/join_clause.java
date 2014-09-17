@@ -86,6 +86,42 @@ public class join_clause implements _baseNode {
   }
   public boolean is_join_using_part() { return this.join_using_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.qpc1 != null) {
+      this.qpc1._walk(visitor);
+    }
+    if (this.CROSS_VK != null) {
+      visitor.visit(this.CROSS_VK);
+    }
+    if (this.NATURAL_VK != null) {
+      visitor.visit(this.NATURAL_VK);
+    }
+    if (this.INNER_VK != null) {
+      visitor.visit(this.INNER_VK);
+    }
+    if (this.FULL_VK != null) {
+      visitor.visit(this.FULL_VK);
+    }
+    if (this.LEFT_VK != null) {
+      visitor.visit(this.LEFT_VK);
+    }
+    if (this.RIGHT_VK != null) {
+      visitor.visit(this.RIGHT_VK);
+    }
+    if (this.table_ref_aux != null) {
+      this.table_ref_aux._walk(visitor);
+    }
+    if (this.qpc2 != null) {
+      this.qpc2._walk(visitor);
+    }
+    if (this.join_on_part != null) {
+      this.join_on_part._walk(visitor);
+    }
+    if (this.join_using_part != null) {
+      this.join_using_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.JOIN_DEF);
     _token.setLine(_line);

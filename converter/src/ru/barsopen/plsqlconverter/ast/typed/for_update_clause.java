@@ -29,6 +29,15 @@ public class for_update_clause implements _baseNode {
   }
   public boolean is_for_update_options() { return this.for_update_options != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.for_update_of_part != null) {
+      this.for_update_of_part._walk(visitor);
+    }
+    if (this.for_update_options != null) {
+      this.for_update_options._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FOR);
     _token.setLine(_line);

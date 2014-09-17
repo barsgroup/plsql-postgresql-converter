@@ -33,6 +33,18 @@ public class record_type_dec_refcursor implements record_type_dec, _baseNode {
   }
   public boolean is_type_spec() { return this.type_spec != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.REF_VK != null) {
+      visitor.visit(this.REF_VK);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RECORD_TYPE_DECLARE);
     _token.setLine(_line);

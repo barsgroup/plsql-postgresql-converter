@@ -27,6 +27,15 @@ public class expression_element_in implements expression_element, _baseNode {
     if (this.in_elements != null) { this.in_elements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.arg != null) {
+      this.arg._walk(visitor);
+    }
+    if (this.in_elements != null) {
+      this.in_elements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN);
     _token.setLine(_line);

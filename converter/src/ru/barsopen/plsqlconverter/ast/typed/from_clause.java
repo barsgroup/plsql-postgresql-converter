@@ -29,6 +29,12 @@ public class from_clause implements _baseNode {
     this.remove_table_refs(this.table_refs.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (table_ref _value: this.table_refs) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FROM);
     _token.setLine(_line);

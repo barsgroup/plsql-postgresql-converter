@@ -36,6 +36,18 @@ public class body implements statement, _baseNode {
   }
   public boolean is_exception_clause() { return this.exception_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.label_name != null) {
+      this.label_name._walk(visitor);
+    }
+    if (this.seq_of_statements != null) {
+      this.seq_of_statements._walk(visitor);
+    }
+    if (this.exception_clause != null) {
+      this.exception_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.BODY);
     _token.setLine(_line);

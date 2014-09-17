@@ -27,6 +27,15 @@ public class labeled_statement implements stat_or_label, _baseNode {
     if (this.statement != null) { this.statement._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.label_name != null) {
+      this.label_name._walk(visitor);
+    }
+    if (this.statement != null) {
+      this.statement._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LABEL_DECLARE);
     _token.setLine(_line);

@@ -13,6 +13,9 @@ public class xmlparse_document implements xmlparse_document_or_content, _baseNod
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DOCUMENT_VK);
     _token.setLine(_line);

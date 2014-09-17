@@ -28,6 +28,15 @@ public class pivot_element implements _baseNode {
     if (this.expression != null) { this.expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PIVOT_ELEMENT);
     _token.setLine(_line);

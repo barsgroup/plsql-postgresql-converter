@@ -13,6 +13,9 @@ public class parameter_in implements parameter_dir_spec, _baseNode {
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN);
     _token.setLine(_line);

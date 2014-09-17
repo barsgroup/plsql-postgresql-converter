@@ -20,6 +20,12 @@ public class merge_update_delete_part implements _baseNode {
     if (this.where_clause != null) { this.where_clause._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.where_clause != null) {
+      this.where_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DELETE);
     _token.setLine(_line);

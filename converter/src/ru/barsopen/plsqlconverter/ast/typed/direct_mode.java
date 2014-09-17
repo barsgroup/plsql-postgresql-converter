@@ -28,6 +28,15 @@ public class direct_mode implements table_expression_element, _baseNode {
   }
   public boolean is_sample_clause() { return this.sample_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.tableview_name != null) {
+      this.tableview_name._walk(visitor);
+    }
+    if (this.sample_clause != null) {
+      this.sample_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DIRECT_MODE);
     _token.setLine(_line);

@@ -44,6 +44,18 @@ public class multi_table_insert implements insert_statement_spec, _baseNode {
     this.remove_multi_table_elements(this.multi_table_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.select_statement != null) {
+      this.select_statement._walk(visitor);
+    }
+    if (this.conditional_insert_clause != null) {
+      this.conditional_insert_clause._walk(visitor);
+    }
+    for (multi_table_element _value: this.multi_table_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MULTI_TABLE_MODE);
     _token.setLine(_line);

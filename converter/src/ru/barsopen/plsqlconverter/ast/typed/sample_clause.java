@@ -34,6 +34,18 @@ public class sample_clause implements _baseNode {
   }
   public boolean is_seed_part() { return this.seed_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.BLOCK_VK != null) {
+      visitor.visit(this.BLOCK_VK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.seed_part != null) {
+      this.seed_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SAMPLE_VK);
     _token.setLine(_line);

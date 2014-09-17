@@ -20,6 +20,12 @@ public class drop_trigger implements unit_statement, _baseNode {
     if (this.trigger_name != null) { this.trigger_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.trigger_name != null) {
+      this.trigger_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DROP_TRIGGER);
     _token.setLine(_line);

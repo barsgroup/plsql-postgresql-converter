@@ -51,6 +51,21 @@ public class main_model implements _baseNode {
     this.remove_cell_reference_optionss(this.cell_reference_optionss.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.main_model_name != null) {
+      this.main_model_name._walk(visitor);
+    }
+    if (this.model_column_clauses != null) {
+      this.model_column_clauses._walk(visitor);
+    }
+    if (this.model_rules_clause != null) {
+      this.model_rules_clause._walk(visitor);
+    }
+    for (cell_reference_options _value: this.cell_reference_optionss) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MAIN_MODEL);
     _token.setLine(_line);

@@ -20,6 +20,12 @@ public class pipe_row_statement implements statement, _baseNode {
     if (this.expression != null) { this.expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PIPE_ROW);
     _token.setLine(_line);

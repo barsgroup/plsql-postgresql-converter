@@ -45,6 +45,24 @@ public class standard_function_trim implements standard_function, _baseNode {
   }
   public boolean is_BOTH_VK() { return this.BOTH_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.text_expr != null) {
+      this.text_expr._walk(visitor);
+    }
+    if (this.trim_char_expr != null) {
+      this.trim_char_expr._walk(visitor);
+    }
+    if (this.LEADING_VK != null) {
+      visitor.visit(this.LEADING_VK);
+    }
+    if (this.TRAILING_VK != null) {
+      visitor.visit(this.TRAILING_VK);
+    }
+    if (this.BOTH_VK != null) {
+      visitor.visit(this.BOTH_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TRIM_VK);
     _token.setLine(_line);

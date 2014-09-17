@@ -20,6 +20,12 @@ public class expression_element_not_nan implements expression_element, _baseNode
     if (this.arg != null) { this.arg._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.arg != null) {
+      this.arg._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_NAN);
     _token.setLine(_line);

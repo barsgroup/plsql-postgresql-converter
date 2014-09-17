@@ -21,6 +21,12 @@ public class raise_statement implements statement, _baseNode {
   }
   public boolean is_exception_name() { return this.exception_name != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.exception_name != null) {
+      this.exception_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RAISE_VK);
     _token.setLine(_line);

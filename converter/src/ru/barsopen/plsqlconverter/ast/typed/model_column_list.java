@@ -29,6 +29,12 @@ public class model_column_list implements _baseNode {
     this.remove_model_columns(this.model_columns.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (model_column _value: this.model_columns) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_COLUMNS);
     _token.setLine(_line);

@@ -59,6 +59,27 @@ public class merge_statement implements data_manipulation_language_statements, _
   }
   public boolean is_error_logging_clause() { return this.error_logging_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+    if (this.tableview_name != null) {
+      this.tableview_name._walk(visitor);
+    }
+    if (this.merge_using_clause != null) {
+      this.merge_using_clause._walk(visitor);
+    }
+    if (this.merge_update_clause != null) {
+      this.merge_update_clause._walk(visitor);
+    }
+    if (this.merge_insert_clause != null) {
+      this.merge_insert_clause._walk(visitor);
+    }
+    if (this.error_logging_clause != null) {
+      this.error_logging_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MERGE_VK);
     _token.setLine(_line);

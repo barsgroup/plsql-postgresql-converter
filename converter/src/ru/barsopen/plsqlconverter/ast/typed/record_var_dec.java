@@ -34,6 +34,18 @@ public class record_var_dec implements record_declaration, _baseNode {
     if (this.percent_type_or_rowtype != null) { this.percent_type_or_rowtype._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.record_name != null) {
+      this.record_name._walk(visitor);
+    }
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.percent_type_or_rowtype != null) {
+      this.percent_type_or_rowtype._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RECORD_VAR_DECLARE);
     _token.setLine(_line);

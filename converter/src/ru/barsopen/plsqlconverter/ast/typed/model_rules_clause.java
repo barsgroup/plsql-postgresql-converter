@@ -37,6 +37,15 @@ public class model_rules_clause implements _baseNode {
   }
   public boolean is_model_rules_part() { return this.model_rules_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (model_rules_element _value: this.model_rules_elements) {
+      _value._walk(visitor);
+    }
+    if (this.model_rules_part != null) {
+      this.model_rules_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_RULES);
     _token.setLine(_line);

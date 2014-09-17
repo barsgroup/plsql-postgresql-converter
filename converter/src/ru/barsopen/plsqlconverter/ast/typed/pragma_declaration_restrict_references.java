@@ -35,6 +35,15 @@ public class pragma_declaration_restrict_references implements pragma_declaratio
     this.remove_ids(this.ids.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_DEFAULT != null) {
+      visitor.visit(this.SQL92_RESERVED_DEFAULT);
+    }
+    for (id _value: this.ids) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RESTRICT_REFERENCES_VK);
     _token.setLine(_line);

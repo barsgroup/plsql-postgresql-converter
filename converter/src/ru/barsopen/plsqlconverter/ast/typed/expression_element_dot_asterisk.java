@@ -20,6 +20,12 @@ public class expression_element_dot_asterisk implements expression_element, _bas
     if (this.tableview_name != null) { this.tableview_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.tableview_name != null) {
+      this.tableview_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DOT_ASTERISK);
     _token.setLine(_line);

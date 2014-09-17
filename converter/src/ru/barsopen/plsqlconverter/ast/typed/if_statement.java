@@ -51,6 +51,21 @@ public class if_statement implements statement, _baseNode {
   }
   public boolean is_else_part() { return this.else_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.seq_of_statements != null) {
+      this.seq_of_statements._walk(visitor);
+    }
+    for (elsif_part _value: this.elsif_parts) {
+      _value._walk(visitor);
+    }
+    if (this.else_part != null) {
+      this.else_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_IF);
     _token.setLine(_line);

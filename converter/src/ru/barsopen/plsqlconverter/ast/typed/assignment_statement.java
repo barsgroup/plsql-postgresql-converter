@@ -27,6 +27,15 @@ public class assignment_statement implements statement, _baseNode {
     if (this.expression != null) { this.expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.assignment_target != null) {
+      this.assignment_target._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN);
     _token.setLine(_line);

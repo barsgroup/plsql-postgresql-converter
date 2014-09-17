@@ -20,6 +20,12 @@ public class group_by_element implements _baseNode {
     if (this.group_by_elements != null) { this.group_by_elements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.group_by_elements != null) {
+      this.group_by_elements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.GROUP_BY_ELEMENT);
     _token.setLine(_line);

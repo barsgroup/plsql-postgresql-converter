@@ -49,6 +49,21 @@ public class conditional_insert_clause implements _baseNode {
   }
   public boolean is_conditional_insert_else_part() { return this.conditional_insert_else_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+    if (this.FIRST_VK != null) {
+      visitor.visit(this.FIRST_VK);
+    }
+    for (conditional_insert_when_part _value: this.conditional_insert_when_parts) {
+      _value._walk(visitor);
+    }
+    if (this.conditional_insert_else_part != null) {
+      this.conditional_insert_else_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CONDITIONAL_INSERT);
     _token.setLine(_line);

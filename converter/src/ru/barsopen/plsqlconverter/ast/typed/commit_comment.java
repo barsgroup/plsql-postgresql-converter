@@ -20,6 +20,12 @@ public class commit_comment implements commit_statement_additional, _baseNode {
     if (this.comment_expr != null) { this.comment_expr._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.comment_expr != null) {
+      this.comment_expr._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COMMENT_VK);
     _token.setLine(_line);

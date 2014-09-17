@@ -52,6 +52,24 @@ public class single_table_insert implements insert_statement_spec, _baseNode {
   }
   public boolean is_error_logging_clause() { return this.error_logging_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.insert_into_clause != null) {
+      this.insert_into_clause._walk(visitor);
+    }
+    if (this.values_clause != null) {
+      this.values_clause._walk(visitor);
+    }
+    if (this.static_returning_clause != null) {
+      this.static_returning_clause._walk(visitor);
+    }
+    if (this.select_statement != null) {
+      this.select_statement._walk(visitor);
+    }
+    if (this.error_logging_clause != null) {
+      this.error_logging_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SINGLE_TABLE_MODE);
     _token.setLine(_line);

@@ -18,6 +18,12 @@ public class java_spec implements call_spec_decl, _baseNode {
     this.CHAR_STRING = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.CHAR_STRING != null) {
+      visitor.visit(this.CHAR_STRING);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.JAVA_VK);
     _token.setLine(_line);

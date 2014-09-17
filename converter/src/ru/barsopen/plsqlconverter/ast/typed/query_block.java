@@ -85,6 +85,39 @@ public class query_block implements subquery_basic_elements, _baseNode {
   }
   public boolean is_model_clause() { return this.model_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.from_clause != null) {
+      this.from_clause._walk(visitor);
+    }
+    if (this.SQL92_RESERVED_DISTINCT != null) {
+      visitor.visit(this.SQL92_RESERVED_DISTINCT);
+    }
+    if (this.SQL92_RESERVED_UNIQUE != null) {
+      visitor.visit(this.SQL92_RESERVED_UNIQUE);
+    }
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+    if (this.query_block_projection != null) {
+      this.query_block_projection._walk(visitor);
+    }
+    if (this.into_clause != null) {
+      this.into_clause._walk(visitor);
+    }
+    if (this.where_clause != null) {
+      this.where_clause._walk(visitor);
+    }
+    if (this.hierarchical_query_clause != null) {
+      this.hierarchical_query_clause._walk(visitor);
+    }
+    if (this.group_by_clause != null) {
+      this.group_by_clause._walk(visitor);
+    }
+    if (this.model_clause != null) {
+      this.model_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_SELECT);
     _token.setLine(_line);

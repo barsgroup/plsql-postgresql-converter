@@ -26,6 +26,15 @@ public class drop_package implements unit_statement, _baseNode {
   }
   public boolean is_BODY_VK() { return this.BODY_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.package_name != null) {
+      this.package_name._walk(visitor);
+    }
+    if (this.BODY_VK != null) {
+      visitor.visit(this.BODY_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DROP_PACKAGE);
     _token.setLine(_line);

@@ -37,6 +37,15 @@ public class case_statement_searched implements case_statement, _baseNode {
   }
   public boolean is_case_else_part() { return this.case_else_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (case_when_part _value: this.case_when_parts) {
+      _value._walk(visitor);
+    }
+    if (this.case_else_part != null) {
+      this.case_else_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SEARCHED_CASE);
     _token.setLine(_line);

@@ -20,6 +20,12 @@ public class general_expression implements expression, _baseNode {
     if (this.expression_element != null) { this.expression_element._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression_element != null) {
+      this.expression_element._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXPR);
     _token.setLine(_line);

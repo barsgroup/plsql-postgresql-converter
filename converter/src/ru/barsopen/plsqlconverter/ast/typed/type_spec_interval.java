@@ -27,6 +27,15 @@ public class type_spec_interval implements type_spec, _baseNode {
     if (this.interval_type_spec_second != null) { this.interval_type_spec_second._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.interval_type_spec_first != null) {
+      this.interval_type_spec_first._walk(visitor);
+    }
+    if (this.interval_type_spec_second != null) {
+      this.interval_type_spec_second._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.INTERVAL_DATATYPE);
     _token.setLine(_line);

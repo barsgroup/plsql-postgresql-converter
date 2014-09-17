@@ -53,6 +53,27 @@ public class standard_function_count implements standard_function, _baseNode {
   }
   public boolean is_over_clause() { return this.over_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_DISTINCT != null) {
+      visitor.visit(this.SQL92_RESERVED_DISTINCT);
+    }
+    if (this.SQL92_RESERVED_UNIQUE != null) {
+      visitor.visit(this.SQL92_RESERVED_UNIQUE);
+    }
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+    if (this.ASTERISK != null) {
+      visitor.visit(this.ASTERISK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.over_clause != null) {
+      this.over_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COUNT_VK);
     _token.setLine(_line);

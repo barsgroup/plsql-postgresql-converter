@@ -20,6 +20,12 @@ public class sql_script implements _baseNode {
     if (this.sql_script_item != null) { this.sql_script_item._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.sql_script_item != null) {
+      this.sql_script_item._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL_SCRIPT);
     _token.setLine(_line);

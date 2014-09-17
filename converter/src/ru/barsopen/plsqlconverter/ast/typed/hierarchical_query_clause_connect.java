@@ -26,6 +26,15 @@ public class hierarchical_query_clause_connect implements _baseNode {
     if (this.expression != null) { this.expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.NOCYCLE_VK != null) {
+      visitor.visit(this.NOCYCLE_VK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CONNECT);
     _token.setLine(_line);

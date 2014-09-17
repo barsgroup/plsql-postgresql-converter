@@ -33,6 +33,18 @@ public class standard_function_xmlparse implements standard_function, _baseNode 
   }
   public boolean is_WELLFORMED_VK() { return this.WELLFORMED_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.xmlparse_document_or_content != null) {
+      this.xmlparse_document_or_content._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.WELLFORMED_VK != null) {
+      visitor.visit(this.WELLFORMED_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLPARSE_VK);
     _token.setLine(_line);

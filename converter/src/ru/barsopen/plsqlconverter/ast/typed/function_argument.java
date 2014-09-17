@@ -29,6 +29,12 @@ public class function_argument implements general_element_item, _baseNode {
     this.remove_arguments(this.arguments.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (argument _value: this.arguments) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ARGUMENTS);
     _token.setLine(_line);

@@ -20,6 +20,12 @@ public class error_logging_into_part implements _baseNode {
     if (this.tableview_name != null) { this.tableview_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.tableview_name != null) {
+      this.tableview_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO);
     _token.setLine(_line);

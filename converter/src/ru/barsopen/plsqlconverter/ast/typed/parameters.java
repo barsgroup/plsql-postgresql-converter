@@ -29,6 +29,12 @@ public class parameters implements _baseNode {
     this.remove_parameters(this.parameters.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (parameter _value: this.parameters) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARAMETERS);
     _token.setLine(_line);

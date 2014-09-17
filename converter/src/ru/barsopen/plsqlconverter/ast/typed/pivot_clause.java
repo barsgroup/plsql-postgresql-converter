@@ -49,6 +49,21 @@ public class pivot_clause implements _baseNode {
     if (this.pivot_in_clause != null) { this.pivot_in_clause._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.XML_VK != null) {
+      visitor.visit(this.XML_VK);
+    }
+    for (pivot_element _value: this.pivot_elements) {
+      _value._walk(visitor);
+    }
+    if (this.pivot_for_clause != null) {
+      this.pivot_for_clause._walk(visitor);
+    }
+    if (this.pivot_in_clause != null) {
+      this.pivot_in_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PIVOT_VK);
     _token.setLine(_line);

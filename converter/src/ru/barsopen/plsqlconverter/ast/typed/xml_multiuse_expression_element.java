@@ -28,6 +28,15 @@ public class xml_multiuse_expression_element implements _baseNode {
   }
   public boolean is_xml_alias() { return this.xml_alias != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.xml_alias != null) {
+      this.xml_alias._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XML_ELEMENT);
     _token.setLine(_line);

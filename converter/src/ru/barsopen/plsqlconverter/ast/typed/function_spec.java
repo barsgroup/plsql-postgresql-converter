@@ -52,6 +52,27 @@ public class function_spec implements package_obj_spec, package_obj_body, _baseN
   }
   public boolean is_DETERMINISTIC_VK() { return this.DETERMINISTIC_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.function_name != null) {
+      this.function_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.parameters != null) {
+      this.parameters._walk(visitor);
+    }
+    if (this.PIPELINED_VK != null) {
+      visitor.visit(this.PIPELINED_VK);
+    }
+    if (this.RESULT_CACHE_VK != null) {
+      visitor.visit(this.RESULT_CACHE_VK);
+    }
+    if (this.DETERMINISTIC_VK != null) {
+      visitor.visit(this.DETERMINISTIC_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_SPEC);
     _token.setLine(_line);

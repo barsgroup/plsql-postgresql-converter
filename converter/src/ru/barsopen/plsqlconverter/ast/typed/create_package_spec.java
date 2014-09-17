@@ -50,6 +50,21 @@ public class create_package_spec implements create_package, _baseNode {
     this.remove_package_obj_specs(this.package_obj_specs.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.REPLACE_VK != null) {
+      visitor.visit(this.REPLACE_VK);
+    }
+    if (this.package_name != null) {
+      this.package_name._walk(visitor);
+    }
+    if (this.invoker_rights_clause != null) {
+      this.invoker_rights_clause._walk(visitor);
+    }
+    for (package_obj_spec _value: this.package_obj_specs) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PACKAGE_SPEC);
     _token.setLine(_line);

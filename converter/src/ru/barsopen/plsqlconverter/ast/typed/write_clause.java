@@ -37,6 +37,21 @@ public class write_clause implements _baseNode {
   }
   public boolean is_BATCH_VK() { return this.BATCH_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.WAIT_VK != null) {
+      visitor.visit(this.WAIT_VK);
+    }
+    if (this.PLSQL_RESERVED_NOWAIT != null) {
+      visitor.visit(this.PLSQL_RESERVED_NOWAIT);
+    }
+    if (this.IMMEDIATE_VK != null) {
+      visitor.visit(this.IMMEDIATE_VK);
+    }
+    if (this.BATCH_VK != null) {
+      visitor.visit(this.BATCH_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.WRITE_VK);
     _token.setLine(_line);

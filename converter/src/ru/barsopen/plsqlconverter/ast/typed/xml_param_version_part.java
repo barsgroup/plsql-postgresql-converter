@@ -33,6 +33,18 @@ public class xml_param_version_part implements _baseNode {
   }
   public boolean is_expression() { return this.expression != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.NO_VK != null) {
+      visitor.visit(this.NO_VK);
+    }
+    if (this.VALUE_VK != null) {
+      visitor.visit(this.VALUE_VK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.VERSION_VK);
     _token.setLine(_line);

@@ -58,6 +58,24 @@ public class create_package_body implements create_package, _baseNode {
   }
   public boolean is_exception_clause() { return this.exception_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.REPLACE_VK != null) {
+      visitor.visit(this.REPLACE_VK);
+    }
+    if (this.package_name != null) {
+      this.package_name._walk(visitor);
+    }
+    for (package_obj_body _value: this.package_obj_bodys) {
+      _value._walk(visitor);
+    }
+    if (this.seq_of_statements != null) {
+      this.seq_of_statements._walk(visitor);
+    }
+    if (this.exception_clause != null) {
+      this.exception_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PACKAGE_BODY);
     _token.setLine(_line);

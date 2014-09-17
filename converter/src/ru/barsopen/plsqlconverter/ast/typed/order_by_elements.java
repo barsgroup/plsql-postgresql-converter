@@ -50,6 +50,27 @@ public class order_by_elements implements _baseNode {
   }
   public boolean is_LAST_VK() { return this.LAST_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.SQL92_RESERVED_ASC != null) {
+      visitor.visit(this.SQL92_RESERVED_ASC);
+    }
+    if (this.SQL92_RESERVED_DESC != null) {
+      visitor.visit(this.SQL92_RESERVED_DESC);
+    }
+    if (this.NULLS_VK != null) {
+      visitor.visit(this.NULLS_VK);
+    }
+    if (this.FIRST_VK != null) {
+      visitor.visit(this.FIRST_VK);
+    }
+    if (this.LAST_VK != null) {
+      visitor.visit(this.LAST_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ORDER_BY_ELEMENT);
     _token.setLine(_line);

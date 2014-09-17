@@ -18,6 +18,9 @@ public class constant_approx_num implements constant, _baseNode {
     this.value = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.APPROXIMATE_NUM_LIT);
     _token.setLine(_line);

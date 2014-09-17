@@ -18,6 +18,12 @@ public class rollback_statement_force implements rollback_statement_additional, 
     this.CHAR_STRING = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.CHAR_STRING != null) {
+      visitor.visit(this.CHAR_STRING);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FORCE_VK);
     _token.setLine(_line);

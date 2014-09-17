@@ -68,6 +68,30 @@ public class standard_function_xmlelement implements standard_function, _baseNod
     this.remove_xmlelement_value_exprs(this.xmlelement_value_exprs.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.ENTITYESCAPING_VK != null) {
+      visitor.visit(this.ENTITYESCAPING_VK);
+    }
+    if (this.NOENTITYESCAPING_VK != null) {
+      visitor.visit(this.NOENTITYESCAPING_VK);
+    }
+    if (this.NAME_VK != null) {
+      visitor.visit(this.NAME_VK);
+    }
+    if (this.EVALNAME_VK != null) {
+      visitor.visit(this.EVALNAME_VK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.xml_attributes_clause != null) {
+      this.xml_attributes_clause._walk(visitor);
+    }
+    for (xmlelement_value_expr _value: this.xmlelement_value_exprs) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLELEMENT_VK);
     _token.setLine(_line);

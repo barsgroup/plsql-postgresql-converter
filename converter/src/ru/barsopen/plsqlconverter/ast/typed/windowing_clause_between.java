@@ -27,6 +27,15 @@ public class windowing_clause_between implements windowing_clause_spec, _baseNod
     if (this.e2 != null) { this.e2._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.e1 != null) {
+      this.e1._walk(visitor);
+    }
+    if (this.e2 != null) {
+      this.e2._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN);
     _token.setLine(_line);

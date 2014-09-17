@@ -40,6 +40,21 @@ public class using_element_element implements using_element, _baseNode {
   }
   public boolean is_alias() { return this.alias != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_IN != null) {
+      visitor.visit(this.SQL92_RESERVED_IN);
+    }
+    if (this.OUT_VK != null) {
+      visitor.visit(this.OUT_VK);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ELEMENT);
     _token.setLine(_line);

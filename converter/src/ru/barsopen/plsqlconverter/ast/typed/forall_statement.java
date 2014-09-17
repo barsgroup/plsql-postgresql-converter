@@ -40,6 +40,21 @@ public class forall_statement implements statement, _baseNode {
   }
   public boolean is_EXCEPTIONS_VK() { return this.EXCEPTIONS_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.index_name != null) {
+      this.index_name._walk(visitor);
+    }
+    if (this.bounds_clause != null) {
+      this.bounds_clause._walk(visitor);
+    }
+    if (this.sql_statement != null) {
+      this.sql_statement._walk(visitor);
+    }
+    if (this.EXCEPTIONS_VK != null) {
+      visitor.visit(this.EXCEPTIONS_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FORALL_VK);
     _token.setLine(_line);

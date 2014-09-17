@@ -27,6 +27,15 @@ public class elsif_part implements _baseNode {
     if (this.seq_of_statements != null) { this.seq_of_statements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.seq_of_statements != null) {
+      this.seq_of_statements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_ELSIF);
     _token.setLine(_line);

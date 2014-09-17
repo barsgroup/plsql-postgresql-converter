@@ -26,6 +26,15 @@ public class subquery_operation_minus implements subquery_operation_part, _baseN
     if (this.subquery_basic_elements != null) { this.subquery_basic_elements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+    if (this.subquery_basic_elements != null) {
+      this.subquery_basic_elements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_MINUS);
     _token.setLine(_line);

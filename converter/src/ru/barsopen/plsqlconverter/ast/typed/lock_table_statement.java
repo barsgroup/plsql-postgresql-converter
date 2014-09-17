@@ -44,6 +44,18 @@ public class lock_table_statement implements data_manipulation_language_statemen
   }
   public boolean is_wait_nowait_part() { return this.wait_nowait_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (lock_table_element _value: this.lock_table_elements) {
+      _value._walk(visitor);
+    }
+    if (this.lock_mode != null) {
+      this.lock_mode._walk(visitor);
+    }
+    if (this.wait_nowait_part != null) {
+      this.wait_nowait_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_LOCK);
     _token.setLine(_line);

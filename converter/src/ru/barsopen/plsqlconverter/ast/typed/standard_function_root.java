@@ -35,6 +35,18 @@ public class standard_function_root implements standard_function, _baseNode {
   }
   public boolean is_xmlroot_param_standalone_part() { return this.xmlroot_param_standalone_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.xml_param_version_part != null) {
+      this.xml_param_version_part._walk(visitor);
+    }
+    if (this.xmlroot_param_standalone_part != null) {
+      this.xmlroot_param_standalone_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLROOT_VK);
     _token.setLine(_line);

@@ -21,6 +21,12 @@ public class result_cache_clause implements _baseNode {
   }
   public boolean is_relies_on_part() { return this.relies_on_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.relies_on_part != null) {
+      this.relies_on_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RESULT_CACHE_VK);
     _token.setLine(_line);

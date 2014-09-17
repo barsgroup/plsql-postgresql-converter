@@ -26,6 +26,15 @@ public class subquery_operation_intersect implements subquery_operation_part, _b
     if (this.subquery_basic_elements != null) { this.subquery_basic_elements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_ALL != null) {
+      visitor.visit(this.SQL92_RESERVED_ALL);
+    }
+    if (this.subquery_basic_elements != null) {
+      this.subquery_basic_elements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTERSECT);
     _token.setLine(_line);

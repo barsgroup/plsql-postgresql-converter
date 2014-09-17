@@ -20,6 +20,12 @@ public class dynamic_returning_clause implements _baseNode {
     if (this.into_clause != null) { this.into_clause._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.into_clause != null) {
+      this.into_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DYNAMIC_RETURN);
     _token.setLine(_line);

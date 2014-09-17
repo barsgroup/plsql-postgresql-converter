@@ -37,6 +37,18 @@ public class over_clause implements _baseNode {
   }
   public boolean is_windowing_clause() { return this.windowing_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.query_partition_clause != null) {
+      this.query_partition_clause._walk(visitor);
+    }
+    if (this.order_by_clause != null) {
+      this.order_by_clause._walk(visitor);
+    }
+    if (this.windowing_clause != null) {
+      this.windowing_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.OVER_VK);
     _token.setLine(_line);

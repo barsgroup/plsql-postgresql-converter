@@ -20,6 +20,12 @@ public class savepoint_statement implements transaction_control_statements, _bas
     if (this.savepoint_name != null) { this.savepoint_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.savepoint_name != null) {
+      this.savepoint_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SAVEPOINT_VK);
     _token.setLine(_line);

@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class tabe_expression implements dml_table_expression_clause, _baseNode {
+public class table_expression implements dml_table_expression_clause, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
@@ -20,6 +20,12 @@ public class tabe_expression implements dml_table_expression_clause, _baseNode {
     if (this.table_expression_element != null) { this.table_expression_element._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.table_expression_element != null) {
+      this.table_expression_element._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_EXPRESSION);
     _token.setLine(_line);

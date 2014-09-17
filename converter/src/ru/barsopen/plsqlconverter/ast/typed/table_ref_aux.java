@@ -66,6 +66,27 @@ public class table_ref_aux implements _baseNode {
     this.remove_flashback_query_clauses(this.flashback_query_clauses.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+    if (this.dml_table_expression_clause != null) {
+      this.dml_table_expression_clause._walk(visitor);
+    }
+    if (this.ONLY_VK != null) {
+      visitor.visit(this.ONLY_VK);
+    }
+    if (this.pivot_clause != null) {
+      this.pivot_clause._walk(visitor);
+    }
+    if (this.unpivot_clause != null) {
+      this.unpivot_clause._walk(visitor);
+    }
+    for (flashback_query_clause _value: this.flashback_query_clauses) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF_ELEMENT);
     _token.setLine(_line);

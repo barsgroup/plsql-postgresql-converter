@@ -29,6 +29,12 @@ public class order_by_elements_list implements _baseNode {
     this.remove_elements(this.elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (order_by_elements _value: this.elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ORDER_BY_ELEMENTS);
     _token.setLine(_line);

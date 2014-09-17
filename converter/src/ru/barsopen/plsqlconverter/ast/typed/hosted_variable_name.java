@@ -25,6 +25,15 @@ public class hosted_variable_name implements assignment_target, expression_eleme
   }
   public boolean is_UNSIGNED_INTEGER() { return this.UNSIGNED_INTEGER != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.BINDVAR != null) {
+      visitor.visit(this.BINDVAR);
+    }
+    if (this.UNSIGNED_INTEGER != null) {
+      visitor.visit(this.UNSIGNED_INTEGER);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.HOSTED_VARIABLE_NAME);
     _token.setLine(_line);

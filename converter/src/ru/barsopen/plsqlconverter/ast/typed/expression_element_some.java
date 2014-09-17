@@ -20,6 +20,12 @@ public class expression_element_some implements expression_element, _baseNode {
     if (this.expression_or_subquery != null) { this.expression_or_subquery._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression_or_subquery != null) {
+      this.expression_or_subquery._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SOME_VK);
     _token.setLine(_line);

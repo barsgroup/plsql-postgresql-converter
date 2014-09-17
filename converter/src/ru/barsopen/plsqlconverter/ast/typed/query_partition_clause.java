@@ -20,6 +20,12 @@ public class query_partition_clause implements _baseNode {
     if (this.query_partition_clause_impl != null) { this.query_partition_clause_impl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.query_partition_clause_impl != null) {
+      this.query_partition_clause_impl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK);
     _token.setLine(_line);

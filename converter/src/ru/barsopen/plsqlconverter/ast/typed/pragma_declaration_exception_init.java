@@ -27,6 +27,15 @@ public class pragma_declaration_exception_init implements pragma_declaration_imp
     if (this.constant != null) { this.constant._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.exception_name != null) {
+      this.exception_name._walk(visitor);
+    }
+    if (this.constant != null) {
+      this.constant._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_INIT_VK);
     _token.setLine(_line);

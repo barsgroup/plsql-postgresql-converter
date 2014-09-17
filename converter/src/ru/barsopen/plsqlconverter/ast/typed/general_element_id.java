@@ -20,6 +20,12 @@ public class general_element_id implements general_element_item, _baseNode {
     if (this.id != null) { this.id._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.id != null) {
+      this.id._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ANY_ELEMENT);
     _token.setLine(_line);

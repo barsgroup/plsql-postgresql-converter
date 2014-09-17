@@ -20,6 +20,12 @@ public class drop_function implements unit_statement, _baseNode {
     if (this.function_name != null) { this.function_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.function_name != null) {
+      this.function_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DROP_FUNCTION);
     _token.setLine(_line);

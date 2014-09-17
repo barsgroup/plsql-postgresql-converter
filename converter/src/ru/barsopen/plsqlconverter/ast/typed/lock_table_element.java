@@ -28,6 +28,15 @@ public class lock_table_element implements _baseNode {
   }
   public boolean is_partition_extension_clause() { return this.partition_extension_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.tableview_name != null) {
+      this.tableview_name._walk(visitor);
+    }
+    if (this.partition_extension_clause != null) {
+      this.partition_extension_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LOCK_TABLE_ELEMENT);
     _token.setLine(_line);

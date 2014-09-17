@@ -52,6 +52,21 @@ public class standard_function_table implements standard_function, _baseNode {
     this.remove_xml_table_columns(this.xml_table_columns.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.xml_namespaces_clause != null) {
+      this.xml_namespaces_clause._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.xml_passing_clause != null) {
+      this.xml_passing_clause._walk(visitor);
+    }
+    for (xml_table_column _value: this.xml_table_columns) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLTABLE_VK);
     _token.setLine(_line);

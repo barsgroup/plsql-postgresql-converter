@@ -53,6 +53,24 @@ public class xml_attributes_clause implements _baseNode {
     this.remove_xml_multiuse_expression_elements(this.xml_multiuse_expression_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.ENTITYESCAPING_VK != null) {
+      visitor.visit(this.ENTITYESCAPING_VK);
+    }
+    if (this.NOENTITYESCAPING_VK != null) {
+      visitor.visit(this.NOENTITYESCAPING_VK);
+    }
+    if (this.SCHEMACHECK_VK != null) {
+      visitor.visit(this.SCHEMACHECK_VK);
+    }
+    if (this.NOSCHEMACHECK_VK != null) {
+      visitor.visit(this.NOSCHEMACHECK_VK);
+    }
+    for (xml_multiuse_expression_element _value: this.xml_multiuse_expression_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLATTRIBUTES_VK);
     _token.setLine(_line);

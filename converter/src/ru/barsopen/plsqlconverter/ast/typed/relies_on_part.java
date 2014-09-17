@@ -29,6 +29,12 @@ public class relies_on_part implements _baseNode {
     this.remove_tableview_names(this.tableview_names.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (tableview_name _value: this.tableview_names) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RELIES_ON_VK);
     _token.setLine(_line);

@@ -21,6 +21,12 @@ public class parallel_enable_clause implements _baseNode {
   }
   public boolean is_partition_by_clause() { return this.partition_by_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.partition_by_clause != null) {
+      this.partition_by_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARALLEL_ENABLE_VK);
     _token.setLine(_line);

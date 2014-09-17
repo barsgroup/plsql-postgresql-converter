@@ -29,6 +29,12 @@ public class for_update_of_part implements _baseNode {
     this.remove_column_names(this.column_names.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (column_name _value: this.column_names) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_OF);
     _token.setLine(_line);

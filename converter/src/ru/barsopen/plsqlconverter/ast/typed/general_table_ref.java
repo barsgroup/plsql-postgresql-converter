@@ -34,6 +34,18 @@ public class general_table_ref implements _baseNode {
   }
   public boolean is_ONLY_VK() { return this.ONLY_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+    if (this.dml_table_expression_clause != null) {
+      this.dml_table_expression_clause._walk(visitor);
+    }
+    if (this.ONLY_VK != null) {
+      visitor.visit(this.ONLY_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF);
     _token.setLine(_line);

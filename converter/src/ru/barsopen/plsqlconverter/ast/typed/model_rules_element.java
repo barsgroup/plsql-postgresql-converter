@@ -13,6 +13,9 @@ public class model_rules_element implements _baseNode {
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_RULE);
     _token.setLine(_line);

@@ -54,6 +54,27 @@ public class create_procedure_body implements unit_statement, package_obj_body, 
     if (this.create_procedure_body_impl != null) { this.create_procedure_body_impl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_CREATE != null) {
+      visitor.visit(this.SQL92_RESERVED_CREATE);
+    }
+    if (this.REPLACE_VK != null) {
+      visitor.visit(this.REPLACE_VK);
+    }
+    if (this.procedure_name != null) {
+      this.procedure_name._walk(visitor);
+    }
+    if (this.parameters != null) {
+      this.parameters._walk(visitor);
+    }
+    if (this.invoker_rights_clause != null) {
+      this.invoker_rights_clause._walk(visitor);
+    }
+    if (this.create_procedure_body_impl != null) {
+      this.create_procedure_body_impl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PROCEDURE);
     _token.setLine(_line);

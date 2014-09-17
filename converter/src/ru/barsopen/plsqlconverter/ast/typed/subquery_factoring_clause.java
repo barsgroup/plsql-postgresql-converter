@@ -35,6 +35,15 @@ public class subquery_factoring_clause implements _baseNode {
     this.remove_factoring_elements(this.factoring_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.RECURSIVE_VK != null) {
+      visitor.visit(this.RECURSIVE_VK);
+    }
+    for (factoring_element _value: this.factoring_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WITH);
     _token.setLine(_line);

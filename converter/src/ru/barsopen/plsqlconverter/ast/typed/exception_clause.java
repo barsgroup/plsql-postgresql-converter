@@ -29,6 +29,12 @@ public class exception_clause implements _baseNode {
     this.remove_exception_handlers(this.exception_handlers.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (exception_handler _value: this.exception_handlers) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_EXCEPTION);
     _token.setLine(_line);

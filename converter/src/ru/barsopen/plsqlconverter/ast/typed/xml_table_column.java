@@ -50,6 +50,24 @@ public class xml_table_column implements _baseNode {
   }
   public boolean is_xml_general_default_part() { return this.xml_general_default_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.xml_column_name != null) {
+      this.xml_column_name._walk(visitor);
+    }
+    if (this.ORDINALITY_VK != null) {
+      visitor.visit(this.ORDINALITY_VK);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.xml_general_default_part != null) {
+      this.xml_general_default_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XML_COLUMN);
     _token.setLine(_line);

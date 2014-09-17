@@ -29,6 +29,12 @@ public class using_clause implements _baseNode {
     this.remove_using_elements(this.using_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (using_element _value: this.using_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_USING);
     _token.setLine(_line);

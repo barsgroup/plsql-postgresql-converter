@@ -36,6 +36,15 @@ public class subquery implements subquery_basic_elements, query_partition_clause
     this.remove_subquery_operation_parts(this.subquery_operation_parts.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.subquery_basic_elements != null) {
+      this.subquery_basic_elements._walk(visitor);
+    }
+    for (subquery_operation_part _value: this.subquery_operation_parts) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SUBQUERY);
     _token.setLine(_line);

@@ -33,6 +33,18 @@ public class indexed_for implements cursor_loop_param, _baseNode {
     if (this.indexed_for_bounds != null) { this.indexed_for_bounds._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.index_name != null) {
+      this.index_name._walk(visitor);
+    }
+    if (this.REVERSE_VK != null) {
+      visitor.visit(this.REVERSE_VK);
+    }
+    if (this.indexed_for_bounds != null) {
+      this.indexed_for_bounds._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_FOR);
     _token.setLine(_line);

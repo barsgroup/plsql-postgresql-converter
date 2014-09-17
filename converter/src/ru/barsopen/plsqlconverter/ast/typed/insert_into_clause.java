@@ -27,6 +27,15 @@ public class insert_into_clause implements _baseNode {
     if (this.insert_into_clause_columns != null) { this.insert_into_clause_columns._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.general_table_ref != null) {
+      this.general_table_ref._walk(visitor);
+    }
+    if (this.insert_into_clause_columns != null) {
+      this.insert_into_clause_columns._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO);
     _token.setLine(_line);

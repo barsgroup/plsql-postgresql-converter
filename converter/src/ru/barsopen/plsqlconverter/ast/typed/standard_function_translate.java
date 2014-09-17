@@ -34,6 +34,18 @@ public class standard_function_translate implements standard_function, _baseNode
     if (this.expr_to != null) { this.expr_to._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expr != null) {
+      this.expr._walk(visitor);
+    }
+    if (this.expr_from != null) {
+      this.expr_from._walk(visitor);
+    }
+    if (this.expr_to != null) {
+      this.expr_to._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TRANSLATE_VK);
     _token.setLine(_line);

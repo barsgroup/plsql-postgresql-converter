@@ -35,6 +35,18 @@ public class commit_statement implements transaction_control_statements, _baseNo
   }
   public boolean is_write_clause() { return this.write_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.WORK_VK != null) {
+      visitor.visit(this.WORK_VK);
+    }
+    if (this.commit_statement_additional != null) {
+      this.commit_statement_additional._walk(visitor);
+    }
+    if (this.write_clause != null) {
+      this.write_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COMMIT_VK);
     _token.setLine(_line);

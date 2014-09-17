@@ -20,6 +20,12 @@ public class constant_minus_unsigned implements constant, _baseNode {
     if (this.constant_unsigned != null) { this.constant_unsigned._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.constant_unsigned != null) {
+      this.constant_unsigned._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MINUS_SIGN);
     _token.setLine(_line);

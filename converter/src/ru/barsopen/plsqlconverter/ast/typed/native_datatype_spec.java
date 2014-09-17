@@ -38,6 +38,21 @@ public class native_datatype_spec implements type_spec, _baseNode {
   }
   public boolean is_LOCAL_VK() { return this.LOCAL_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.name != null) {
+      visitor.visit(this.name);
+    }
+    if (this.type_precision != null) {
+      this.type_precision._walk(visitor);
+    }
+    if (this.TIME_VK != null) {
+      visitor.visit(this.TIME_VK);
+    }
+    if (this.LOCAL_VK != null) {
+      visitor.visit(this.LOCAL_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.NATIVE_DATATYPE);
     _token.setLine(_line);

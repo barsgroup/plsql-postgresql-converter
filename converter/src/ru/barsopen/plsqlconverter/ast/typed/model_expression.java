@@ -36,6 +36,15 @@ public class model_expression implements _baseNode {
     this.remove_model_expression_elements(this.model_expression_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression_element != null) {
+      this.expression_element._walk(visitor);
+    }
+    for (model_expression_element _value: this.model_expression_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_EXPRESSION);
     _token.setLine(_line);

@@ -9383,7 +9383,7 @@ public class parser {
   }
 
   public static boolean canParsedml_table_expression_clause(org.antlr.runtime.tree.Tree tree) {
-    return canParsetabe_expression(tree) || canParsetable_ref(tree);
+    return canParsetable_expression(tree) || canParsetable_ref(tree);
   }
 
   public static dml_table_expression_clause parsedml_table_expression_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9391,21 +9391,21 @@ public class parser {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    if (canParsetabe_expression(tree)) return parsetabe_expression(tree);
+    if (canParsetable_expression(tree)) return parsetable_expression(tree);
     if (canParsetable_ref(tree)) return parsetable_ref(tree);
     throw new RuntimeException("Tree type mismatch");
   }
 
-  public static boolean canParsetabe_expression(org.antlr.runtime.tree.Tree tree) {
+  public static boolean canParsetable_expression(org.antlr.runtime.tree.Tree tree) {
     return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_EXPRESSION;
   }
 
-  public static tabe_expression parsetabe_expression(org.antlr.runtime.tree.Tree tree) {
-    if (!canParsetabe_expression(tree)) {
+  public static table_expression parsetable_expression(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsetable_expression(tree)) {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    tabe_expression _result = new tabe_expression();
+    table_expression _result = new table_expression();
 
     _result._line = tree.getLine();
     _result._col = tree.getCharPositionInLine();
@@ -9421,8 +9421,8 @@ public class parser {
     return _result;
   }
 
-  public static tabe_expression make_tabe_expression(ru.barsopen.plsqlconverter.ast.typed.table_expression_element table_expression_element) {
-    tabe_expression _result = new tabe_expression();
+  public static table_expression make_table_expression(ru.barsopen.plsqlconverter.ast.typed.table_expression_element table_expression_element) {
+    table_expression _result = new table_expression();
     _result.set_table_expression_element(table_expression_element);
     return _result;
   }

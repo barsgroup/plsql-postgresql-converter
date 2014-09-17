@@ -28,6 +28,15 @@ public class table_type_dec_table_of implements table_type_dec_impl, _baseNode {
   }
   public boolean is_table_indexed_by_part() { return this.table_indexed_by_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.table_indexed_by_part != null) {
+      this.table_indexed_by_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_TABLE);
     _token.setLine(_line);

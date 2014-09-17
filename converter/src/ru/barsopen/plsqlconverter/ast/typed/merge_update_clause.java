@@ -45,6 +45,18 @@ public class merge_update_clause implements _baseNode {
   }
   public boolean is_merge_update_delete_part() { return this.merge_update_delete_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (merge_element _value: this.merge_elements) {
+      _value._walk(visitor);
+    }
+    if (this.where_clause != null) {
+      this.where_clause._walk(visitor);
+    }
+    if (this.merge_update_delete_part != null) {
+      this.merge_update_delete_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MERGE_UPDATE);
     _token.setLine(_line);

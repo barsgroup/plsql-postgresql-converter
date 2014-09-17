@@ -36,6 +36,15 @@ public class update_set_elements_assign implements update_set_elements, _baseNod
     if (this.expression_or_subquery != null) { this.expression_or_subquery._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (column_name _value: this.column_names) {
+      _value._walk(visitor);
+    }
+    if (this.expression_or_subquery != null) {
+      this.expression_or_subquery._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN);
     _token.setLine(_line);

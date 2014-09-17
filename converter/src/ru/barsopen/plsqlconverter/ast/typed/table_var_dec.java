@@ -27,6 +27,15 @@ public class table_var_dec implements table_declaration, _baseNode {
     if (this.type_spec != null) { this.type_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.table_var_name != null) {
+      this.table_var_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_VAR_DECLARE);
     _token.setLine(_line);

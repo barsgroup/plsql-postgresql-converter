@@ -20,6 +20,12 @@ public class pragma_declaration implements package_obj_spec, declare_spec, _base
     if (this.pragma_declaration_impl != null) { this.pragma_declaration_impl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.pragma_declaration_impl != null) {
+      this.pragma_declaration_impl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PRAGMA_DECLARE);
     _token.setLine(_line);

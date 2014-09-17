@@ -7,4 +7,5 @@ public interface _baseNode {
   int _getTokenStartIndex();
   int _getTokenStopIndex();
   org.antlr.runtime.tree.Tree unparse();
+  void _walk(_visitor visitor);
 }

@@ -27,6 +27,15 @@ public class varray_type_def implements table_type_dec_impl, _baseNode {
     if (this.type_spec != null) { this.type_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.VARR_ARRAY_DEF);
     _token.setLine(_line);

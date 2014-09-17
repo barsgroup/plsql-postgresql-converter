@@ -20,6 +20,12 @@ public class call_spec implements _baseNode {
     if (this.call_spec_decl != null) { this.call_spec_decl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.call_spec_decl != null) {
+      this.call_spec_decl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LANGUAGE_VK);
     _token.setLine(_line);

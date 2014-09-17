@@ -29,6 +29,12 @@ public class field_specs implements _baseNode {
     this.remove_field_specs(this.field_specs.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (field_spec _value: this.field_specs) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FIELDS);
     _token.setLine(_line);

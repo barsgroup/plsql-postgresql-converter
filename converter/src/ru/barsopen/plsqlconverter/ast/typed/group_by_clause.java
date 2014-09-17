@@ -37,6 +37,15 @@ public class group_by_clause implements _baseNode {
   }
   public boolean is_having_clause() { return this.having_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (group_by_element _value: this.group_by_elements) {
+      _value._walk(visitor);
+    }
+    if (this.having_clause != null) {
+      this.having_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_GROUP);
     _token.setLine(_line);

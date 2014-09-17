@@ -18,6 +18,9 @@ public class constant_exact_num implements constant, _baseNode {
     this.value = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXACT_NUM_LIT);
     _token.setLine(_line);

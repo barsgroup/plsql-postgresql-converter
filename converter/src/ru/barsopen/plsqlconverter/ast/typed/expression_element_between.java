@@ -34,6 +34,18 @@ public class expression_element_between implements expression_element, _baseNode
     if (this.expr_high != null) { this.expr_high._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.arg != null) {
+      this.arg._walk(visitor);
+    }
+    if (this.expr_low != null) {
+      this.expr_low._walk(visitor);
+    }
+    if (this.expr_high != null) {
+      this.expr_high._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN);
     _token.setLine(_line);

@@ -31,6 +31,18 @@ public class xmlroot_param_standalone_part implements _baseNode {
   }
   public boolean is_VALUE_VK() { return this.VALUE_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.YES_VK != null) {
+      visitor.visit(this.YES_VK);
+    }
+    if (this.NO_VK != null) {
+      visitor.visit(this.NO_VK);
+    }
+    if (this.VALUE_VK != null) {
+      visitor.visit(this.VALUE_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.STANDALONE_VK);
     _token.setLine(_line);

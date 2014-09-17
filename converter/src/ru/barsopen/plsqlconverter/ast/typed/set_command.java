@@ -18,6 +18,12 @@ public class set_command implements sql_plus_command, _baseNode {
     this.content = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.content != null) {
+      visitor.visit(this.content);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SET_VK);
     _token.setLine(_line);

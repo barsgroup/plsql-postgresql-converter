@@ -33,6 +33,18 @@ public class table_type_dec implements table_declaration, _baseNode {
     if (this.table_type_dec_impl != null) { this.table_type_dec_impl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.SQL92_RESERVED_NULL != null) {
+      visitor.visit(this.SQL92_RESERVED_NULL);
+    }
+    if (this.table_type_dec_impl != null) {
+      this.table_type_dec_impl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_TYPE_DECLARE);
     _token.setLine(_line);

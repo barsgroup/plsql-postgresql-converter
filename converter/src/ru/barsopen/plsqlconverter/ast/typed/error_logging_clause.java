@@ -37,6 +37,18 @@ public class error_logging_clause implements _baseNode {
   }
   public boolean is_error_logging_reject_part() { return this.error_logging_reject_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.error_logging_into_part != null) {
+      this.error_logging_into_part._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.error_logging_reject_part != null) {
+      this.error_logging_reject_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LOG_VK);
     _token.setLine(_line);

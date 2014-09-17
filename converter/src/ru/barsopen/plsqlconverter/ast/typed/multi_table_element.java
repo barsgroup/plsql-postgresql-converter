@@ -36,6 +36,18 @@ public class multi_table_element implements _baseNode {
   }
   public boolean is_error_logging_clause() { return this.error_logging_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.insert_into_clause != null) {
+      this.insert_into_clause._walk(visitor);
+    }
+    if (this.values_clause != null) {
+      this.values_clause._walk(visitor);
+    }
+    if (this.error_logging_clause != null) {
+      this.error_logging_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_ELEMENT);
     _token.setLine(_line);

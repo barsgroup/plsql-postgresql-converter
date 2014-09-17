@@ -20,6 +20,12 @@ public class expression_element_outer_join_sign implements expression_element, _
     if (this.expr != null) { this.expr._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expr != null) {
+      this.expr._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.OUTER_JOIN_SIGN);
     _token.setLine(_line);

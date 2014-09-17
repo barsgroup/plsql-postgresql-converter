@@ -29,6 +29,12 @@ public class compilation_unit implements _baseNode {
     this.remove_unit_statements(this.unit_statements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (unit_statement _value: this.unit_statements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COMPILATION_UNIT);
     _token.setLine(_line);

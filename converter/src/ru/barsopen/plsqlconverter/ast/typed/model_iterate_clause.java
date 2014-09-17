@@ -28,6 +28,15 @@ public class model_iterate_clause implements _baseNode {
   }
   public boolean is_until_part() { return this.until_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.until_part != null) {
+      this.until_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ITERATE_VK);
     _token.setLine(_line);

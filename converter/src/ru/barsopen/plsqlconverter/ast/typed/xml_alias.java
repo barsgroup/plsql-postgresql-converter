@@ -20,6 +20,12 @@ public class xml_alias implements _baseNode {
     if (this.id_or_evalname != null) { this.id_or_evalname._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.id_or_evalname != null) {
+      this.id_or_evalname._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XML_ALIAS);
     _token.setLine(_line);

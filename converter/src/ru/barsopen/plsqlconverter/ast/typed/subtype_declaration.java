@@ -41,6 +41,21 @@ public class subtype_declaration implements package_obj_spec, package_obj_body, 
   }
   public boolean is_subtype_range() { return this.subtype_range != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.SQL92_RESERVED_NULL != null) {
+      visitor.visit(this.SQL92_RESERVED_NULL);
+    }
+    if (this.subtype_range != null) {
+      this.subtype_range._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SUBTYPE_DECLARE);
     _token.setLine(_line);

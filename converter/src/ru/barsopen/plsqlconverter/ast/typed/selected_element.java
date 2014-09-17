@@ -28,6 +28,15 @@ public class selected_element implements _baseNode {
   }
   public boolean is_alias() { return this.alias != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_ITEM);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class merge_insert_clause implements _baseNode {
   }
   public boolean is_where_clause() { return this.where_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.insert_into_clause_columns != null) {
+      this.insert_into_clause_columns._walk(visitor);
+    }
+    if (this.expression_list != null) {
+      this.expression_list._walk(visitor);
+    }
+    if (this.where_clause != null) {
+      this.where_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MERGE_INSERT);
     _token.setLine(_line);

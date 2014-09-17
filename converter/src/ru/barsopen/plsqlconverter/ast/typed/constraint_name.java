@@ -45,6 +45,18 @@ public class constraint_name implements _baseNode {
   }
   public boolean is_link_name() { return this.link_name != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.char_set_name != null) {
+      this.char_set_name._walk(visitor);
+    }
+    for (id _value: this.ids) {
+      _value._walk(visitor);
+    }
+    if (this.link_name != null) {
+      this.link_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CONSTRAINT_NAME);
     _token.setLine(_line);

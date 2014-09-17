@@ -48,6 +48,21 @@ public class alter_function implements unit_statement, _baseNode {
     this.remove_compiler_parameters_clauses(this.compiler_parameters_clauses.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.function_name != null) {
+      this.function_name._walk(visitor);
+    }
+    if (this.DEBUG_VK != null) {
+      visitor.visit(this.DEBUG_VK);
+    }
+    if (this.REUSE_VK != null) {
+      visitor.visit(this.REUSE_VK);
+    }
+    for (compiler_parameters_clause _value: this.compiler_parameters_clauses) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ALTER_FUNCTION);
     _token.setLine(_line);

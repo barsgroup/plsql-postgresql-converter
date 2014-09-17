@@ -29,6 +29,12 @@ public class update_statement_set implements _baseNode {
     this.remove_update_set_elementss(this.update_set_elementss.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (update_set_elements _value: this.update_set_elementss) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SET_VK);
     _token.setLine(_line);

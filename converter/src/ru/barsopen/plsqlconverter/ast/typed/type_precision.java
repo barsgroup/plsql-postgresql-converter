@@ -39,6 +39,21 @@ public class type_precision implements _baseNode {
   }
   public boolean is_BYTE_VK() { return this.BYTE_VK != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.size1 != null) {
+      this.size1._walk(visitor);
+    }
+    if (this.size2 != null) {
+      this.size2._walk(visitor);
+    }
+    if (this.CHAR_VK != null) {
+      visitor.visit(this.CHAR_VK);
+    }
+    if (this.BYTE_VK != null) {
+      visitor.visit(this.BYTE_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PRECISION);
     _token.setLine(_line);

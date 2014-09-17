@@ -29,6 +29,12 @@ public class group_by_elements_grouping implements group_by_elements, _baseNode 
     this.remove_groupin_sets(this.groupin_sets.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (groupin_set _value: this.groupin_sets) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.GROUPING_VK);
     _token.setLine(_line);

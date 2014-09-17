@@ -121,6 +121,42 @@ public class create_function_body implements unit_statement, package_obj_body, d
     if (this.function_impl != null) { this.function_impl._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.SQL92_RESERVED_CREATE != null) {
+      visitor.visit(this.SQL92_RESERVED_CREATE);
+    }
+    if (this.REPLACE_VK != null) {
+      visitor.visit(this.REPLACE_VK);
+    }
+    if (this.function_name != null) {
+      this.function_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.parameters != null) {
+      this.parameters._walk(visitor);
+    }
+    for (invoker_rights_clause _value: this.invoker_rights_clauses) {
+      _value._walk(visitor);
+    }
+    for (parallel_enable_clause _value: this.parallel_enable_clauses) {
+      _value._walk(visitor);
+    }
+    for (result_cache_clause _value: this.result_cache_clauses) {
+      _value._walk(visitor);
+    }
+    for (org.antlr.runtime.tree.Tree _value: this.DETERMINISTIC_VKs) {
+      visitor.visit(_value);
+    }
+    if (this.PIPELINED_VK != null) {
+      visitor.visit(this.PIPELINED_VK);
+    }
+    if (this.function_impl != null) {
+      this.function_impl._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CREATE_FUNCTION);
     _token.setLine(_line);

@@ -44,6 +44,21 @@ public class select_statement implements data_manipulation_language_statements, 
   }
   public boolean is_for_update_clause() { return this.for_update_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.subquery_factoring_clause != null) {
+      this.subquery_factoring_clause._walk(visitor);
+    }
+    if (this.subquery != null) {
+      this.subquery._walk(visitor);
+    }
+    if (this.order_by_clause != null) {
+      this.order_by_clause._walk(visitor);
+    }
+    if (this.for_update_clause != null) {
+      this.for_update_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_STATEMENT);
     _token.setLine(_line);

@@ -52,6 +52,21 @@ public class parameter implements _baseNode {
   }
   public boolean is_default_value_part() { return this.default_value_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.parameter_name != null) {
+      this.parameter_name._walk(visitor);
+    }
+    for (parameter_dir_spec _value: this.parameter_dir_specs) {
+      _value._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.default_value_part != null) {
+      this.default_value_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARAMETER);
     _token.setLine(_line);

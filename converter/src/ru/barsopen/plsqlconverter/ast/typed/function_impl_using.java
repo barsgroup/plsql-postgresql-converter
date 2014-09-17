@@ -26,6 +26,15 @@ public class function_impl_using implements function_impl, _baseNode {
     if (this.implementation_type_name != null) { this.implementation_type_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.AGGREGATE_VK != null) {
+      visitor.visit(this.AGGREGATE_VK);
+    }
+    if (this.implementation_type_name != null) {
+      this.implementation_type_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.USING_MODE);
     _token.setLine(_line);

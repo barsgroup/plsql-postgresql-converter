@@ -29,6 +29,12 @@ public class projection_list implements query_block_projection, _baseNode {
     this.remove_selected_elements(this.selected_elements.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (selected_element _value: this.selected_elements) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_LIST);
     _token.setLine(_line);

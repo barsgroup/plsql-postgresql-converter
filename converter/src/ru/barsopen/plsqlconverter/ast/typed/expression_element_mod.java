@@ -27,6 +27,15 @@ public class expression_element_mod implements expression_element, _baseNode {
     if (this.rhs != null) { this.rhs._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.lhs != null) {
+      this.lhs._walk(visitor);
+    }
+    if (this.rhs != null) {
+      this.rhs._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MOD_VK);
     _token.setLine(_line);

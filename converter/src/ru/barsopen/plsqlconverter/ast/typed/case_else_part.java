@@ -20,6 +20,12 @@ public class case_else_part implements _baseNode {
     if (this.expression_or_seq_of_statements != null) { this.expression_or_seq_of_statements._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression_or_seq_of_statements != null) {
+      this.expression_or_seq_of_statements._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ELSE);
     _token.setLine(_line);

@@ -42,6 +42,21 @@ public class field_spec implements _baseNode {
   }
   public boolean is_default_value_part() { return this.default_value_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.column_name != null) {
+      this.column_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.SQL92_RESERVED_NULL != null) {
+      visitor.visit(this.SQL92_RESERVED_NULL);
+    }
+    if (this.default_value_part != null) {
+      this.default_value_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FIELD_SPEC);
     _token.setLine(_line);

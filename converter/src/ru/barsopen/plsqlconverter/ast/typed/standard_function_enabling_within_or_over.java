@@ -41,6 +41,18 @@ public class standard_function_enabling_within_or_over implements standard_funct
   }
   public boolean is_over_clause() { return this.over_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.function_argument != null) {
+      this.function_argument._walk(visitor);
+    }
+    if (this.within_clause != null) {
+      this.within_clause._walk(visitor);
+    }
+    if (this.over_clause != null) {
+      this.over_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_ENABLING_WITHIN_OR_OVER);
     _token.setLine(_line);

@@ -18,6 +18,12 @@ public class windowing_elements_unbounded_preceding implements windowing_element
     this.PRECEDING_VK = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.PRECEDING_VK != null) {
+      visitor.visit(this.PRECEDING_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.UNBOUNDED_VK);
     _token.setLine(_line);

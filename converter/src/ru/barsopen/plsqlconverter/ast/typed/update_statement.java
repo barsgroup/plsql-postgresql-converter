@@ -51,6 +51,24 @@ public class update_statement implements data_manipulation_language_statements, 
   }
   public boolean is_error_logging_clause() { return this.error_logging_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.general_table_ref != null) {
+      this.general_table_ref._walk(visitor);
+    }
+    if (this.update_statement_set != null) {
+      this.update_statement_set._walk(visitor);
+    }
+    if (this.where_clause != null) {
+      this.where_clause._walk(visitor);
+    }
+    if (this.static_returning_clause != null) {
+      this.static_returning_clause._walk(visitor);
+    }
+    if (this.error_logging_clause != null) {
+      this.error_logging_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UPDATE);
     _token.setLine(_line);

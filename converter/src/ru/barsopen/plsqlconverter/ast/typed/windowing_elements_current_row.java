@@ -18,6 +18,12 @@ public class windowing_elements_current_row implements windowing_elements, _base
     this.ROW_VK = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.ROW_VK != null) {
+      visitor.visit(this.ROW_VK);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CURRENT_VK);
     _token.setLine(_line);

@@ -34,6 +34,18 @@ public class type_spec_custom implements type_spec, _baseNode {
   }
   public boolean is_percent_type_or_rowtype() { return this.percent_type_or_rowtype != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.REF_VK != null) {
+      visitor.visit(this.REF_VK);
+    }
+    if (this.percent_type_or_rowtype != null) {
+      this.percent_type_or_rowtype._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CUSTOM_TYPE);
     _token.setLine(_line);

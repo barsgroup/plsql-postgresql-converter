@@ -43,6 +43,21 @@ public class cursor_declaration implements package_obj_spec, package_obj_body, d
     if (this.parameters != null) { this.parameters._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.cursor_name != null) {
+      this.cursor_name._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+    if (this.select_statement != null) {
+      this.select_statement._walk(visitor);
+    }
+    if (this.parameters != null) {
+      this.parameters._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CURSOR_DECLARE);
     _token.setLine(_line);

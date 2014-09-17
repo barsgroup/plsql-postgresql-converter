@@ -28,6 +28,15 @@ public class select_mode implements table_expression_element, _baseNode {
   }
   public boolean is_subquery_restriction_clause() { return this.subquery_restriction_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.select_statement != null) {
+      this.select_statement._walk(visitor);
+    }
+    if (this.subquery_restriction_clause != null) {
+      this.subquery_restriction_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_MODE);
     _token.setLine(_line);

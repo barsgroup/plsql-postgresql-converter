@@ -28,6 +28,15 @@ public class selected_tableview implements _baseNode {
     if (this.selected_tableview_src != null) { this.selected_tableview_src._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.alias != null) {
+      this.alias._walk(visitor);
+    }
+    if (this.selected_tableview_src != null) {
+      this.selected_tableview_src._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECTED_TABLEVIEW);
     _token.setLine(_line);

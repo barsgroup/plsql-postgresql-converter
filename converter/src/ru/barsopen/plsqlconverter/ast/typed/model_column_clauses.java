@@ -35,6 +35,18 @@ public class model_column_clauses implements _baseNode {
   }
   public boolean is_model_column_partition_part() { return this.model_column_partition_part != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.model_column_clauses_dimension != null) {
+      this.model_column_clauses_dimension._walk(visitor);
+    }
+    if (this.model_column_clauses_measures != null) {
+      this.model_column_clauses_measures._walk(visitor);
+    }
+    if (this.model_column_partition_part != null) {
+      this.model_column_partition_part._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_COLUMN);
     _token.setLine(_line);

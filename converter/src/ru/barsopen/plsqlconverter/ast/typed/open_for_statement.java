@@ -35,6 +35,18 @@ public class open_for_statement implements cursor_manipulation_statements, _base
   }
   public boolean is_using_clause() { return this.using_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.variable_name != null) {
+      this.variable_name._walk(visitor);
+    }
+    if (this.expression_or_select_statement != null) {
+      this.expression_or_select_statement._walk(visitor);
+    }
+    if (this.using_clause != null) {
+      this.using_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.OPEN_VK);
     _token.setLine(_line);

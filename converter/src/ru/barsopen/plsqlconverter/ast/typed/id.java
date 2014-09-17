@@ -18,6 +18,9 @@ public class id implements id_or_evalname, _baseNode {
     this.value = value;
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ID);
     _token.setLine(_line);

@@ -36,6 +36,15 @@ public class table_ref implements dml_table_expression_clause, _baseNode {
     this.remove_join_clauses(this.join_clauses.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.table_ref_aux != null) {
+      this.table_ref_aux._walk(visitor);
+    }
+    for (join_clause _value: this.join_clauses) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF);
     _token.setLine(_line);

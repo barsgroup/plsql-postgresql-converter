@@ -28,6 +28,15 @@ public class open_statement implements cursor_manipulation_statements, _baseNode
   }
   public boolean is_expression_list() { return this.expression_list != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.cursor_name != null) {
+      this.cursor_name._walk(visitor);
+    }
+    if (this.expression_list != null) {
+      this.expression_list._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.OPEN_VK);
     _token.setLine(_line);

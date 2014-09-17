@@ -20,6 +20,12 @@ public class insert_statement implements data_manipulation_language_statements, 
     if (this.insert_statement_spec != null) { this.insert_statement_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.insert_statement_spec != null) {
+      this.insert_statement_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INSERT);
     _token.setLine(_line);

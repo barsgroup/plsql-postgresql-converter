@@ -34,6 +34,18 @@ public class expression_element_like4 implements expression_element, _baseNode {
     if (this.escape != null) { this.escape._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.text != null) {
+      this.text._walk(visitor);
+    }
+    if (this.pattern != null) {
+      this.pattern._walk(visitor);
+    }
+    if (this.escape != null) {
+      this.escape._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LIKE4_VK);
     _token.setLine(_line);

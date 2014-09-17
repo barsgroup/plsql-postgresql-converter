@@ -28,6 +28,15 @@ public class record_type_dec_record implements record_type_dec, _baseNode {
   }
   public boolean is_field_specs() { return this.field_specs != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.type_name != null) {
+      this.type_name._walk(visitor);
+    }
+    if (this.field_specs != null) {
+      this.field_specs._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RECORD_TYPE_DECLARE);
     _token.setLine(_line);

@@ -29,6 +29,12 @@ public class expression_list implements query_partition_clause_impl, grouping_el
     this.remove_expressions(this.expressions.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (expression _value: this.expressions) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXPR_LIST);
     _token.setLine(_line);

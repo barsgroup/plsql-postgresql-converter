@@ -29,6 +29,12 @@ public class seq_of_statements implements expression_or_seq_of_statements, _base
     this.remove_stat_or_labels(this.stat_or_labels.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (stat_or_label _value: this.stat_or_labels) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.STATEMENTS);
     _token.setLine(_line);

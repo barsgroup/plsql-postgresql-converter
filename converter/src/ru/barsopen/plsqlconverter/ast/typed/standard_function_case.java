@@ -27,6 +27,15 @@ public class standard_function_case implements standard_function, _baseNode {
     if (this.type_spec != null) { this.type_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression_or_subquery != null) {
+      this.expression_or_subquery._walk(visitor);
+    }
+    if (this.type_spec != null) {
+      this.type_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CAST_VK);
     _token.setLine(_line);

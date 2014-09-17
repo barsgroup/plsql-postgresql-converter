@@ -20,6 +20,12 @@ public class call_mode implements function_impl, create_procedure_body_impl, _ba
     if (this.call_spec != null) { this.call_spec._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.call_spec != null) {
+      this.call_spec._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CALL_MODE);
     _token.setLine(_line);

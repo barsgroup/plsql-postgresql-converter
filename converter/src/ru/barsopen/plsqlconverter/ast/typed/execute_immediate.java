@@ -44,6 +44,21 @@ public class execute_immediate implements sql_statement, _baseNode {
   }
   public boolean is_dynamic_returning_clause() { return this.dynamic_returning_clause != null; }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+    if (this.into_clause != null) {
+      this.into_clause._walk(visitor);
+    }
+    if (this.using_clause != null) {
+      this.using_clause._walk(visitor);
+    }
+    if (this.dynamic_returning_clause != null) {
+      this.dynamic_returning_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXECUTE_VK);
     _token.setLine(_line);

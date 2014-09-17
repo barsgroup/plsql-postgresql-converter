@@ -29,6 +29,12 @@ public class general_element implements statement, assignment_target, table_expr
     this.remove_general_element_items(this.general_element_items.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (general_element_item _value: this.general_element_items) {
+      _value._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CASCATED_ELEMENT);
     _token.setLine(_line);

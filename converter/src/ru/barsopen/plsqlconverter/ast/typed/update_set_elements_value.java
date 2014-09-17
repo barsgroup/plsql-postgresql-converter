@@ -35,6 +35,18 @@ public class update_set_elements_value implements update_set_elements, _baseNode
     if (this.expression != null) { this.expression._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.char_set_name != null) {
+      this.char_set_name._walk(visitor);
+    }
+    if (this.id != null) {
+      this.id._walk(visitor);
+    }
+    if (this.expression != null) {
+      this.expression._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK);
     _token.setLine(_line);

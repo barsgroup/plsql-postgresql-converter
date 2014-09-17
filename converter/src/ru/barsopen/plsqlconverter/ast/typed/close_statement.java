@@ -20,6 +20,12 @@ public class close_statement implements cursor_manipulation_statements, _baseNod
     if (this.cursor_name != null) { this.cursor_name._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.cursor_name != null) {
+      this.cursor_name._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CLOSE_VK);
     _token.setLine(_line);

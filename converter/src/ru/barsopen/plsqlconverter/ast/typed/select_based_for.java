@@ -27,6 +27,15 @@ public class select_based_for implements cursor_loop_param, _baseNode {
     if (this.select_statement != null) { this.select_statement._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    if (this.record_name != null) {
+      this.record_name._walk(visitor);
+    }
+    if (this.select_statement != null) {
+      this.select_statement._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_BASED_FOR);
     _token.setLine(_line);

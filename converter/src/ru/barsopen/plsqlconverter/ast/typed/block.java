@@ -36,6 +36,15 @@ public class block implements statement, _baseNode {
     if (this.body != null) { this.body._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (declare_spec _value: this.declare_specs) {
+      _value._walk(visitor);
+    }
+    if (this.body != null) {
+      this.body._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.BLOCK);
     _token.setLine(_line);

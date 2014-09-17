@@ -36,6 +36,15 @@ public class static_returning_clause implements _baseNode {
     if (this.into_clause != null) { this.into_clause._setParent(this); }
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (expression _value: this.expressions) {
+      _value._walk(visitor);
+    }
+    if (this.into_clause != null) {
+      this.into_clause._walk(visitor);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.STATIC_RETURNING);
     _token.setLine(_line);

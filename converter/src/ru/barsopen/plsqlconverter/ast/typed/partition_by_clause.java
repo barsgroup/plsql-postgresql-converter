@@ -27,6 +27,12 @@ public class partition_by_clause implements _baseNode {
     this.remove_contents(this.contents.indexOf(value));
   }
 
+  public void _walk(_visitor visitor) {
+    visitor.visit(this);
+    for (org.antlr.runtime.tree.Tree _value: this.contents) {
+      visitor.visit(_value);
+    }
+  }
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK);
     _token.setLine(_line);
