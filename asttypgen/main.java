@@ -80,6 +80,11 @@ public class main {
   }
   
   public static void generateRuleBodyProperties(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
+    out.printf("  public int _line = -1;\n");
+    out.printf("  public int _col = -1;\n");
+    out.printf("  public int _tokenStartIndex = -1;\n");
+    out.printf("  public int _tokenStopIndex = -1;\n");
+      
     for (AstNodes.RuleItem item: rule.body.items) {
       AstNodes.PropSpec propSpec = item.propSpec;
       boolean isToken = item.propMatchSpec.isToken();
@@ -158,15 +163,21 @@ public class main {
       out.printf("    throw new RuntimeException(\"Tree type mismatch\");\n");
     } else {
       AstNodes.RuleWithoutAlts theRule = (AstNodes.RuleWithoutAlts)rule;
-      out.printf("    %s result = new %s();\n", rule.name, rule.name);
-      out.printf("    int i = 0;\n");
+      out.printf("    %s _result = new %s();\n", rule.name, rule.name);
+    
+      out.println();
+      out.printf("    _result._line = tree.getLine();\n");
+      out.printf("    _result._col = tree.getCharPositionInLine();\n");
+      out.printf("    _result._tokenStartIndex = tree.getTokenStartIndex();\n");
+      out.printf("    _result._tokenStopIndex = tree.getTokenStopIndex();\n");
+      out.printf("    int _i = 0;\n");
       out.println();
       for (AstNodes.RuleItem item: theRule.body.items) {
         generateParserRuleItem(out, item);
         out.println();
       }
-      out.printf("    if (i < tree.getChildCount()) { throw new RuntimeException(\"Tree type mismatch\"); }\n");
-      out.printf("    return result;\n");
+      out.printf("    if (_i < tree.getChildCount()) { throw new RuntimeException(\"Tree type mismatch\"); }\n");
+      out.printf("    return _result;\n");
     }
     out.printf("  }\n");
     out.println();
@@ -174,7 +185,7 @@ public class main {
   
   public static void generateParserRuleItem(PrintStream out, AstNodes.RuleItem item) throws Exception {
     if (item.propMatchSpec.isTokenText) {
-      out.printf("    result.%s = tree.getText();\n", item.propSpec.name);
+      out.printf("    _result.%s = tree.getText();\n", item.propSpec.name);
       return;
     }
     
@@ -182,43 +193,43 @@ public class main {
     if (item.propMatchSpec.isAny) {
       itemMatchCondition = "true";
     } else if (item.propMatchSpec.isToken()) {
-      itemMatchCondition = String.format("tree.getChild(i).getType() == %s.%s", tokenVocabName, item.propMatchSpec.name);
+      itemMatchCondition = String.format("tree.getChild(_i).getType() == %s.%s", tokenVocabName, item.propMatchSpec.name);
     } else {
-      itemMatchCondition = String.format("canParse%s(tree.getChild(i))", item.propMatchSpec.name);
+      itemMatchCondition = String.format("canParse%s(tree.getChild(_i))", item.propMatchSpec.name);
     }
-    itemMatchCondition = "i < tree.getChildCount() && (" + itemMatchCondition + ")";
+    itemMatchCondition = "_i < tree.getChildCount() && (" + itemMatchCondition + ")";
     String itemProcess;
     String itemGet;
     if (item.propMatchSpec.isToken()) {
-      itemGet = "tree.getChild(i)";
+      itemGet = "tree.getChild(_i)";
     } else {
-      itemGet = String.format("parse%s(tree.getChild(i))", item.propMatchSpec.name);
+      itemGet = String.format("parse%s(tree.getChild(_i))", item.propMatchSpec.name);
     }
     if (item.propSpec.isArray) {
-      itemProcess = String.format("result.%s.add(%s);", item.propSpec.name, itemGet);
+      itemProcess = String.format("_result.%s.add(%s);", item.propSpec.name, itemGet);
     } else {
-      itemProcess = String.format("result.%s = %s;", item.propSpec.name, itemGet);
+      itemProcess = String.format("_result.%s = %s;", item.propSpec.name, itemGet);
     }
     if (item.propMatchSpec.isQuestion) {
       out.printf("    if (%s) {\n", itemMatchCondition);
       out.printf("      %s\n", itemProcess);
-      out.printf("      ++i;\n");
+      out.printf("      ++_i;\n");
       out.printf("    }\n");
     } else if (item.propMatchSpec.isAsterisk) {
       out.printf("    while (%s) {\n", itemMatchCondition);
       out.printf("      %s\n", itemProcess);
-      out.printf("      ++i;\n");
+      out.printf("      ++_i;\n");
       out.printf("    }\n");
     } else if (item.propMatchSpec.isPlus) {
       out.printf("    if (!(%s)) { throw new RuntimeException(\"Tree type mismatch\"); }\n", itemMatchCondition);
       out.printf("    while (%s) {\n", itemMatchCondition);
       out.printf("      %s\n", itemProcess);
-      out.printf("      ++i;\n");
+      out.printf("      ++_i;\n");
       out.printf("    }\n");
     } else {
       out.printf("    if (!(%s)) { throw new RuntimeException(\"Tree type mismatch\"); }\n", itemMatchCondition);
       out.printf("    %s\n", itemProcess);
-      out.printf("    ++i;\n");
+      out.printf("    ++_i;\n");
     }
   }
   
@@ -238,19 +249,19 @@ public class main {
       arguments.add(String.format("%s %s", type, propSpec.name));
     }
     out.printf("  public static %s make_%s(%s) {\n", rule.name, rule.name, stringJoin(",\n      ", arguments));
-    out.printf("    %s result = new %s();\n", rule.name, rule.name);
+    out.printf("    %s _result = new %s();\n", rule.name, rule.name);
     
     for (AstNodes.RuleItem item: rule.body.items) {
       if (item.propSpec.isArray) {
         out.printf("    if (%s != null) {", item.propSpec.name);
-        out.printf("      result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+        out.printf("      _result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
         out.printf("    }\n");
       } else {
-        out.printf("    result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+        out.printf("    _result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
       }
     }
     
-    out.printf("    return result;\n");
+    out.printf("    return _result;\n");
     out.printf("  }\n");
     out.println();
   }
@@ -263,17 +274,21 @@ public class main {
         tokenTextProperty = item.propSpec.name;
       }
     }
-    if (tokenTextProperty == null) {
-      out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s));\n", tokenVocabName, rule.body.rootType);
-    } else {
-      out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s, %s));\n", tokenVocabName, rule.body.rootType, tokenTextProperty);
+    out.printf("    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(%s.%s);\n", tokenVocabName, rule.body.rootType);
+    out.printf("    _token.setLine(_line);\n");
+    out.printf("    _token.setCharPositionInLine(_col);\n");
+    if (tokenTextProperty != null) {
+      out.printf("    _token.setText(%s);\n", tokenTextProperty);
     }
+    out.printf("    org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);\n");
+    out.printf("    _result.setTokenStartIndex(_tokenStartIndex);\n");
+    out.printf("    _result.setTokenStopIndex(_tokenStopIndex);\n");
     
     for (AstNodes.RuleItem item: rule.body.items) {
       generateUnparserRuleItem(out, item);
       out.println();
     }
-    out.printf("    return result;\n");
+    out.printf("    return _result;\n");
     out.printf("  }\n");
     out.println();
   }
@@ -291,7 +306,7 @@ public class main {
     
     String itemRef = item.propSpec.isArray ? String.format("%s.get(i)", item.propSpec.name) : item.propSpec.name;
     String itemResultRef = item.propMatchSpec.isToken() ? itemRef : String.format("%s.unparse()", itemRef);
-    String action = String.format("result.addChild(%s);", itemResultRef);
+    String action = String.format("_result.addChild(%s);", itemResultRef);
     if (item.propSpec.isArray) {
       out.printf("    for (int i = 0; i < %s.size(); ++i) {\n", item.propSpec.name);
       out.printf("      %s\n", action);
