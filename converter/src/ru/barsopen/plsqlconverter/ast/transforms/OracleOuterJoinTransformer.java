@@ -9,8 +9,7 @@ import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 
-import ru.barsopen.plsqlconverter.ast.typed.parser;
-import ru.barsopen.plsqlconverter.ast.typed.query_block;
+import ru.barsopen.plsqlconverter.ast.typed.*;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class OracleOuterJoinTransformer {
@@ -62,7 +61,6 @@ public class OracleOuterJoinTransformer {
 	}
 
 	private void transform() {
-		findQueryClauses();
 		findTableRefs();
 		findOuterJoinSigns();
 		if (outerJoinExpressions.size() == 0) {
@@ -86,10 +84,8 @@ public class OracleOuterJoinTransformer {
 	//   LOGIC_EXPR
 	//     ...
 
-	Tree fromNode;
-	Tree whereNode;
-	Map<String, Tree> tableRefElements = new HashMap<String, Tree>(); // Tree is TABLE_REF_ELEMENT
-	List<Tree> outerJoinExpressions = new ArrayList<Tree>(); // Tree is OUTER_JOIN_SIGN
+	Map<String, table_ref_aux> tableRefElements = new HashMap<String, table_ref_aux>(); // Tree is TABLE_REF_ELEMENT
+	List<expression_element_outer_join_sign> outerJoinExpressions = new ArrayList<expression_element_outer_join_sign>(); // Tree is OUTER_JOIN_SIGN
 	List<OuterJoinPredicate> outerJoinPredicates = new ArrayList<OuterJoinPredicate>();
 	List<String> aliasOrder = new ArrayList<String>();
 	List<OuterJoinNode> rootJoinNodes = new ArrayList<OuterJoinNode>();
@@ -98,91 +94,77 @@ public class OracleOuterJoinTransformer {
 	static class OuterJoinPredicate {
 		public String sourceAlias;
 		public String targetAlias;
-		public Tree equalsOpTree;
+		public expression_element_eq equalsOpTree;
 	}
 	
 	public static class OuterJoinNode {
 		public String alias;
 		public List<OuterJoinNode> childNodes = new ArrayList<OuterJoinNode>();
 	}
-
-	private void findQueryClauses() {
-		fromNode = AstUtil.getChildOfType(queryBlockNode, PLSQLParser.SQL92_RESERVED_FROM);
-		whereNode = AstUtil.getChildOfType(queryBlockNode, PLSQLParser.SQL92_RESERVED_WHERE);
-	}
 	
 	private void findTableRefs() {
-		for (int i = 0; i < fromNode.getChildCount(); ++i) {
-			Tree tableRefNode = fromNode.getChild(i);
-			AstUtil.assertThat(tableRefNode.getType() == PLSQLParser.TABLE_REF);
-			if (AstUtil.getChildrenOfType(tableRefNode, PLSQLParser.JOIN_DEF).size() > 0) {
+		for (table_ref tableRef: query.from_clause.table_refs) {
+			if (tableRef.join_clauses.size() > 0) {
 				continue;
 			}
-			for (int j = 0; j < tableRefNode.getChildCount(); ++j) {
-				Tree tableRefElementNode = tableRefNode.getChild(0);
-				AstUtil.assertThat(tableRefElementNode.getType() == PLSQLParser.TABLE_REF_ELEMENT);
-				Tree alias = AstUtil.getChildOfType(tableRefElementNode, PLSQLParser.TABLE_ALIAS);
+			dml_table_expression_clause tableOrRef = tableRef.table_ref_aux.dml_table_expression_clause;
+			if (!(tableOrRef instanceof table_expression)) {
+				continue;
+			}
+			
+			table_expression te = (table_expression)tableOrRef;
+			String idString;
+			if (tableRef.table_ref_aux.alias != null) {
+				table_alias alias = (table_alias)tableRef.table_ref_aux.alias;
+				idString = AstUtil.normalizeId(alias.id.value);
+			} else if (te.table_expression_element instanceof direct_mode) {
+				direct_mode dm = (direct_mode)te.table_expression_element;
+				id lastId = dm.tableview_name.ids.get(dm.tableview_name.ids.size() - 1);
+				idString = AstUtil.normalizeId(lastId.value);
+			} else {
+				continue;
+			}
 				
-				Tree tableExpressionNode = AstUtil.getChildOfType(tableRefElementNode, PLSQLParser.TABLE_EXPRESSION);
-				Tree directModeNode = tableExpressionNode.getChild(0);
+			tableRefElements.put(idString, tableRef.table_ref_aux);
 				
-				String idString;
-				if (alias != null) {
-					Tree aliasId = alias.getChild(0);
-					AstUtil.assertThat(aliasId.getType() == PLSQLParser.ID);
-					
-					idString = aliasId.getText();
-					idString = AstUtil.normalizeId(idString);
-				} else if (directModeNode.getType() == PLSQLParser.DIRECT_MODE) {
-					Tree tableviewnameNode = directModeNode.getChild(0);
-					AstUtil.assertNodeType(tableviewnameNode, PLSQLParser.TABLEVIEW_NAME);
-					Tree aliasId = tableviewnameNode.getChild(tableviewnameNode.getChildCount() - 1);
-					AstUtil.assertThat(aliasId.getType() == PLSQLParser.ID);
-					
-					idString = aliasId.getText();
-					idString = AstUtil.normalizeId(idString);
-				} else {
-					continue;
-				}
-				
-				tableRefElements.put(idString, tableRefElementNode);
-				
-				if (isDebugEnabled) {
-					System.out.printf("Found direct table ref: alias: '%s', tree:\n%s\n", idString, AstPrinter.prettyPrint(tableRefElementNode));
-				}
+			if (isDebugEnabled) {
+				System.out.printf("Found direct table ref: alias: '%s', tree:\n%s\n", idString, AstPrinter.prettyPrint(tableRef.unparse()));
 			}
 		}
 	}
 
 	private void findOuterJoinSigns() {
-		if (whereNode != null) {
-			Tree logicExprNode = whereNode.getChild(0);
-			AstUtil.assertThat(logicExprNode.getType() == PLSQLParser.LOGIC_EXPR);
-			Tree exprElementNode = logicExprNode.getChild(0);
-			findOuterJoinSigns(exprElementNode);
+		if (query.where_clause != null) {
+			logic_expression logicExpr = (logic_expression)query.where_clause.expression;
+			findOuterJoinSigns(logicExpr.expression_element);
 		}
 	}
 
-	private void findOuterJoinSigns(Tree node) {
+	private void findOuterJoinSigns(expression_element expr) {
 		// See the link at top of file;
 		// (+)'s may only be joined with 'and'
-		if (node.getType() == PLSQLParser.OUTER_JOIN_SIGN) {
-			outerJoinExpressions.add(node);
+		if (expr instanceof expression_element_outer_join_sign) {
+			outerJoinExpressions.add((expression_element_outer_join_sign)expr);
 			if (isDebugEnabled) {
-				System.out.printf("Found outer join node at:\n%s\n", AstPrinter.prettyPrint(node.getParent()));
+				System.out.printf("Found outer join node at:\n%s\n", AstPrinter.prettyPrint(expr._getParent().unparse()));
 			}
-			AstUtil.assertThat(node.getParent().getType() == PLSQLParser.EQUALS_OP);
-		} if (node.getType() == PLSQLParser.SQL92_RESERVED_AND || node.getType() == PLSQLParser.EQUALS_OP) {
-			findOuterJoinSigns(node.getChild(0));
-			findOuterJoinSigns(node.getChild(1));
+			AstUtil.assertThat(expr._getParent() instanceof expression_element_eq);
+		} if (expr instanceof expression_element_and) {
+			expression_element_and andExpr = (expression_element_and)expr;
+			findOuterJoinSigns(andExpr.lhs);
+			findOuterJoinSigns(andExpr.rhs);
+		} else if (expr instanceof expression_element_eq) {
+			expression_element_eq andExpr = (expression_element_eq)expr;
+			findOuterJoinSigns(andExpr.lhs);
+			findOuterJoinSigns(andExpr.rhs);
 		}
 	}
 
 	private void parseOuterJoinPredicates() {
-		for (Tree outerJoinSignNode: outerJoinExpressions) {
-			Tree parentEqualsOp = outerJoinSignNode.getParent();
-			JoinSide side1 = parseJoinSide(parentEqualsOp.getChild(0));
-			JoinSide side2 = parseJoinSide(parentEqualsOp.getChild(1));
+		for (expression_element_outer_join_sign outerJoinSignNode: outerJoinExpressions) {
+			expression_element_eq parentEqualsOp = (expression_element_eq)outerJoinSignNode._getParent();
+			JoinSide side1 = parseJoinSide(parentEqualsOp.lhs);
+			JoinSide side2 = parseJoinSide(parentEqualsOp.rhs);
 			AstUtil.assertThat(side1.isOuterSide || side2.isOuterSide);
 			AstUtil.assertThat(!side1.isOuterSide || !side2.isOuterSide);
 			OuterJoinPredicate predicate = new OuterJoinPredicate();
@@ -190,7 +172,7 @@ public class OracleOuterJoinTransformer {
 			predicate.targetAlias = side1.isOuterSide ? side1.alias : side2.alias;
 			predicate.equalsOpTree = parentEqualsOp;
 			if (isDebugEnabled) {
-				System.out.printf("Analyzed join predicate: %s -> %s with:\n%s\n", predicate.sourceAlias, predicate.targetAlias, AstPrinter.prettyPrint(parentEqualsOp));
+				System.out.printf("Analyzed join predicate: %s -> %s with:\n%s\n", predicate.sourceAlias, predicate.targetAlias, AstPrinter.prettyPrint(parentEqualsOp.unparse()));
 			}
 			outerJoinPredicates.add(predicate);
 		}
@@ -198,13 +180,13 @@ public class OracleOuterJoinTransformer {
 
 	static class JoinSide {
 		public String alias;
-		public Tree exprNode;
+		public expression_element exprNode;
 		public boolean isOuterSide;
 	}
 	
-	private JoinSide parseJoinSide(Tree equalsChild) {
-		if (equalsChild.getType() == PLSQLParser.OUTER_JOIN_SIGN) {
-			JoinSide result = parseJoinSide(equalsChild.getChild(0));
+	private JoinSide parseJoinSide(expression_element equalsChild) {
+		if (equalsChild instanceof expression_element_outer_join_sign) {
+			JoinSide result = parseJoinSide(((expression_element_outer_join_sign)equalsChild).expr);
 			result.isOuterSide = true;
 			return result;
 		} else {
@@ -213,25 +195,25 @@ public class OracleOuterJoinTransformer {
 			// 3) Отобрать из них все алиасы
 			// 4) Алиас должен остаться только один
 			// 1
-			List<Tree> descendantCascadedElements_1 = AstUtil.getDescendantsOfType(equalsChild, PLSQLParser.CASCATED_ELEMENT);
+			List<general_element> elements_2 = AstUtil.getDescendantsOfType(equalsChild, general_element.class);
 			// 2
-			List<Tree> descendantCascadedElements_2 = new ArrayList<Tree>();
-			for (Tree elt: descendantCascadedElements_1) {
-				if (AstUtil.getChildOfType(elt, PLSQLParser.ARGUMENTS) != null) {
+			List<general_element> descendantCascadedElements_2 = new ArrayList<general_element>();
+			for (general_element elt: elements_2) {
+				if (elt.general_element_items.size() != 2) {
 					continue;
 				}
-				if (elt.getChildCount() == 2 && elt.getChild(0).getType() == PLSQLParser.ANY_ELEMENT && elt.getChild(1).getType() == PLSQLParser.ANY_ELEMENT) {
+				if (elt.general_element_items.get(0) instanceof general_element_id
+					&& elt.general_element_items.get(1) instanceof general_element_id) {
 					descendantCascadedElements_2.add(elt);
 					if (isDebugEnabled) {
-						System.out.printf("Found alias candidate node: %s\n", AstPrinter.prettyPrint(elt));
+						System.out.printf("Found alias candidate node: %s\n", AstPrinter.prettyPrint(elt.unparse()));
 					}
 				}
 			}
 			// 3
 			Set<String> aliases = new HashSet<String>();
 			String alias = null;
-			for (Tree elt: descendantCascadedElements_2) {
-				AstUtil.assertThat(elt.getType() == PLSQLParser.CASCATED_ELEMENT);
+			for (general_element elt: descendantCascadedElements_2) {
 				List<String> cascadedIds = convertCascadedElementToIds(elt);
 				AstUtil.assertThat(cascadedIds.size() == 2, "Unexpected number of ID elements in cascaded element");
 				alias = cascadedIds.get(0);
@@ -239,10 +221,10 @@ public class OracleOuterJoinTransformer {
 			}
 			// 4
 			AstUtil.assertThat(aliases.size() <= 1,
-					String.format("Argument of outer join equals expression at %d:%d uses more than one alias", equalsChild.getLine(), equalsChild.getCharPositionInLine())
+					String.format("Argument of outer join equals expression at %d:%d uses more than one alias", equalsChild._getLine(), equalsChild._getCol())
 				);
 			AstUtil.assertThat(aliases.size() > 0,
-					String.format("Argument of outer join equals expression at %d:%d does not uses aliases", equalsChild.getLine(), equalsChild.getCharPositionInLine())
+					String.format("Argument of outer join equals expression at %d:%d does not uses aliases", equalsChild._getLine(), equalsChild._getCol())
 				);
 			JoinSide result = new JoinSide();
 			result.exprNode = equalsChild;
@@ -251,14 +233,11 @@ public class OracleOuterJoinTransformer {
 		}
 	}
 
-	private List<String> convertCascadedElementToIds(Tree cascadedElement) {
+	private List<String> convertCascadedElementToIds(general_element cascadedElement) {
 		ArrayList<String> result = new ArrayList<String>();
-		for (int i = 0; i < cascadedElement.getChildCount(); ++i) {
-			Tree anyElement = cascadedElement.getChild(i);
-			AstUtil.assertNodeType(anyElement, PLSQLParser.ANY_ELEMENT);
-			Tree idNode = anyElement.getChild(0);
-			AstUtil.assertNodeType(idNode, PLSQLParser.ID);
-			String idString = AstUtil.normalizeId(idNode.getText());
+		for (general_element_item item: cascadedElement.general_element_items) {
+			String idString = ((general_element_id)item).id.value;
+			idString = AstUtil.normalizeId(idString);
 			result.add(idString);
 		}
 		return result;
@@ -297,10 +276,10 @@ public class OracleOuterJoinTransformer {
 	private void rewriteTree() {
 		// 1) Remove referenced nodes
 		for (OuterJoinNode joinNode: allJoinNodes) {
-			Tree tableRefElementNode = this.tableRefElements.get(joinNode.alias);
-			Tree tableRefNode = tableRefElementNode.getParent();
-			tableRefNode.deleteChild(tableRefElementNode.getChildIndex());
-			tableRefNode.getParent().deleteChild(tableRefNode.getChildIndex());
+			table_ref_aux tra = this.tableRefElements.get(joinNode.alias);
+			table_ref tr = (table_ref)tra._getParent();
+			tr.set_table_ref_aux(null);
+			query.from_clause.remove_table_refs(tr);
 		}
 		
 		// SELECT (queryBlockNode)
@@ -321,57 +300,55 @@ public class OracleOuterJoinTransformer {
 		//     ...
 		// 2) walk from join roots, add join trees
 		for (OuterJoinNode rootJoinNode: rootJoinNodes) {
-			Tree tableRefNode = AstUtil.createAstNode(PLSQLParser.TABLE_REF);
-			tableRefNode.addChild(tableRefElements.get(rootJoinNode.alias));
+			table_ref tr = new table_ref();
+			tr.set_table_ref_aux(tableRefElements.get(rootJoinNode.alias));
 			for (OuterJoinNode targetJoinNode: rootJoinNode.childNodes) {
-				addJoinNode(tableRefNode, rootJoinNode, targetJoinNode);
+				addJoinNode(tr, rootJoinNode, targetJoinNode);
 			}
-			fromNode.addChild(tableRefNode);
+			query.from_clause.add_table_refs(tr);
 		}
+		
+		AstUtil.replaceNode(queryBlockNode, query.unparse());
 	}
 
-	private void addJoinNode(Tree tableRefNode, OuterJoinNode source, OuterJoinNode target) {
-		List<Tree> joinExpressions = getJoinExpressions(source.alias, target.alias);
-		for (Tree joinExpr: joinExpressions) {
+	private void addJoinNode(table_ref tableRefNode, OuterJoinNode source, OuterJoinNode target) {
+		List<expression_element_eq> joinExpressions = getJoinExpressions(source.alias, target.alias);
+		for (expression_element_eq joinExpr: joinExpressions) {
 			removeNodeFromWhere(joinExpr);
 		}
 		
-		Tree joinExpr = null;
-		for (Tree expr: joinExpressions) {
-			Tree lhs = expr.getChild(0);
-			Tree rhs = expr.getChild(1);
-			if (lhs.getType() == PLSQLParser.OUTER_JOIN_SIGN) {
-				lhs = lhs.getChild(0);
+		expression_element joinExpr = null;
+		for (expression_element_eq expr: joinExpressions) {
+			expression_element lhs = expr.lhs;
+			expression_element rhs = expr.rhs;
+			if (lhs instanceof expression_element_outer_join_sign) {
+				lhs = ((expression_element_outer_join_sign)lhs).expr;
 			}
-			if (rhs.getType() == PLSQLParser.OUTER_JOIN_SIGN) {
-				rhs = rhs.getChild(0);
+			if (rhs instanceof expression_element_outer_join_sign) {
+				rhs = ((expression_element_outer_join_sign)rhs).expr;
 			}
-			Tree condition = AstUtil.createAstNode(PLSQLParser.EQUALS_OP, lhs, rhs);
+			expression_element_eq condition = parser.make_expression_element_eq(lhs, rhs);
 			if (joinExpr == null) {
 				joinExpr = condition;
 			} else {
-				joinExpr = AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_AND,
-					joinExpr,
-					condition
-				);
+				joinExpr = parser.make_expression_element_and(joinExpr, condition);
 			}
 		}
 		
-		Tree joinDefNode = AstUtil.createAstNode(PLSQLParser.JOIN_DEF,
-			AstUtil.createAstNode(PLSQLParser.LEFT_VK),
-			tableRefElements.get(target.alias),
-			AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_ON,
-				AstUtil.createAstNode(PLSQLParser.LOGIC_EXPR, joinExpr)));
+		join_clause jc = new join_clause();
+		jc.LEFT_VK = AstUtil.createAstNode(PLSQLParser.LEFT_VK);
+		jc.set_table_ref_aux(tableRefElements.get(target.alias));
+		jc.join_on_part = parser.make_join_on_part(parser.make_logic_expression(joinExpr));
 		
-		tableRefNode.addChild(joinDefNode);
+		tableRefNode.add_join_clauses(jc);
 		
 		for (OuterJoinNode childNode: target.childNodes) {
 			addJoinNode(tableRefNode, target, childNode);
 		}
 	}
 
-	private List<Tree> getJoinExpressions(String sourceAlias, String targetAlias) {
-		List<Tree> result = new ArrayList<Tree>();
+	private List<expression_element_eq> getJoinExpressions(String sourceAlias, String targetAlias) {
+		List<expression_element_eq> result = new ArrayList<expression_element_eq>();
 		for (OuterJoinPredicate predicate: outerJoinPredicates) {
 			if (predicate.sourceAlias.equals(sourceAlias) && predicate.targetAlias.equals(targetAlias)) {
 				result.add(predicate.equalsOpTree);
@@ -380,19 +357,24 @@ public class OracleOuterJoinTransformer {
 		return result;
 	}
 
-	private void removeNodeFromWhere(Tree joinExpr) {
-		Tree node = joinExpr;
-		Tree parent = node.getParent();
-		parent.deleteChild(node.getChildIndex());
-		if (parent.getType() == PLSQLParser.LOGIC_EXPR) {
-			whereNode.getParent().deleteChild(whereNode.getChildIndex());
-		} else if (parent.getType() == PLSQLParser.SQL92_RESERVED_AND) {
-			Tree grandParent = parent.getParent();
-			Tree sibling = parent.getChild(0);
-			parent.deleteChild(sibling.getChildIndex());
-			grandParent.replaceChildren(parent.getChildIndex(), parent.getChildIndex(), sibling);
+	private void removeNodeFromWhere(expression_element_eq joinExpr) {
+		expression_element node = joinExpr;
+		if (node._getParent() instanceof logic_expression) {
+			query.set_where_clause(null);
 		} else {
-			AstUtil.assertThat(false);
+			expression_element_and pa = (expression_element_and)node._getParent();
+			expression_element other = pa.lhs == node ? pa.rhs : pa.lhs;
+			if (pa._getParent() instanceof expression_element_and) {
+				expression_element_and gpa = (expression_element_and)pa._getParent();
+				if (gpa.lhs == pa) {
+					gpa.set_lhs(other);
+				} else {
+					gpa.set_rhs(other);
+				}
+			} else {
+				logic_expression le = (logic_expression)pa._getParent();
+				le.set_expression_element(other);
+			}
 		}
 	}
 }

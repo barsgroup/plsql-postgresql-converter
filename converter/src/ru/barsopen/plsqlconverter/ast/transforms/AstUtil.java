@@ -13,6 +13,10 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.Tree;
 
+import ru.barsopen.plsqlconverter.ast.typed._baseNode;
+import ru.barsopen.plsqlconverter.ast.typed._visitor;
+import ru.barsopen.plsqlconverter.ast.typed.expression_element;
+import ru.barsopen.plsqlconverter.ast.typed.general_element;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class AstUtil {
@@ -183,6 +187,23 @@ public class AstUtil {
 	
 	public static Tree cloneTree(Tree node) {
 		return (Tree)adaptor.dupTree(node);
+	}
+
+	public static <T> List<T> getDescendantsOfType(
+			_baseNode node, final Class<T> klass) {
+
+		final List<T> elts = new ArrayList<T>();
+		node._walk(new _visitor() {
+			public void visit(Tree nonNode) {
+			}
+			@SuppressWarnings("unchecked")
+			public void visit(_baseNode node) {
+				if (klass.isAssignableFrom(node.getClass())) {
+					elts.add((T)node);
+				}
+			}
+		});
+		return elts;
 	}
 
 }
