@@ -279,6 +279,8 @@ public class main {
     out.printf("    _token.setCharPositionInLine(_col);\n");
     if (tokenTextProperty != null) {
       out.printf("    _token.setText(%s);\n", tokenTextProperty);
+    } else {
+      out.printf("    _token.setText(\"%s\");\n", rule.body.rootType);
     }
     out.printf("    org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);\n");
     out.printf("    _result.setTokenStartIndex(_tokenStartIndex);\n");
