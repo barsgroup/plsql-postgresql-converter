@@ -5,18 +5,27 @@ public class AstNodes {
     public List<String> packageName = new ArrayList<String>();
     public List<String> tokenVocabName = new ArrayList<String>();
     public List<RuleSpec> rules = new ArrayList<RuleSpec>();
+    
+    public RuleSpec findRuleSpec(String name) {
+      for (RuleSpec rs: rules) {
+        if (rs.name.equals(name)) {
+          return rs;
+        }
+      }
+      return null;
+    }
   }
   
   public static abstract class RuleSpec {
     public String name;
   }
   
-  public static class RuleSpec1 extends RuleSpec {
+  public static class RuleWithoutAlts extends RuleSpec {
     public RuleBody body;
   }
   
-  public static class RuleSpec2 extends RuleSpec {
-    public List<RuleAlternative> alternatives = new ArrayList<RuleAlternative>();
+  public static class RuleWithAlts extends RuleSpec {
+    public List<RuleWithoutAlts> alternatives = new ArrayList<RuleWithoutAlts>();
   }
   
   public static class RuleAlternative {
@@ -25,7 +34,11 @@ public class AstNodes {
   }
   
   public static class RuleBody {
+    public String rootType;
     public List<RuleItem> items = new ArrayList<RuleItem>();
+    public boolean isDelegate() {
+      return !Character.isUpperCase(rootType.charAt(0));
+    }
   }
   
   public static class RuleItem {
@@ -41,8 +54,13 @@ public class AstNodes {
   
   public static class PropMatchSpec {
     public String name;
+    public boolean isTokenText;
     public boolean isQuestion;
     public boolean isAsterisk;
     public boolean isPlus;
+    
+    public boolean isToken() {
+      return name != null && Character.isUpperCase(name.charAt(0));
+    }
   }
 }

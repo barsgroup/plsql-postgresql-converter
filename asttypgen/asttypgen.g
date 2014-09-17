@@ -4,6 +4,7 @@ ID: ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 PERIOD: '.';
 KW_PACKAGE: '@package';
 KW_TOKEN_VOCAB: '@tokenVocab';
+KW_TOKEN_TEXT: '@tokenText';
 COLON: ':';
 SEMICOLON: ';';
 SLASH: '/';
@@ -37,18 +38,18 @@ ruleSpec returns [AstNodes.RuleSpec result]:
   r1=ruleWithoutAlternatives { $result = $r1.result; }
   | r2=ruleWithAlternatives { $result = $r2.result; };
 
-ruleWithoutAlternatives returns [AstNodes.RuleSpec1 result]:
+ruleWithoutAlternatives returns [AstNodes.RuleWithoutAlts result]:
   ID COLON ruleBody SEMICOLON
   {
-    $result = new AstNodes.RuleSpec1();
+    $result = new AstNodes.RuleWithoutAlts();
     $result.name = $ID.text;
     $result.body = $ruleBody.result;
   };
   
-ruleWithAlternatives returns [AstNodes.RuleSpec2 result]:
+ruleWithAlternatives returns [AstNodes.RuleWithAlts result]:
   ID
   {
-    $result = new AstNodes.RuleSpec2();
+    $result = new AstNodes.RuleWithAlts();
     $result.name = $ID.text;
   }
   (
@@ -56,20 +57,24 @@ ruleWithAlternatives returns [AstNodes.RuleSpec2 result]:
     { $result.alternatives.add($ra.result); }
   )+ SEMICOLON;
   
-ruleAlternative returns [AstNodes.RuleAlternative result]:
+ruleAlternative returns [AstNodes.RuleWithoutAlts result]:
   SLASH ID COLON ruleBody
   {
-    $result = new AstNodes.RuleAlternative();
+    $result = new AstNodes.RuleWithoutAlts();
     $result.name = $ID.text;
     $result.body = $ruleBody.result;
   };
   
 ruleBody returns [AstNodes.RuleBody result]:
-{ $result = new AstNodes.RuleBody(); }
+  ID
+  {
+    $result = new AstNodes.RuleBody();
+    $result.rootType = $ID.text;
+  }
   (
     r=ruleItem
     { $result.items.add($r.result); }
-  )+;
+  )*;
 
 ruleItem returns [AstNodes.RuleItem result]:
   propSpec EQ propMatchSpec
@@ -91,8 +96,17 @@ propSpec returns [AstNodes.PropSpec result]:
 { $result.name = $ID.text; };
 
 propMatchSpec returns [AstNodes.PropMatchSpec result]:
+  KW_TOKEN_TEXT
+  {
+    $result = new AstNodes.PropMatchSpec();
+    $result.isTokenText = true;
+  }
+  |
   ID
-  { $result = new AstNodes.PropMatchSpec(); }
+  {
+    $result = new AstNodes.PropMatchSpec();
+    $result.name = $ID.text;
+  }
   (
     QUESTION { $result.isQuestion = true; }
     | ASTERISK { $result.isAsterisk = true; }
