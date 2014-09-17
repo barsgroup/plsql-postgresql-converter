@@ -47,16 +47,21 @@ public class AstNodes {
   
   public static class PropMatchSpec {
     public String name;
+    public boolean isAny;
     public boolean isTokenText;
     public boolean isQuestion;
     public boolean isAsterisk;
     public boolean isPlus;
     
     public boolean isToken() {
-      return name != null && Character.isUpperCase(name.charAt(0));
+      return isAny || (name != null && Character.isUpperCase(name.charAt(0)));
     }
     
     public PropSpec createDefaultPropSpec() {
+      String name = this.name;
+      if (name == null) {
+        name = "content";
+      }
       PropSpec result = new PropSpec();
       result.name = (isPlus || isAsterisk) ? name + "s" : name;
       result.isQuestion = isQuestion;

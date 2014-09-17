@@ -6,6 +6,7 @@ KW_PACKAGE: '@package';
 KW_TOKEN_VOCAB: '@tokenVocab';
 KW_TOKEN_TEXT: '@tokenText';
 KW_PARSER_CLASS: '@parserClass';
+KW_ANY: '@any';
 COLON: ':';
 SEMICOLON: ';';
 SLASH: '/';
@@ -106,10 +107,11 @@ propMatchSpec returns [AstNodes.PropMatchSpec result]:
     $result.isTokenText = true;
   }
   |
-  ID
+  (id=ID|any=KW_ANY)
   {
     $result = new AstNodes.PropMatchSpec();
-    $result.name = $ID.text;
+    $result.name = $id != null ? $id.text : null;
+    $result.isAny = $any != null;
   }
   (
     QUESTION { $result.isQuestion = true; }

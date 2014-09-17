@@ -179,7 +179,9 @@ public class main {
     }
     
     String itemMatchCondition;
-    if (item.propMatchSpec.isToken()) {
+    if (item.propMatchSpec.isAny) {
+      itemMatchCondition = "true";
+    } else if (item.propMatchSpec.isToken()) {
       itemMatchCondition = String.format("tree.getChild(i).getType() == %s.%s", tokenVocabName, item.propMatchSpec.name);
     } else {
       itemMatchCondition = String.format("canParse%s(tree.getChild(i))", item.propMatchSpec.name);
