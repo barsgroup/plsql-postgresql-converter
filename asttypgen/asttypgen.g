@@ -5,6 +5,7 @@ PERIOD: '.';
 KW_PACKAGE: '@package';
 KW_TOKEN_VOCAB: '@tokenVocab';
 KW_TOKEN_TEXT: '@tokenText';
+KW_PARSER_CLASS: '@parserClass';
 COLON: ':';
 SEMICOLON: ';';
 SLASH: '/';
@@ -16,6 +17,7 @@ BRACKET_L: '[';
 BRACKET_R: ']';
 CURLY_L: '{';
 CURLY_R: '}';
+ARROW_R: '=>';
 WS  :   ( ' '
         | '\t'
         | '\r'
@@ -26,6 +28,7 @@ astSpec returns [AstNodes.AstSpec spec]:
   { $spec = new AstNodes.AstSpec(); }
   packageNameDef[$spec]
   tokenVocabName[$spec]
+  parserClassName[$spec]
   (r=ruleSpec { $spec.rules.add(r); })* EOF;
   
 packageNameDef[AstNodes.AstSpec spec]:
@@ -33,6 +36,9 @@ packageNameDef[AstNodes.AstSpec spec]:
 
 tokenVocabName[AstNodes.AstSpec spec]:
   KW_TOKEN_VOCAB r=ID { $spec.tokenVocabName.add($r.text); } (PERIOD r=ID { $spec.tokenVocabName.add($r.text); })*;
+  
+parserClassName[AstNodes.AstSpec spec]:
+  KW_PARSER_CLASS r=ID { $spec.parserClassName = $r.text; };
 
 ruleSpec returns [AstNodes.RuleSpec result]:
   r1=ruleWithoutAlternatives { $result = $r1.result; }
@@ -47,23 +53,17 @@ ruleWithoutAlternatives returns [AstNodes.RuleWithoutAlts result]:
   };
   
 ruleWithAlternatives returns [AstNodes.RuleWithAlts result]:
-  ID
+  ruleName=ID
   {
     $result = new AstNodes.RuleWithAlts();
-    $result.name = $ID.text;
+    $result.name = $ruleName.text;
   }
+  ARROW_R
   (
-    ra=ruleAlternative
-    { $result.alternatives.add($ra.result); }
-  )+ SEMICOLON;
-  
-ruleAlternative returns [AstNodes.RuleWithoutAlts result]:
-  SLASH ID COLON ruleBody
-  {
-    $result = new AstNodes.RuleWithoutAlts();
-    $result.name = $ID.text;
-    $result.body = $ruleBody.result;
-  };
+    altName=ID
+    { $result.alternatives.add($altName.text); }
+  )+
+  SEMICOLON;
   
 ruleBody returns [AstNodes.RuleBody result]:
   ID

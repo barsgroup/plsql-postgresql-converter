@@ -19,11 +19,11 @@ public class main {
     spec = p.astSpec();
     String json = new GsonBuilder().setPrettyPrinting().create().toJson(spec);
     //System.out.println(json);
-    Path path = Paths.get(args[1], spec.packageName.toArray(new String[0]));
+    path = Paths.get(args[1], spec.packageName.toArray(new String[0]));
     Files.createDirectories(path);
     packageName = stringJoin(".", spec.packageName);
     tokenVocabName = stringJoin(".", spec.tokenVocabName);
-    generateAstClasses(path);
+    generateAstClasses();
   }
   
   static String stringJoin(String separator, List<String> parts) {
@@ -37,42 +37,49 @@ public class main {
     return sb.toString();
   }
   
+  static Path path;
   static AstNodes.AstSpec spec;
   static String packageName;
   static String tokenVocabName;
+  static Map<String, List<String>> ruleInterfaces = new HashMap<String, List<String>>();
   
-  public static void generateAstClasses(Path path) throws Exception {
+  public static void generateAstClasses() throws Exception {
     for (AstNodes.RuleSpec rule: spec.rules) {
-      if (rule instanceof AstNodes.RuleWithoutAlts) {
-        generateRuleWithoutAlternativesClass(path, (AstNodes.RuleWithoutAlts)rule, null);
-      } else {
-        AstNodes.RuleWithAlts theRule = (AstNodes.RuleWithAlts)rule;
-        for (AstNodes.RuleWithoutAlts childRule: theRule.alternatives) {
-          generateRuleWithoutAlternativesClass(path, childRule, theRule.name);
+      ruleInterfaces.put(rule.name, new ArrayList<String>());
+    }
+    for (AstNodes.RuleSpec rule: spec.rules) {
+      if (rule instanceof AstNodes.RuleWithAlts) {
+        for (String altName: ((AstNodes.RuleWithAlts)rule).alternatives) {
+          ruleInterfaces.get(altName).add(rule.name);
         }
-        generateRuleWithAlternativesClass(path, theRule);
       }
     }
+    
+    for (AstNodes.RuleSpec rule: spec.rules) {
+      if (rule instanceof AstNodes.RuleWithoutAlts) {
+        generateRuleWithoutAlternativesClass((AstNodes.RuleWithoutAlts)rule);
+      } else {
+        AstNodes.RuleWithAlts theRule = (AstNodes.RuleWithAlts)rule;
+        generateRuleWithAlternativesClass(theRule);
+      }
+    }
+    
+    generateParserClass();
   }
   
-  public static void generateRuleWithoutAlternativesClass(Path path, AstNodes.RuleWithoutAlts rule, String baseClass) throws Exception {
+  public static void generateRuleWithoutAlternativesClass(AstNodes.RuleWithoutAlts rule) throws Exception {
     File file = path.resolve(rule.name + ".java").toFile();
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
-      out.printf("public class %s %s{\n", rule.name, baseClass == null ? "" : String.format("extends %s ", baseClass));
+      String interfaces = stringJoin(", ", ruleInterfaces.get(rule.name));
+      out.printf("public class %s %s{\n", rule.name, interfaces.equals("") ? "" : String.format("implements %s ", interfaces));
       generateRuleBodyProperties(out, (AstNodes.RuleWithoutAlts)rule);
-      generateRuleBodyChecker(out, rule);
-      generateRuleBodyParser(out, rule);
       generateRuleBodyUnparser(out, rule);
       out.printf("}\n");
     }
   }
   
   public static void generateRuleBodyProperties(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
-    if (rule.body.isDelegate()) {
-      out.printf("  public %s.%s %s = null;\n", packageName, rule.body.rootType, rule.body.rootType);
-      return;
-    }
     for (AstNodes.RuleItem item: rule.body.items) {
       AstNodes.PropSpec propSpec = item.propSpec;
       boolean isToken = item.propMatchSpec.isToken();
@@ -94,13 +101,39 @@ public class main {
     out.println();
   }
   
-  public static void generateRuleBodyChecker(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
-    out.printf("  public static boolean canParse(org.antlr.runtime.tree.Tree tree) {\n");
-    if (rule.body.isDelegate()) {
-      out.printf("    return %s.%s.canParse(tree);\n", packageName, rule.body.rootType);
-    } else {
-      out.printf("    return %s;\n", generateTreeCheckCondition("tree.getType()", rule.body.rootType));
+  public static void generateParserClass() throws Exception {
+    File file = path.resolve(spec.parserClassName + ".java").toFile();
+    try (PrintStream out = new PrintStream(file, "UTF-8")) {
+      out.printf("package %s;\n", packageName);
+      out.printf("public class %s {\n", spec.parserClassName);
+      
+      for (AstNodes.RuleSpec rule: spec.rules) {
+        generateRuleBodyChecker(out, rule);
+        generateRuleBodyParser(out, rule);
+        if (rule instanceof AstNodes.RuleWithoutAlts) {
+          generateRuleConstrator(out, (AstNodes.RuleWithoutAlts)rule);
+        }
+      }
+      
+      out.printf("}\n");
     }
+  }
+  
+  public static void generateRuleBodyChecker(PrintStream out, AstNodes.RuleSpec rule) throws Exception {
+    out.printf("  public static boolean canParse%s(org.antlr.runtime.tree.Tree tree) {\n", rule.name);
+    String condition;
+    if (rule instanceof AstNodes.RuleWithoutAlts) {
+      AstNodes.RuleWithoutAlts theRule = (AstNodes.RuleWithoutAlts)rule;
+      condition = generateTreeCheckCondition("tree.getType()", theRule.body.rootType);
+    } else {
+      AstNodes.RuleWithAlts theRule = (AstNodes.RuleWithAlts)rule;
+      List<String> parts = new ArrayList<String>();
+      for (String altName: theRule.alternatives) {
+        parts.add(String.format("canParse%s(tree)", altName));
+      }
+      condition = stringJoin(" || ", parts);
+    }
+    out.printf("    return %s;\n", condition);
     out.printf("  }\n");
     out.println();
   }
@@ -110,35 +143,31 @@ public class main {
     return result;
   }
   
-  public static String generateTreeCheckCondition(String tokenVar, List<String> tokenTypes) {
-    List<String> conditions = new ArrayList<String>();
-    for (String tokenType: tokenTypes) {
-      conditions.add(generateTreeCheckCondition(tokenVar, tokenType));
-    }
-    String result = stringJoin(" || ", conditions);
-    return result;
-  }
-  
-  public static void generateRuleBodyParser(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
-    out.printf("  public static %s parse(org.antlr.runtime.tree.Tree tree) {\n", rule.name);
-    out.printf("    if (!canParse(tree)) {\n");
+  public static void generateRuleBodyParser(PrintStream out, AstNodes.RuleSpec rule) throws Exception {
+    out.printf("  public static %s parse%s(org.antlr.runtime.tree.Tree tree) {\n", rule.name, rule.name);
+    out.printf("    if (!canParse%s(tree)) {\n", rule.name);
     out.printf("      throw new RuntimeException(\"Tree type mismatch\");\n");
     out.printf("    }\n");
                 
     out.println();
-    out.printf("    %s result = new %s();\n", rule.name, rule.name);
-    if (rule.body.isDelegate()) {
-      out.printf("    result.%s = %s.%s.parse(tree);\n", rule.body.rootType, packageName, rule.body.rootType);
+    if (rule instanceof AstNodes.RuleWithAlts) {
+      AstNodes.RuleWithAlts theRule = (AstNodes.RuleWithAlts)rule;
+      for (String altName: theRule.alternatives) {
+        out.printf("    if (canParse%s(tree)) return parse%s(tree);\n", altName, altName);
+      }
+      out.printf("    throw new RuntimeException(\"Tree type mismatch\");\n");
     } else {
+      AstNodes.RuleWithoutAlts theRule = (AstNodes.RuleWithoutAlts)rule;
+      out.printf("    %s result = new %s();\n", rule.name, rule.name);
       out.printf("    int i = 0;\n");
       out.println();
-      for (AstNodes.RuleItem item: rule.body.items) {
+      for (AstNodes.RuleItem item: theRule.body.items) {
         generateParserRuleItem(out, item);
         out.println();
       }
-    out.printf(  "    if (i < tree.getChildCount()) { throw new RuntimeException(\"Tree type mismatch\"); }\n");
+      out.printf("    if (i < tree.getChildCount()) { throw new RuntimeException(\"Tree type mismatch\"); }\n");
+      out.printf("    return result;\n");
     }
-    out.printf("    return result;\n");
     out.printf("  }\n");
     out.println();
   }
@@ -153,7 +182,7 @@ public class main {
     if (item.propMatchSpec.isToken()) {
       itemMatchCondition = String.format("tree.getChild(i).getType() == %s.%s", tokenVocabName, item.propMatchSpec.name);
     } else {
-      itemMatchCondition = String.format("%s.%s.canParse(tree.getChild(i))", packageName, item.propMatchSpec.name);
+      itemMatchCondition = String.format("canParse%s(tree.getChild(i))", item.propMatchSpec.name);
     }
     itemMatchCondition = "i < tree.getChildCount() && (" + itemMatchCondition + ")";
     String itemProcess;
@@ -161,7 +190,7 @@ public class main {
     if (item.propMatchSpec.isToken()) {
       itemGet = "tree.getChild(i)";
     } else {
-      itemGet = String.format("%s.%s.parse(tree.getChild(i))", packageName, item.propMatchSpec.name);
+      itemGet = String.format("parse%s(tree.getChild(i))", item.propMatchSpec.name);
     }
     if (item.propSpec.isArray) {
       itemProcess = String.format("result.%s.add(%s);", item.propSpec.name, itemGet);
@@ -191,29 +220,58 @@ public class main {
     }
   }
   
+  public static void generateRuleConstrator(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
+    List<String> arguments = new ArrayList<String>();
+    
+    for (AstNodes.RuleItem item: rule.body.items) {
+      AstNodes.PropSpec propSpec = item.propSpec;
+      boolean isToken = item.propMatchSpec.isToken();
+      String type;
+      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : item.propMatchSpec.name;
+      if (propSpec.isArray) {
+        type = String.format("java.util.List<%s>", itemType);
+      } else {
+        type = itemType;
+      }
+      arguments.add(String.format("%s %s", type, propSpec.name));
+    }
+    out.printf("  public static %s make_%s(%s) {\n", rule.name, rule.name, stringJoin(",\n      ", arguments));
+    out.printf("    %s result = new %s();\n", rule.name, rule.name);
+    
+    for (AstNodes.RuleItem item: rule.body.items) {
+      if (item.propSpec.isArray) {
+        out.printf("    if (%s != null) {", item.propSpec.name);
+        out.printf("      result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+        out.printf("    }\n");
+      } else {
+        out.printf("    result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+      }
+    }
+    
+    out.printf("    return result;\n");
+    out.printf("  }\n");
+    out.println();
+  }
+  
   public static void generateRuleBodyUnparser(PrintStream out, AstNodes.RuleWithoutAlts rule) throws Exception {
     out.printf("  public org.antlr.runtime.tree.Tree unparse() {\n");
-    if (rule.body.isDelegate()) {
-      out.printf("    return %s.unparse();\n", rule.body.rootType);
-    } else {
-      String tokenTextProperty = null;
-      for (AstNodes.RuleItem item: rule.body.items) {
-        if (item.propMatchSpec.isTokenText) {
-          tokenTextProperty = item.propSpec.name;
-        }
+    String tokenTextProperty = null;
+    for (AstNodes.RuleItem item: rule.body.items) {
+      if (item.propMatchSpec.isTokenText) {
+        tokenTextProperty = item.propSpec.name;
       }
-      if (tokenTextProperty == null) {
-        out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s));\n", tokenVocabName, rule.body.rootType);
-      } else {
-        out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s, %s));\n", tokenVocabName, rule.body.rootType, tokenTextProperty);
-      }
-      
-      for (AstNodes.RuleItem item: rule.body.items) {
-        generateUnparserRuleItem(out, item);
-        out.println();
-      }
-      out.printf("    return result;\n");
     }
+    if (tokenTextProperty == null) {
+      out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s));\n", tokenVocabName, rule.body.rootType);
+    } else {
+      out.printf("    org.antlr.runtime.tree.Tree result = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(%s.%s, %s));\n", tokenVocabName, rule.body.rootType, tokenTextProperty);
+    }
+    
+    for (AstNodes.RuleItem item: rule.body.items) {
+      generateUnparserRuleItem(out, item);
+      out.println();
+    }
+    out.printf("    return result;\n");
     out.printf("  }\n");
     out.println();
   }
@@ -248,40 +306,15 @@ public class main {
     out.println();
   }
   
-  public static void generateRuleWithAlternativesClass(Path path, AstNodes.RuleWithAlts rule) throws Exception {
+  public static void generateRuleWithAlternativesClass(AstNodes.RuleWithAlts rule) throws Exception {
     File file = path.resolve(rule.name + ".java").toFile();
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
-      out.printf("public abstract class %s {\n", rule.name);
-      out.printf("  public abstract org.antlr.runtime.tree.Tree unparse();\n");
-      generateRuleAltsChecker(out, rule);
-      generateRuleAltsParser(out, rule);
+      String interfaces = stringJoin(", ", ruleInterfaces.get(rule.name));
+      out.printf("public interface %s %s{\n", rule.name, interfaces.equals("") ? "" : String.format("extends %s ", interfaces));
+      out.printf("  // implemented by: %s\n", stringJoin(", ", rule.alternatives));
+      out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
       out.printf("}\n");
     }
-  }
-  
-  public static void generateRuleAltsChecker(PrintStream out, AstNodes.RuleWithAlts rule) throws Exception {
-    List<String> conditions = new ArrayList<String>();
-    for (AstNodes.RuleWithoutAlts subrule: rule.alternatives) {
-      conditions.add(String.format("%s.canParse(tree)", subrule.name));
-    }
-    String condition = stringJoin(" || ", conditions);
-  
-    out.printf("  public static boolean canParse(org.antlr.runtime.tree.Tree tree) {\n");
-    out.printf("    return %s;\n", condition);
-    out.printf("  }\n");
-    out.println();
-  }
-  
-  public static void generateRuleAltsParser(PrintStream out, AstNodes.RuleWithAlts rule) throws Exception {
-    out.printf("  public static %s parse(org.antlr.runtime.tree.Tree tree) {\n", rule.name);
-    for (AstNodes.RuleWithoutAlts alt: rule.alternatives) {
-      out.printf("    if (%s.canParse(tree)) {\n", alt.name);
-      out.printf("      return %s.parse(tree);\n", alt.name);
-      out.printf("    }\n");
-    }
-    out.println();
-    out.printf("    throw new RuntimeException(\"Tree type mismatch\");\n");
-    out.printf("  }\n");
   }
 }
