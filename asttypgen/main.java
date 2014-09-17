@@ -68,6 +68,7 @@ public class main {
       }
     }
     
+    generateBaseClass();
     generateParserClass();
   }
   
@@ -75,7 +76,9 @@ public class main {
     File file = path.resolve(rule.name + ".java").toFile();
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
-      String interfaces = stringJoin(", ", ruleInterfaces.get(rule.name));
+      List<String> interfacesList = new ArrayList<String>(ruleInterfaces.get(rule.name));
+      interfacesList.add("_baseNode");
+      String interfaces = stringJoin(", ", interfacesList);
       out.printf("public class %s %s{\n", rule.name, interfaces.equals("") ? "" : String.format("implements %s ", interfaces));
       generateRuleBodyProperties(out, (AstNodes.RuleWithoutAlts)rule);
       generateRuleBodyUnparser(out, rule);
@@ -88,6 +91,14 @@ public class main {
     out.printf("  public int _col = -1;\n");
     out.printf("  public int _tokenStartIndex = -1;\n");
     out.printf("  public int _tokenStopIndex = -1;\n");
+    out.printf("  public _baseNode _parent = null;\n");
+    out.printf("  public _baseNode _getParent() { return _parent; }\n");
+    out.printf("  public void _setParent(_baseNode value) { _parent = value; }\n");
+    out.printf("  public void _setBaseNode(_baseNode value) { this._parent = value; }\n");
+    out.printf("  public int _getLine() { return _line; }\n");
+    out.printf("  public int _getCol() { return _col; }\n");
+    out.printf("  public int _getTokenStartIndex() { return _tokenStartIndex; }\n");
+    out.printf("  public int _getTokenStopIndex() { return _tokenStopIndex; }\n");
       
     for (AstNodes.RuleItem item: rule.body.items) {
       AstNodes.PropSpec propSpec = item.propSpec;
@@ -102,12 +113,59 @@ public class main {
         initializer = "null";
       }
       out.printf("  public %s %s = %s;\n", type, propSpec.name, initializer);
+      out.printf("  public %s get_%s() { return this.%s; }\n", type, propSpec.name, propSpec.name);
+      if (propSpec.isArray) {
+        out.printf("  public void add_%s(%s value) {\n", propSpec.name, itemType);
+        out.printf("    insert_%s(%s.size(), value);\n", propSpec.name, propSpec.name);
+        out.printf("  }\n", propSpec.name, itemType);
+        out.printf("  public void insert_%s(int pos, %s value) {\n", propSpec.name, itemType);
+        out.printf("    this.%s.add(pos, value);\n", propSpec.name);
+        if (!isToken) {
+          out.printf("    value._setParent(this);\n", propSpec.name);
+        }
+        out.printf("  }\n", propSpec.name, itemType);
+        out.printf("  public void remove_%s(int pos) {\n", propSpec.name);
+        if (!isToken) {
+          out.printf("    this.%s.get(pos)._setParent(null);\n", propSpec.name);
+        }
+        out.printf("    this.%s.remove(pos);\n", propSpec.name);
+        out.printf("  }\n", propSpec.name, itemType);
+        out.printf("  public void remove_%s(%s value) {\n", propSpec.name, itemType);
+        out.printf("    this.remove_%s(this.%s.indexOf(value));\n", propSpec.name, propSpec.name);
+        out.printf("  }\n", propSpec.name, itemType);
+      } else {
+        out.printf("  public void set_%s(%s value) {\n", propSpec.name, type);
+        if (!isToken && !item.propMatchSpec.isTokenText) {
+          out.printf("    if (this.%s != null) { this.%s._setParent(null); }\n", propSpec.name, propSpec.name);
+        }
+        out.printf("    this.%s = value;\n", propSpec.name);
+        if (!isToken && !item.propMatchSpec.isTokenText) {
+          out.printf("    if (this.%s != null) { this.%s._setParent(this); }\n", propSpec.name, propSpec.name);
+        }
+        out.printf("  }\n", type);
+      }
       
       if (propSpec.isQuestion) {
         out.printf("  public boolean is_%s() { return this.%s != null; }\n", propSpec.name, propSpec.name);
       }
     }
     out.println();
+  }
+  
+  public static void generateBaseClass() throws Exception {
+    File file = path.resolve("_baseNode.java").toFile();
+    try (PrintStream out = new PrintStream(file, "UTF-8")) {
+      out.printf("package %s;\n", packageName);
+      out.printf("public interface _baseNode {\n");
+      out.printf("  _baseNode _getParent();\n");
+      out.printf("  void _setParent(_baseNode parent);\n");
+      out.printf("  int _getLine();\n");
+      out.printf("  int _getCol();\n");
+      out.printf("  int _getTokenStartIndex();\n");
+      out.printf("  int _getTokenStopIndex();\n");
+      out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
+      out.printf("}\n");
+    }
   }
   
   public static void generateParserClass() throws Exception {
@@ -210,9 +268,9 @@ public class main {
       itemGet = String.format("parse%s(tree.getChild(_i))", item.propMatchSpec.name);
     }
     if (item.propSpec.isArray) {
-      itemProcess = String.format("_result.%s.add(%s);", item.propSpec.name, itemGet);
+      itemProcess = String.format("_result.add_%s(%s);", item.propSpec.name, itemGet);
     } else {
-      itemProcess = String.format("_result.%s = %s;", item.propSpec.name, itemGet);
+      itemProcess = String.format("_result.set_%s(%s);", item.propSpec.name, itemGet);
     }
     if (item.propMatchSpec.isQuestion) {
       out.printf("    if (%s) {\n", itemMatchCondition);
@@ -244,7 +302,7 @@ public class main {
       AstNodes.PropSpec propSpec = item.propSpec;
       boolean isToken = item.propMatchSpec.isToken();
       String type;
-      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : item.propMatchSpec.name;
+      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : packageName + "." + item.propMatchSpec.name;
       if (propSpec.isArray) {
         type = String.format("java.util.List<%s>", itemType);
       } else {
@@ -256,12 +314,16 @@ public class main {
     out.printf("    %s _result = new %s();\n", rule.name, rule.name);
     
     for (AstNodes.RuleItem item: rule.body.items) {
+      boolean isToken = item.propMatchSpec.isToken();
+      String type;
+      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : packageName + "." + item.propMatchSpec.name;
+      
       if (item.propSpec.isArray) {
-        out.printf("    if (%s != null) {", item.propSpec.name);
-        out.printf("      _result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+        out.printf("    if (%s != null) {\n", item.propSpec.name);
+        out.printf("      for (%s _value: %s) { _result.add_%s(_value); }\n", itemType, item.propSpec.name, item.propSpec.name);
         out.printf("    }\n");
       } else {
-        out.printf("    _result.%s = %s;\n", item.propSpec.name, item.propSpec.name);
+        out.printf("    _result.set_%s(%s);\n", item.propSpec.name, item.propSpec.name);
       }
     }
     
@@ -333,10 +395,11 @@ public class main {
     File file = path.resolve(rule.name + ".java").toFile();
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
-      String interfaces = stringJoin(", ", ruleInterfaces.get(rule.name));
+      List<String> interfacesList = new ArrayList<String>(ruleInterfaces.get(rule.name));
+      interfacesList.add("_baseNode");
+      String interfaces = stringJoin(", ", interfacesList);
       out.printf("public interface %s %s{\n", rule.name, interfaces.equals("") ? "" : String.format("extends %s ", interfaces));
       out.printf("  // implemented by: %s\n", stringJoin(", ", rule.alternatives));
-      out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
       out.printf("}\n");
     }
   }
