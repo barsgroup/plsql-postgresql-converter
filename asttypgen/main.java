@@ -50,6 +50,10 @@ public class main {
     for (AstNodes.RuleSpec rule: spec.rules) {
       if (rule instanceof AstNodes.RuleWithAlts) {
         for (String altName: ((AstNodes.RuleWithAlts)rule).alternatives) {
+          if (!ruleInterfaces.containsKey(altName)) {
+            System.err.printf("Rule %s references inexising rule %s\n", rule.name, altName);
+            System.exit(1);
+          }
           ruleInterfaces.get(altName).add(rule.name);
         }
       }

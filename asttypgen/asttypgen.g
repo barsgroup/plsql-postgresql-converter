@@ -25,6 +25,11 @@ WS  :   ( ' '
         | '\n'
         ) {$channel=HIDDEN;};
 
+COMMENT
+  : '//' ~( '\r' | '\n' )* {$channel=HIDDEN;}
+  | '/*' (options{greedy=false;}: .)* '*/' {$channel=HIDDEN;}
+  ;
+
 astSpec returns [AstNodes.AstSpec spec]:
   { $spec = new AstNodes.AstSpec(); }
   packageNameDef[$spec]
