@@ -101,6 +101,7 @@ tokens {
     PIVOT_ALIAS;
     DATETIME_OP;
     XML_ELEMENT;
+    QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS;
 }
 
 @members{
@@ -344,11 +345,13 @@ outer_join_type
     ;
 
 query_partition_clause
-    :    partition_key^ by_key!
-    (    (LEFT_PAREN (select_key|with_key)) => LEFT_PAREN! subquery RIGHT_PAREN!
+    :    partition_key^ by_key! query_partition_clause_spec
+    ;
+    
+query_partition_clause_spec
+    :   (LEFT_PAREN (select_key|with_key)) => LEFT_PAREN! subquery RIGHT_PAREN!
     |    (LEFT_PAREN)=> expression_list
-    |    expression_wrapper (COMMA! expression_wrapper)*
-    )
+    |    expression_wrapper (COMMA expression_wrapper)* -> ^(QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS expression_wrapper+)
     ;
 
 flashback_query_clause
