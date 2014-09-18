@@ -64,8 +64,164 @@ tokens {
     displayRecognitionError(correctTokenNames, e);
   }
   
-  static boolean canSkipParensInExpression(int parentType, int childType) {
-    return false;
+  /*
+  
+  14 OR CURSOR
+  13 AND
+  12 NOT
+  11 IS_NOT_NULL IS_NULL IS_NOT_NAN IS_NAN IS_NOT_PRESENT IS_PRESENT
+     IS_NOT_INFINITE IS_INFINITE IS_NOT_A_SET IS_A_SET IS_NOT_EMPTY IS_EMPTY
+     IS_NOT_OF_TYPE IS_OF_TYPE
+  10 MEMBER_VK SUBMULTISET_VK
+  9 EQUALS_OP NOT_EQUAL_OP LESS_THAN_OP GREATER_THAN_OP  LESS_THAN_OR_EQUALS_OP GREATER_THAN_OR_EQUALS_OP
+  8 NOT_IN SQL92_RESERVED_IN NOT_BETWEEN SQL92_RESERVED_BETWEEN NOT_LIKE SQL92_RESERVED_LIKE LIKEC_VK LIKE2_VK LIKE4_VK
+  7 CONCATENATION_OP
+  6 PLUS_SIGN MINUS_SIGN
+  5 ASTERISK SOLIDUS PERCENT MOD_VK DIV_VK
+  4 DATETIME_OP
+  3 MODEL_EXPRESSION
+  2 unary: MINUS_SIGN PLUS_SIGN SQL92_RESERVED_PRIOR PLSQL_NON_RESERVED_CONNECT_BY_ROOT NEW_VK SQL92_RESERVED_DISTINCT
+         SQL92_RESERVED_ALL SIMPLE_CASE SEARCHED_CASE SOME_VK SQL92_RESERVED_EXISTS SQL92_RESERVED_ANY
+         PERCENT_NOTFOUND_VK PERCENT_FOUND_VK PERCENT_ISOPEN_VK PERCENT_ROWCOUNT_VK
+  1 OUTER_JOIN_SIGN
+  0 HOSTED_VARIABLE_NAME  UNSIGNED_INTEGER CONSTANT_NEGATED EXACT_NUM_LIT APPROXIMATE_NUM_LIT CHAR_STRING SQL92_RESERVED_NULL
+        SQL92_RESERVED_TRUE SQL92_RESERVED_FALSE  DBTIMEZONE_VK  SESSIONTIMEZONE_VK  MINVALUE_VK  MAXVALUE_VK  SQL92_RESERVED_DEFAULT
+        STANDARD_FUNCTION CASCATED_ELEMENT
+  */
+  
+  static java.util.Map<Integer, Integer> unaryPriorityMap = new java.util.HashMap<Integer, Integer>();
+  static java.util.Map<Integer, Integer> priorityMap = new java.util.HashMap<Integer, Integer>();
+  {
+    int priority = 0;
+    // 0
+    priorityMap.put(PLSQLPrinter.HOSTED_VARIABLE_NAME, priority);
+    priorityMap.put(PLSQLPrinter.UNSIGNED_INTEGER, priority);
+    priorityMap.put(PLSQLPrinter.CONSTANT_NEGATED, priority);
+    priorityMap.put(PLSQLPrinter.EXACT_NUM_LIT, priority);
+    priorityMap.put(PLSQLPrinter.APPROXIMATE_NUM_LIT, priority);
+    priorityMap.put(PLSQLPrinter.CHAR_STRING, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_NULL, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_TRUE, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_FALSE, priority);
+    priorityMap.put(PLSQLPrinter.DBTIMEZONE_VK, priority);
+    priorityMap.put(PLSQLPrinter.SESSIONTIMEZONE_VK, priority);
+    priorityMap.put(PLSQLPrinter.MINVALUE_VK, priority);
+    priorityMap.put(PLSQLPrinter.MAXVALUE_VK, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_DEFAULT, priority);
+    priorityMap.put(PLSQLPrinter.STANDARD_FUNCTION, priority);
+    priorityMap.put(PLSQLPrinter.CASCATED_ELEMENT, priority);
+    // 1
+    ++priority;
+    priorityMap.put(PLSQLPrinter.OUTER_JOIN_SIGN, priority);;
+    // 2
+    ++priority;
+    priorityMap.put(PLSQLPrinter.UNARY_PLUS, priority);
+    priorityMap.put(PLSQLPrinter.UNARY_MINUS, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_PRIOR, priority);
+    priorityMap.put(PLSQLPrinter.PLSQL_NON_RESERVED_CONNECT_BY_ROOT, priority);
+    priorityMap.put(PLSQLPrinter.NEW_VK, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_DISTINCT, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_ALL, priority);
+    priorityMap.put(PLSQLPrinter.SIMPLE_CASE, priority);
+    priorityMap.put(PLSQLPrinter.SEARCHED_CASE, priority);
+    priorityMap.put(PLSQLPrinter.SOME_VK, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_EXISTS, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_ANY, priority);
+    priorityMap.put(PLSQLPrinter.PERCENT_NOTFOUND_VK, priority);
+    priorityMap.put(PLSQLPrinter.PERCENT_FOUND_VK, priority);
+    priorityMap.put(PLSQLPrinter.PERCENT_ISOPEN_VK, priority);
+    priorityMap.put(PLSQLPrinter.PERCENT_ROWCOUNT_VK, priority);
+    // 3
+    ++priority;
+    priorityMap.put(PLSQLPrinter.MODEL_EXPRESSION, priority);
+    // 4
+    ++priority;
+    priorityMap.put(PLSQLPrinter.DATETIME_OP, priority);
+    // 5
+    ++priority;
+    priorityMap.put(PLSQLPrinter.ASTERISK, priority);
+    priorityMap.put(PLSQLPrinter.SOLIDUS, priority);
+    priorityMap.put(PLSQLPrinter.PERCENT, priority);
+    priorityMap.put(PLSQLPrinter.MOD_VK, priority);
+    priorityMap.put(PLSQLPrinter.DIV_VK, priority);
+    // 6
+    ++priority;
+    priorityMap.put(PLSQLPrinter.PLUS_SIGN, priority);
+    priorityMap.put(PLSQLPrinter.MINUS_SIGN, priority);
+    // 7
+    ++priority;
+    priorityMap.put(PLSQLPrinter.CONCATENATION_OP, priority);
+    // 8
+    ++priority;
+    priorityMap.put(PLSQLPrinter.NOT_IN, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_IN, priority);
+    priorityMap.put(PLSQLPrinter.NOT_BETWEEN, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_BETWEEN, priority);
+    priorityMap.put(PLSQLPrinter.NOT_LIKE, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_LIKE, priority);
+    priorityMap.put(PLSQLPrinter.LIKEC_VK, priority);
+    priorityMap.put(PLSQLPrinter.LIKE2_VK, priority);
+    priorityMap.put(PLSQLPrinter.LIKE4_VK, priority);
+    // 9
+    ++priority;
+    priorityMap.put(PLSQLPrinter.EQUALS_OP, priority);
+    priorityMap.put(PLSQLPrinter.NOT_EQUAL_OP, priority);
+    priorityMap.put(PLSQLPrinter.LESS_THAN_OP, priority);
+    priorityMap.put(PLSQLPrinter.GREATER_THAN_OP, priority);
+    priorityMap.put(PLSQLPrinter.LESS_THAN_OR_EQUALS_OP, priority);
+    priorityMap.put(PLSQLPrinter.GREATER_THAN_OR_EQUALS_OP, priority);
+    // 10
+    ++priority;
+    priorityMap.put(PLSQLPrinter.MEMBER_VK, priority);
+    priorityMap.put(PLSQLPrinter.SUBMULTISET_VK, priority);
+    // 11
+    ++priority;
+    priorityMap.put(PLSQLPrinter.IS_NOT_NULL, priority);
+    priorityMap.put(PLSQLPrinter.IS_NULL, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_NAN, priority);
+    priorityMap.put(PLSQLPrinter.IS_NAN, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_PRESENT, priority);
+    priorityMap.put(PLSQLPrinter.IS_PRESENT, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_INFINITE, priority);
+    priorityMap.put(PLSQLPrinter.IS_INFINITE, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_A_SET, priority);
+    priorityMap.put(PLSQLPrinter.IS_A_SET, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_EMPTY, priority);
+    priorityMap.put(PLSQLPrinter.IS_EMPTY, priority);
+    priorityMap.put(PLSQLPrinter.IS_NOT_OF_TYPE, priority);
+    priorityMap.put(PLSQLPrinter.IS_OF_TYPE, priority);
+    // 12
+    ++priority;
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_NOT, priority);
+    // 13
+    ++priority;
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_AND, priority);
+    // 14
+    ++priority;
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_OR, priority);
+    priorityMap.put(PLSQLPrinter.SQL92_RESERVED_CURSOR, priority);
+  }
+  
+  static int getUnaryPriority(int nodeType) {
+    if (unaryPriorityMap.containsKey(nodeType)) {
+      return unaryPriorityMap.get(nodeType);
+    }
+    return -1;
+  }
+  
+  static int getPriority(int nodeType) {
+    if (priorityMap.containsKey(nodeType)) {
+      return priorityMap.get(nodeType);
+    }
+    return -1;
+  }
+  
+  static boolean canOmitParens(int parentPriority, int childPriority) {
+    return parentPriority != -1 && childPriority != -1 && parentPriority >= childPriority;
+  }
+  
+  static boolean canOmitParensNonAssoc(int parentPriority, int childPriority) {
+    return parentPriority != -1 && childPriority != -1 && parentPriority > childPriority;
   }
 
 }
@@ -1829,128 +1985,196 @@ expression
     |    ^(EXPR expression_element)  -> {$expression_element.st}
     ;
 
-expression_element
-@init { String op = null; }
+expression_element returns [int priority]
+@init {
+  String op = null;
+  boolean omit1 = false;
+  boolean omit2 = false;
+  boolean omit3 = false;
+  $priority = -1;
+}
     :    ^(
           (
-            SQL92_RESERVED_OR { op = "or"; }
-            | SQL92_RESERVED_AND { op = "and"; }
-            | EQUALS_OP { op = "="; }
-            | NOT_EQUAL_OP { op = "<>"; }
-            | LESS_THAN_OP { op = "<"; }
-            | GREATER_THAN_OP { op = ">"; }
-            | LESS_THAN_OR_EQUALS_OP { op = "<="; }
-            | GREATER_THAN_OR_EQUALS_OP { op = ">="; }
-            | CONCATENATION_OP { op = "||"; }
-            | PLUS_SIGN { op = "+"; }
-            | MINUS_SIGN { op = "-"; }
-            | ASTERISK { op = "*"; }
-            | SOLIDUS { op = "/"; }
-            | PERCENT { op = "\%"; }
-            | MOD_VK { op = "mod"; }
-            | DIV_VK { op = "div"; }
+            t=SQL92_RESERVED_OR { op = "or"; }
+            | t=SQL92_RESERVED_AND { op = "and"; }
+            | t=EQUALS_OP { op = "="; }
+            | t=NOT_EQUAL_OP { op = "<>"; }
+            | t=LESS_THAN_OP { op = "<"; }
+            | t=GREATER_THAN_OP { op = ">"; }
+            | t=LESS_THAN_OR_EQUALS_OP { op = "<="; }
+            | t=GREATER_THAN_OR_EQUALS_OP { op = ">="; }
+            | t=CONCATENATION_OP { op = "||"; }
+            | t=PLUS_SIGN { op = "+"; }
+            | t=MINUS_SIGN { op = "-"; }
+            | t=ASTERISK { op = "*"; }
+            | t=SOLIDUS { op = "/"; }
+            | t=PERCENT { op = "\%"; }
+            | t=MOD_VK { op = "mod"; }
+            | t=DIV_VK { op = "div"; }
           )
           arg1=expression_element arg2=expression_element
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $arg1.priority);
+            omit2 = canOmitParensNonAssoc($priority, $arg2.priority);
+          }
          )
-    ->   expression_element_generic_binop(op={op}, arg1={$arg1.st}, arg2={$arg2.st})
-    |    ^(SQL92_RESERVED_NOT expr=expression_element)
-    ->   expression_element_not(expr={$expr.st})
+    ->   expression_element_generic_binop(op={op}, arg1={$arg1.st}, arg2={$arg2.st}, omit_parens_1={omit1}, omit_parens_2={omit2})
+    |    ^(t=SQL92_RESERVED_NOT expr=expression_element)
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $expr.priority);
+          }
+    ->   expression_element_not(expr={$expr.st}, omit_parens={omit1})
     |    ^(
             (
-              IS_NOT_NULL { op = "is not null"; }
-              | IS_NULL { op = "is null"; }
-              | IS_NOT_NAN { op = "is not nan"; }
-              | IS_NAN { op = "is nan"; }
-              | IS_NOT_PRESENT { op = "is not present"; }
-              | IS_PRESENT { op = "is present"; }
-              | IS_NOT_INFINITE { op = "is not infinite"; }
-              | IS_INFINITE { op = "is infinite"; }
-              | IS_NOT_A_SET { op = "is not a set"; }
-              | IS_A_SET { op = "is a set"; }
-              | IS_NOT_EMPTY { op = "is not empty"; }
-              | IS_EMPTY { op = "is empty"; }
+              t=IS_NOT_NULL { op = "is not null"; }
+              | t=IS_NULL { op = "is null"; }
+              | t=IS_NOT_NAN { op = "is not nan"; }
+              | t=IS_NAN { op = "is nan"; }
+              | t=IS_NOT_PRESENT { op = "is not present"; }
+              | t=IS_PRESENT { op = "is present"; }
+              | t=IS_NOT_INFINITE { op = "is not infinite"; }
+              | t=IS_INFINITE { op = "is infinite"; }
+              | t=IS_NOT_A_SET { op = "is not a set"; }
+              | t=IS_A_SET { op = "is a set"; }
+              | t=IS_NOT_EMPTY { op = "is not empty"; }
+              | t=IS_EMPTY { op = "is empty"; }
             )
             arg=expression_element
           )
-    ->   expression_element_generic_suffix_unary_op(op={op}, arg={$arg.st})
-    |    ^(IS_NOT_OF_TYPE expression_element type_spec+)
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $arg.priority);
+          }
+    ->   expression_element_generic_suffix_unary_op(op={op}, arg={$arg.st}, omit_parens={omit1})
+    |    ^(t=IS_NOT_OF_TYPE expression_element type_spec+)
     ->   template() "not implemented: expression_element"
-    |    ^(IS_OF_TYPE expression_element type_spec+)
+    |    ^(t=IS_OF_TYPE expression_element type_spec+)
     ->   template() "not implemented: expression_element"
 
-    |    ^((MEMBER_VK|SUBMULTISET_VK) expression_element expression_element)
+    |    ^((t=MEMBER_VK|t=SUBMULTISET_VK) expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    ^(NOT_IN expr=expression_element in_elements)
+    |    ^(t=NOT_IN expr=expression_element in_elements)
     ->   expression_element_not_in(expr={$expr.st}, in_elements={$in_elements.st})
-    |    ^(SQL92_RESERVED_IN expr=expression_element in_elements)
+    |    ^(t=SQL92_RESERVED_IN expr=expression_element in_elements)
     ->   expression_element_in(expr={$expr.st}, in_elements={$in_elements.st})
-    |    ^(NOT_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
+    |    ^(t=NOT_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
     ->   expression_element_between(expr={$expr.st}, is_not={true}, expr_low={$expr_low.st}, expr_high={$expr_high.st})
-    |    ^(SQL92_RESERVED_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
+    |    ^(t=SQL92_RESERVED_BETWEEN expr=expression_element expr_low=expression_element expr_high=expression_element)
     ->   expression_element_between(expr={$expr.st}, is_not={false}, expr_low={$expr_low.st}, expr_high={$expr_high.st})
     |    ^(
             (
-              SQL92_RESERVED_LIKE { op = "like"; }
-              | LIKEC_VK { op = "likec"; }
-              | LIKE2_VK { op = "like2"; }
-              | LIKE4_VK { op = "like4"; }
-              | NOT_LIKE { op = "not like"; }
+              t=SQL92_RESERVED_LIKE { op = "like"; }
+              | t=LIKEC_VK { op = "likec"; }
+              | t=LIKE2_VK { op = "like2"; }
+              | t=LIKE4_VK { op = "like4"; }
+              | t=NOT_LIKE { op = "not like"; }
             )
             text=expression_element
             pattern=expression_element
             escape=expression_element?
           )
-    ->   expression_element_like(text={$text.st}, like_op={op}, pattern={$pattern.st}, escape_char={$escape.st})
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $text.priority);
+            omit2 = canOmitParens($priority, $pattern.priority);
+            omit3 = canOmitParens($priority, $escape.priority);
+          }
+    ->   expression_element_like(
+          text={$text.st}, like_op={op}, pattern={$pattern.st}, escape_char={$escape.st},
+          omit_parens_text={omit1}, omit_parens_pattern={omit2}, omit_parens_escape={omit3})
     
-    |    ^(PIPE_VK expression_element expression_element)
+    |    ^(t=PIPE_VK expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    ^(UNARY_PLUS arg=expression_element)
-    ->   expression_element_generic_prefix_unary_op(op={"+"}, is_spaced={false}, arg={$arg.st})
-    |    ^(UNARY_MINUS arg=expression_element)
-    ->   expression_element_generic_prefix_unary_op(op={"-"}, is_spaced={false}, arg={$arg.st})
-    |    ^(SQL92_RESERVED_PRIOR arg=expression_element)
+    |    ^(t=UNARY_PLUS arg=expression_element)
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $arg.priority);
+          }
+    ->   expression_element_generic_prefix_unary_op(op={"+"}, is_spaced={false}, arg={$arg.st}, omit_parens={omit1})
+    |    ^(t=UNARY_MINUS arg=expression_element)
+          {
+            $priority = getPriority($t.type);
+            omit1 = canOmitParens($priority, $arg.priority);
+          }
+    ->   expression_element_generic_prefix_unary_op(op={"-"}, is_spaced={false}, arg={$arg.st}, omit_parens={omit1})
+    |    ^(t=SQL92_RESERVED_PRIOR arg=expression_element)
     ->   expression_element_prior(expr={$arg.st})
-    |    ^(NEW_VK expression)
+    |    ^(t=NEW_VK expression)
     ->   template() "not implemented: expression_element"
-    |    ^(SQL92_RESERVED_DISTINCT expression_element)
+    |    ^(t=SQL92_RESERVED_DISTINCT expression_element)
     ->   template() "not implemented: expression_element"
-    |    ^(STANDARD_FUNCTION standard_function) -> { $standard_function.st }
-    |    ^((SOME_VK|SQL92_RESERVED_EXISTS|SQL92_RESERVED_ALL|SQL92_RESERVED_ANY) (s_or_e=subquery|s_or_e=expression))
+    |    ^(t=STANDARD_FUNCTION standard_function)
+          {
+            $priority = getPriority($t.type);
+          }
+    ->   { $standard_function.st }
+    |    ^((t=SOME_VK|t=SQL92_RESERVED_EXISTS|t=SQL92_RESERVED_ALL|t=SQL92_RESERVED_ANY) (s_or_e=subquery|s_or_e=expression))
+          {
+            $priority = getPriority($t.type);
+          }
     ->   expression_element_quantified_expr(
-          subquery_or_expression={$s_or_e.st}, is_some={$SOME_VK != null}, is_any={$SQL92_RESERVED_ANY != null},
-          is_all={$SQL92_RESERVED_ALL != null}, is_exists={$SQL92_RESERVED_EXISTS != null})
-    |    ^(VECTOR_EXPR expression_element+)
+          subquery_or_expression={$s_or_e.st}, is_some={$t.type == SOME_VK}, is_any={$t.type == SQL92_RESERVED_ANY},
+          is_all={$t.type == SQL92_RESERVED_ALL}, is_exists={$t.type == SQL92_RESERVED_EXISTS})
+    |    ^(t=VECTOR_EXPR expression_element+)
     ->   template() "not implemented: expression_element"
 
-    |    ^(DATETIME_OP expression_element datetime_element)
+    |    ^(t=DATETIME_OP expression_element datetime_element)
     ->   template() "not implemented: expression_element"
     |    model_expression
     ->   template() "not implemented: expression_element"
-    |    ^(KEEP_VK expression_element DENSE_RANK_VK (FIRST_VK|LAST_VK) order_by_clause over_clause?)
+    |    ^(t=KEEP_VK expression_element DENSE_RANK_VK (FIRST_VK|LAST_VK) order_by_clause over_clause?)
     ->   template() "not implemented: expression_element"
 
-    |    ^(DOT_ASTERISK tableview_name)
+    |    ^(t=DOT_ASTERISK tableview_name)
     ->   expression_element_dot_star(tableview_name={$tableview_name.st})
     |    ^(
             (
-              PERCENT_FOUND_VK { op = "\%FOUND"; }
-              |PERCENT_NOTFOUND_VK { op = "\%NOTFOUND"; }
-              |PERCENT_ROWCOUNT_VK { op = "\%ROWCOUNT"; }
-              |PERCENT_ISOPEN_VK { op = "\%ISOPEN"; }
+              t=PERCENT_FOUND_VK { op = "\%FOUND"; }
+              |t=PERCENT_NOTFOUND_VK { op = "\%NOTFOUND"; }
+              |t=PERCENT_ROWCOUNT_VK { op = "\%ROWCOUNT"; }
+              |t=PERCENT_ISOPEN_VK { op = "\%ISOPEN"; }
             )
             cursor_name
           )
+          {
+            $priority = getPriority($t.type);
+          }
     ->   expression_element_cursor_op(op={op}, cursor_name={$cursor_name.st})
-    |    ^(OUTER_JOIN_SIGN expr=expression_element)
+    |    ^(t=OUTER_JOIN_SIGN expr=expression_element)
+          {
+            $priority = getPriority($t.type);
+          }
     ->   expression_element_outer_join_sign(expr={$expr.st})
 
-    |    case_statement -> { $case_statement.st }
-    |    constant -> { $constant.st }
-    |    general_element -> { $general_element.st }
-    |    hosted_variable_name -> { $hosted_variable_name.st }
-    |    subquery -> in_parens(val={$subquery.st})
+    |    case_statement
+          {
+            $priority = getPriority(SEARCHED_CASE);
+          }
+          -> { $case_statement.st }
+    |    constant
+          {
+            $priority = getPriority(UNSIGNED_INTEGER);
+          }
+          -> { $constant.st }
+    |    general_element
+          {
+            $priority = getPriority(CASCATED_ELEMENT);
+          }
+          -> { $general_element.st }
+    |    hosted_variable_name
+          {
+            $priority = getPriority(HOSTED_VARIABLE_NAME);
+          }
+          -> { $hosted_variable_name.st }
+    |    subquery
+          {
+            $priority = getPriority(UNSIGNED_INTEGER); // a hack since subquery is already in parens
+          }
+          -> in_parens(val={$subquery.st})
     ;
 
 in_elements

@@ -275,16 +275,11 @@ public class Main {
 				
 				boolean is_tree_walked;
 				try {
-					DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(parseResult.tree));
-					try (InputStream templateInputStream = Main.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
-						StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
-						printer.setTemplateLib(templateGroup);
-					}
-					StringTemplate st = printer.sql_script().st;
-					if (printer.errors.size() > 0) {
+					PrintResult printResult = AstPrinter.printTreeToOracleString(parseResult.tree, "sql_script");
+					if (printResult.printErrors.size() > 0) {
 						is_tree_walked = false;
 					} else {
-						printedTree = st.toString();
+						printedTree = printResult.text;
 						is_tree_walked = true;
 					}
 				} catch (Exception ex) {

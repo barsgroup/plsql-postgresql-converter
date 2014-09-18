@@ -71,11 +71,8 @@ public class AstPrinter {
 	public static PrintResult printTreeToOracleString(org.antlr.runtime.tree.Tree theTree, String treeType)
 			throws IOException, RecognitionException {
 		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
-		
-		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
-			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
-			printer.setTemplateLib(templateGroup);
-		}
+	
+		printer.setTemplateLib(oracleStg);
 		StringTemplate printedTemplate = (StringTemplate)ReflectionUtil.getField(ReflectionUtil.callMethod(printer, treeType), "st");
 		String printed = printedTemplate.toString();
 		PrintResult result = new PrintResult();
@@ -97,15 +94,34 @@ public class AstPrinter {
 		}
 		DerivedSqlPrinter printer = new DerivedSqlPrinter(new CommonTreeNodeStream(theTree));
 		
-		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLPGSQLPrinterTemplates.stg")) {
-			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
-			printer.setTemplateLib(templateGroup);
-		}
+		printer.setTemplateLib(postgresqlStg);
 		StringTemplate printedTemplate = (StringTemplate)ReflectionUtil.getField(ReflectionUtil.callMethod(printer, treeType), "st");
 		String printed = printedTemplate.toString();
 		PrintResult result = new PrintResult();
 		result.printErrors = printer.errors;
 		result.text = printed;
 		return result;
+	}
+	
+	public static StringTemplateGroup oracleStg = getOracleSTG();
+	public static StringTemplateGroup postgresqlStg = getPostgresqlSTG();
+	
+	public static StringTemplateGroup getOracleSTG() {
+		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLSQLPrinterTemplates.stg")) {
+			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
+			return templateGroup;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static StringTemplateGroup getPostgresqlSTG() {
+		try (InputStream templateInputStream = AstPrinter.class.getClassLoader().getResourceAsStream("ru/barsopen/plsqlconverter/ast/transforms/PLPGSQLPrinterTemplates.stg")) {
+			StringTemplateGroup templateGroup = new StringTemplateGroup(new InputStreamReader(templateInputStream, Charset.forName("UTF-8")), AngleBracketTemplateLexer.class);
+			templateGroup.setSuperGroup(getOracleSTG());
+			return templateGroup;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

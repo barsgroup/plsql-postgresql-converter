@@ -108,18 +108,24 @@ function_arguments(arguments) ::= <<
 (<arguments; separator=", ">)
 >>
 
-expression_element_generic_binop(op, arg1, arg2) ::= "(<arg1>) <op> (<arg2>)"
-expression_element_generic_suffix_unary_op(op, arg) ::= "(<arg>) <op>"
-expression_element_generic_prefix_unary_op(op, is_spaced, arg) ::= "<op><if (is_spaced)> <endif>(<arg>)"
+maybe_parens(expr, omit) ::= <<
+<if (omit)><expr><else>(<expr>)<endif>
+>>
+
+expression_element_generic_binop(op, arg1, arg2, omit_parens_1, omit_parens_2) ::= <<
+<maybe_parens(expr=arg1, omit=omit_parens_1)> <op> <maybe_parens(expr=arg2, omit=omit_parens_2)>
+>>
+expression_element_generic_suffix_unary_op(op, arg, omit_parens) ::= "<maybe_parens(expr=arg, omit=omit_parens)> <op>"
+expression_element_generic_prefix_unary_op(op, is_spaced, arg, omit_parens) ::= "<op><if (is_spaced)> <endif><maybe_parens(expr=arg, omit=omit_parens)>"
 expression_element_cursor_op(cursor_name, op) ::= "<cursor_name><op>"
 expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
 expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
 expression_element_prior(expr) ::= "prior <expr>"
 expression_element_dot_star(tableview_name) ::= "<tableview_name>.*"
-expression_element_like(text, like_op, pattern, escape_char) ::= <<
-(<text>) <like_op> (<pattern>)<if (escape_char)> escape (<escape_char>)<endif>
+expression_element_like(text, like_op, pattern, escape_char, omit_parens_text, omit_parens_pattern, omit_parens_escape) ::= <<
+<maybe_parens(expr=text, omit=omit_parens_text)> <like_op> <maybe_parens(expr=pattern, omit=omit_parens_pattern)><if (escape_char)> escape <maybe_parens(expr=escape_char, omit=omit_parens_escape)><endif>
 >>
-expression_element_not(expr) ::= "not(<expr>)"
+expression_element_not(expr, omit_parens) ::= "not<if (omit_parens)> <expr><else>(<expr>)<endif>"
 expression_element_outer_join_sign(expr) ::= "<expr>(+)"
 expression_element_quantified_expr(subquery_or_expression, is_some, is_any, is_all, is_exists) ::= <<
 <if (is_some)>some<elseif (is_any)>any<elseif (is_all)>all<elseif (is_exists)>exists<endif>(<subquery_or_expression>)
