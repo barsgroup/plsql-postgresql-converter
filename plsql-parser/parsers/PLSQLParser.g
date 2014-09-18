@@ -122,6 +122,7 @@ tokens {
     ALTER_SEQUENCE;
     CREATE_SEQUENCE;
     PIPE_ROW;
+    OPEN_FOR;
 }
 
 @header {
@@ -1350,14 +1351,12 @@ fetch_statement
     ;
 
 open_for_statement
-@init    {    int mode = 0;    }
     :    open_key variable_name for_key
-    (    (select_key|with_key)=> select_statement {mode = 1;}
+    (    (select_key|with_key)=> select_statement
     |    expression_wrapper
     )
         using_clause?
-        ->{mode == 1}? ^(open_key variable_name select_statement using_clause?)
-        -> ^(open_key variable_name expression_wrapper using_clause?)
+        ->  ^(OPEN_FOR[$open_key.start] variable_name select_statement? expression_wrapper? using_clause?)
     ;
 
 // $>
