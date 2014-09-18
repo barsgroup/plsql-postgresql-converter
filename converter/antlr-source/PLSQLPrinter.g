@@ -63,6 +63,10 @@ tokens {
 
     displayRecognitionError(correctTokenNames, e);
   }
+  
+  static boolean canSkipParensInExpression(int parentType, int childType) {
+    return false;
+  }
 
 }
 
