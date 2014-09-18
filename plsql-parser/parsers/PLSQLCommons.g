@@ -526,7 +526,7 @@ less_than_or_equals_op
 
 concatenation_op
     :    CONCATENATION_OP
-    |    VERTICAL_BAR VERTICAL_BAR
+    |    b1=VERTICAL_BAR VERTICAL_BAR -> CONCATENATION_OP[$b1, "||"]
     ;
 
 outer_join_sign
