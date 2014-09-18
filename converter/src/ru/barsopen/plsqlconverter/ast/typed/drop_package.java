@@ -35,6 +35,15 @@ public class drop_package implements unit_statement, _baseNode {
       visitor.visit(this.BODY_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.package_name == child) {
+      this.set_package_name((ru.barsopen.plsqlconverter.ast.typed.package_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_PACKAGE);
     _token.setLine(_line);

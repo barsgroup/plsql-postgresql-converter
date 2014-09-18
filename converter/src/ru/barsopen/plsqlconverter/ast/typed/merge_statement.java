@@ -80,6 +80,35 @@ public class merge_statement implements data_manipulation_language_statements, _
       this.error_logging_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.alias == child) {
+      this.set_alias((ru.barsopen.plsqlconverter.ast.typed.alias)replacement);
+      return;
+    }
+    if (this.tableview_name == child) {
+      this.set_tableview_name((ru.barsopen.plsqlconverter.ast.typed.tableview_name)replacement);
+      return;
+    }
+    if (this.merge_using_clause == child) {
+      this.set_merge_using_clause((ru.barsopen.plsqlconverter.ast.typed.merge_using_clause)replacement);
+      return;
+    }
+    if (this.merge_update_clause == child) {
+      this.set_merge_update_clause((ru.barsopen.plsqlconverter.ast.typed.merge_update_clause)replacement);
+      return;
+    }
+    if (this.merge_insert_clause == child) {
+      this.set_merge_insert_clause((ru.barsopen.plsqlconverter.ast.typed.merge_insert_clause)replacement);
+      return;
+    }
+    if (this.error_logging_clause == child) {
+      this.set_error_logging_clause((ru.barsopen.plsqlconverter.ast.typed.error_logging_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_VK);
     _token.setLine(_line);

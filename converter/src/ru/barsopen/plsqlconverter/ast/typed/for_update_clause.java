@@ -38,6 +38,19 @@ public class for_update_clause implements _baseNode {
       this.for_update_options._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.for_update_of_part == child) {
+      this.set_for_update_of_part((ru.barsopen.plsqlconverter.ast.typed.for_update_of_part)replacement);
+      return;
+    }
+    if (this.for_update_options == child) {
+      this.set_for_update_options((ru.barsopen.plsqlconverter.ast.typed.for_update_options)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FOR);
     _token.setLine(_line);

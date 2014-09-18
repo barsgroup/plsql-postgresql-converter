@@ -64,6 +64,26 @@ public class pivot_clause implements _baseNode {
       this.pivot_in_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.pivot_elements.size(); ++_i) {
+      if (this.pivot_elements.get(_i) == child) {
+        this.remove_pivot_elements(_i);
+        this.insert_pivot_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.pivot_element)replacement);
+        return;
+      }
+    }
+    if (this.pivot_for_clause == child) {
+      this.set_pivot_for_clause((ru.barsopen.plsqlconverter.ast.typed.pivot_for_clause)replacement);
+      return;
+    }
+    if (this.pivot_in_clause == child) {
+      this.set_pivot_in_clause((ru.barsopen.plsqlconverter.ast.typed.pivot_in_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PIVOT_VK);
     _token.setLine(_line);

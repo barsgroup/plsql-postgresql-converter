@@ -33,6 +33,11 @@ public class map_order_func_declaration implements type_body_elements, _baseNode
       visitor.visit(_value);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML);
     _token.setLine(_line);

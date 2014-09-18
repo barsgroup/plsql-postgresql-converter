@@ -59,6 +59,27 @@ public class execute_immediate implements sql_statement, _baseNode {
       this.dynamic_returning_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.into_clause == child) {
+      this.set_into_clause((ru.barsopen.plsqlconverter.ast.typed.into_clause)replacement);
+      return;
+    }
+    if (this.using_clause == child) {
+      this.set_using_clause((ru.barsopen.plsqlconverter.ast.typed.using_clause)replacement);
+      return;
+    }
+    if (this.dynamic_returning_clause == child) {
+      this.set_dynamic_returning_clause((ru.barsopen.plsqlconverter.ast.typed.dynamic_returning_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXECUTE_VK);
     _token.setLine(_line);

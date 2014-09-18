@@ -56,6 +56,26 @@ public class lock_table_statement implements data_manipulation_language_statemen
       this.wait_nowait_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.lock_table_elements.size(); ++_i) {
+      if (this.lock_table_elements.get(_i) == child) {
+        this.remove_lock_table_elements(_i);
+        this.insert_lock_table_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.lock_table_element)replacement);
+        return;
+      }
+    }
+    if (this.lock_mode == child) {
+      this.set_lock_mode((ru.barsopen.plsqlconverter.ast.typed.lock_mode)replacement);
+      return;
+    }
+    if (this.wait_nowait_part == child) {
+      this.set_wait_nowait_part((ru.barsopen.plsqlconverter.ast.typed.wait_nowait_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_LOCK);
     _token.setLine(_line);

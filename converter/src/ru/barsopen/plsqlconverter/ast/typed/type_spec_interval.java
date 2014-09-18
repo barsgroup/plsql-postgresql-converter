@@ -36,6 +36,19 @@ public class type_spec_interval implements type_spec, _baseNode {
       this.interval_type_spec_second._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.interval_type_spec_first == child) {
+      this.set_interval_type_spec_first((ru.barsopen.plsqlconverter.ast.typed.interval_type_spec_first)replacement);
+      return;
+    }
+    if (this.interval_type_spec_second == child) {
+      this.set_interval_type_spec_second((ru.barsopen.plsqlconverter.ast.typed.interval_type_spec_second)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.INTERVAL_DATATYPE);
     _token.setLine(_line);

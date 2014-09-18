@@ -37,6 +37,19 @@ public class select_mode implements table_expression_element, _baseNode {
       this.subquery_restriction_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.select_statement == child) {
+      this.set_select_statement((ru.barsopen.plsqlconverter.ast.typed.select_statement)replacement);
+      return;
+    }
+    if (this.subquery_restriction_clause == child) {
+      this.set_subquery_restriction_clause((ru.barsopen.plsqlconverter.ast.typed.subquery_restriction_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_MODE);
     _token.setLine(_line);

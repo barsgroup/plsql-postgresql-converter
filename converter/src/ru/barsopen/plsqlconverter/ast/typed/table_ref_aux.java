@@ -87,6 +87,34 @@ public class table_ref_aux implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.alias == child) {
+      this.set_alias((ru.barsopen.plsqlconverter.ast.typed.alias)replacement);
+      return;
+    }
+    if (this.dml_table_expression_clause == child) {
+      this.set_dml_table_expression_clause((ru.barsopen.plsqlconverter.ast.typed.dml_table_expression_clause)replacement);
+      return;
+    }
+    if (this.pivot_clause == child) {
+      this.set_pivot_clause((ru.barsopen.plsqlconverter.ast.typed.pivot_clause)replacement);
+      return;
+    }
+    if (this.unpivot_clause == child) {
+      this.set_unpivot_clause((ru.barsopen.plsqlconverter.ast.typed.unpivot_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.flashback_query_clauses.size(); ++_i) {
+      if (this.flashback_query_clauses.get(_i) == child) {
+        this.remove_flashback_query_clauses(_i);
+        this.insert_flashback_query_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.flashback_query_clause)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF_ELEMENT);
     _token.setLine(_line);

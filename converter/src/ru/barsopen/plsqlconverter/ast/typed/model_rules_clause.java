@@ -46,6 +46,22 @@ public class model_rules_clause implements _baseNode {
       this.model_rules_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.model_rules_elements.size(); ++_i) {
+      if (this.model_rules_elements.get(_i) == child) {
+        this.remove_model_rules_elements(_i);
+        this.insert_model_rules_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.model_rules_element)replacement);
+        return;
+      }
+    }
+    if (this.model_rules_part == child) {
+      this.set_model_rules_part((ru.barsopen.plsqlconverter.ast.typed.model_rules_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_RULES);
     _token.setLine(_line);

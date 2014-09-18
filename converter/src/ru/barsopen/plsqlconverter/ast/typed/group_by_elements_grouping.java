@@ -35,6 +35,18 @@ public class group_by_elements_grouping implements group_by_elements, _baseNode 
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.groupin_sets.size(); ++_i) {
+      if (this.groupin_sets.get(_i) == child) {
+        this.remove_groupin_sets(_i);
+        this.insert_groupin_sets(_i, (ru.barsopen.plsqlconverter.ast.typed.groupin_set)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.GROUPING_VK);
     _token.setLine(_line);

@@ -74,6 +74,19 @@ public class standard_function_count implements standard_function, _baseNode {
       this.over_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.over_clause == child) {
+      this.set_over_clause((ru.barsopen.plsqlconverter.ast.typed.over_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COUNT_VK);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class relies_on_part implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.tableview_names.size(); ++_i) {
+      if (this.tableview_names.get(_i) == child) {
+        this.remove_tableview_names(_i);
+        this.insert_tableview_names(_i, (ru.barsopen.plsqlconverter.ast.typed.tableview_name)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RELIES_ON_VK);
     _token.setLine(_line);

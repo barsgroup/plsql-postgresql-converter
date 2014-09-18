@@ -34,6 +34,11 @@ public class hosted_variable_name implements assignment_target, expression_eleme
       visitor.visit(this.UNSIGNED_INTEGER);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.HOSTED_VARIABLE_NAME);
     _token.setLine(_line);

@@ -63,6 +63,22 @@ public class alter_function implements unit_statement, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.function_name == child) {
+      this.set_function_name((ru.barsopen.plsqlconverter.ast.typed.function_name)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.compiler_parameters_clauses.size(); ++_i) {
+      if (this.compiler_parameters_clauses.get(_i) == child) {
+        this.remove_compiler_parameters_clauses(_i);
+        this.insert_compiler_parameters_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.compiler_parameters_clause)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_FUNCTION);
     _token.setLine(_line);

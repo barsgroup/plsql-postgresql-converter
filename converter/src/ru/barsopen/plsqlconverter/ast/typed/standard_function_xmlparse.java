@@ -45,6 +45,19 @@ public class standard_function_xmlparse implements standard_function, _baseNode 
       visitor.visit(this.WELLFORMED_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.xmlparse_document_or_content == child) {
+      this.set_xmlparse_document_or_content((ru.barsopen.plsqlconverter.ast.typed.xmlparse_document_or_content)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLPARSE_VK);
     _token.setLine(_line);

@@ -45,6 +45,19 @@ public class indexed_for implements cursor_loop_param, _baseNode {
       this.indexed_for_bounds._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.index_name == child) {
+      this.set_index_name((ru.barsopen.plsqlconverter.ast.typed.index_name)replacement);
+      return;
+    }
+    if (this.indexed_for_bounds == child) {
+      this.set_indexed_for_bounds((ru.barsopen.plsqlconverter.ast.typed.indexed_for_bounds)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.INDEXED_FOR);
     _token.setLine(_line);

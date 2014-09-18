@@ -56,6 +56,26 @@ public class case_statement_simple implements case_statement, _baseNode {
       this.case_else_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.case_when_parts.size(); ++_i) {
+      if (this.case_when_parts.get(_i) == child) {
+        this.remove_case_when_parts(_i);
+        this.insert_case_when_parts(_i, (ru.barsopen.plsqlconverter.ast.typed.case_when_part)replacement);
+        return;
+      }
+    }
+    if (this.case_else_part == child) {
+      this.set_case_else_part((ru.barsopen.plsqlconverter.ast.typed.case_else_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_CASE);
     _token.setLine(_line);

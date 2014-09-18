@@ -36,6 +36,19 @@ public class cursor_based_for implements cursor_loop_param, _baseNode {
       this.general_element._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.record_name == child) {
+      this.set_record_name((ru.barsopen.plsqlconverter.ast.typed.record_name)replacement);
+      return;
+    }
+    if (this.general_element == child) {
+      this.set_general_element((ru.barsopen.plsqlconverter.ast.typed.general_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CURSOR_BASED_FOR);
     _token.setLine(_line);

@@ -26,6 +26,15 @@ public class commit_comment implements commit_statement_additional, _baseNode {
       this.comment_expr._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.comment_expr == child) {
+      this.set_comment_expr((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT_VK);
     _token.setLine(_line);

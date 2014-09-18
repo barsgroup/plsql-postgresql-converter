@@ -54,6 +54,19 @@ public class create_type_body implements create_type, _baseNode {
       this.create_type_body_elements._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.type_name == child) {
+      this.set_type_name((ru.barsopen.plsqlconverter.ast.typed.type_name)replacement);
+      return;
+    }
+    if (this.create_type_body_elements == child) {
+      this.set_create_type_body_elements((ru.barsopen.plsqlconverter.ast.typed.create_type_body_elements)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_TYPE_BODY);
     _token.setLine(_line);

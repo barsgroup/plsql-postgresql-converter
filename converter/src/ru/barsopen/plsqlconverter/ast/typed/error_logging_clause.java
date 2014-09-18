@@ -49,6 +49,23 @@ public class error_logging_clause implements _baseNode {
       this.error_logging_reject_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.error_logging_into_part == child) {
+      this.set_error_logging_into_part((ru.barsopen.plsqlconverter.ast.typed.error_logging_into_part)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.error_logging_reject_part == child) {
+      this.set_error_logging_reject_part((ru.barsopen.plsqlconverter.ast.typed.error_logging_reject_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LOG_VK);
     _token.setLine(_line);

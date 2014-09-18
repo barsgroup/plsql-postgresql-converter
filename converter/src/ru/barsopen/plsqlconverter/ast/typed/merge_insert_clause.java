@@ -47,6 +47,23 @@ public class merge_insert_clause implements _baseNode {
       this.where_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.insert_into_clause_columns == child) {
+      this.set_insert_into_clause_columns((ru.barsopen.plsqlconverter.ast.typed.insert_into_clause_columns)replacement);
+      return;
+    }
+    if (this.expression_list == child) {
+      this.set_expression_list((ru.barsopen.plsqlconverter.ast.typed.expression_list)replacement);
+      return;
+    }
+    if (this.where_clause == child) {
+      this.set_where_clause((ru.barsopen.plsqlconverter.ast.typed.where_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_INSERT);
     _token.setLine(_line);

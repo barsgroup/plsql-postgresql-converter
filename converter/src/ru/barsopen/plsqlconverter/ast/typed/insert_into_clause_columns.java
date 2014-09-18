@@ -35,6 +35,18 @@ public class insert_into_clause_columns implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.column_names.size(); ++_i) {
+      if (this.column_names.get(_i) == child) {
+        this.remove_column_names(_i);
+        this.insert_column_names(_i, (ru.barsopen.plsqlconverter.ast.typed.column_name)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COLUMNS);
     _token.setLine(_line);

@@ -122,6 +122,31 @@ public class join_clause implements _baseNode {
       this.join_using_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.qpc1 == child) {
+      this.set_qpc1((ru.barsopen.plsqlconverter.ast.typed.query_partition_clause)replacement);
+      return;
+    }
+    if (this.table_ref_aux == child) {
+      this.set_table_ref_aux((ru.barsopen.plsqlconverter.ast.typed.table_ref_aux)replacement);
+      return;
+    }
+    if (this.qpc2 == child) {
+      this.set_qpc2((ru.barsopen.plsqlconverter.ast.typed.query_partition_clause)replacement);
+      return;
+    }
+    if (this.join_on_part == child) {
+      this.set_join_on_part((ru.barsopen.plsqlconverter.ast.typed.join_on_part)replacement);
+      return;
+    }
+    if (this.join_using_part == child) {
+      this.set_join_using_part((ru.barsopen.plsqlconverter.ast.typed.join_using_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.JOIN_DEF);
     _token.setLine(_line);

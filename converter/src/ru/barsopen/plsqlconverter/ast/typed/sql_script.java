@@ -35,6 +35,18 @@ public class sql_script implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.sql_script_items.size(); ++_i) {
+      if (this.sql_script_items.get(_i) == child) {
+        this.remove_sql_script_items(_i);
+        this.insert_sql_script_items(_i, (ru.barsopen.plsqlconverter.ast.typed.sql_script_item)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL_SCRIPT);
     _token.setLine(_line);

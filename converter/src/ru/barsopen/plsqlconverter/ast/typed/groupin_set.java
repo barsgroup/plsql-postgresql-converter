@@ -26,6 +26,15 @@ public class groupin_set implements _baseNode {
       this.grouping_element._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.grouping_element == child) {
+      this.set_grouping_element((ru.barsopen.plsqlconverter.ast.typed.grouping_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.GROUPIN_SET);
     _token.setLine(_line);

@@ -12,6 +12,12 @@ public class into_clause_normal implements into_clause, _baseNode {
   public int _getCol() { return _col; }
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
+  public org.antlr.runtime.tree.Tree PGSQL_STRICT = null;
+  public org.antlr.runtime.tree.Tree get_PGSQL_STRICT() { return this.PGSQL_STRICT; }
+  public void set_PGSQL_STRICT(org.antlr.runtime.tree.Tree value) {
+    this.PGSQL_STRICT = value;
+  }
+  public boolean is_PGSQL_STRICT() { return this.PGSQL_STRICT != null; }
   public java.util.List<general_element> general_elements = new java.util.ArrayList<general_element>();
   public java.util.List<general_element> get_general_elements() { return this.general_elements; }
   public void add_general_elements(general_element value) {
@@ -31,10 +37,25 @@ public class into_clause_normal implements into_clause, _baseNode {
 
   public void _walk(_visitor visitor) {
     visitor.visit(this);
+    if (this.PGSQL_STRICT != null) {
+      visitor.visit(this.PGSQL_STRICT);
+    }
     for (general_element _value: this.general_elements) {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.general_elements.size(); ++_i) {
+      if (this.general_elements.get(_i) == child) {
+        this.remove_general_elements(_i);
+        this.insert_general_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.general_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INTO);
     _token.setLine(_line);
@@ -43,6 +64,11 @@ public class into_clause_normal implements into_clause, _baseNode {
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
+    if (PGSQL_STRICT != null) {
+      _result.addChild(PGSQL_STRICT);
+    }
+
+
     if (general_elements.size() == 0) { throw new RuntimeException(); }
     for (int i = 0; i < general_elements.size(); ++i) {
       _result.addChild(general_elements.get(i).unparse());

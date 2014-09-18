@@ -16,6 +16,11 @@ public class set_transaction_command implements transaction_control_statements, 
   public void _walk(_visitor visitor) {
     visitor.visit(this);
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SET_TRANSACTION);
     _token.setLine(_line);

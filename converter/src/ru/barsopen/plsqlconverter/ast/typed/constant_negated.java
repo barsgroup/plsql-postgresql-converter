@@ -26,6 +26,15 @@ public class constant_negated implements constant, _baseNode {
       this.constant_unsigned._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.constant_unsigned == child) {
+      this.set_constant_unsigned((ru.barsopen.plsqlconverter.ast.typed.constant_unsigned)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CONSTANT_NEGATED);
     _token.setLine(_line);

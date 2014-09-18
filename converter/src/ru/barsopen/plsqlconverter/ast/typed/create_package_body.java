@@ -76,6 +76,30 @@ public class create_package_body implements create_package, _baseNode {
       this.exception_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.package_name == child) {
+      this.set_package_name((ru.barsopen.plsqlconverter.ast.typed.package_name)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.package_obj_bodys.size(); ++_i) {
+      if (this.package_obj_bodys.get(_i) == child) {
+        this.remove_package_obj_bodys(_i);
+        this.insert_package_obj_bodys(_i, (ru.barsopen.plsqlconverter.ast.typed.package_obj_body)replacement);
+        return;
+      }
+    }
+    if (this.seq_of_statements == child) {
+      this.set_seq_of_statements((ru.barsopen.plsqlconverter.ast.typed.seq_of_statements)replacement);
+      return;
+    }
+    if (this.exception_clause == child) {
+      this.set_exception_clause((ru.barsopen.plsqlconverter.ast.typed.exception_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PACKAGE_BODY);
     _token.setLine(_line);

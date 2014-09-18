@@ -27,6 +27,15 @@ public class parallel_enable_clause implements _baseNode {
       this.partition_by_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.partition_by_clause == child) {
+      this.set_partition_by_clause((ru.barsopen.plsqlconverter.ast.typed.partition_by_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PARALLEL_ENABLE_VK);
     _token.setLine(_line);

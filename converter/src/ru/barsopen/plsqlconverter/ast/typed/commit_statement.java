@@ -47,6 +47,19 @@ public class commit_statement implements transaction_control_statements, _baseNo
       this.write_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.commit_statement_additional == child) {
+      this.set_commit_statement_additional((ru.barsopen.plsqlconverter.ast.typed.commit_statement_additional)replacement);
+      return;
+    }
+    if (this.write_clause == child) {
+      this.set_write_clause((ru.barsopen.plsqlconverter.ast.typed.write_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMIT_VK);
     _token.setLine(_line);

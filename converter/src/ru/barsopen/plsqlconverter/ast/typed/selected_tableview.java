@@ -37,6 +37,19 @@ public class selected_tableview implements _baseNode {
       this.selected_tableview_src._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.alias == child) {
+      this.set_alias((ru.barsopen.plsqlconverter.ast.typed.alias)replacement);
+      return;
+    }
+    if (this.selected_tableview_src == child) {
+      this.set_selected_tableview_src((ru.barsopen.plsqlconverter.ast.typed.selected_tableview_src)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECTED_TABLEVIEW);
     _token.setLine(_line);

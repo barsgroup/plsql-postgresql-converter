@@ -26,6 +26,15 @@ public class outer_join_sign_table_expr implements table_collection_expression, 
       this.expression_or_subquery._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression_or_subquery == child) {
+      this.set_expression_or_subquery((ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OUTER_JOIN_SIGN);
     _token.setLine(_line);

@@ -59,6 +59,27 @@ public class select_statement implements data_manipulation_language_statements, 
       this.for_update_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.subquery_factoring_clause == child) {
+      this.set_subquery_factoring_clause((ru.barsopen.plsqlconverter.ast.typed.subquery_factoring_clause)replacement);
+      return;
+    }
+    if (this.subquery == child) {
+      this.set_subquery((ru.barsopen.plsqlconverter.ast.typed.subquery)replacement);
+      return;
+    }
+    if (this.order_by_clause == child) {
+      this.set_order_by_clause((ru.barsopen.plsqlconverter.ast.typed.order_by_clause)replacement);
+      return;
+    }
+    if (this.for_update_clause == child) {
+      this.set_for_update_clause((ru.barsopen.plsqlconverter.ast.typed.for_update_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_STATEMENT);
     _token.setLine(_line);

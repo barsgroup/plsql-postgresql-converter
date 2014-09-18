@@ -26,6 +26,15 @@ public class drop_trigger implements unit_statement, _baseNode {
       this.trigger_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.trigger_name == child) {
+      this.set_trigger_name((ru.barsopen.plsqlconverter.ast.typed.trigger_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_TRIGGER);
     _token.setLine(_line);

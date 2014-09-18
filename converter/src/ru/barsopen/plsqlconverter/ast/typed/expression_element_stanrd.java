@@ -26,6 +26,15 @@ public class expression_element_stanrd implements expression_element, _baseNode 
       this.standard_function._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.standard_function == child) {
+      this.set_standard_function((ru.barsopen.plsqlconverter.ast.typed.standard_function)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.STANDARD_FUNCTION);
     _token.setLine(_line);

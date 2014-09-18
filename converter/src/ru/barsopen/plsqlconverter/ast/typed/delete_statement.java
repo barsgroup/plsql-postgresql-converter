@@ -59,6 +59,27 @@ public class delete_statement implements data_manipulation_language_statements, 
       this.error_logging_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.general_table_ref == child) {
+      this.set_general_table_ref((ru.barsopen.plsqlconverter.ast.typed.general_table_ref)replacement);
+      return;
+    }
+    if (this.where_clause == child) {
+      this.set_where_clause((ru.barsopen.plsqlconverter.ast.typed.where_clause)replacement);
+      return;
+    }
+    if (this.static_returning_clause == child) {
+      this.set_static_returning_clause((ru.barsopen.plsqlconverter.ast.typed.static_returning_clause)replacement);
+      return;
+    }
+    if (this.error_logging_clause == child) {
+      this.set_error_logging_clause((ru.barsopen.plsqlconverter.ast.typed.error_logging_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DELETE);
     _token.setLine(_line);

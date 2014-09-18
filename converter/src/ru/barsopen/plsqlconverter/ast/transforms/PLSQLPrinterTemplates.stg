@@ -510,7 +510,7 @@ static_returning_clause(expressions, into_clause) ::= <<
 returning <expressions; separator=", "> <into_clause>
 >>
 
-into_clause(is_bulk_collect, general_elements) ::= <<
+into_clause(is_bulk_collect, is_strict, general_elements) ::= <<
 <if (is_bulk_collect)>bulk collect <endif>into <general_elements; separator=", ">
 >>
 

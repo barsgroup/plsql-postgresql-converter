@@ -26,6 +26,15 @@ public class model_column_clauses_measures implements _baseNode {
       this.model_column_list._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.model_column_list == child) {
+      this.set_model_column_list((ru.barsopen.plsqlconverter.ast.typed.model_column_list)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MEASURES_VK);
     _token.setLine(_line);

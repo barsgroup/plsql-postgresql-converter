@@ -26,6 +26,15 @@ public class perform_statement implements statement, _baseNode {
       this.inner._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.inner == child) {
+      this.set_inner((ru.barsopen.plsqlconverter.ast.typed.general_element_or_dml_statement)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PGSQL_PERFORM);
     _token.setLine(_line);

@@ -46,6 +46,22 @@ public class group_by_clause implements _baseNode {
       this.having_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.group_by_elements.size(); ++_i) {
+      if (this.group_by_elements.get(_i) == child) {
+        this.remove_group_by_elements(_i);
+        this.insert_group_by_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.group_by_element)replacement);
+        return;
+      }
+    }
+    if (this.having_clause == child) {
+      this.set_having_clause((ru.barsopen.plsqlconverter.ast.typed.having_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_GROUP);
     _token.setLine(_line);

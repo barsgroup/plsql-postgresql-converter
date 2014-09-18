@@ -35,6 +35,18 @@ public class order_by_elements_list implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.elements.size(); ++_i) {
+      if (this.elements.get(_i) == child) {
+        this.remove_elements(_i);
+        this.insert_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.order_by_elements)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ORDER_BY_ELEMENTS);
     _token.setLine(_line);

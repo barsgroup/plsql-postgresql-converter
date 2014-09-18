@@ -26,6 +26,15 @@ public class merge_update_delete_part implements _baseNode {
       this.where_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.where_clause == child) {
+      this.set_where_clause((ru.barsopen.plsqlconverter.ast.typed.where_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DELETE);
     _token.setLine(_line);

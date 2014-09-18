@@ -68,6 +68,27 @@ public class xml_table_column implements _baseNode {
       this.xml_general_default_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.xml_column_name == child) {
+      this.set_xml_column_name((ru.barsopen.plsqlconverter.ast.typed.xml_column_name)replacement);
+      return;
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.xml_general_default_part == child) {
+      this.set_xml_general_default_part((ru.barsopen.plsqlconverter.ast.typed.xml_general_default_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XML_COLUMN);
     _token.setLine(_line);

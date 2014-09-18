@@ -26,6 +26,15 @@ public class drop_procedure implements unit_statement, _baseNode {
       this.procedure_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.procedure_name == child) {
+      this.set_procedure_name((ru.barsopen.plsqlconverter.ast.typed.procedure_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_PROCEDURE);
     _token.setLine(_line);

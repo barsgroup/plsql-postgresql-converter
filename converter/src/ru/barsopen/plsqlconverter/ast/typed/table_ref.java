@@ -45,6 +45,22 @@ public class table_ref implements dml_table_expression_clause, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.table_ref_aux == child) {
+      this.set_table_ref_aux((ru.barsopen.plsqlconverter.ast.typed.table_ref_aux)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.join_clauses.size(); ++_i) {
+      if (this.join_clauses.get(_i) == child) {
+        this.remove_join_clauses(_i);
+        this.insert_join_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.join_clause)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF);
     _token.setLine(_line);

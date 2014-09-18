@@ -26,6 +26,15 @@ public class call_spec implements _baseNode {
       this.call_spec_decl._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.call_spec_decl == child) {
+      this.set_call_spec_decl((ru.barsopen.plsqlconverter.ast.typed.call_spec_decl)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LANGUAGE_VK);
     _token.setLine(_line);

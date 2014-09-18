@@ -26,6 +26,15 @@ public class commit_force implements commit_statement_additional, _baseNode {
       this.commit_force_content._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.commit_force_content == child) {
+      this.set_commit_force_content((ru.barsopen.plsqlconverter.ast.typed.commit_force_content)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FORCE_VK);
     _token.setLine(_line);

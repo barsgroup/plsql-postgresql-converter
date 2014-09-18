@@ -53,6 +53,15 @@ public class native_datatype_spec implements type_spec, _baseNode {
       visitor.visit(this.LOCAL_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.type_precision == child) {
+      this.set_type_precision((ru.barsopen.plsqlconverter.ast.typed.type_precision)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NATIVE_DATATYPE);
     _token.setLine(_line);

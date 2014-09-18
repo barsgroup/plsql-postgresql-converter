@@ -26,6 +26,15 @@ public class drop_function implements unit_statement, _baseNode {
       this.function_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.function_name == child) {
+      this.set_function_name((ru.barsopen.plsqlconverter.ast.typed.function_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_FUNCTION);
     _token.setLine(_line);

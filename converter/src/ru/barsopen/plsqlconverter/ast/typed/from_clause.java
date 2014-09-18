@@ -35,6 +35,18 @@ public class from_clause implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.table_refs.size(); ++_i) {
+      if (this.table_refs.get(_i) == child) {
+        this.remove_table_refs(_i);
+        this.insert_table_refs(_i, (ru.barsopen.plsqlconverter.ast.typed.table_ref)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FROM);
     _token.setLine(_line);

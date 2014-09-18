@@ -53,6 +53,23 @@ public class standard_function_enabling_within_or_over implements standard_funct
       this.over_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.function_argument == child) {
+      this.set_function_argument((ru.barsopen.plsqlconverter.ast.typed.function_argument)replacement);
+      return;
+    }
+    if (this.within_clause == child) {
+      this.set_within_clause((ru.barsopen.plsqlconverter.ast.typed.within_clause)replacement);
+      return;
+    }
+    if (this.over_clause == child) {
+      this.set_over_clause((ru.barsopen.plsqlconverter.ast.typed.over_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_ENABLING_WITHIN_OR_OVER);
     _token.setLine(_line);

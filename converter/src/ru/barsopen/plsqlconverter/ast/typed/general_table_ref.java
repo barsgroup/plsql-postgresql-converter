@@ -46,6 +46,19 @@ public class general_table_ref implements _baseNode {
       visitor.visit(this.ONLY_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.alias == child) {
+      this.set_alias((ru.barsopen.plsqlconverter.ast.typed.alias)replacement);
+      return;
+    }
+    if (this.dml_table_expression_clause == child) {
+      this.set_dml_table_expression_clause((ru.barsopen.plsqlconverter.ast.typed.dml_table_expression_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF);
     _token.setLine(_line);

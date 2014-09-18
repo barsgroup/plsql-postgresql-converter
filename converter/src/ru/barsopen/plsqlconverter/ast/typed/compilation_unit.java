@@ -35,6 +35,18 @@ public class compilation_unit implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.unit_statements.size(); ++_i) {
+      if (this.unit_statements.get(_i) == child) {
+        this.remove_unit_statements(_i);
+        this.insert_unit_statements(_i, (ru.barsopen.plsqlconverter.ast.typed.unit_statement)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMPILATION_UNIT);
     _token.setLine(_line);

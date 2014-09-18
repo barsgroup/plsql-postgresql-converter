@@ -35,6 +35,18 @@ public class general_element implements statement, assignment_target, general_el
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.general_element_items.size(); ++_i) {
+      if (this.general_element_items.get(_i) == child) {
+        this.remove_general_element_items(_i);
+        this.insert_general_element_items(_i, (ru.barsopen.plsqlconverter.ast.typed.general_element_item)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CASCATED_ELEMENT);
     _token.setLine(_line);

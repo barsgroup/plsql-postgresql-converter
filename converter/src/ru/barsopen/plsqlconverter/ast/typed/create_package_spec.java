@@ -65,6 +65,26 @@ public class create_package_spec implements create_package, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.package_name == child) {
+      this.set_package_name((ru.barsopen.plsqlconverter.ast.typed.package_name)replacement);
+      return;
+    }
+    if (this.invoker_rights_clause == child) {
+      this.set_invoker_rights_clause((ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.package_obj_specs.size(); ++_i) {
+      if (this.package_obj_specs.get(_i) == child) {
+        this.remove_package_obj_specs(_i);
+        this.insert_package_obj_specs(_i, (ru.barsopen.plsqlconverter.ast.typed.package_obj_spec)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PACKAGE_SPEC);
     _token.setLine(_line);

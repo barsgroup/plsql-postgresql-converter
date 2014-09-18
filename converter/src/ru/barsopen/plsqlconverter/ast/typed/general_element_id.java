@@ -26,6 +26,15 @@ public class general_element_id implements general_element_item, _baseNode {
       this.id._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.id == child) {
+      this.set_id((ru.barsopen.plsqlconverter.ast.typed.id)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ANY_ELEMENT);
     _token.setLine(_line);

@@ -37,6 +37,19 @@ public class direct_mode implements table_expression_element, _baseNode {
       this.sample_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.tableview_name == child) {
+      this.set_tableview_name((ru.barsopen.plsqlconverter.ast.typed.tableview_name)replacement);
+      return;
+    }
+    if (this.sample_clause == child) {
+      this.set_sample_clause((ru.barsopen.plsqlconverter.ast.typed.sample_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DIRECT_MODE);
     _token.setLine(_line);

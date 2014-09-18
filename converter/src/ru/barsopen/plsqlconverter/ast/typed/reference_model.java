@@ -65,6 +65,30 @@ public class reference_model implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.reference_model_name == child) {
+      this.set_reference_model_name((ru.barsopen.plsqlconverter.ast.typed.reference_model_name)replacement);
+      return;
+    }
+    if (this.subquery == child) {
+      this.set_subquery((ru.barsopen.plsqlconverter.ast.typed.subquery)replacement);
+      return;
+    }
+    if (this.model_column_clauses == child) {
+      this.set_model_column_clauses((ru.barsopen.plsqlconverter.ast.typed.model_column_clauses)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.cell_reference_optionss.size(); ++_i) {
+      if (this.cell_reference_optionss.get(_i) == child) {
+        this.remove_cell_reference_optionss(_i);
+        this.insert_cell_reference_optionss(_i, (ru.barsopen.plsqlconverter.ast.typed.cell_reference_options)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.REFERENCE_VK);
     _token.setLine(_line);

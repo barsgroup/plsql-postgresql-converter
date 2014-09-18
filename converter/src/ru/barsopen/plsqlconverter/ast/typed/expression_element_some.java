@@ -26,6 +26,15 @@ public class expression_element_some implements expression_element, _baseNode {
       this.expression_or_subquery._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression_or_subquery == child) {
+      this.set_expression_or_subquery((ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SOME_VK);
     _token.setLine(_line);

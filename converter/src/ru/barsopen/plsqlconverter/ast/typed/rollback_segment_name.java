@@ -37,6 +37,19 @@ public class rollback_segment_name implements _baseNode {
       this.id._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.char_set_name == child) {
+      this.set_char_set_name((ru.barsopen.plsqlconverter.ast.typed.char_set_name)replacement);
+      return;
+    }
+    if (this.id == child) {
+      this.set_id((ru.barsopen.plsqlconverter.ast.typed.id)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLBACK_SEGMENT_NAME);
     _token.setLine(_line);

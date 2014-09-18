@@ -26,6 +26,15 @@ public class rollback_statement_to implements rollback_statement_additional, _ba
       this.savepoint_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.savepoint_name == child) {
+      this.set_savepoint_name((ru.barsopen.plsqlconverter.ast.typed.savepoint_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_TO);
     _token.setLine(_line);

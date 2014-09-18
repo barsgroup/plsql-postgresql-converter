@@ -36,6 +36,19 @@ public class pragma_declaration_inline implements pragma_declaration_impl, _base
       this.expression._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.id == child) {
+      this.set_id((ru.barsopen.plsqlconverter.ast.typed.id)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.INLINE_VK);
     _token.setLine(_line);

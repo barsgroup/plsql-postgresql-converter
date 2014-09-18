@@ -26,6 +26,15 @@ public class collection_mode implements table_expression_element, _baseNode {
       this.table_collection_expression._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.table_collection_expression == child) {
+      this.set_table_collection_expression((ru.barsopen.plsqlconverter.ast.typed.table_collection_expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COLLECTION_MODE);
     _token.setLine(_line);

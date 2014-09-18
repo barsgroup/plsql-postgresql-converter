@@ -26,6 +26,15 @@ public class body_mode implements function_impl, create_procedure_body_impl, _ba
       this.block._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.block == child) {
+      this.set_block((ru.barsopen.plsqlconverter.ast.typed.block)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.BODY_MODE);
     _token.setLine(_line);

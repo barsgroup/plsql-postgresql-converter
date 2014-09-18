@@ -46,6 +46,23 @@ public class standard_function_translate implements standard_function, _baseNode
       this.expr_to._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expr == child) {
+      this.set_expr((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.expr_from == child) {
+      this.set_expr_from((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.expr_to == child) {
+      this.set_expr_to((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TRANSLATE_VK);
     _token.setLine(_line);

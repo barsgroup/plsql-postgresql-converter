@@ -35,6 +35,18 @@ public class update_statement_set implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.update_set_elementss.size(); ++_i) {
+      if (this.update_set_elementss.get(_i) == child) {
+        this.remove_update_set_elementss(_i);
+        this.insert_update_set_elementss(_i, (ru.barsopen.plsqlconverter.ast.typed.update_set_elements)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SET_VK);
     _token.setLine(_line);

@@ -34,3 +34,7 @@ end case
 >>
 
 perform_statement(inner) ::= "perform <inner>"
+
+into_clause(is_bulk_collect, is_strict, general_elements) ::= <<
+<if (is_bulk_collect)>bulk collect <endif>into<if (is_strict)> strict<endif> <general_elements; separator=", ">
+>>

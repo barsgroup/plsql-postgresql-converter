@@ -54,6 +54,19 @@ public class type_precision implements _baseNode {
       visitor.visit(this.BYTE_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.size1 == child) {
+      this.set_size1((ru.barsopen.plsqlconverter.ast.typed.constant)replacement);
+      return;
+    }
+    if (this.size2 == child) {
+      this.set_size2((ru.barsopen.plsqlconverter.ast.typed.constant)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PRECISION);
     _token.setLine(_line);

@@ -64,6 +64,22 @@ public class conditional_insert_clause implements _baseNode {
       this.conditional_insert_else_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.conditional_insert_when_parts.size(); ++_i) {
+      if (this.conditional_insert_when_parts.get(_i) == child) {
+        this.remove_conditional_insert_when_parts(_i);
+        this.insert_conditional_insert_when_parts(_i, (ru.barsopen.plsqlconverter.ast.typed.conditional_insert_when_part)replacement);
+        return;
+      }
+    }
+    if (this.conditional_insert_else_part == child) {
+      this.set_conditional_insert_else_part((ru.barsopen.plsqlconverter.ast.typed.conditional_insert_else_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CONDITIONAL_INSERT);
     _token.setLine(_line);

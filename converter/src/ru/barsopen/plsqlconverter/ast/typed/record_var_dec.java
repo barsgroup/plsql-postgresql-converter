@@ -46,6 +46,23 @@ public class record_var_dec implements record_declaration, _baseNode {
       this.percent_type_or_rowtype._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.record_name == child) {
+      this.set_record_name((ru.barsopen.plsqlconverter.ast.typed.record_name)replacement);
+      return;
+    }
+    if (this.type_name == child) {
+      this.set_type_name((ru.barsopen.plsqlconverter.ast.typed.type_name)replacement);
+      return;
+    }
+    if (this.percent_type_or_rowtype == child) {
+      this.set_percent_type_or_rowtype((ru.barsopen.plsqlconverter.ast.typed.percent_type_or_rowtype)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_VAR_DECLARE);
     _token.setLine(_line);

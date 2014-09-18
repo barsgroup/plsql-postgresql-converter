@@ -49,6 +49,23 @@ public class over_clause implements _baseNode {
       this.windowing_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.query_partition_clause == child) {
+      this.set_query_partition_clause((ru.barsopen.plsqlconverter.ast.typed.query_partition_clause)replacement);
+      return;
+    }
+    if (this.order_by_clause == child) {
+      this.set_order_by_clause((ru.barsopen.plsqlconverter.ast.typed.order_by_clause)replacement);
+      return;
+    }
+    if (this.windowing_clause == child) {
+      this.set_windowing_clause((ru.barsopen.plsqlconverter.ast.typed.windowing_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OVER_VK);
     _token.setLine(_line);

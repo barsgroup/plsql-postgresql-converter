@@ -57,6 +57,26 @@ public class merge_update_clause implements _baseNode {
       this.merge_update_delete_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.merge_elements.size(); ++_i) {
+      if (this.merge_elements.get(_i) == child) {
+        this.remove_merge_elements(_i);
+        this.insert_merge_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.merge_element)replacement);
+        return;
+      }
+    }
+    if (this.where_clause == child) {
+      this.set_where_clause((ru.barsopen.plsqlconverter.ast.typed.where_clause)replacement);
+      return;
+    }
+    if (this.merge_update_delete_part == child) {
+      this.set_merge_update_delete_part((ru.barsopen.plsqlconverter.ast.typed.merge_update_delete_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_UPDATE);
     _token.setLine(_line);

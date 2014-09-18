@@ -67,6 +67,30 @@ public class standard_function_table implements standard_function, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.xml_namespaces_clause == child) {
+      this.set_xml_namespaces_clause((ru.barsopen.plsqlconverter.ast.typed.xml_namespaces_clause)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.xml_passing_clause == child) {
+      this.set_xml_passing_clause((ru.barsopen.plsqlconverter.ast.typed.xml_passing_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.xml_table_columns.size(); ++_i) {
+      if (this.xml_table_columns.get(_i) == child) {
+        this.remove_xml_table_columns(_i);
+        this.insert_xml_table_columns(_i, (ru.barsopen.plsqlconverter.ast.typed.xml_table_column)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLTABLE_VK);
     _token.setLine(_line);

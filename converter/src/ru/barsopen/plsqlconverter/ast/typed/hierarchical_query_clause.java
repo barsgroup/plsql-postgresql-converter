@@ -37,6 +37,19 @@ public class hierarchical_query_clause implements _baseNode {
       this.hierarchical_query_clause_connect._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.start_part == child) {
+      this.set_start_part((ru.barsopen.plsqlconverter.ast.typed.start_part)replacement);
+      return;
+    }
+    if (this.hierarchical_query_clause_connect == child) {
+      this.set_hierarchical_query_clause_connect((ru.barsopen.plsqlconverter.ast.typed.hierarchical_query_clause_connect)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.HIERARCHICAL);
     _token.setLine(_line);

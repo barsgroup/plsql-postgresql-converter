@@ -67,6 +67,30 @@ public class parameter implements _baseNode {
       this.default_value_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.parameter_name == child) {
+      this.set_parameter_name((ru.barsopen.plsqlconverter.ast.typed.parameter_name)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.parameter_dir_specs.size(); ++_i) {
+      if (this.parameter_dir_specs.get(_i) == child) {
+        this.remove_parameter_dir_specs(_i);
+        this.insert_parameter_dir_specs(_i, (ru.barsopen.plsqlconverter.ast.typed.parameter_dir_spec)replacement);
+        return;
+      }
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.default_value_part == child) {
+      this.set_default_value_part((ru.barsopen.plsqlconverter.ast.typed.default_value_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETER);
     _token.setLine(_line);

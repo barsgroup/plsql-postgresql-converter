@@ -36,6 +36,19 @@ public class fetch_statement implements cursor_manipulation_statements, _baseNod
       this.into_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.cursor_name == child) {
+      this.set_cursor_name((ru.barsopen.plsqlconverter.ast.typed.cursor_name)replacement);
+      return;
+    }
+    if (this.into_clause == child) {
+      this.set_into_clause((ru.barsopen.plsqlconverter.ast.typed.into_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FETCH);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class exception_clause implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.exception_handlers.size(); ++_i) {
+      if (this.exception_handlers.get(_i) == child) {
+        this.remove_exception_handlers(_i);
+        this.insert_exception_handlers(_i, (ru.barsopen.plsqlconverter.ast.typed.exception_handler)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_EXCEPTION);
     _token.setLine(_line);

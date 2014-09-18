@@ -66,6 +66,30 @@ public class factoring_element implements _baseNode {
       this.order_by_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.query_name == child) {
+      this.set_query_name((ru.barsopen.plsqlconverter.ast.typed.query_name)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.column_names.size(); ++_i) {
+      if (this.column_names.get(_i) == child) {
+        this.remove_column_names(_i);
+        this.insert_column_names(_i, (ru.barsopen.plsqlconverter.ast.typed.column_name)replacement);
+        return;
+      }
+    }
+    if (this.subquery == child) {
+      this.set_subquery((ru.barsopen.plsqlconverter.ast.typed.subquery)replacement);
+      return;
+    }
+    if (this.order_by_clause == child) {
+      this.set_order_by_clause((ru.barsopen.plsqlconverter.ast.typed.order_by_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FACTORING);
     _token.setLine(_line);

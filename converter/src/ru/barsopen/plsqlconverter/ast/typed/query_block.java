@@ -118,6 +118,39 @@ public class query_block implements subquery_basic_elements, _baseNode {
       this.model_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.from_clause == child) {
+      this.set_from_clause((ru.barsopen.plsqlconverter.ast.typed.from_clause)replacement);
+      return;
+    }
+    if (this.query_block_projection == child) {
+      this.set_query_block_projection((ru.barsopen.plsqlconverter.ast.typed.query_block_projection)replacement);
+      return;
+    }
+    if (this.into_clause == child) {
+      this.set_into_clause((ru.barsopen.plsqlconverter.ast.typed.into_clause)replacement);
+      return;
+    }
+    if (this.where_clause == child) {
+      this.set_where_clause((ru.barsopen.plsqlconverter.ast.typed.where_clause)replacement);
+      return;
+    }
+    if (this.hierarchical_query_clause == child) {
+      this.set_hierarchical_query_clause((ru.barsopen.plsqlconverter.ast.typed.hierarchical_query_clause)replacement);
+      return;
+    }
+    if (this.group_by_clause == child) {
+      this.set_group_by_clause((ru.barsopen.plsqlconverter.ast.typed.group_by_clause)replacement);
+      return;
+    }
+    if (this.model_clause == child) {
+      this.set_model_clause((ru.barsopen.plsqlconverter.ast.typed.model_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_SELECT);
     _token.setLine(_line);

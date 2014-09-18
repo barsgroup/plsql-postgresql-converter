@@ -45,6 +45,22 @@ public class subquery implements subquery_basic_elements, query_partition_clause
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.subquery_basic_elements == child) {
+      this.set_subquery_basic_elements((ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.subquery_operation_parts.size(); ++_i) {
+      if (this.subquery_operation_parts.get(_i) == child) {
+        this.remove_subquery_operation_parts(_i);
+        this.insert_subquery_operation_parts(_i, (ru.barsopen.plsqlconverter.ast.typed.subquery_operation_part)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SUBQUERY);
     _token.setLine(_line);

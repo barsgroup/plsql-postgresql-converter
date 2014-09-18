@@ -56,6 +56,26 @@ public class multi_table_insert implements insert_statement_spec, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.select_statement == child) {
+      this.set_select_statement((ru.barsopen.plsqlconverter.ast.typed.select_statement)replacement);
+      return;
+    }
+    if (this.conditional_insert_clause == child) {
+      this.set_conditional_insert_clause((ru.barsopen.plsqlconverter.ast.typed.conditional_insert_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.multi_table_elements.size(); ++_i) {
+      if (this.multi_table_elements.get(_i) == child) {
+        this.remove_multi_table_elements(_i);
+        this.insert_multi_table_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.multi_table_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MULTI_TABLE_MODE);
     _token.setLine(_line);

@@ -15092,6 +15092,11 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PGSQL_STRICT)) {
+      _result.set_PGSQL_STRICT(tree.getChild(_i));
+      ++_i;
+    }
+
     if (!(_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsegeneral_element(tree.getChild(_i)))) {
       _result.add_general_elements(parsegeneral_element(tree.getChild(_i)));
@@ -15102,8 +15107,10 @@ public class parser {
     return _result;
   }
 
-  public static into_clause_normal make_into_clause_normal(java.util.List<ru.barsopen.plsqlconverter.ast.typed.general_element> general_elements) {
+  public static into_clause_normal make_into_clause_normal(org.antlr.runtime.tree.Tree PGSQL_STRICT,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.general_element> general_elements) {
     into_clause_normal _result = new into_clause_normal();
+    _result.set_PGSQL_STRICT(PGSQL_STRICT);
     if (general_elements != null) {
       for (ru.barsopen.plsqlconverter.ast.typed.general_element _value: general_elements) { _result.add_general_elements(_value); }
     }

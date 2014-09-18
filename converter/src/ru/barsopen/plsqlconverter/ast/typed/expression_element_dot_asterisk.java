@@ -26,6 +26,15 @@ public class expression_element_dot_asterisk implements expression_element, _bas
       this.tableview_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.tableview_name == child) {
+      this.set_tableview_name((ru.barsopen.plsqlconverter.ast.typed.tableview_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DOT_ASTERISK);
     _token.setLine(_line);

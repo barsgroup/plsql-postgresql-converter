@@ -38,6 +38,19 @@ public class continue_statement implements statement, _baseNode {
       this.general_when._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.label_name == child) {
+      this.set_label_name((ru.barsopen.plsqlconverter.ast.typed.label_name)replacement);
+      return;
+    }
+    if (this.general_when == child) {
+      this.set_general_when((ru.barsopen.plsqlconverter.ast.typed.general_when)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CONTINUE_VK);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class grouping_element_rollup implements grouping_element, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.grouping_elements.size(); ++_i) {
+      if (this.grouping_elements.get(_i) == child) {
+        this.remove_grouping_elements(_i);
+        this.insert_grouping_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.grouping_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLUP_VK);
     _token.setLine(_line);

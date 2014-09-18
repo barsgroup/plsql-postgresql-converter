@@ -1530,7 +1530,7 @@ where_clause: SQL92_RESERVED_WHERE expression;
 
 into_clause => into_clause_normal into_clause_bulk;
 
-into_clause_normal: SQL92_RESERVED_INTO general_element+;
+into_clause_normal: SQL92_RESERVED_INTO PGSQL_STRICT? general_element+;
 into_clause_bulk: BULK_VK general_element+;
 
 // $>

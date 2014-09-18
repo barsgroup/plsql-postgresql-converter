@@ -47,6 +47,23 @@ public class standard_function_root implements standard_function, _baseNode {
       this.xmlroot_param_standalone_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.xml_param_version_part == child) {
+      this.set_xml_param_version_part((ru.barsopen.plsqlconverter.ast.typed.xml_param_version_part)replacement);
+      return;
+    }
+    if (this.xmlroot_param_standalone_part == child) {
+      this.set_xmlroot_param_standalone_part((ru.barsopen.plsqlconverter.ast.typed.xmlroot_param_standalone_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLROOT_VK);
     _token.setLine(_line);

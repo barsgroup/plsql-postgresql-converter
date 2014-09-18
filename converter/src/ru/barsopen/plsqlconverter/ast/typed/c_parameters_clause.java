@@ -16,6 +16,11 @@ public class c_parameters_clause implements _baseNode {
   public void _walk(_visitor visitor) {
     visitor.visit(this);
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETERS_VK);
     _token.setLine(_line);

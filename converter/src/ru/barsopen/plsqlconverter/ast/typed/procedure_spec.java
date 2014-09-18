@@ -47,6 +47,23 @@ public class procedure_spec implements package_obj_spec, package_obj_body, _base
       this.call_mode._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.procedure_name == child) {
+      this.set_procedure_name((ru.barsopen.plsqlconverter.ast.typed.procedure_name)replacement);
+      return;
+    }
+    if (this.parameters == child) {
+      this.set_parameters((ru.barsopen.plsqlconverter.ast.typed.parameters)replacement);
+      return;
+    }
+    if (this.call_mode == child) {
+      this.set_call_mode((ru.barsopen.plsqlconverter.ast.typed.call_mode)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PROCEDURE_SPEC);
     _token.setLine(_line);

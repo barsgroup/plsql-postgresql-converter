@@ -45,6 +45,22 @@ public class block implements statement, _baseNode {
       this.body._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.declare_specs.size(); ++_i) {
+      if (this.declare_specs.get(_i) == child) {
+        this.remove_declare_specs(_i);
+        this.insert_declare_specs(_i, (ru.barsopen.plsqlconverter.ast.typed.declare_spec)replacement);
+        return;
+      }
+    }
+    if (this.body == child) {
+      this.set_body((ru.barsopen.plsqlconverter.ast.typed.body)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.BLOCK);
     _token.setLine(_line);

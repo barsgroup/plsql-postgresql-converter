@@ -36,6 +36,19 @@ public class table_var_dec implements table_declaration, _baseNode {
       this.type_spec._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.table_var_name == child) {
+      this.set_table_var_name((ru.barsopen.plsqlconverter.ast.typed.table_var_name)replacement);
+      return;
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_VAR_DECLARE);
     _token.setLine(_line);

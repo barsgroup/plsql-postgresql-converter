@@ -33,6 +33,11 @@ public class sqlj_object_type implements _baseNode {
       visitor.visit(_value);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.JAVA_VK);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class into_clause_bulk implements into_clause, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.general_elements.size(); ++_i) {
+      if (this.general_elements.get(_i) == child) {
+        this.remove_general_elements(_i);
+        this.insert_general_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.general_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.BULK_VK);
     _token.setLine(_line);

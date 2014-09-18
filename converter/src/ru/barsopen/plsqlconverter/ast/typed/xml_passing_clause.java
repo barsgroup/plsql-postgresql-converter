@@ -35,6 +35,15 @@ public class xml_passing_clause implements _baseNode {
       this.xml_passing_clause_expr._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.xml_passing_clause_expr == child) {
+      this.set_xml_passing_clause_expr((ru.barsopen.plsqlconverter.ast.typed.xml_passing_clause_expr)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PASSING_VK);
     _token.setLine(_line);

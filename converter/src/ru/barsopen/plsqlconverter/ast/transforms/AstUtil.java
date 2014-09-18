@@ -16,6 +16,7 @@ import org.antlr.runtime.tree.Tree;
 import ru.barsopen.plsqlconverter.PLSQLPrinter;
 import ru.barsopen.plsqlconverter.ast.typed._baseNode;
 import ru.barsopen.plsqlconverter.ast.typed._visitor;
+import ru.barsopen.plsqlconverter.ast.typed.id;
 
 public class AstUtil {
 	
@@ -202,6 +203,23 @@ public class AstUtil {
 			}
 		});
 		return elts;
+	}
+	
+	public static String stringJoin(String separator, List<String> parts) {
+		StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < parts.size(); ++i) {
+	    	if (i > 0) {
+    			sb.append(separator);
+	    	}
+	    	sb.append(parts.get(i));
+	    }
+	    return sb.toString();
+	}
+
+	public static String getLastIdString(List<id> ids) {
+		id lastId = ids.get(ids.size() - 1);
+		String lastIdString = normalizeId(lastId.value);
+		return lastIdString;
 	}
 
 }

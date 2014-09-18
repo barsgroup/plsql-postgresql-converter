@@ -45,6 +45,22 @@ public class update_set_elements_assign implements update_set_elements, _baseNod
       this.expression_or_subquery._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.column_names.size(); ++_i) {
+      if (this.column_names.get(_i) == child) {
+        this.remove_column_names(_i);
+        this.insert_column_names(_i, (ru.barsopen.plsqlconverter.ast.typed.column_name)replacement);
+        return;
+      }
+    }
+    if (this.expression_or_subquery == child) {
+      this.set_expression_or_subquery((ru.barsopen.plsqlconverter.ast.typed.expression_or_subquery)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN);
     _token.setLine(_line);

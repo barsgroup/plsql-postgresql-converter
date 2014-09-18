@@ -26,6 +26,15 @@ public class pragma_declaration implements package_obj_spec, declare_spec, _base
       this.pragma_declaration_impl._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.pragma_declaration_impl == child) {
+      this.set_pragma_declaration_impl((ru.barsopen.plsqlconverter.ast.typed.pragma_declaration_impl)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PRAGMA_DECLARE);
     _token.setLine(_line);

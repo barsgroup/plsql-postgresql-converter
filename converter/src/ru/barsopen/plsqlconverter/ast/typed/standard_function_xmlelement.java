@@ -92,6 +92,26 @@ public class standard_function_xmlelement implements standard_function, _baseNod
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.xml_attributes_clause == child) {
+      this.set_xml_attributes_clause((ru.barsopen.plsqlconverter.ast.typed.xml_attributes_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.xmlelement_value_exprs.size(); ++_i) {
+      if (this.xmlelement_value_exprs.get(_i) == child) {
+        this.remove_xmlelement_value_exprs(_i);
+        this.insert_xmlelement_value_exprs(_i, (ru.barsopen.plsqlconverter.ast.typed.xmlelement_value_expr)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLELEMENT_VK);
     _token.setLine(_line);

@@ -36,6 +36,19 @@ public class assignment_statement implements statement, _baseNode {
       this.expression._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.assignment_target == child) {
+      this.set_assignment_target((ru.barsopen.plsqlconverter.ast.typed.assignment_target)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN);
     _token.setLine(_line);

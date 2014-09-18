@@ -35,6 +35,18 @@ public class expression_list implements query_partition_clause_spec, grouping_el
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.expressions.size(); ++_i) {
+      if (this.expressions.get(_i) == child) {
+        this.remove_expressions(_i);
+        this.insert_expressions(_i, (ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXPR_LIST);
     _token.setLine(_line);

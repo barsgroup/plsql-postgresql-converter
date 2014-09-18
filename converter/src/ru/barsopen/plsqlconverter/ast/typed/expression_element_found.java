@@ -26,6 +26,15 @@ public class expression_element_found implements expression_element, _baseNode {
       this.cursor_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.cursor_name == child) {
+      this.set_cursor_name((ru.barsopen.plsqlconverter.ast.typed.cursor_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_FOUND_VK);
     _token.setLine(_line);

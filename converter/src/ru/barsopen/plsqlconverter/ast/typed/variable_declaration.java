@@ -65,6 +65,23 @@ public class variable_declaration implements package_obj_spec, package_obj_body,
       this.default_value_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.variable_name == child) {
+      this.set_variable_name((ru.barsopen.plsqlconverter.ast.typed.variable_name)replacement);
+      return;
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.default_value_part == child) {
+      this.set_default_value_part((ru.barsopen.plsqlconverter.ast.typed.default_value_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.VARIABLE_DECLARE);
     _token.setLine(_line);

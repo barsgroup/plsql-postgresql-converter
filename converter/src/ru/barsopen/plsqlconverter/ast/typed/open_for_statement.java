@@ -47,6 +47,23 @@ public class open_for_statement implements cursor_manipulation_statements, _base
       this.using_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.variable_name == child) {
+      this.set_variable_name((ru.barsopen.plsqlconverter.ast.typed.variable_name)replacement);
+      return;
+    }
+    if (this.expression_or_select_statement == child) {
+      this.set_expression_or_select_statement((ru.barsopen.plsqlconverter.ast.typed.expression_or_select_statement)replacement);
+      return;
+    }
+    if (this.using_clause == child) {
+      this.set_using_clause((ru.barsopen.plsqlconverter.ast.typed.using_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_FOR);
     _token.setLine(_line);

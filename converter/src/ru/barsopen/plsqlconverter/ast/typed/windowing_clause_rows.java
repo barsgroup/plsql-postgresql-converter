@@ -26,6 +26,15 @@ public class windowing_clause_rows implements windowing_clause, _baseNode {
       this.windowing_clause_spec._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.windowing_clause_spec == child) {
+      this.set_windowing_clause_spec((ru.barsopen.plsqlconverter.ast.typed.windowing_clause_spec)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROWS_VK);
     _token.setLine(_line);

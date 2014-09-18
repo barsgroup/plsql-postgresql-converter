@@ -35,6 +35,15 @@ public class function_impl_using implements function_impl, _baseNode {
       this.implementation_type_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.implementation_type_name == child) {
+      this.set_implementation_type_name((ru.barsopen.plsqlconverter.ast.typed.implementation_type_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.USING_MODE);
     _token.setLine(_line);

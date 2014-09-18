@@ -36,6 +36,19 @@ public class pragma_declaration_exception_init implements pragma_declaration_imp
       this.constant._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.exception_name == child) {
+      this.set_exception_name((ru.barsopen.plsqlconverter.ast.typed.exception_name)replacement);
+      return;
+    }
+    if (this.constant == child) {
+      this.set_constant((ru.barsopen.plsqlconverter.ast.typed.constant)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_INIT_VK);
     _token.setLine(_line);

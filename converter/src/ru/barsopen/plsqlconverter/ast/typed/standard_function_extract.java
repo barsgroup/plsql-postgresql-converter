@@ -36,6 +36,19 @@ public class standard_function_extract implements standard_function, _baseNode {
       this.expression._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.extract_part == child) {
+      this.set_extract_part((ru.barsopen.plsqlconverter.ast.typed.extract_part)replacement);
+      return;
+    }
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXTRACT_VK);
     _token.setLine(_line);

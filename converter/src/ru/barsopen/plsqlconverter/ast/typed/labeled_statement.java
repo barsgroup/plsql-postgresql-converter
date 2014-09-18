@@ -36,6 +36,19 @@ public class labeled_statement implements stat_or_label, _baseNode {
       this.statement._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.label_name == child) {
+      this.set_label_name((ru.barsopen.plsqlconverter.ast.typed.label_name)replacement);
+      return;
+    }
+    if (this.statement == child) {
+      this.set_statement((ru.barsopen.plsqlconverter.ast.typed.statement)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LABEL_DECLARE);
     _token.setLine(_line);

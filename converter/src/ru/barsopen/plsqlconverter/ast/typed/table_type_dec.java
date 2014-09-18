@@ -45,6 +45,19 @@ public class table_type_dec implements table_declaration, _baseNode {
       this.table_type_dec_impl._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.type_name == child) {
+      this.set_type_name((ru.barsopen.plsqlconverter.ast.typed.type_name)replacement);
+      return;
+    }
+    if (this.table_type_dec_impl == child) {
+      this.set_table_type_dec_impl((ru.barsopen.plsqlconverter.ast.typed.table_type_dec_impl)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_TYPE_DECLARE);
     _token.setLine(_line);

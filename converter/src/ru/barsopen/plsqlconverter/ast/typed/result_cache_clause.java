@@ -27,6 +27,15 @@ public class result_cache_clause implements _baseNode {
       this.relies_on_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.relies_on_part == child) {
+      this.set_relies_on_part((ru.barsopen.plsqlconverter.ast.typed.relies_on_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RESULT_CACHE_VK);
     _token.setLine(_line);

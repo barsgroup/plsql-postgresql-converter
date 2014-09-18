@@ -13,6 +13,8 @@ options {
 
 tokens {
     PGSQL_PERFORM;
+    PGSQL_STRICT;
+    PGSQL_TEXT;
 }
 
 
@@ -2547,10 +2549,10 @@ where_clause
     ;
 
 into_clause
-    :    ^(SQL92_RESERVED_INTO elements+=general_element+) 
-    ->   into_clause(is_bulk_collect={false}, general_elements={$elements})
+    :    ^(SQL92_RESERVED_INTO PGSQL_STRICT? elements+=general_element+) 
+    ->   into_clause(is_bulk_collect={false}, is_strict={$PGSQL_STRICT != null}, general_elements={$elements})
     |    ^(BULK_VK elements+=general_element+) 
-    ->   into_clause(is_bulk_collect={true}, general_elements={$elements})
+    ->   into_clause(is_bulk_collect={true}, is_strict={false}, general_elements={$elements})
     ;
 
 // $>
@@ -2812,7 +2814,8 @@ native_datatype_spec
     |    VARCHAR2_VK { typeBaseName = "varchar2"; }
     |    VARCHAR_VK { typeBaseName = "varchar"; }
     |    YEAR_VK
-    |    YMINTERVAL_UNCONSTRAINED_VK)
+    |    YMINTERVAL_UNCONSTRAINED_VK
+    |    PGSQL_TEXT { typeBaseName = "text"; })
     prec=type_precision?
     (is_tz=TIME_VK is_tz_local=LOCAL_VK?)?
     )

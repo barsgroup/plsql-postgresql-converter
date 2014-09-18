@@ -26,6 +26,15 @@ public class insert_statement implements data_manipulation_language_statements, 
       this.insert_statement_spec._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.insert_statement_spec == child) {
+      this.set_insert_statement_spec((ru.barsopen.plsqlconverter.ast.typed.insert_statement_spec)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INSERT);
     _token.setLine(_line);

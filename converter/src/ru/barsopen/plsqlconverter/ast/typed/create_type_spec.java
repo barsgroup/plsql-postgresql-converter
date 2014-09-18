@@ -64,6 +64,19 @@ public class create_type_spec implements create_type, _baseNode {
       this.object_type_def._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.type_name == child) {
+      this.set_type_name((ru.barsopen.plsqlconverter.ast.typed.type_name)replacement);
+      return;
+    }
+    if (this.object_type_def == child) {
+      this.set_object_type_def((ru.barsopen.plsqlconverter.ast.typed.object_type_def)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_TYPE_SPEC);
     _token.setLine(_line);

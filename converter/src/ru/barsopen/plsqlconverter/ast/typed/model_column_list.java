@@ -35,6 +35,18 @@ public class model_column_list implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.model_columns.size(); ++_i) {
+      if (this.model_columns.get(_i) == child) {
+        this.remove_model_columns(_i);
+        this.insert_model_columns(_i, (ru.barsopen.plsqlconverter.ast.typed.model_column)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_COLUMNS);
     _token.setLine(_line);

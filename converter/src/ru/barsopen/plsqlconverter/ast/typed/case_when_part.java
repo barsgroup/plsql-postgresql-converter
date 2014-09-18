@@ -36,6 +36,19 @@ public class case_when_part implements _baseNode {
       this.expression_or_seq_of_statements._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.condition == child) {
+      this.set_condition((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.expression_or_seq_of_statements == child) {
+      this.set_expression_or_seq_of_statements((ru.barsopen.plsqlconverter.ast.typed.expression_or_seq_of_statements)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN);
     _token.setLine(_line);

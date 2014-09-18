@@ -26,6 +26,15 @@ public class dynamic_returning_clause implements _baseNode {
       this.into_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.into_clause == child) {
+      this.set_into_clause((ru.barsopen.plsqlconverter.ast.typed.into_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DYNAMIC_RETURN);
     _token.setLine(_line);

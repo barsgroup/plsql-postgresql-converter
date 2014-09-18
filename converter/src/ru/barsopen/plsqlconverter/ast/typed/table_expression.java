@@ -26,6 +26,15 @@ public class table_expression implements dml_table_expression_clause, _baseNode 
       this.table_expression_element._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.table_expression_element == child) {
+      this.set_table_expression_element((ru.barsopen.plsqlconverter.ast.typed.table_expression_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_EXPRESSION);
     _token.setLine(_line);

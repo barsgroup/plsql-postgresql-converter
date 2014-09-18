@@ -26,6 +26,15 @@ public class xml_alias implements _baseNode {
       this.id_or_evalname._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.id_or_evalname == child) {
+      this.set_id_or_evalname((ru.barsopen.plsqlconverter.ast.typed.id_or_evalname)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XML_ALIAS);
     _token.setLine(_line);

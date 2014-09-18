@@ -45,6 +45,22 @@ public class model_expression implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression_element == child) {
+      this.set_expression_element((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.model_expression_elements.size(); ++_i) {
+      if (this.model_expression_elements.get(_i) == child) {
+        this.remove_model_expression_elements(_i);
+        this.insert_model_expression_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.model_expression_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_EXPRESSION);
     _token.setLine(_line);

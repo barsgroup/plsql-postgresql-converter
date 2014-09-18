@@ -36,6 +36,15 @@ public class rollback_statement implements transaction_control_statements, _base
       this.rollback_statement_additional._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.rollback_statement_additional == child) {
+      this.set_rollback_statement_additional((ru.barsopen.plsqlconverter.ast.typed.rollback_statement_additional)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLBACK_VK);
     _token.setLine(_line);

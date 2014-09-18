@@ -36,6 +36,19 @@ public class expression_element_percent implements expression_element, _baseNode
       this.rhs._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.lhs == child) {
+      this.set_lhs((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    if (this.rhs == child) {
+      this.set_rhs((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT);
     _token.setLine(_line);

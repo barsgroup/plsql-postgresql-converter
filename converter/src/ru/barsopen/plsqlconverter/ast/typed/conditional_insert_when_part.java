@@ -45,6 +45,22 @@ public class conditional_insert_when_part implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.multi_table_elements.size(); ++_i) {
+      if (this.multi_table_elements.get(_i) == child) {
+        this.remove_multi_table_elements(_i);
+        this.insert_multi_table_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.multi_table_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN);
     _token.setLine(_line);

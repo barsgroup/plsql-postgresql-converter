@@ -46,6 +46,23 @@ public class expression_element_like implements expression_element, _baseNode {
       this.escape._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.text == child) {
+      this.set_text((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    if (this.pattern == child) {
+      this.set_pattern((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    if (this.escape == child) {
+      this.set_escape((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_LIKE);
     _token.setLine(_line);

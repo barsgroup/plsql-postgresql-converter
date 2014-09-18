@@ -37,6 +37,19 @@ public class table_type_dec_table_of implements table_type_dec_impl, _baseNode {
       this.table_indexed_by_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.table_indexed_by_part == child) {
+      this.set_table_indexed_by_part((ru.barsopen.plsqlconverter.ast.typed.table_indexed_by_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_TABLE);
     _token.setLine(_line);

@@ -35,6 +35,18 @@ public class projection_list implements query_block_projection, _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.selected_elements.size(); ++_i) {
+      if (this.selected_elements.get(_i) == child) {
+        this.remove_selected_elements(_i);
+        this.insert_selected_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.selected_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_LIST);
     _token.setLine(_line);

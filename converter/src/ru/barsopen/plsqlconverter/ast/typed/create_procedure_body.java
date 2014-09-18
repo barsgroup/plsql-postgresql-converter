@@ -75,6 +75,27 @@ public class create_procedure_body implements unit_statement, package_obj_body, 
       this.create_procedure_body_impl._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.procedure_name == child) {
+      this.set_procedure_name((ru.barsopen.plsqlconverter.ast.typed.procedure_name)replacement);
+      return;
+    }
+    if (this.parameters == child) {
+      this.set_parameters((ru.barsopen.plsqlconverter.ast.typed.parameters)replacement);
+      return;
+    }
+    if (this.invoker_rights_clause == child) {
+      this.set_invoker_rights_clause((ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause)replacement);
+      return;
+    }
+    if (this.create_procedure_body_impl == child) {
+      this.set_create_procedure_body_impl((ru.barsopen.plsqlconverter.ast.typed.create_procedure_body_impl)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PROCEDURE);
     _token.setLine(_line);

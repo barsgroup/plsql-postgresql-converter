@@ -70,6 +70,31 @@ public class single_table_insert implements insert_statement_spec, _baseNode {
       this.error_logging_clause._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.insert_into_clause == child) {
+      this.set_insert_into_clause((ru.barsopen.plsqlconverter.ast.typed.insert_into_clause)replacement);
+      return;
+    }
+    if (this.values_clause == child) {
+      this.set_values_clause((ru.barsopen.plsqlconverter.ast.typed.values_clause)replacement);
+      return;
+    }
+    if (this.static_returning_clause == child) {
+      this.set_static_returning_clause((ru.barsopen.plsqlconverter.ast.typed.static_returning_clause)replacement);
+      return;
+    }
+    if (this.select_statement == child) {
+      this.set_select_statement((ru.barsopen.plsqlconverter.ast.typed.select_statement)replacement);
+      return;
+    }
+    if (this.error_logging_clause == child) {
+      this.set_error_logging_clause((ru.barsopen.plsqlconverter.ast.typed.error_logging_clause)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SINGLE_TABLE_MODE);
     _token.setLine(_line);

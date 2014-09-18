@@ -63,6 +63,19 @@ public class standard_function_trim implements standard_function, _baseNode {
       visitor.visit(this.BOTH_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.text_expr == child) {
+      this.set_text_expr((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    if (this.trim_char_expr == child) {
+      this.set_trim_char_expr((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TRIM_VK);
     _token.setLine(_line);

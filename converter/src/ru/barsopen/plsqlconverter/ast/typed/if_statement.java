@@ -66,6 +66,30 @@ public class if_statement implements statement, _baseNode {
       this.else_part._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression == child) {
+      this.set_expression((ru.barsopen.plsqlconverter.ast.typed.expression)replacement);
+      return;
+    }
+    if (this.seq_of_statements == child) {
+      this.set_seq_of_statements((ru.barsopen.plsqlconverter.ast.typed.seq_of_statements)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.elsif_parts.size(); ++_i) {
+      if (this.elsif_parts.get(_i) == child) {
+        this.remove_elsif_parts(_i);
+        this.insert_elsif_parts(_i, (ru.barsopen.plsqlconverter.ast.typed.elsif_part)replacement);
+        return;
+      }
+    }
+    if (this.else_part == child) {
+      this.set_else_part((ru.barsopen.plsqlconverter.ast.typed.else_part)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_IF);
     _token.setLine(_line);

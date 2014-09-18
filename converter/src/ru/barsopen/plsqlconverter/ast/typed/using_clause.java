@@ -35,6 +35,18 @@ public class using_clause implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.using_elements.size(); ++_i) {
+      if (this.using_elements.get(_i) == child) {
+        this.remove_using_elements(_i);
+        this.insert_using_elements(_i, (ru.barsopen.plsqlconverter.ast.typed.using_element)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_USING);
     _token.setLine(_line);

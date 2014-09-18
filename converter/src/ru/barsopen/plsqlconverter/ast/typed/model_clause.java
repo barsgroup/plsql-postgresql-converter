@@ -75,6 +75,33 @@ public class model_clause implements _baseNode {
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.main_model == child) {
+      this.set_main_model((ru.barsopen.plsqlconverter.ast.typed.main_model)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.cell_reference_optionss.size(); ++_i) {
+      if (this.cell_reference_optionss.get(_i) == child) {
+        this.remove_cell_reference_optionss(_i);
+        this.insert_cell_reference_optionss(_i, (ru.barsopen.plsqlconverter.ast.typed.cell_reference_options)replacement);
+        return;
+      }
+    }
+    if (this.return_rows_clause == child) {
+      this.set_return_rows_clause((ru.barsopen.plsqlconverter.ast.typed.return_rows_clause)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.reference_models.size(); ++_i) {
+      if (this.reference_models.get(_i) == child) {
+        this.remove_reference_models(_i);
+        this.insert_reference_models(_i, (ru.barsopen.plsqlconverter.ast.typed.reference_model)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_MODEL);
     _token.setLine(_line);

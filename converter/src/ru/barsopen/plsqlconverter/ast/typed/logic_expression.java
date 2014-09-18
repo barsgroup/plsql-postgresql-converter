@@ -26,6 +26,15 @@ public class logic_expression implements expression, _baseNode {
       this.expression_element._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.expression_element == child) {
+      this.set_expression_element((ru.barsopen.plsqlconverter.ast.typed.expression_element)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LOGIC_EXPR);
     _token.setLine(_line);

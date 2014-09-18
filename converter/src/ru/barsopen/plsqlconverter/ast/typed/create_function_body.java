@@ -157,6 +157,48 @@ public class create_function_body implements unit_statement, package_obj_body, d
       this.function_impl._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.function_name == child) {
+      this.set_function_name((ru.barsopen.plsqlconverter.ast.typed.function_name)replacement);
+      return;
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.parameters == child) {
+      this.set_parameters((ru.barsopen.plsqlconverter.ast.typed.parameters)replacement);
+      return;
+    }
+    for (int _i = 0; _i < this.invoker_rights_clauses.size(); ++_i) {
+      if (this.invoker_rights_clauses.get(_i) == child) {
+        this.remove_invoker_rights_clauses(_i);
+        this.insert_invoker_rights_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.invoker_rights_clause)replacement);
+        return;
+      }
+    }
+    for (int _i = 0; _i < this.parallel_enable_clauses.size(); ++_i) {
+      if (this.parallel_enable_clauses.get(_i) == child) {
+        this.remove_parallel_enable_clauses(_i);
+        this.insert_parallel_enable_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.parallel_enable_clause)replacement);
+        return;
+      }
+    }
+    for (int _i = 0; _i < this.result_cache_clauses.size(); ++_i) {
+      if (this.result_cache_clauses.get(_i) == child) {
+        this.remove_result_cache_clauses(_i);
+        this.insert_result_cache_clauses(_i, (ru.barsopen.plsqlconverter.ast.typed.result_cache_clause)replacement);
+        return;
+      }
+    }
+    if (this.function_impl == child) {
+      this.set_function_impl((ru.barsopen.plsqlconverter.ast.typed.function_impl)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_FUNCTION);
     _token.setLine(_line);

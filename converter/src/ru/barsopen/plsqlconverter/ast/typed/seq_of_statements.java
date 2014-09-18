@@ -35,6 +35,18 @@ public class seq_of_statements implements expression_or_seq_of_statements, _base
       _value._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    for (int _i = 0; _i < this.stat_or_labels.size(); ++_i) {
+      if (this.stat_or_labels.get(_i) == child) {
+        this.remove_stat_or_labels(_i);
+        this.insert_stat_or_labels(_i, (ru.barsopen.plsqlconverter.ast.typed.stat_or_label)replacement);
+        return;
+      }
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.STATEMENTS);
     _token.setLine(_line);

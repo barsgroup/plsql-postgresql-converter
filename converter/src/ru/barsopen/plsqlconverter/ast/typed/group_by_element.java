@@ -26,6 +26,15 @@ public class group_by_element implements _baseNode {
       this.group_by_elements._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.group_by_elements == child) {
+      this.set_group_by_elements((ru.barsopen.plsqlconverter.ast.typed.group_by_elements)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.GROUP_BY_ELEMENT);
     _token.setLine(_line);

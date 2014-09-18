@@ -55,6 +55,23 @@ public class forall_statement implements statement, _baseNode {
       visitor.visit(this.EXCEPTIONS_VK);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.index_name == child) {
+      this.set_index_name((ru.barsopen.plsqlconverter.ast.typed.index_name)replacement);
+      return;
+    }
+    if (this.bounds_clause == child) {
+      this.set_bounds_clause((ru.barsopen.plsqlconverter.ast.typed.bounds_clause)replacement);
+      return;
+    }
+    if (this.sql_statement == child) {
+      this.set_sql_statement((ru.barsopen.plsqlconverter.ast.typed.sql_statement)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FORALL_VK);
     _token.setLine(_line);

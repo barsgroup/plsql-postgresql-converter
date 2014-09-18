@@ -35,6 +35,15 @@ public class subquery_operation_minus implements subquery_operation_part, _baseN
       this.subquery_basic_elements._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.subquery_basic_elements == child) {
+      this.set_subquery_basic_elements((ru.barsopen.plsqlconverter.ast.typed.subquery_basic_elements)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_MINUS);
     _token.setLine(_line);

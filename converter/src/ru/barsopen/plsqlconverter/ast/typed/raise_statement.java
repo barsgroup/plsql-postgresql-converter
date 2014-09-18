@@ -27,6 +27,15 @@ public class raise_statement implements statement, _baseNode {
       this.exception_name._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.exception_name == child) {
+      this.set_exception_name((ru.barsopen.plsqlconverter.ast.typed.exception_name)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RAISE_VK);
     _token.setLine(_line);

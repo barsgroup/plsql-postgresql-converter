@@ -58,6 +58,27 @@ public class cursor_declaration implements package_obj_spec, package_obj_body, d
       this.parameters._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.cursor_name == child) {
+      this.set_cursor_name((ru.barsopen.plsqlconverter.ast.typed.cursor_name)replacement);
+      return;
+    }
+    if (this.type_spec == child) {
+      this.set_type_spec((ru.barsopen.plsqlconverter.ast.typed.type_spec)replacement);
+      return;
+    }
+    if (this.select_statement == child) {
+      this.set_select_statement((ru.barsopen.plsqlconverter.ast.typed.select_statement)replacement);
+      return;
+    }
+    if (this.parameters == child) {
+      this.set_parameters((ru.barsopen.plsqlconverter.ast.typed.parameters)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CURSOR_DECLARE);
     _token.setLine(_line);

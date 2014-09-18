@@ -26,6 +26,15 @@ public class call_mode implements function_impl, create_procedure_body_impl, _ba
       this.call_spec._walk(visitor);
     }
   }
+
+  public void _replace(_baseNode child, _baseNode replacement) {
+    if (this.call_spec == child) {
+      this.set_call_spec((ru.barsopen.plsqlconverter.ast.typed.call_spec)replacement);
+      return;
+    }
+    throw new RuntimeException("Failed to replace node: no such node");
+  }
+
   public org.antlr.runtime.tree.Tree unparse() {
     org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CALL_MODE);
     _token.setLine(_line);

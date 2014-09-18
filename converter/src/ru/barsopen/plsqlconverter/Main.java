@@ -20,13 +20,17 @@ import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstSerializer;
 import ru.barsopen.plsqlconverter.ast.transforms.AstUtil;
 import ru.barsopen.plsqlconverter.ast.transforms.AstXml;
+import ru.barsopen.plsqlconverter.ast.transforms.CustomTypesConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.DatatypeConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.IntoStrictConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.NestedFunctionConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.OracleOuterJoinTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.PackageConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
 import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedurePerformConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedureToFunctionConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.typed._baseNode;
 import ru.barsopen.plsqlconverter.ast.typed.create_function_body;
 import ru.barsopen.plsqlconverter.ast.typed.create_package_body;
 import ru.barsopen.plsqlconverter.ast.typed.create_package_spec;
@@ -38,6 +42,7 @@ import ru.barsopen.plsqlconverter.ast.typed.parser;
 import ru.barsopen.plsqlconverter.ast.typed.sql_script;
 import ru.barsopen.plsqlconverter.ast.typed.sql_script_item;
 import ru.barsopen.plsqlconverter.ast.typed.unit_statement;
+import ru.barsopen.plsqlconverter.util.ReflectionUtil;
 import ru.barsopen.plsqlconverter.util.TokenCounter;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
@@ -95,6 +100,11 @@ public class Main {
 			DatatypeConversionTransformer.transformAll(theTree);
 			ProcedureToFunctionConversionTransformer.transformAll(theTree);
 			ProcedurePerformConversionTransformer.transformAll(theTree);
+			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, theTree);
+			IntoStrictConversionTransformer.transformAll(typedAst);
+			CustomTypesConversionTransformer.transformAll(typedAst);
+			//NestedFunctionConversionTransformer.transformAll(typedAst);
+			theTree = typedAst.unparse();
 		}
 		
 		if (!options.splitLargeScript) {
