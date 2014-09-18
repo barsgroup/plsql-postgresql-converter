@@ -2,8 +2,6 @@ package ru.barsopen.plsqlconverter;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -15,13 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.AngleBracketTemplateLexer;
 
-import ru.barsopen.plsqlconverter.ast.DerivedSqlPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstParser;
 import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
 import ru.barsopen.plsqlconverter.ast.transforms.AstSerializer;
@@ -34,7 +27,17 @@ import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
 import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedurePerformConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedureToFunctionConversionTransformer;
-import ru.barsopen.plsqlconverter.ast.typed.*;
+import ru.barsopen.plsqlconverter.ast.typed.create_function_body;
+import ru.barsopen.plsqlconverter.ast.typed.create_package_body;
+import ru.barsopen.plsqlconverter.ast.typed.create_package_spec;
+import ru.barsopen.plsqlconverter.ast.typed.create_procedure_body;
+import ru.barsopen.plsqlconverter.ast.typed.create_sequence;
+import ru.barsopen.plsqlconverter.ast.typed.create_trigger;
+import ru.barsopen.plsqlconverter.ast.typed.create_type;
+import ru.barsopen.plsqlconverter.ast.typed.parser;
+import ru.barsopen.plsqlconverter.ast.typed.sql_script;
+import ru.barsopen.plsqlconverter.ast.typed.sql_script_item;
+import ru.barsopen.plsqlconverter.ast.typed.unit_statement;
 import ru.barsopen.plsqlconverter.util.TokenCounter;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
@@ -190,8 +193,6 @@ public class Main {
 				}
 				
 				if (options.splitLargeScriptOutputSerialied) {
-					PrintResult printResult = AstPrinter.printTreeToOracleString(newScript, options.tree_type);
-
 					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%s_%d.bin", name, idx)).toString();
 					try (FileOutputStream out = new FileOutputStream(path)) {
 						AstSerializer.serialiaseAst(out, new ArrayList<Token>(), newScript);
@@ -453,15 +454,15 @@ public class Main {
 		if (reprintResult.printErrors.size() > 0) {
 			return "Printer errors (on printed tree)";
 		}
-		/*
-		String text1 = printResult.text.replace("\r\n", "\n").replace("\r", "\n");
-		String text2 = reprintResult.text.replace("\r\n", "\n").replace("\r", "\n");
+		
+		String text1 = printResult.text.replace("\r\n", "\n").replace("\r", "\n").replace(" ", "").replace("\t", "");
+		String text2 = reprintResult.text.replace("\r\n", "\n").replace("\r", "\n").replace(" ", "").replace("\t", "");
 		if (!text1.equals(text2)) {
 			TextPos mismatchPos = getStringMismatchIndex(text1, text2);
 			Character c1 = mismatchPos.index < text1.length() ? text1.charAt(mismatchPos.index) : null;
 			Character c2 = mismatchPos.index < text2.length() ? text2.charAt(mismatchPos.index) : null;
-			return String.format("Texts mismatch at %d:%d '%s' <> '%s'", mismatchPos.line, mismatchPos.col, c1, c2);
-		}*/
+			return String.format("Texts mismatch at: '%s' <> '%s'", mismatchPos.line, mismatchPos.col, c1, c2);
+		}
 		Tree[] mismatchedTrees = getMismatchedTreeNodes(tree, reparseResult.tree);
 		if (mismatchedTrees == null) {
 			return null;
