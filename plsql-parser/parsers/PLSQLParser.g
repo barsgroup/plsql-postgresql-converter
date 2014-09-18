@@ -89,7 +89,8 @@ tokens {
     PARAMETER;
     EXCEPTION_DECLARE;
     PRAGMA_DECLARE;
-    RECORD_TYPE_DECLARE;
+    RECORD_TYPE_DECLARE_FIELDS;
+    RECORD_TYPE_DECLARE_REFCURSOR;
     FIELDS;
     RECORD_VAR_DECLARE;
     TABLE_TYPE_DECLARE;
@@ -1044,9 +1045,10 @@ record_declaration
 record_type_dec
     :    type_key type_name is_key 
     (    record_key LEFT_PAREN field_spec ( COMMA field_spec )* RIGHT_PAREN
+      -> ^(RECORD_TYPE_DECLARE_FIELDS[$type_key.start] type_name field_spec+)
     |    ref_key cursor_key (return_key type_spec)?
+      -> ^(RECORD_TYPE_DECLARE_REFCURSOR[$type_key.start] type_spec?)
     )    SEMICOLON
-    -> ^(RECORD_TYPE_DECLARE[$type_key.start] type_name ref_key? type_spec? ^(FIELDS field_spec*)?)
     ;
 
 field_spec
