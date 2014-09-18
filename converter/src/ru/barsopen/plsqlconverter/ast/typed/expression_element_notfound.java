@@ -27,7 +27,7 @@ public class expression_element_notfound implements expression_element, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_NOTFOUND_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_NOTFOUND_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PERCENT_NOTFOUND_VK");

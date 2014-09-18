@@ -46,7 +46,7 @@ public class table_type_dec implements table_declaration, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_TYPE_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_TYPE_DECLARE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TABLE_TYPE_DECLARE");

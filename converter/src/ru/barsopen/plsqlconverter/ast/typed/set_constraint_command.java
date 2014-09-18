@@ -17,7 +17,7 @@ public class set_constraint_command implements transaction_control_statements, _
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SET_CONSTRAINT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SET_CONSTRAINT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SET_CONSTRAINT");

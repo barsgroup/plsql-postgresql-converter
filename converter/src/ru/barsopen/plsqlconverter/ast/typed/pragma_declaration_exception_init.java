@@ -37,7 +37,7 @@ public class pragma_declaration_exception_init implements pragma_declaration_imp
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_INIT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_INIT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EXCEPTION_INIT_VK");

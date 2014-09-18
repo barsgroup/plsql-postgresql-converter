@@ -27,7 +27,7 @@ public class model_column_clauses_dimension implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DIMENSION_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DIMENSION_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DIMENSION_VK");

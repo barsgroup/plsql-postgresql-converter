@@ -74,7 +74,7 @@ public class function_spec implements package_obj_spec, package_obj_body, _baseN
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_SPEC);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_SPEC);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("FUNCTION_SPEC");

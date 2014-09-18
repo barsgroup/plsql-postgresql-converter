@@ -27,7 +27,7 @@ public class drop_procedure implements unit_statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DROP_PROCEDURE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_PROCEDURE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DROP_PROCEDURE");

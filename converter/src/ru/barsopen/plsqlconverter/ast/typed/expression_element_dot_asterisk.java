@@ -27,7 +27,7 @@ public class expression_element_dot_asterisk implements expression_element, _bas
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DOT_ASTERISK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DOT_ASTERISK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DOT_ASTERISK");

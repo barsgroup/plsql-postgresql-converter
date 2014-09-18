@@ -36,7 +36,7 @@ public class insert_into_clause_columns implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COLUMNS);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COLUMNS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("COLUMNS");

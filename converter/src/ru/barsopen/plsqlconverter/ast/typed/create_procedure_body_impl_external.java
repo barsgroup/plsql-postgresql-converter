@@ -17,7 +17,7 @@ public class create_procedure_body_impl_external implements create_procedure_bod
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXTERNAL_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXTERNAL_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EXTERNAL_VK");

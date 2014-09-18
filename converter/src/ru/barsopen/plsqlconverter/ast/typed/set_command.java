@@ -25,7 +25,7 @@ public class set_command implements sql_plus_command, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SET_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SET_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SET_VK");

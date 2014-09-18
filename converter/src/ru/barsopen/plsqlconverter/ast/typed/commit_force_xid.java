@@ -27,7 +27,7 @@ public class commit_force_xid implements commit_force_content, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CORRUPT_XID_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CORRUPT_XID_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CORRUPT_XID_VK");

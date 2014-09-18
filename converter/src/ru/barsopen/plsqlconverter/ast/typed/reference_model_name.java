@@ -38,7 +38,7 @@ public class reference_model_name implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.REFERENCE_MODEL_NAME);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.REFERENCE_MODEL_NAME);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("REFERENCE_MODEL_NAME");

@@ -37,7 +37,7 @@ public class indexed_for_bounds implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SIMPLE_BOUND);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_BOUND);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SIMPLE_BOUND");

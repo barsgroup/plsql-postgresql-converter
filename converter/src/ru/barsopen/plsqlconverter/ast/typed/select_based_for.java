@@ -37,7 +37,7 @@ public class select_based_for implements cursor_loop_param, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_BASED_FOR);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_BASED_FOR);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SELECT_BASED_FOR");

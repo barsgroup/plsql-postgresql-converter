@@ -47,7 +47,7 @@ public class exception_name implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_NAME);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_NAME);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EXCEPTION_NAME");

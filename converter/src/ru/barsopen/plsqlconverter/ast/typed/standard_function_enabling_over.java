@@ -43,7 +43,7 @@ public class standard_function_enabling_over implements standard_function, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_ENABLING_OVER);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_ENABLING_OVER);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText(name);

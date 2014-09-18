@@ -36,7 +36,7 @@ public class type_name implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TYPE_NAME);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TYPE_NAME);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TYPE_NAME");

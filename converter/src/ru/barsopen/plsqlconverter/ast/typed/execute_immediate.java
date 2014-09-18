@@ -60,7 +60,7 @@ public class execute_immediate implements sql_statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXECUTE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXECUTE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EXECUTE_VK");

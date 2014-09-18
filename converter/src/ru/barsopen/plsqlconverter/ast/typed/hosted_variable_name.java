@@ -35,7 +35,7 @@ public class hosted_variable_name implements assignment_target, expression_eleme
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.HOSTED_VARIABLE_NAME);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.HOSTED_VARIABLE_NAME);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("HOSTED_VARIABLE_NAME");

@@ -47,7 +47,7 @@ public class case_statement_searched implements case_statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SEARCHED_CASE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SEARCHED_CASE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SEARCHED_CASE");

@@ -45,7 +45,7 @@ public class pragma_declaration_restrict_references implements pragma_declaratio
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RESTRICT_REFERENCES_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RESTRICT_REFERENCES_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("RESTRICT_REFERENCES_VK");

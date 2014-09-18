@@ -81,7 +81,7 @@ public class merge_statement implements data_manipulation_language_statements, _
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MERGE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MERGE_VK");

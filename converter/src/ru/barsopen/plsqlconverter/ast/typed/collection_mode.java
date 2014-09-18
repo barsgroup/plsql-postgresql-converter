@@ -27,7 +27,7 @@ public class collection_mode implements table_expression_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COLLECTION_MODE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COLLECTION_MODE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("COLLECTION_MODE");

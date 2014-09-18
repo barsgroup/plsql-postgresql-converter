@@ -88,7 +88,7 @@ public class table_ref_aux implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF_ELEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF_ELEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TABLE_REF_ELEMENT");

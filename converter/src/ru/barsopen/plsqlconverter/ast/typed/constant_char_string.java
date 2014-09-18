@@ -22,7 +22,7 @@ public class constant_char_string implements constant, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_STRING);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText(value);

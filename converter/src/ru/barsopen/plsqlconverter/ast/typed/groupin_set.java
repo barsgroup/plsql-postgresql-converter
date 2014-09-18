@@ -27,7 +27,7 @@ public class groupin_set implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.GROUPIN_SET);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.GROUPIN_SET);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("GROUPIN_SET");

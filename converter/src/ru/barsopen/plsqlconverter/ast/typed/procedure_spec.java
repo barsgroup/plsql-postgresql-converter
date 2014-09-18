@@ -48,7 +48,7 @@ public class procedure_spec implements package_obj_spec, package_obj_body, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PROCEDURE_SPEC);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PROCEDURE_SPEC);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PROCEDURE_SPEC");

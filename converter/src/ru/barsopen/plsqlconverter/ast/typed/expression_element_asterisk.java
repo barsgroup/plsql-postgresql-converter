@@ -37,7 +37,7 @@ public class expression_element_asterisk implements expression_element, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ASTERISK");

@@ -17,7 +17,7 @@ public class for_update_options_nowait implements for_update_options, _baseNode 
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_NOWAIT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_NOWAIT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PLSQL_RESERVED_NOWAIT");

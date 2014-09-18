@@ -27,7 +27,7 @@ public class table_indexed_by_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_BY);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.INDEXED_BY);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("INDEXED_BY");

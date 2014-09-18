@@ -27,7 +27,7 @@ public class commit_comment implements commit_statement_additional, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COMMENT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("COMMENT_VK");

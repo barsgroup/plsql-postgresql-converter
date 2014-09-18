@@ -66,7 +66,7 @@ public class create_package_spec implements create_package, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PACKAGE_SPEC);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PACKAGE_SPEC);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CREATE_PACKAGE_SPEC");

@@ -34,7 +34,7 @@ public class alter_trigger implements unit_statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ALTER_TRIGGER);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_TRIGGER);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ALTER_TRIGGER");

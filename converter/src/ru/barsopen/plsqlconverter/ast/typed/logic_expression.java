@@ -27,7 +27,7 @@ public class logic_expression implements expression, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LOGIC_EXPR);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LOGIC_EXPR);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("LOGIC_EXPR");

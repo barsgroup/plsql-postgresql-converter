@@ -47,7 +47,7 @@ public class expression_element_like2 implements expression_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LIKE2_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LIKE2_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("LIKE2_VK");

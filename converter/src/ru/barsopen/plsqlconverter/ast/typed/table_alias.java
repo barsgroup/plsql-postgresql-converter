@@ -38,7 +38,7 @@ public class table_alias implements alias, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_ALIAS);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_ALIAS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TABLE_ALIAS");

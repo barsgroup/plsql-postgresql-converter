@@ -27,7 +27,7 @@ public class dynamic_returning_clause implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DYNAMIC_RETURN);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DYNAMIC_RETURN);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DYNAMIC_RETURN");

@@ -27,7 +27,7 @@ public class default_value_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DEFAULT_VALUE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DEFAULT_VALUE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DEFAULT_VALUE");

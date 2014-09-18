@@ -37,7 +37,7 @@ public class expression_element_percent implements expression_element, _baseNode
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PERCENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PERCENT");

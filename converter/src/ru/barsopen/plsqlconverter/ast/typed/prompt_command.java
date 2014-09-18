@@ -17,7 +17,7 @@ public class prompt_command implements sql_plus_command, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PROMPT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PROMPT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PROMPT");

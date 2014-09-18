@@ -37,7 +37,7 @@ public class rollback_statement implements transaction_control_statements, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ROLLBACK_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLBACK_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ROLLBACK_VK");

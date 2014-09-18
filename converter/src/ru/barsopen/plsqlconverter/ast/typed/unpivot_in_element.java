@@ -17,7 +17,7 @@ public class unpivot_in_element implements _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.UNPIVOT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.UNPIVOT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("UNPIVOT_VK");

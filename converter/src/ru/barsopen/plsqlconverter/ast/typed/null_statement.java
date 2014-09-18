@@ -17,7 +17,7 @@ public class null_statement implements statement, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SQL92_RESERVED_NULL");

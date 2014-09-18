@@ -45,7 +45,7 @@ public class flashback_query_clause_versions implements flashback_query_clause, 
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.VERSIONS_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.VERSIONS_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("VERSIONS_VK");

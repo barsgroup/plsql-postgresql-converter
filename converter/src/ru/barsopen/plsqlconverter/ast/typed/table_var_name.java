@@ -38,7 +38,7 @@ public class table_var_name implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_VAR_NAME);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_VAR_NAME);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TABLE_VAR_NAME");

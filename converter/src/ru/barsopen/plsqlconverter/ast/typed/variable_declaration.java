@@ -66,7 +66,7 @@ public class variable_declaration implements package_obj_spec, package_obj_body,
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.VARIABLE_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.VARIABLE_DECLARE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("VARIABLE_DECLARE");

@@ -36,7 +36,7 @@ public class relies_on_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RELIES_ON_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RELIES_ON_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("RELIES_ON_VK");

@@ -38,7 +38,7 @@ public class argument implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ARGUMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ARGUMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ARGUMENT");

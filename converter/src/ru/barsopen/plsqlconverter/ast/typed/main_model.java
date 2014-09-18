@@ -67,7 +67,7 @@ public class main_model implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MAIN_MODEL);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MAIN_MODEL);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MAIN_MODEL");

@@ -47,7 +47,7 @@ public class standard_function_translate implements standard_function, _baseNode
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TRANSLATE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TRANSLATE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TRANSLATE_VK");

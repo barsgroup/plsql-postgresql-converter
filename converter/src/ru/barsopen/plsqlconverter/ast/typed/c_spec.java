@@ -34,7 +34,7 @@ public class c_spec implements call_spec_decl, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.C_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.C_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("C_VK");

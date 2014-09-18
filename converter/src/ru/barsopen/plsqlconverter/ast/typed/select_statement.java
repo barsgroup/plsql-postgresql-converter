@@ -60,7 +60,7 @@ public class select_statement implements data_manipulation_language_statements, 
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECT_STATEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_STATEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SELECT_STATEMENT");

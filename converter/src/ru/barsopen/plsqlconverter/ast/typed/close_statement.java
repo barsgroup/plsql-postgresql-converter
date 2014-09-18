@@ -27,7 +27,7 @@ public class close_statement implements cursor_manipulation_statements, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CLOSE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CLOSE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CLOSE_VK");

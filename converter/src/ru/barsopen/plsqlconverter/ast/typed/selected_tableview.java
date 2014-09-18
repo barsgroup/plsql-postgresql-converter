@@ -38,7 +38,7 @@ public class selected_tableview implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SELECTED_TABLEVIEW);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SELECTED_TABLEVIEW);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SELECTED_TABLEVIEW");

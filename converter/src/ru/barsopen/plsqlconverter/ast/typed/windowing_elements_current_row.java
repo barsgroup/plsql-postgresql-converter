@@ -25,7 +25,7 @@ public class windowing_elements_current_row implements windowing_elements, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CURRENT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CURRENT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CURRENT_VK");

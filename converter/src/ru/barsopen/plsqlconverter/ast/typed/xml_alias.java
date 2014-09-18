@@ -27,7 +27,7 @@ public class xml_alias implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XML_ALIAS);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XML_ALIAS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("XML_ALIAS");

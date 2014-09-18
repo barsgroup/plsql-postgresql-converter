@@ -17,7 +17,7 @@ public class cost_matrix_clause implements _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COST_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COST_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("COST_VK");

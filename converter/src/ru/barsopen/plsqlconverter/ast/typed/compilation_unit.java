@@ -36,7 +36,7 @@ public class compilation_unit implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.COMPILATION_UNIT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMPILATION_UNIT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("COMPILATION_UNIT");

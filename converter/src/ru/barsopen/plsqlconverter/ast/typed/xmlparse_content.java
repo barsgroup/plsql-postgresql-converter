@@ -17,7 +17,7 @@ public class xmlparse_content implements xmlparse_document_or_content, _baseNode
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CONTENT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CONTENT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CONTENT_VK");

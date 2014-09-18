@@ -38,7 +38,7 @@ public class xml_multiuse_expression_element implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XML_ELEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XML_ELEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("XML_ELEMENT");

@@ -27,7 +27,7 @@ public class expression_element_outer_join_sign implements expression_element, _
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.OUTER_JOIN_SIGN);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OUTER_JOIN_SIGN);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("OUTER_JOIN_SIGN");

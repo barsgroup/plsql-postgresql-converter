@@ -17,7 +17,7 @@ public class set_transaction_command implements transaction_control_statements, 
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SET_TRANSACTION);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SET_TRANSACTION);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SET_TRANSACTION");

@@ -17,7 +17,7 @@ public class exit_command implements sql_plus_command, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EXIT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXIT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EXIT_VK");

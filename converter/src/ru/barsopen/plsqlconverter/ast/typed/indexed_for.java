@@ -46,7 +46,7 @@ public class indexed_for implements cursor_loop_param, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_FOR);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.INDEXED_FOR);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("INDEXED_FOR");

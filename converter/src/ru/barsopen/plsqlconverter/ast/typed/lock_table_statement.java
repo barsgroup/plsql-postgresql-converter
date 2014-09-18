@@ -57,7 +57,7 @@ public class lock_table_statement implements data_manipulation_language_statemen
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_LOCK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_LOCK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PLSQL_RESERVED_LOCK");

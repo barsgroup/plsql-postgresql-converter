@@ -46,7 +46,7 @@ public class update_set_elements_assign implements update_set_elements, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ASSIGN");

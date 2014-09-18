@@ -34,7 +34,7 @@ public class map_order_function_spec implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.NON_DML);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("NON_DML");

@@ -54,7 +54,7 @@ public class native_datatype_spec implements type_spec, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.NATIVE_DATATYPE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NATIVE_DATATYPE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("NATIVE_DATATYPE");

@@ -93,7 +93,7 @@ public class standard_function_xmlelement implements standard_function, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLELEMENT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLELEMENT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("XMLELEMENT_VK");

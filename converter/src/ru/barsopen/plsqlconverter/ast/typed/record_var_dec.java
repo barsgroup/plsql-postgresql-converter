@@ -47,7 +47,7 @@ public class record_var_dec implements record_declaration, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RECORD_VAR_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_VAR_DECLARE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("RECORD_VAR_DECLARE");

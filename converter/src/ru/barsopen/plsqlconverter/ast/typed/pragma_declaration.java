@@ -27,7 +27,7 @@ public class pragma_declaration implements package_obj_spec, declare_spec, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PRAGMA_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PRAGMA_DECLARE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PRAGMA_DECLARE");

@@ -37,7 +37,7 @@ public class expression_element_plus implements expression_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PLUS_SIGN);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PLUS_SIGN);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PLUS_SIGN");

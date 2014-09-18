@@ -57,7 +57,7 @@ public class multi_table_insert implements insert_statement_spec, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MULTI_TABLE_MODE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MULTI_TABLE_MODE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MULTI_TABLE_MODE");

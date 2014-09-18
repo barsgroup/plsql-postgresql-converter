@@ -46,7 +46,7 @@ public class record_type_dec_refcursor implements record_type_dec, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RECORD_TYPE_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("RECORD_TYPE_DECLARE");

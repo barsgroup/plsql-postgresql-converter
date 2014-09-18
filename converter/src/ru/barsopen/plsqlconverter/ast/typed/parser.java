@@ -1,7 +1,7 @@
 package ru.barsopen.plsqlconverter.ast.typed;
 public class parser {
   public static boolean canParsecompilation_unit(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COMPILATION_UNIT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COMPILATION_UNIT;
   }
 
   public static compilation_unit parsecompilation_unit(org.antlr.runtime.tree.Tree tree) {
@@ -35,7 +35,7 @@ public class parser {
   }
 
   public static boolean canParsesql_script(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL_SCRIPT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL_SCRIPT;
   }
 
   public static sql_script parsesql_script(org.antlr.runtime.tree.Tree tree) {
@@ -96,7 +96,7 @@ public class parser {
   }
 
   public static boolean canParsewhenever_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WHENEVER_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WHENEVER_VK;
   }
 
   public static whenever_command parsewhenever_command(org.antlr.runtime.tree.Tree tree) {
@@ -131,7 +131,7 @@ public class parser {
   }
 
   public static boolean canParseset_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SET_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SET_VK;
   }
 
   public static set_command parseset_command(org.antlr.runtime.tree.Tree tree) {
@@ -162,7 +162,7 @@ public class parser {
   }
 
   public static boolean canParseexit_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXIT_VK;
   }
 
   public static exit_command parseexit_command(org.antlr.runtime.tree.Tree tree) {
@@ -188,7 +188,7 @@ public class parser {
   }
 
   public static boolean canParseprompt_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PROMPT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PROMPT;
   }
 
   public static prompt_command parseprompt_command(org.antlr.runtime.tree.Tree tree) {
@@ -244,7 +244,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_function(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DROP_FUNCTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_FUNCTION;
   }
 
   public static drop_function parsedrop_function(org.antlr.runtime.tree.Tree tree) {
@@ -275,7 +275,7 @@ public class parser {
   }
 
   public static boolean canParsealter_function(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ALTER_FUNCTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_FUNCTION;
   }
 
   public static alter_function parsealter_function(org.antlr.runtime.tree.Tree tree) {
@@ -295,12 +295,12 @@ public class parser {
     _result.set_function_name(parsefunction_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DEBUG_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DEBUG_VK)) {
       _result.set_DEBUG_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REUSE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REUSE_VK)) {
       _result.set_REUSE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -329,7 +329,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_function_body(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CREATE_FUNCTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_FUNCTION;
   }
 
   public static create_function_body parsecreate_function_body(org.antlr.runtime.tree.Tree tree) {
@@ -345,12 +345,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CREATE)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_CREATE)) {
       _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
       _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -382,12 +382,12 @@ public class parser {
       ++_i;
     }
 
-    while (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DETERMINISTIC_VK)) {
+    while (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DETERMINISTIC_VK)) {
       _result.add_DETERMINISTIC_VKs(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIPELINED_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIPELINED_VK)) {
       _result.set_PIPELINED_VK(tree.getChild(_i));
       ++_i;
     }
@@ -435,7 +435,7 @@ public class parser {
   }
 
   public static boolean canParseparameters(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARAMETERS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETERS;
   }
 
   public static parameters parseparameters(org.antlr.runtime.tree.Tree tree) {
@@ -484,7 +484,7 @@ public class parser {
   }
 
   public static boolean canParsefunction_impl_using(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.USING_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.USING_MODE;
   }
 
   public static function_impl_using parsefunction_impl_using(org.antlr.runtime.tree.Tree tree) {
@@ -500,7 +500,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.AGGREGATE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.AGGREGATE_VK)) {
       _result.set_AGGREGATE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -522,7 +522,7 @@ public class parser {
   }
 
   public static boolean canParsecall_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CALL_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CALL_MODE;
   }
 
   public static call_mode parsecall_mode(org.antlr.runtime.tree.Tree tree) {
@@ -553,7 +553,7 @@ public class parser {
   }
 
   public static boolean canParsebody_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.BODY_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BODY_MODE;
   }
 
   public static body_mode parsebody_mode(org.antlr.runtime.tree.Tree tree) {
@@ -584,7 +584,7 @@ public class parser {
   }
 
   public static boolean canParseparallel_enable_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARALLEL_ENABLE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARALLEL_ENABLE_VK;
   }
 
   public static parallel_enable_clause parseparallel_enable_clause(org.antlr.runtime.tree.Tree tree) {
@@ -616,7 +616,7 @@ public class parser {
   }
 
   public static boolean canParsepartition_by_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARTITION_VK;
   }
 
   public static partition_by_clause parsepartition_by_clause(org.antlr.runtime.tree.Tree tree) {
@@ -650,7 +650,7 @@ public class parser {
   }
 
   public static boolean canParseresult_cache_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RESULT_CACHE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RESULT_CACHE_VK;
   }
 
   public static result_cache_clause parseresult_cache_clause(org.antlr.runtime.tree.Tree tree) {
@@ -682,7 +682,7 @@ public class parser {
   }
 
   public static boolean canParserelies_on_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RELIES_ON_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RELIES_ON_VK;
   }
 
   public static relies_on_part parserelies_on_part(org.antlr.runtime.tree.Tree tree) {
@@ -717,7 +717,7 @@ public class parser {
   }
 
   public static boolean canParsestreaming_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.STREAMING_CLAUSE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.STREAMING_CLAUSE;
   }
 
   public static streaming_clause parsestreaming_clause(org.antlr.runtime.tree.Tree tree) {
@@ -751,7 +751,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_package(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DROP_PACKAGE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_PACKAGE;
   }
 
   public static drop_package parsedrop_package(org.antlr.runtime.tree.Tree tree) {
@@ -771,7 +771,7 @@ public class parser {
     _result.set_package_name(parsepackage_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BODY_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BODY_VK)) {
       _result.set_BODY_VK(tree.getChild(_i));
       ++_i;
     }
@@ -789,7 +789,7 @@ public class parser {
   }
 
   public static boolean canParsealter_package(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ALTER_PACKAGE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_PACKAGE;
   }
 
   public static alter_package parsealter_package(org.antlr.runtime.tree.Tree tree) {
@@ -837,7 +837,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_package_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PACKAGE_SPEC;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PACKAGE_SPEC;
   }
 
   public static create_package_spec parsecreate_package_spec(org.antlr.runtime.tree.Tree tree) {
@@ -853,7 +853,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
       _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -891,7 +891,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_package_body(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PACKAGE_BODY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PACKAGE_BODY;
   }
 
   public static create_package_body parsecreate_package_body(org.antlr.runtime.tree.Tree tree) {
@@ -907,7 +907,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
       _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -973,7 +973,7 @@ public class parser {
   }
 
   public static boolean canParseprocedure_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PROCEDURE_SPEC;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PROCEDURE_SPEC;
   }
 
   public static procedure_spec parseprocedure_spec(org.antlr.runtime.tree.Tree tree) {
@@ -1017,7 +1017,7 @@ public class parser {
   }
 
   public static boolean canParsefunction_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_SPEC;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_SPEC;
   }
 
   public static function_spec parsefunction_spec(org.antlr.runtime.tree.Tree tree) {
@@ -1045,17 +1045,17 @@ public class parser {
     _result.set_parameters(parseparameters(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIPELINED_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIPELINED_VK)) {
       _result.set_PIPELINED_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RESULT_CACHE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RESULT_CACHE_VK)) {
       _result.set_RESULT_CACHE_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DETERMINISTIC_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DETERMINISTIC_VK)) {
       _result.set_DETERMINISTIC_VK(tree.getChild(_i));
       ++_i;
     }
@@ -1104,7 +1104,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_procedure(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DROP_PROCEDURE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_PROCEDURE;
   }
 
   public static drop_procedure parsedrop_procedure(org.antlr.runtime.tree.Tree tree) {
@@ -1135,7 +1135,7 @@ public class parser {
   }
 
   public static boolean canParsealter_procedure(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ALTER_PROCEDURE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_PROCEDURE;
   }
 
   public static alter_procedure parsealter_procedure(org.antlr.runtime.tree.Tree tree) {
@@ -1155,12 +1155,12 @@ public class parser {
     _result.set_procedure_name(parseprocedure_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.DEBUG_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DEBUG_VK)) {
       _result.set_DEBUG_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REUSE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REUSE_VK)) {
       _result.set_REUSE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -1189,7 +1189,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_procedure_body(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CREATE_PROCEDURE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_PROCEDURE;
   }
 
   public static create_procedure_body parsecreate_procedure_body(org.antlr.runtime.tree.Tree tree) {
@@ -1205,12 +1205,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CREATE)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_CREATE)) {
       _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REPLACE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
       _result.set_REPLACE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -1268,7 +1268,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_procedure_body_impl_external(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXTERNAL_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXTERNAL_VK;
   }
 
   public static create_procedure_body_impl_external parsecreate_procedure_body_impl_external(org.antlr.runtime.tree.Tree tree) {
@@ -1294,7 +1294,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DROP_TRIGGER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DROP_TRIGGER;
   }
 
   public static drop_trigger parsedrop_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1325,7 +1325,7 @@ public class parser {
   }
 
   public static boolean canParsealter_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ALTER_TRIGGER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ALTER_TRIGGER;
   }
 
   public static alter_trigger parsealter_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1359,7 +1359,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CREATE_TRIGGER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_TRIGGER;
   }
 
   public static create_trigger parsecreate_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1393,7 +1393,7 @@ public class parser {
   }
 
   public static boolean canParsetrigger_follows_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FOLLOWS_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FOLLOWS_VK;
   }
 
   public static trigger_follows_clause parsetrigger_follows_clause(org.antlr.runtime.tree.Tree tree) {
@@ -1427,7 +1427,7 @@ public class parser {
   }
 
   public static boolean canParsetrigger_when_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN;
   }
 
   public static trigger_when_clause parsetrigger_when_clause(org.antlr.runtime.tree.Tree tree) {
@@ -1461,7 +1461,7 @@ public class parser {
   }
 
   public static boolean canParsesimple_dml_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIMPLE_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_DML;
   }
 
   public static simple_dml_trigger parsesimple_dml_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1487,7 +1487,7 @@ public class parser {
   }
 
   public static boolean canParsecompound_dml_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COMPOUND_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COMPOUND_DML;
   }
 
   public static compound_dml_trigger parsecompound_dml_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1513,7 +1513,7 @@ public class parser {
   }
 
   public static boolean canParsenon_dml_trigger(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static non_dml_trigger parsenon_dml_trigger(org.antlr.runtime.tree.Tree tree) {
@@ -1547,7 +1547,7 @@ public class parser {
   }
 
   public static boolean canParsetrigger_body(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static trigger_body parsetrigger_body(org.antlr.runtime.tree.Tree tree) {
@@ -1581,7 +1581,7 @@ public class parser {
   }
 
   public static boolean canParsetiming_point_section(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static timing_point_section parsetiming_point_section(org.antlr.runtime.tree.Tree tree) {
@@ -1615,7 +1615,7 @@ public class parser {
   }
 
   public static boolean canParsenon_dml_event(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static non_dml_event parsenon_dml_event(org.antlr.runtime.tree.Tree tree) {
@@ -1649,7 +1649,7 @@ public class parser {
   }
 
   public static boolean canParsedml_event_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static dml_event_clause parsedml_event_clause(org.antlr.runtime.tree.Tree tree) {
@@ -1683,7 +1683,7 @@ public class parser {
   }
 
   public static boolean canParsedml_event_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static dml_event_element parsedml_event_element(org.antlr.runtime.tree.Tree tree) {
@@ -1717,7 +1717,7 @@ public class parser {
   }
 
   public static boolean canParsedml_event_nested_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static dml_event_nested_clause parsedml_event_nested_clause(org.antlr.runtime.tree.Tree tree) {
@@ -1751,7 +1751,7 @@ public class parser {
   }
 
   public static boolean canParsereferencing_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static referencing_clause parsereferencing_clause(org.antlr.runtime.tree.Tree tree) {
@@ -1785,7 +1785,7 @@ public class parser {
   }
 
   public static boolean canParsereferencing_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static referencing_element parsereferencing_element(org.antlr.runtime.tree.Tree tree) {
@@ -1819,7 +1819,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static drop_type parsedrop_type(org.antlr.runtime.tree.Tree tree) {
@@ -1853,7 +1853,7 @@ public class parser {
   }
 
   public static boolean canParsealter_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static alter_type parsealter_type(org.antlr.runtime.tree.Tree tree) {
@@ -1887,7 +1887,7 @@ public class parser {
   }
 
   public static boolean canParsealter_method_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static alter_method_element parsealter_method_element(org.antlr.runtime.tree.Tree tree) {
@@ -1921,7 +1921,7 @@ public class parser {
   }
 
   public static boolean canParseattribute_definition(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static attribute_definition parseattribute_definition(org.antlr.runtime.tree.Tree tree) {
@@ -1955,7 +1955,7 @@ public class parser {
   }
 
   public static boolean canParsealter_collection_clauses(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static alter_collection_clauses parsealter_collection_clauses(org.antlr.runtime.tree.Tree tree) {
@@ -1989,7 +1989,7 @@ public class parser {
   }
 
   public static boolean canParsedependent_handling_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static dependent_handling_clause parsedependent_handling_clause(org.antlr.runtime.tree.Tree tree) {
@@ -2023,7 +2023,7 @@ public class parser {
   }
 
   public static boolean canParsedependent_exceptions_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static dependent_exceptions_part parsedependent_exceptions_part(org.antlr.runtime.tree.Tree tree) {
@@ -2057,7 +2057,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static create_type parsecreate_type(org.antlr.runtime.tree.Tree tree) {
@@ -2091,7 +2091,7 @@ public class parser {
   }
 
   public static boolean canParseobject_type_def(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static object_type_def parseobject_type_def(org.antlr.runtime.tree.Tree tree) {
@@ -2125,7 +2125,7 @@ public class parser {
   }
 
   public static boolean canParseobject_as_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static object_as_part parseobject_as_part(org.antlr.runtime.tree.Tree tree) {
@@ -2159,7 +2159,7 @@ public class parser {
   }
 
   public static boolean canParseobject_under_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static object_under_part parseobject_under_part(org.antlr.runtime.tree.Tree tree) {
@@ -2193,7 +2193,7 @@ public class parser {
   }
 
   public static boolean canParsenested_table_type_def(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static nested_table_type_def parsenested_table_type_def(org.antlr.runtime.tree.Tree tree) {
@@ -2227,7 +2227,7 @@ public class parser {
   }
 
   public static boolean canParsesqlj_object_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static sqlj_object_type parsesqlj_object_type(org.antlr.runtime.tree.Tree tree) {
@@ -2261,7 +2261,7 @@ public class parser {
   }
 
   public static boolean canParsetype_body_elements(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static type_body_elements parsetype_body_elements(org.antlr.runtime.tree.Tree tree) {
@@ -2295,7 +2295,7 @@ public class parser {
   }
 
   public static boolean canParsemap_order_func_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static map_order_func_declaration parsemap_order_func_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -2329,7 +2329,7 @@ public class parser {
   }
 
   public static boolean canParsesubprog_decl_in_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static subprog_decl_in_type parsesubprog_decl_in_type(org.antlr.runtime.tree.Tree tree) {
@@ -2363,7 +2363,7 @@ public class parser {
   }
 
   public static boolean canParseconstructor_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static constructor_declaration parseconstructor_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -2397,7 +2397,7 @@ public class parser {
   }
 
   public static boolean canParsemodifier_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static modifier_clause parsemodifier_clause(org.antlr.runtime.tree.Tree tree) {
@@ -2431,7 +2431,7 @@ public class parser {
   }
 
   public static boolean canParsesqlj_object_type_attr(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static sqlj_object_type_attr parsesqlj_object_type_attr(org.antlr.runtime.tree.Tree tree) {
@@ -2465,7 +2465,7 @@ public class parser {
   }
 
   public static boolean canParseelement_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static element_spec parseelement_spec(org.antlr.runtime.tree.Tree tree) {
@@ -2499,7 +2499,7 @@ public class parser {
   }
 
   public static boolean canParseelement_spec_options(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static element_spec_options parseelement_spec_options(org.antlr.runtime.tree.Tree tree) {
@@ -2533,7 +2533,7 @@ public class parser {
   }
 
   public static boolean canParsesubprogram_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static subprogram_spec parsesubprogram_spec(org.antlr.runtime.tree.Tree tree) {
@@ -2567,7 +2567,7 @@ public class parser {
   }
 
   public static boolean canParseconstructor_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static constructor_spec parseconstructor_spec(org.antlr.runtime.tree.Tree tree) {
@@ -2601,7 +2601,7 @@ public class parser {
   }
 
   public static boolean canParseconstructor_call_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static constructor_call_mode parseconstructor_call_mode(org.antlr.runtime.tree.Tree tree) {
@@ -2635,7 +2635,7 @@ public class parser {
   }
 
   public static boolean canParsemap_order_function_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static map_order_function_spec parsemap_order_function_spec(org.antlr.runtime.tree.Tree tree) {
@@ -2669,7 +2669,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static pragma_clause parsepragma_clause(org.antlr.runtime.tree.Tree tree) {
@@ -2703,7 +2703,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_elements(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static pragma_elements parsepragma_elements(org.antlr.runtime.tree.Tree tree) {
@@ -2737,7 +2737,7 @@ public class parser {
   }
 
   public static boolean canParsetype_elements_parameter(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static type_elements_parameter parsetype_elements_parameter(org.antlr.runtime.tree.Tree tree) {
@@ -2771,7 +2771,7 @@ public class parser {
   }
 
   public static boolean canParsedrop_sequence(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static drop_sequence parsedrop_sequence(org.antlr.runtime.tree.Tree tree) {
@@ -2805,7 +2805,7 @@ public class parser {
   }
 
   public static boolean canParsealter_sequence(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static alter_sequence parsealter_sequence(org.antlr.runtime.tree.Tree tree) {
@@ -2839,7 +2839,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_sequence(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static create_sequence parsecreate_sequence(org.antlr.runtime.tree.Tree tree) {
@@ -2873,7 +2873,7 @@ public class parser {
   }
 
   public static boolean canParsesequence_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static sequence_spec parsesequence_spec(org.antlr.runtime.tree.Tree tree) {
@@ -2907,7 +2907,7 @@ public class parser {
   }
 
   public static boolean canParseinvoker_rights_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static invoker_rights_clause parseinvoker_rights_clause(org.antlr.runtime.tree.Tree tree) {
@@ -2941,7 +2941,7 @@ public class parser {
   }
 
   public static boolean canParsecompiler_parameters_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
   }
 
   public static compiler_parameters_clause parsecompiler_parameters_clause(org.antlr.runtime.tree.Tree tree) {
@@ -2975,7 +2975,7 @@ public class parser {
   }
 
   public static boolean canParsecall_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LANGUAGE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LANGUAGE_VK;
   }
 
   public static call_spec parsecall_spec(org.antlr.runtime.tree.Tree tree) {
@@ -3020,7 +3020,7 @@ public class parser {
   }
 
   public static boolean canParsejava_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.JAVA_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.JAVA_VK;
   }
 
   public static java_spec parsejava_spec(org.antlr.runtime.tree.Tree tree) {
@@ -3036,7 +3036,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
+    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
     _result.set_CHAR_STRING(tree.getChild(_i));
     ++_i;
 
@@ -3051,7 +3051,7 @@ public class parser {
   }
 
   public static boolean canParsec_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.C_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.C_VK;
   }
 
   public static c_spec parsec_spec(org.antlr.runtime.tree.Tree tree) {
@@ -3085,7 +3085,7 @@ public class parser {
   }
 
   public static boolean canParsec_agent_in_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.AGENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.AGENT_VK;
   }
 
   public static c_agent_in_clause parsec_agent_in_clause(org.antlr.runtime.tree.Tree tree) {
@@ -3111,7 +3111,7 @@ public class parser {
   }
 
   public static boolean canParsec_parameters_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARAMETERS_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETERS_VK;
   }
 
   public static c_parameters_clause parsec_parameters_clause(org.antlr.runtime.tree.Tree tree) {
@@ -3137,7 +3137,7 @@ public class parser {
   }
 
   public static boolean canParseparameter(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARAMETER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETER;
   }
 
   public static parameter parseparameter(org.antlr.runtime.tree.Tree tree) {
@@ -3206,7 +3206,7 @@ public class parser {
   }
 
   public static boolean canParseparameter_in(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_IN;
   }
 
   public static parameter_in parseparameter_in(org.antlr.runtime.tree.Tree tree) {
@@ -3232,7 +3232,7 @@ public class parser {
   }
 
   public static boolean canParseparameter_out(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OUT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OUT_VK;
   }
 
   public static parameter_out parseparameter_out(org.antlr.runtime.tree.Tree tree) {
@@ -3258,7 +3258,7 @@ public class parser {
   }
 
   public static boolean canParseparameter_inout(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INOUT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INOUT_VK;
   }
 
   public static parameter_inout parseparameter_inout(org.antlr.runtime.tree.Tree tree) {
@@ -3284,7 +3284,7 @@ public class parser {
   }
 
   public static boolean canParsedefault_value_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DEFAULT_VALUE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DEFAULT_VALUE;
   }
 
   public static default_value_part parsedefault_value_part(org.antlr.runtime.tree.Tree tree) {
@@ -3337,7 +3337,7 @@ public class parser {
   }
 
   public static boolean canParsevariable_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VARIABLE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VARIABLE_DECLARE;
   }
 
   public static variable_declaration parsevariable_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3361,12 +3361,12 @@ public class parser {
     _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONSTANT_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONSTANT_VK)) {
       _result.set_CONSTANT_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL)) {
       _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
@@ -3395,7 +3395,7 @@ public class parser {
   }
 
   public static boolean canParsesubtype_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SUBTYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SUBTYPE_DECLARE;
   }
 
   public static subtype_declaration parsesubtype_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3419,7 +3419,7 @@ public class parser {
     _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL)) {
       _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
@@ -3446,7 +3446,7 @@ public class parser {
   }
 
   public static boolean canParsesubtype_range(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RANGE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RANGE_VK;
   }
 
   public static subtype_range parsesubtype_range(org.antlr.runtime.tree.Tree tree) {
@@ -3483,7 +3483,7 @@ public class parser {
   }
 
   public static boolean canParsecursor_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CURSOR_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CURSOR_DECLARE;
   }
 
   public static cursor_declaration parsecursor_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3534,7 +3534,7 @@ public class parser {
   }
 
   public static boolean canParseexception_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_DECLARE;
   }
 
   public static exception_declaration parseexception_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3565,7 +3565,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PRAGMA_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PRAGMA_DECLARE;
   }
 
   public static pragma_declaration parsepragma_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3613,7 +3613,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration_serially_reusable(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SERIALLY_REUSABLE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SERIALLY_REUSABLE_VK;
   }
 
   public static pragma_declaration_serially_reusable parsepragma_declaration_serially_reusable(org.antlr.runtime.tree.Tree tree) {
@@ -3639,7 +3639,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration_autonomous_transaction(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.AUTONOMOUS_TRANSACTION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.AUTONOMOUS_TRANSACTION_VK;
   }
 
   public static pragma_declaration_autonomous_transaction parsepragma_declaration_autonomous_transaction(org.antlr.runtime.tree.Tree tree) {
@@ -3665,7 +3665,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration_exception_init(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_INIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_INIT_VK;
   }
 
   public static pragma_declaration_exception_init parsepragma_declaration_exception_init(org.antlr.runtime.tree.Tree tree) {
@@ -3702,7 +3702,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration_inline(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INLINE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INLINE_VK;
   }
 
   public static pragma_declaration_inline parsepragma_declaration_inline(org.antlr.runtime.tree.Tree tree) {
@@ -3739,7 +3739,7 @@ public class parser {
   }
 
   public static boolean canParsepragma_declaration_restrict_references(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RESTRICT_REFERENCES_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RESTRICT_REFERENCES_VK;
   }
 
   public static pragma_declaration_restrict_references parsepragma_declaration_restrict_references(org.antlr.runtime.tree.Tree tree) {
@@ -3755,7 +3755,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DEFAULT)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DEFAULT)) {
       _result.set_SQL92_RESERVED_DEFAULT(tree.getChild(_i));
       ++_i;
     }
@@ -3809,7 +3809,7 @@ public class parser {
   }
 
   public static boolean canParserecord_type_dec_record(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECORD_TYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE;
   }
 
   public static record_type_dec_record parserecord_type_dec_record(org.antlr.runtime.tree.Tree tree) {
@@ -3847,7 +3847,7 @@ public class parser {
   }
 
   public static boolean canParsefield_specs(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIELDS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FIELDS;
   }
 
   public static field_specs parsefield_specs(org.antlr.runtime.tree.Tree tree) {
@@ -3881,7 +3881,7 @@ public class parser {
   }
 
   public static boolean canParserecord_type_dec_refcursor(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECORD_TYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE;
   }
 
   public static record_type_dec_refcursor parserecord_type_dec_refcursor(org.antlr.runtime.tree.Tree tree) {
@@ -3901,7 +3901,7 @@ public class parser {
     _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REF_VK))) { throw new RuntimeException("Tree type mismatch"); }
+    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REF_VK))) { throw new RuntimeException("Tree type mismatch"); }
     _result.set_REF_VK(tree.getChild(_i));
     ++_i;
 
@@ -3925,7 +3925,7 @@ public class parser {
   }
 
   public static boolean canParsefield_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIELD_SPEC;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FIELD_SPEC;
   }
 
   public static field_spec parsefield_spec(org.antlr.runtime.tree.Tree tree) {
@@ -3950,7 +3950,7 @@ public class parser {
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL)) {
       _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
@@ -3977,7 +3977,7 @@ public class parser {
   }
 
   public static boolean canParserecord_var_dec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECORD_VAR_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_VAR_DECLARE;
   }
 
   public static record_var_dec parserecord_var_dec(org.antlr.runtime.tree.Tree tree) {
@@ -4034,7 +4034,7 @@ public class parser {
   }
 
   public static boolean canParsepercent_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_TYPE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_TYPE_VK;
   }
 
   public static percent_type parsepercent_type(org.antlr.runtime.tree.Tree tree) {
@@ -4060,7 +4060,7 @@ public class parser {
   }
 
   public static boolean canParsepercent_rowtype(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_ROWTYPE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_ROWTYPE_VK;
   }
 
   public static percent_rowtype parsepercent_rowtype(org.antlr.runtime.tree.Tree tree) {
@@ -4100,7 +4100,7 @@ public class parser {
   }
 
   public static boolean canParsetable_type_dec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_TYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_TYPE_DECLARE;
   }
 
   public static table_type_dec parsetable_type_dec(org.antlr.runtime.tree.Tree tree) {
@@ -4120,7 +4120,7 @@ public class parser {
     _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL)) {
       _result.set_SQL92_RESERVED_NULL(tree.getChild(_i));
       ++_i;
     }
@@ -4158,7 +4158,7 @@ public class parser {
   }
 
   public static boolean canParsetable_type_dec_table_of(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_TABLE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_TABLE;
   }
 
   public static table_type_dec_table_of parsetable_type_dec_table_of(org.antlr.runtime.tree.Tree tree) {
@@ -4196,7 +4196,7 @@ public class parser {
   }
 
   public static boolean canParsetable_indexed_by_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_BY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INDEXED_BY;
   }
 
   public static table_indexed_by_part parsetable_indexed_by_part(org.antlr.runtime.tree.Tree tree) {
@@ -4227,7 +4227,7 @@ public class parser {
   }
 
   public static boolean canParsevarray_type_def(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VARR_ARRAY_DEF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VARR_ARRAY_DEF;
   }
 
   public static varray_type_def parsevarray_type_def(org.antlr.runtime.tree.Tree tree) {
@@ -4264,7 +4264,7 @@ public class parser {
   }
 
   public static boolean canParsetable_var_dec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_VAR_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_VAR_DECLARE;
   }
 
   public static table_var_dec parsetable_var_dec(org.antlr.runtime.tree.Tree tree) {
@@ -4301,7 +4301,7 @@ public class parser {
   }
 
   public static boolean canParseseq_of_statements(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.STATEMENTS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.STATEMENTS;
   }
 
   public static seq_of_statements parseseq_of_statements(org.antlr.runtime.tree.Tree tree) {
@@ -4350,7 +4350,7 @@ public class parser {
   }
 
   public static boolean canParselabeled_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LABEL_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LABEL_DECLARE;
   }
 
   public static labeled_statement parselabeled_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4415,7 +4415,7 @@ public class parser {
   }
 
   public static boolean canParseassignment_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN;
   }
 
   public static assignment_statement parseassignment_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4466,7 +4466,7 @@ public class parser {
   }
 
   public static boolean canParsecontinue_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONTINUE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONTINUE_VK;
   }
 
   public static continue_statement parsecontinue_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4505,7 +4505,7 @@ public class parser {
   }
 
   public static boolean canParsegeneral_when(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN;
   }
 
   public static general_when parsegeneral_when(org.antlr.runtime.tree.Tree tree) {
@@ -4536,7 +4536,7 @@ public class parser {
   }
 
   public static boolean canParseexit_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXIT_VK;
   }
 
   public static exit_statement parseexit_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4575,7 +4575,7 @@ public class parser {
   }
 
   public static boolean canParsegoto_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_GOTO;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_GOTO;
   }
 
   public static goto_statement parsegoto_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4606,7 +4606,7 @@ public class parser {
   }
 
   public static boolean canParseif_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_IF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_IF;
   }
 
   public static if_statement parseif_statement(org.antlr.runtime.tree.Tree tree) {
@@ -4659,7 +4659,7 @@ public class parser {
   }
 
   public static boolean canParseelsif_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_ELSIF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_ELSIF;
   }
 
   public static elsif_part parseelsif_part(org.antlr.runtime.tree.Tree tree) {
@@ -4696,7 +4696,7 @@ public class parser {
   }
 
   public static boolean canParseelse_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ELSE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ELSE;
   }
 
   public static else_part parseelse_part(org.antlr.runtime.tree.Tree tree) {
@@ -4742,7 +4742,7 @@ public class parser {
   }
 
   public static boolean canParsewhile_loop(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WHILE_LOOP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WHILE_LOOP;
   }
 
   public static while_loop parsewhile_loop(org.antlr.runtime.tree.Tree tree) {
@@ -4779,7 +4779,7 @@ public class parser {
   }
 
   public static boolean canParsefor_loop(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FOR_LOOP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FOR_LOOP;
   }
 
   public static for_loop parsefor_loop(org.antlr.runtime.tree.Tree tree) {
@@ -4816,7 +4816,7 @@ public class parser {
   }
 
   public static boolean canParsesimple_loop(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOOP_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LOOP_VK;
   }
 
   public static simple_loop parsesimple_loop(org.antlr.runtime.tree.Tree tree) {
@@ -4862,7 +4862,7 @@ public class parser {
   }
 
   public static boolean canParseindexed_for(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INDEXED_FOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INDEXED_FOR;
   }
 
   public static indexed_for parseindexed_for(org.antlr.runtime.tree.Tree tree) {
@@ -4882,7 +4882,7 @@ public class parser {
     _result.set_index_name(parseindex_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REVERSE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REVERSE_VK)) {
       _result.set_REVERSE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -4906,7 +4906,7 @@ public class parser {
   }
 
   public static boolean canParsecursor_based_for(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CURSOR_BASED_FOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CURSOR_BASED_FOR;
   }
 
   public static cursor_based_for parsecursor_based_for(org.antlr.runtime.tree.Tree tree) {
@@ -4943,7 +4943,7 @@ public class parser {
   }
 
   public static boolean canParseselect_based_for(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECT_BASED_FOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_BASED_FOR;
   }
 
   public static select_based_for parseselect_based_for(org.antlr.runtime.tree.Tree tree) {
@@ -4980,7 +4980,7 @@ public class parser {
   }
 
   public static boolean canParseindexed_for_bounds(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIMPLE_BOUND;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_BOUND;
   }
 
   public static indexed_for_bounds parseindexed_for_bounds(org.antlr.runtime.tree.Tree tree) {
@@ -5017,7 +5017,7 @@ public class parser {
   }
 
   public static boolean canParseforall_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FORALL_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FORALL_VK;
   }
 
   public static forall_statement parseforall_statement(org.antlr.runtime.tree.Tree tree) {
@@ -5045,7 +5045,7 @@ public class parser {
     _result.set_sql_statement(parsesql_statement(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTIONS_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTIONS_VK)) {
       _result.set_EXCEPTIONS_VK(tree.getChild(_i));
       ++_i;
     }
@@ -5067,7 +5067,7 @@ public class parser {
   }
 
   public static boolean canParsebounds_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIMPLE_BOUND;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_BOUND;
   }
 
   public static bounds_clause parsebounds_clause(org.antlr.runtime.tree.Tree tree) {
@@ -5093,7 +5093,7 @@ public class parser {
   }
 
   public static boolean canParsebetween_bound(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_BETWEEN;
   }
 
   public static between_bound parsebetween_bound(org.antlr.runtime.tree.Tree tree) {
@@ -5119,7 +5119,7 @@ public class parser {
   }
 
   public static boolean canParsenull_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL;
   }
 
   public static null_statement parsenull_statement(org.antlr.runtime.tree.Tree tree) {
@@ -5145,7 +5145,7 @@ public class parser {
   }
 
   public static boolean canParseraise_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RAISE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RAISE_VK;
   }
 
   public static raise_statement parseraise_statement(org.antlr.runtime.tree.Tree tree) {
@@ -5177,7 +5177,7 @@ public class parser {
   }
 
   public static boolean canParsereturn_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RETURN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RETURN_VK;
   }
 
   public static return_statement parsereturn_statement(org.antlr.runtime.tree.Tree tree) {
@@ -5209,7 +5209,7 @@ public class parser {
   }
 
   public static boolean canParsebody(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.BODY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BODY;
   }
 
   public static body parsebody(org.antlr.runtime.tree.Tree tree) {
@@ -5254,7 +5254,7 @@ public class parser {
   }
 
   public static boolean canParseexception_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_EXCEPTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_EXCEPTION;
   }
 
   public static exception_clause parseexception_clause(org.antlr.runtime.tree.Tree tree) {
@@ -5289,7 +5289,7 @@ public class parser {
   }
 
   public static boolean canParseexception_handler(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN;
   }
 
   public static exception_handler parseexception_handler(org.antlr.runtime.tree.Tree tree) {
@@ -5330,7 +5330,7 @@ public class parser {
   }
 
   public static boolean canParseblock(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.BLOCK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BLOCK;
   }
 
   public static block parseblock(org.antlr.runtime.tree.Tree tree) {
@@ -5386,7 +5386,7 @@ public class parser {
   }
 
   public static boolean canParseexecute_immediate(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXECUTE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXECUTE_VK;
   }
 
   public static execute_immediate parseexecute_immediate(org.antlr.runtime.tree.Tree tree) {
@@ -5438,7 +5438,7 @@ public class parser {
   }
 
   public static boolean canParsedynamic_returning_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DYNAMIC_RETURN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DYNAMIC_RETURN;
   }
 
   public static dynamic_returning_clause parsedynamic_returning_clause(org.antlr.runtime.tree.Tree tree) {
@@ -5487,7 +5487,7 @@ public class parser {
   }
 
   public static boolean canParseselect_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECT_STATEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_STATEMENT;
   }
 
   public static select_statement parseselect_statement(org.antlr.runtime.tree.Tree tree) {
@@ -5539,7 +5539,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery_factoring_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WITH;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WITH;
   }
 
   public static subquery_factoring_clause parsesubquery_factoring_clause(org.antlr.runtime.tree.Tree tree) {
@@ -5555,7 +5555,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECURSIVE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECURSIVE_VK)) {
       _result.set_RECURSIVE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -5581,7 +5581,7 @@ public class parser {
   }
 
   public static boolean canParsefactoring_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FACTORING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FACTORING;
   }
 
   public static factoring_element parsefactoring_element(org.antlr.runtime.tree.Tree tree) {
@@ -5634,7 +5634,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SUBQUERY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SUBQUERY;
   }
 
   public static subquery parsesubquery(org.antlr.runtime.tree.Tree tree) {
@@ -5689,7 +5689,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery_operation_union(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UNION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_UNION;
   }
 
   public static subquery_operation_union parsesubquery_operation_union(org.antlr.runtime.tree.Tree tree) {
@@ -5705,7 +5705,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
@@ -5727,7 +5727,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery_operation_intersect(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTERSECT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INTERSECT;
   }
 
   public static subquery_operation_intersect parsesubquery_operation_intersect(org.antlr.runtime.tree.Tree tree) {
@@ -5743,7 +5743,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
@@ -5765,7 +5765,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery_operation_minus(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_MINUS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_MINUS;
   }
 
   public static subquery_operation_minus parsesubquery_operation_minus(org.antlr.runtime.tree.Tree tree) {
@@ -5781,7 +5781,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
@@ -5817,7 +5817,7 @@ public class parser {
   }
 
   public static boolean canParsequery_block(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_SELECT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_SELECT;
   }
 
   public static query_block parsequery_block(org.antlr.runtime.tree.Tree tree) {
@@ -5837,17 +5837,17 @@ public class parser {
     _result.set_from_clause(parsefrom_clause(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DISTINCT)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DISTINCT)) {
       _result.set_SQL92_RESERVED_DISTINCT(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UNIQUE)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_UNIQUE)) {
       _result.set_SQL92_RESERVED_UNIQUE(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
@@ -5924,7 +5924,7 @@ public class parser {
   }
 
   public static boolean canParseprojection_asterisk(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK;
   }
 
   public static projection_asterisk parseprojection_asterisk(org.antlr.runtime.tree.Tree tree) {
@@ -5950,7 +5950,7 @@ public class parser {
   }
 
   public static boolean canParseprojection_list(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECT_LIST;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_LIST;
   }
 
   public static projection_list parseprojection_list(org.antlr.runtime.tree.Tree tree) {
@@ -5985,7 +5985,7 @@ public class parser {
   }
 
   public static boolean canParseselected_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECT_ITEM;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_ITEM;
   }
 
   public static selected_element parseselected_element(org.antlr.runtime.tree.Tree tree) {
@@ -6023,7 +6023,7 @@ public class parser {
   }
 
   public static boolean canParsefrom_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FROM;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FROM;
   }
 
   public static from_clause parsefrom_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6058,7 +6058,7 @@ public class parser {
   }
 
   public static boolean canParsetable_ref(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF;
   }
 
   public static table_ref parsetable_ref(org.antlr.runtime.tree.Tree tree) {
@@ -6098,7 +6098,7 @@ public class parser {
   }
 
   public static boolean canParsetable_ref_aux(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF_ELEMENT;
   }
 
   public static table_ref_aux parsetable_ref_aux(org.antlr.runtime.tree.Tree tree) {
@@ -6123,7 +6123,7 @@ public class parser {
     _result.set_dml_table_expression_clause(parsedml_table_expression_clause(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ONLY_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ONLY_VK)) {
       _result.set_ONLY_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6166,7 +6166,7 @@ public class parser {
   }
 
   public static boolean canParsejoin_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.JOIN_DEF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.JOIN_DEF;
   }
 
   public static join_clause parsejoin_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6187,32 +6187,32 @@ public class parser {
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CROSS_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CROSS_VK)) {
       _result.set_CROSS_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NATURAL_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NATURAL_VK)) {
       _result.set_NATURAL_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.INNER_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INNER_VK)) {
       _result.set_INNER_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FULL_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FULL_VK)) {
       _result.set_FULL_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LEFT_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LEFT_VK)) {
       _result.set_LEFT_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.RIGHT_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RIGHT_VK)) {
       _result.set_RIGHT_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6267,7 +6267,7 @@ public class parser {
   }
 
   public static boolean canParsejoin_on_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ON;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ON;
   }
 
   public static join_on_part parsejoin_on_part(org.antlr.runtime.tree.Tree tree) {
@@ -6298,7 +6298,7 @@ public class parser {
   }
 
   public static boolean canParsejoin_using_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_USING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_USING;
   }
 
   public static join_using_part parsejoin_using_part(org.antlr.runtime.tree.Tree tree) {
@@ -6333,7 +6333,7 @@ public class parser {
   }
 
   public static boolean canParsequery_partition_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARTITION_VK;
   }
 
   public static query_partition_clause parsequery_partition_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6392,7 +6392,7 @@ public class parser {
   }
 
   public static boolean canParseflashback_query_clause_versions(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VERSIONS_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VERSIONS_VK;
   }
 
   public static flashback_query_clause_versions parseflashback_query_clause_versions(org.antlr.runtime.tree.Tree tree) {
@@ -6408,12 +6408,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCN_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SCN_VK)) {
       _result.set_SCN_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMESTAMP_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMESTAMP_VK)) {
       _result.set_TIMESTAMP_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6437,7 +6437,7 @@ public class parser {
   }
 
   public static boolean canParseflashback_query_clause_as(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_AS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_AS;
   }
 
   public static flashback_query_clause_as parseflashback_query_clause_as(org.antlr.runtime.tree.Tree tree) {
@@ -6453,12 +6453,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCN_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SCN_VK)) {
       _result.set_SCN_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMESTAMP_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMESTAMP_VK)) {
       _result.set_TIMESTAMP_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6482,7 +6482,7 @@ public class parser {
   }
 
   public static boolean canParsepivot_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIVOT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIVOT_VK;
   }
 
   public static pivot_clause parsepivot_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6498,7 +6498,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XML_VK)) {
       _result.set_XML_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6536,7 +6536,7 @@ public class parser {
   }
 
   public static boolean canParsepivot_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIVOT_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIVOT_ELEMENT;
   }
 
   public static pivot_element parsepivot_element(org.antlr.runtime.tree.Tree tree) {
@@ -6574,7 +6574,7 @@ public class parser {
   }
 
   public static boolean canParsepivot_for_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FOR;
   }
 
   public static pivot_for_clause parsepivot_for_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6609,7 +6609,7 @@ public class parser {
   }
 
   public static boolean canParsepivot_in_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_IN;
   }
 
   public static pivot_in_clause parsepivot_in_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6635,7 +6635,7 @@ public class parser {
   }
 
   public static boolean canParsepivot_in_clause_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIVOT_IN_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIVOT_IN_ELEMENT;
   }
 
   public static pivot_in_clause_element parsepivot_in_clause_element(org.antlr.runtime.tree.Tree tree) {
@@ -6661,7 +6661,7 @@ public class parser {
   }
 
   public static boolean canParseunpivot_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNPIVOT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNPIVOT_VK;
   }
 
   public static unpivot_clause parseunpivot_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6687,7 +6687,7 @@ public class parser {
   }
 
   public static boolean canParseunpivot_in_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNPIVOT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNPIVOT_VK;
   }
 
   public static unpivot_in_clause parseunpivot_in_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6713,7 +6713,7 @@ public class parser {
   }
 
   public static boolean canParseunpivot_in_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNPIVOT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNPIVOT_VK;
   }
 
   public static unpivot_in_element parseunpivot_in_element(org.antlr.runtime.tree.Tree tree) {
@@ -6739,7 +6739,7 @@ public class parser {
   }
 
   public static boolean canParsehierarchical_query_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.HIERARCHICAL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.HIERARCHICAL;
   }
 
   public static hierarchical_query_clause parsehierarchical_query_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6777,7 +6777,7 @@ public class parser {
   }
 
   public static boolean canParsehierarchical_query_clause_connect(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_CONNECT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_CONNECT;
   }
 
   public static hierarchical_query_clause_connect parsehierarchical_query_clause_connect(org.antlr.runtime.tree.Tree tree) {
@@ -6793,7 +6793,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOCYCLE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOCYCLE_VK)) {
       _result.set_NOCYCLE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -6815,7 +6815,7 @@ public class parser {
   }
 
   public static boolean canParsestart_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_START;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_START;
   }
 
   public static start_part parsestart_part(org.antlr.runtime.tree.Tree tree) {
@@ -6846,7 +6846,7 @@ public class parser {
   }
 
   public static boolean canParsegroup_by_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_GROUP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_GROUP;
   }
 
   public static group_by_clause parsegroup_by_clause(org.antlr.runtime.tree.Tree tree) {
@@ -6888,7 +6888,7 @@ public class parser {
   }
 
   public static boolean canParsegroup_by_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.GROUP_BY_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.GROUP_BY_ELEMENT;
   }
 
   public static group_by_element parsegroup_by_element(org.antlr.runtime.tree.Tree tree) {
@@ -6933,7 +6933,7 @@ public class parser {
   }
 
   public static boolean canParsegroup_by_elements_grouping(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.GROUPING_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.GROUPING_VK;
   }
 
   public static group_by_elements_grouping parsegroup_by_elements_grouping(org.antlr.runtime.tree.Tree tree) {
@@ -6968,7 +6968,7 @@ public class parser {
   }
 
   public static boolean canParsegroupin_set(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.GROUPIN_SET;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.GROUPIN_SET;
   }
 
   public static groupin_set parsegroupin_set(org.antlr.runtime.tree.Tree tree) {
@@ -7015,7 +7015,7 @@ public class parser {
   }
 
   public static boolean canParsegrouping_element_rollup(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROLLUP_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLUP_VK;
   }
 
   public static grouping_element_rollup parsegrouping_element_rollup(org.antlr.runtime.tree.Tree tree) {
@@ -7050,7 +7050,7 @@ public class parser {
   }
 
   public static boolean canParsegrouping_element_cube(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CUBE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CUBE_VK;
   }
 
   public static grouping_element_cube parsegrouping_element_cube(org.antlr.runtime.tree.Tree tree) {
@@ -7085,7 +7085,7 @@ public class parser {
   }
 
   public static boolean canParsehaving_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_HAVING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_HAVING;
   }
 
   public static having_clause parsehaving_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7116,7 +7116,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_MODEL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_MODEL;
   }
 
   public static model_clause parsemodel_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7172,7 +7172,7 @@ public class parser {
   }
 
   public static boolean canParsecell_reference_options(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IGNORE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IGNORE_VK;
   }
 
   public static cell_reference_options parsecell_reference_options(org.antlr.runtime.tree.Tree tree) {
@@ -7198,7 +7198,7 @@ public class parser {
   }
 
   public static boolean canParsereturn_rows_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RETURN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RETURN_VK;
   }
 
   public static return_rows_clause parsereturn_rows_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7214,12 +7214,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UPDATED_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UPDATED_VK)) {
       _result.set_UPDATED_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
@@ -7237,7 +7237,7 @@ public class parser {
   }
 
   public static boolean canParsereference_model(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.REFERENCE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REFERENCE_VK;
   }
 
   public static reference_model parsereference_model(org.antlr.runtime.tree.Tree tree) {
@@ -7289,7 +7289,7 @@ public class parser {
   }
 
   public static boolean canParsemain_model(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MAIN_MODEL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MAIN_MODEL;
   }
 
   public static main_model parsemain_model(org.antlr.runtime.tree.Tree tree) {
@@ -7342,7 +7342,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column_clauses(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_COLUMN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_COLUMN;
   }
 
   public static model_column_clauses parsemodel_column_clauses(org.antlr.runtime.tree.Tree tree) {
@@ -7386,7 +7386,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column_clauses_dimension(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DIMENSION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DIMENSION_VK;
   }
 
   public static model_column_clauses_dimension parsemodel_column_clauses_dimension(org.antlr.runtime.tree.Tree tree) {
@@ -7417,7 +7417,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column_clauses_measures(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MEASURES_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MEASURES_VK;
   }
 
   public static model_column_clauses_measures parsemodel_column_clauses_measures(org.antlr.runtime.tree.Tree tree) {
@@ -7448,7 +7448,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column_partition_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARTITION_VK;
   }
 
   public static model_column_partition_part parsemodel_column_partition_part(org.antlr.runtime.tree.Tree tree) {
@@ -7479,7 +7479,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column_list(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_COLUMNS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_COLUMNS;
   }
 
   public static model_column_list parsemodel_column_list(org.antlr.runtime.tree.Tree tree) {
@@ -7514,7 +7514,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_column(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_COLUMN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_COLUMN;
   }
 
   public static model_column parsemodel_column(org.antlr.runtime.tree.Tree tree) {
@@ -7552,7 +7552,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_rules_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_RULES;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_RULES;
   }
 
   public static model_rules_clause parsemodel_rules_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7594,7 +7594,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_rules_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RULES_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RULES_VK;
   }
 
   public static model_rules_part parsemodel_rules_part(org.antlr.runtime.tree.Tree tree) {
@@ -7620,7 +7620,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_rules_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_RULE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_RULE;
   }
 
   public static model_rules_element parsemodel_rules_element(org.antlr.runtime.tree.Tree tree) {
@@ -7646,7 +7646,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_iterate_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ITERATE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ITERATE_VK;
   }
 
   public static model_iterate_clause parsemodel_iterate_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7684,7 +7684,7 @@ public class parser {
   }
 
   public static boolean canParseuntil_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNTIL_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNTIL_VK;
   }
 
   public static until_part parseuntil_part(org.antlr.runtime.tree.Tree tree) {
@@ -7715,7 +7715,7 @@ public class parser {
   }
 
   public static boolean canParseorder_by_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ORDER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ORDER;
   }
 
   public static order_by_clause parseorder_by_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7731,7 +7731,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIBLINGS_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SIBLINGS_VK)) {
       _result.set_SIBLINGS_VK(tree.getChild(_i));
       ++_i;
     }
@@ -7753,7 +7753,7 @@ public class parser {
   }
 
   public static boolean canParseorder_by_elements_list(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ORDER_BY_ELEMENTS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ORDER_BY_ELEMENTS;
   }
 
   public static order_by_elements_list parseorder_by_elements_list(org.antlr.runtime.tree.Tree tree) {
@@ -7788,7 +7788,7 @@ public class parser {
   }
 
   public static boolean canParseorder_by_elements(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ORDER_BY_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ORDER_BY_ELEMENT;
   }
 
   public static order_by_elements parseorder_by_elements(org.antlr.runtime.tree.Tree tree) {
@@ -7808,27 +7808,27 @@ public class parser {
     _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ASC)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ASC)) {
       _result.set_SQL92_RESERVED_ASC(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DESC)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DESC)) {
       _result.set_SQL92_RESERVED_DESC(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NULLS_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NULLS_VK)) {
       _result.set_NULLS_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIRST_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FIRST_VK)) {
       _result.set_FIRST_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LAST_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LAST_VK)) {
       _result.set_LAST_VK(tree.getChild(_i));
       ++_i;
     }
@@ -7854,7 +7854,7 @@ public class parser {
   }
 
   public static boolean canParsefor_update_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FOR;
   }
 
   public static for_update_clause parsefor_update_clause(org.antlr.runtime.tree.Tree tree) {
@@ -7893,7 +7893,7 @@ public class parser {
   }
 
   public static boolean canParsefor_update_of_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_OF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_OF;
   }
 
   public static for_update_of_part parsefor_update_of_part(org.antlr.runtime.tree.Tree tree) {
@@ -7943,7 +7943,7 @@ public class parser {
   }
 
   public static boolean canParsefor_update_options_skip(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SKIP_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SKIP_VK;
   }
 
   public static for_update_options_skip parsefor_update_options_skip(org.antlr.runtime.tree.Tree tree) {
@@ -7969,7 +7969,7 @@ public class parser {
   }
 
   public static boolean canParsefor_update_options_nowait(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_NOWAIT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_NOWAIT;
   }
 
   public static for_update_options_nowait parsefor_update_options_nowait(org.antlr.runtime.tree.Tree tree) {
@@ -7995,7 +7995,7 @@ public class parser {
   }
 
   public static boolean canParsefor_update_options_wait(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WAIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WAIT_VK;
   }
 
   public static for_update_options_wait parsefor_update_options_wait(org.antlr.runtime.tree.Tree tree) {
@@ -8026,7 +8026,7 @@ public class parser {
   }
 
   public static boolean canParseupdate_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UPDATE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_UPDATE;
   }
 
   public static update_statement parseupdate_statement(org.antlr.runtime.tree.Tree tree) {
@@ -8084,7 +8084,7 @@ public class parser {
   }
 
   public static boolean canParseupdate_statement_set(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SET_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SET_VK;
   }
 
   public static update_statement_set parseupdate_statement_set(org.antlr.runtime.tree.Tree tree) {
@@ -8133,7 +8133,7 @@ public class parser {
   }
 
   public static boolean canParseupdate_set_elements_assign(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN;
   }
 
   public static update_set_elements_assign parseupdate_set_elements_assign(org.antlr.runtime.tree.Tree tree) {
@@ -8188,7 +8188,7 @@ public class parser {
   }
 
   public static boolean canParseupdate_set_elements_value(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VALUE_VK;
   }
 
   public static update_set_elements_value parseupdate_set_elements_value(org.antlr.runtime.tree.Tree tree) {
@@ -8232,7 +8232,7 @@ public class parser {
   }
 
   public static boolean canParsedelete_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DELETE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DELETE;
   }
 
   public static delete_statement parsedelete_statement(org.antlr.runtime.tree.Tree tree) {
@@ -8284,7 +8284,7 @@ public class parser {
   }
 
   public static boolean canParseinsert_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INSERT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INSERT;
   }
 
   public static insert_statement parseinsert_statement(org.antlr.runtime.tree.Tree tree) {
@@ -8329,7 +8329,7 @@ public class parser {
   }
 
   public static boolean canParsesingle_table_insert(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SINGLE_TABLE_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SINGLE_TABLE_MODE;
   }
 
   public static single_table_insert parsesingle_table_insert(org.antlr.runtime.tree.Tree tree) {
@@ -8388,7 +8388,7 @@ public class parser {
   }
 
   public static boolean canParsemulti_table_insert(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MULTI_TABLE_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MULTI_TABLE_MODE;
   }
 
   public static multi_table_insert parsemulti_table_insert(org.antlr.runtime.tree.Tree tree) {
@@ -8435,7 +8435,7 @@ public class parser {
   }
 
   public static boolean canParsemulti_table_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_ELEMENT;
   }
 
   public static multi_table_element parsemulti_table_element(org.antlr.runtime.tree.Tree tree) {
@@ -8480,7 +8480,7 @@ public class parser {
   }
 
   public static boolean canParseconditional_insert_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONDITIONAL_INSERT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONDITIONAL_INSERT;
   }
 
   public static conditional_insert_clause parseconditional_insert_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8496,12 +8496,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.FIRST_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FIRST_VK)) {
       _result.set_FIRST_VK(tree.getChild(_i));
       ++_i;
     }
@@ -8536,7 +8536,7 @@ public class parser {
   }
 
   public static boolean canParseconditional_insert_when_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN;
   }
 
   public static conditional_insert_when_part parseconditional_insert_when_part(org.antlr.runtime.tree.Tree tree) {
@@ -8577,7 +8577,7 @@ public class parser {
   }
 
   public static boolean canParseconditional_insert_else_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ELSE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ELSE;
   }
 
   public static conditional_insert_else_part parseconditional_insert_else_part(org.antlr.runtime.tree.Tree tree) {
@@ -8612,7 +8612,7 @@ public class parser {
   }
 
   public static boolean canParseinsert_into_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INTO;
   }
 
   public static insert_into_clause parseinsert_into_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8649,7 +8649,7 @@ public class parser {
   }
 
   public static boolean canParseinsert_into_clause_columns(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COLUMNS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COLUMNS;
   }
 
   public static insert_into_clause_columns parseinsert_into_clause_columns(org.antlr.runtime.tree.Tree tree) {
@@ -8683,7 +8683,7 @@ public class parser {
   }
 
   public static boolean canParsevalues_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_VALUES;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_VALUES;
   }
 
   public static values_clause parsevalues_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8728,7 +8728,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MERGE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_VK;
   }
 
   public static merge_statement parsemerge_statement(org.antlr.runtime.tree.Tree tree) {
@@ -8793,7 +8793,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_using_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_USING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_USING;
   }
 
   public static merge_using_clause parsemerge_using_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8830,7 +8830,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_update_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MERGE_UPDATE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_UPDATE;
   }
 
   public static merge_update_clause parsemerge_update_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8879,7 +8879,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASSIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASSIGN;
   }
 
   public static merge_element parsemerge_element(org.antlr.runtime.tree.Tree tree) {
@@ -8916,7 +8916,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_update_delete_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DELETE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DELETE;
   }
 
   public static merge_update_delete_part parsemerge_update_delete_part(org.antlr.runtime.tree.Tree tree) {
@@ -8947,7 +8947,7 @@ public class parser {
   }
 
   public static boolean canParsemerge_insert_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MERGE_INSERT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MERGE_INSERT;
   }
 
   public static merge_insert_clause parsemerge_insert_clause(org.antlr.runtime.tree.Tree tree) {
@@ -8991,7 +8991,7 @@ public class parser {
   }
 
   public static boolean canParseselected_tableview(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECTED_TABLEVIEW;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECTED_TABLEVIEW;
   }
 
   public static selected_tableview parseselected_tableview(org.antlr.runtime.tree.Tree tree) {
@@ -9043,7 +9043,7 @@ public class parser {
   }
 
   public static boolean canParselock_table_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_LOCK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_LOCK;
   }
 
   public static lock_table_statement parselock_table_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9091,7 +9091,7 @@ public class parser {
   }
 
   public static boolean canParsewait_nowait_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WAIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WAIT_VK;
   }
 
   public static wait_nowait_part parsewait_nowait_part(org.antlr.runtime.tree.Tree tree) {
@@ -9117,7 +9117,7 @@ public class parser {
   }
 
   public static boolean canParselock_table_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOCK_TABLE_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LOCK_TABLE_ELEMENT;
   }
 
   public static lock_table_element parselock_table_element(org.antlr.runtime.tree.Tree tree) {
@@ -9155,7 +9155,7 @@ public class parser {
   }
 
   public static boolean canParselock_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROW_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROW_VK;
   }
 
   public static lock_mode parselock_mode(org.antlr.runtime.tree.Tree tree) {
@@ -9181,7 +9181,7 @@ public class parser {
   }
 
   public static boolean canParsegeneral_table_ref(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_REF;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_REF;
   }
 
   public static general_table_ref parsegeneral_table_ref(org.antlr.runtime.tree.Tree tree) {
@@ -9206,7 +9206,7 @@ public class parser {
     _result.set_dml_table_expression_clause(parsedml_table_expression_clause(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ONLY_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ONLY_VK)) {
       _result.set_ONLY_VK(tree.getChild(_i));
       ++_i;
     }
@@ -9226,7 +9226,7 @@ public class parser {
   }
 
   public static boolean canParsestatic_returning_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.STATIC_RETURNING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.STATIC_RETURNING;
   }
 
   public static static_returning_clause parsestatic_returning_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9267,7 +9267,7 @@ public class parser {
   }
 
   public static boolean canParseerror_logging_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOG_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LOG_VK;
   }
 
   public static error_logging_clause parseerror_logging_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9313,7 +9313,7 @@ public class parser {
   }
 
   public static boolean canParseerror_logging_into_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INTO;
   }
 
   public static error_logging_into_part parseerror_logging_into_part(org.antlr.runtime.tree.Tree tree) {
@@ -9344,7 +9344,7 @@ public class parser {
   }
 
   public static boolean canParseerror_logging_reject_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.REJECT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REJECT_VK;
   }
 
   public static error_logging_reject_part parseerror_logging_reject_part(org.antlr.runtime.tree.Tree tree) {
@@ -9360,7 +9360,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNLIMITED_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNLIMITED_VK)) {
       _result.set_UNLIMITED_VK(tree.getChild(_i));
       ++_i;
     }
@@ -9397,7 +9397,7 @@ public class parser {
   }
 
   public static boolean canParsetable_expression(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_EXPRESSION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_EXPRESSION;
   }
 
   public static table_expression parsetable_expression(org.antlr.runtime.tree.Tree tree) {
@@ -9445,7 +9445,7 @@ public class parser {
   }
 
   public static boolean canParsecollection_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COLLECTION_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COLLECTION_MODE;
   }
 
   public static collection_mode parsecollection_mode(org.antlr.runtime.tree.Tree tree) {
@@ -9476,7 +9476,7 @@ public class parser {
   }
 
   public static boolean canParseselect_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SELECT_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SELECT_MODE;
   }
 
   public static select_mode parseselect_mode(org.antlr.runtime.tree.Tree tree) {
@@ -9514,7 +9514,7 @@ public class parser {
   }
 
   public static boolean canParsedirect_mode(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DIRECT_MODE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DIRECT_MODE;
   }
 
   public static direct_mode parsedirect_mode(org.antlr.runtime.tree.Tree tree) {
@@ -9567,7 +9567,7 @@ public class parser {
   }
 
   public static boolean canParseouter_join_sign_table_expr(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OUTER_JOIN_SIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OUTER_JOIN_SIGN;
   }
 
   public static outer_join_sign_table_expr parseouter_join_sign_table_expr(org.antlr.runtime.tree.Tree tree) {
@@ -9598,7 +9598,7 @@ public class parser {
   }
 
   public static boolean canParsesubquery_restriction_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WITH;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WITH;
   }
 
   public static subquery_restriction_clause parsesubquery_restriction_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9624,7 +9624,7 @@ public class parser {
   }
 
   public static boolean canParsesample_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SAMPLE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SAMPLE_VK;
   }
 
   public static sample_clause parsesample_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9640,7 +9640,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BLOCK_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BLOCK_VK)) {
       _result.set_BLOCK_VK(tree.getChild(_i));
       ++_i;
     }
@@ -9669,7 +9669,7 @@ public class parser {
   }
 
   public static boolean canParseseed_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SEED_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SEED_VK;
   }
 
   public static seed_part parseseed_part(org.antlr.runtime.tree.Tree tree) {
@@ -9716,7 +9716,7 @@ public class parser {
   }
 
   public static boolean canParseclose_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CLOSE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CLOSE_VK;
   }
 
   public static close_statement parseclose_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9747,7 +9747,7 @@ public class parser {
   }
 
   public static boolean canParseopen_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OPEN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_VK;
   }
 
   public static open_statement parseopen_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9785,7 +9785,7 @@ public class parser {
   }
 
   public static boolean canParsefetch_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FETCH;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FETCH;
   }
 
   public static fetch_statement parsefetch_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9822,7 +9822,7 @@ public class parser {
   }
 
   public static boolean canParseopen_for_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OPEN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_VK;
   }
 
   public static open_for_statement parseopen_for_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9897,7 +9897,7 @@ public class parser {
   }
 
   public static boolean canParseset_transaction_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SET_TRANSACTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SET_TRANSACTION;
   }
 
   public static set_transaction_command parseset_transaction_command(org.antlr.runtime.tree.Tree tree) {
@@ -9923,7 +9923,7 @@ public class parser {
   }
 
   public static boolean canParseset_constraint_command(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SET_CONSTRAINT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SET_CONSTRAINT;
   }
 
   public static set_constraint_command parseset_constraint_command(org.antlr.runtime.tree.Tree tree) {
@@ -9949,7 +9949,7 @@ public class parser {
   }
 
   public static boolean canParsecommit_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COMMIT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COMMIT_VK;
   }
 
   public static commit_statement parsecommit_statement(org.antlr.runtime.tree.Tree tree) {
@@ -9965,7 +9965,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WORK_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WORK_VK)) {
       _result.set_WORK_VK(tree.getChild(_i));
       ++_i;
     }
@@ -10009,7 +10009,7 @@ public class parser {
   }
 
   public static boolean canParsecommit_comment(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COMMENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT_VK;
   }
 
   public static commit_comment parsecommit_comment(org.antlr.runtime.tree.Tree tree) {
@@ -10040,7 +10040,7 @@ public class parser {
   }
 
   public static boolean canParsecommit_force(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FORCE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FORCE_VK;
   }
 
   public static commit_force parsecommit_force(org.antlr.runtime.tree.Tree tree) {
@@ -10086,7 +10086,7 @@ public class parser {
   }
 
   public static boolean canParsecommit_force_xid(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CORRUPT_XID_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CORRUPT_XID_VK;
   }
 
   public static commit_force_xid parsecommit_force_xid(org.antlr.runtime.tree.Tree tree) {
@@ -10117,7 +10117,7 @@ public class parser {
   }
 
   public static boolean canParsecommit_force_xid_all(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CORRUPT_XID_ALL_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CORRUPT_XID_ALL_VK;
   }
 
   public static commit_force_xid_all parsecommit_force_xid_all(org.antlr.runtime.tree.Tree tree) {
@@ -10156,7 +10156,7 @@ public class parser {
   }
 
   public static boolean canParsewrite_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WRITE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WRITE_VK;
   }
 
   public static write_clause parsewrite_clause(org.antlr.runtime.tree.Tree tree) {
@@ -10172,22 +10172,22 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WAIT_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WAIT_VK)) {
       _result.set_WAIT_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_RESERVED_NOWAIT)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_RESERVED_NOWAIT)) {
       _result.set_PLSQL_RESERVED_NOWAIT(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.IMMEDIATE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IMMEDIATE_VK)) {
       _result.set_IMMEDIATE_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BATCH_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BATCH_VK)) {
       _result.set_BATCH_VK(tree.getChild(_i));
       ++_i;
     }
@@ -10209,7 +10209,7 @@ public class parser {
   }
 
   public static boolean canParserollback_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROLLBACK_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLBACK_VK;
   }
 
   public static rollback_statement parserollback_statement(org.antlr.runtime.tree.Tree tree) {
@@ -10225,7 +10225,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WORK_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WORK_VK)) {
       _result.set_WORK_VK(tree.getChild(_i));
       ++_i;
     }
@@ -10262,7 +10262,7 @@ public class parser {
   }
 
   public static boolean canParserollback_statement_to(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_TO;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_TO;
   }
 
   public static rollback_statement_to parserollback_statement_to(org.antlr.runtime.tree.Tree tree) {
@@ -10293,7 +10293,7 @@ public class parser {
   }
 
   public static boolean canParserollback_statement_force(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FORCE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FORCE_VK;
   }
 
   public static rollback_statement_force parserollback_statement_force(org.antlr.runtime.tree.Tree tree) {
@@ -10309,7 +10309,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
+    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_STRING))) { throw new RuntimeException("Tree type mismatch"); }
     _result.set_CHAR_STRING(tree.getChild(_i));
     ++_i;
 
@@ -10324,7 +10324,7 @@ public class parser {
   }
 
   public static boolean canParsesavepoint_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SAVEPOINT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SAVEPOINT_VK;
   }
 
   public static savepoint_statement parsesavepoint_statement(org.antlr.runtime.tree.Tree tree) {
@@ -10355,7 +10355,7 @@ public class parser {
   }
 
   public static boolean canParsepipe_row_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PIPE_ROW;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PIPE_ROW;
   }
 
   public static pipe_row_statement parsepipe_row_statement(org.antlr.runtime.tree.Tree tree) {
@@ -10386,7 +10386,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_list(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXPR_LIST;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXPR_LIST;
   }
 
   public static expression_list parseexpression_list(org.antlr.runtime.tree.Tree tree) {
@@ -10434,7 +10434,7 @@ public class parser {
   }
 
   public static boolean canParselogic_expression(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOGIC_EXPR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LOGIC_EXPR;
   }
 
   public static logic_expression parselogic_expression(org.antlr.runtime.tree.Tree tree) {
@@ -10465,7 +10465,7 @@ public class parser {
   }
 
   public static boolean canParsegeneral_expression(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXPR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXPR;
   }
 
   public static general_expression parsegeneral_expression(org.antlr.runtime.tree.Tree tree) {
@@ -10564,7 +10564,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_or(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_OR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_OR;
   }
 
   public static expression_element_or parseexpression_element_or(org.antlr.runtime.tree.Tree tree) {
@@ -10601,7 +10601,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_and(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_AND;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_AND;
   }
 
   public static expression_element_and parseexpression_element_and(org.antlr.runtime.tree.Tree tree) {
@@ -10638,7 +10638,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_eq(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EQUALS_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EQUALS_OP;
   }
 
   public static expression_element_eq parseexpression_element_eq(org.antlr.runtime.tree.Tree tree) {
@@ -10675,7 +10675,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_neq(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOT_EQUAL_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOT_EQUAL_OP;
   }
 
   public static expression_element_neq parseexpression_element_neq(org.antlr.runtime.tree.Tree tree) {
@@ -10712,7 +10712,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_lt(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LESS_THAN_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LESS_THAN_OP;
   }
 
   public static expression_element_lt parseexpression_element_lt(org.antlr.runtime.tree.Tree tree) {
@@ -10749,7 +10749,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_gt(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.GREATER_THAN_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.GREATER_THAN_OP;
   }
 
   public static expression_element_gt parseexpression_element_gt(org.antlr.runtime.tree.Tree tree) {
@@ -10786,7 +10786,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_lte(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LESS_THAN_OR_EQUALS_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LESS_THAN_OR_EQUALS_OP;
   }
 
   public static expression_element_lte parseexpression_element_lte(org.antlr.runtime.tree.Tree tree) {
@@ -10823,7 +10823,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_gte(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.GREATER_THAN_OR_EQUALS_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.GREATER_THAN_OR_EQUALS_OP;
   }
 
   public static expression_element_gte parseexpression_element_gte(org.antlr.runtime.tree.Tree tree) {
@@ -10860,7 +10860,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_concat(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONCATENATION_OP;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONCATENATION_OP;
   }
 
   public static expression_element_concat parseexpression_element_concat(org.antlr.runtime.tree.Tree tree) {
@@ -10897,7 +10897,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_plus(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLUS_SIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLUS_SIGN;
   }
 
   public static expression_element_plus parseexpression_element_plus(org.antlr.runtime.tree.Tree tree) {
@@ -10934,7 +10934,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_minus(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MINUS_SIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MINUS_SIGN;
   }
 
   public static expression_element_minus parseexpression_element_minus(org.antlr.runtime.tree.Tree tree) {
@@ -10971,7 +10971,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_asterisk(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK;
   }
 
   public static expression_element_asterisk parseexpression_element_asterisk(org.antlr.runtime.tree.Tree tree) {
@@ -11008,7 +11008,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_solidus(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SOLIDUS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SOLIDUS;
   }
 
   public static expression_element_solidus parseexpression_element_solidus(org.antlr.runtime.tree.Tree tree) {
@@ -11045,7 +11045,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_percent(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT;
   }
 
   public static expression_element_percent parseexpression_element_percent(org.antlr.runtime.tree.Tree tree) {
@@ -11082,7 +11082,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_mod(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MOD_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MOD_VK;
   }
 
   public static expression_element_mod parseexpression_element_mod(org.antlr.runtime.tree.Tree tree) {
@@ -11119,7 +11119,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_div(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DIV_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DIV_VK;
   }
 
   public static expression_element_div parseexpression_element_div(org.antlr.runtime.tree.Tree tree) {
@@ -11156,7 +11156,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NOT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NOT;
   }
 
   public static expression_element_not parseexpression_element_not(org.antlr.runtime.tree.Tree tree) {
@@ -11187,7 +11187,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_null(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_NULL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_NULL;
   }
 
   public static expression_element_not_null parseexpression_element_not_null(org.antlr.runtime.tree.Tree tree) {
@@ -11218,7 +11218,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_null(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NULL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NULL;
   }
 
   public static expression_element_null parseexpression_element_null(org.antlr.runtime.tree.Tree tree) {
@@ -11249,7 +11249,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_nan(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_NAN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_NAN;
   }
 
   public static expression_element_not_nan parseexpression_element_not_nan(org.antlr.runtime.tree.Tree tree) {
@@ -11280,7 +11280,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_nan(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NAN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NAN;
   }
 
   public static expression_element_nan parseexpression_element_nan(org.antlr.runtime.tree.Tree tree) {
@@ -11311,7 +11311,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_present(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_PRESENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_PRESENT;
   }
 
   public static expression_element_not_present parseexpression_element_not_present(org.antlr.runtime.tree.Tree tree) {
@@ -11342,7 +11342,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_present(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_PRESENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_PRESENT;
   }
 
   public static expression_element_present parseexpression_element_present(org.antlr.runtime.tree.Tree tree) {
@@ -11373,7 +11373,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_infinite(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_INFINITE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_INFINITE;
   }
 
   public static expression_element_not_infinite parseexpression_element_not_infinite(org.antlr.runtime.tree.Tree tree) {
@@ -11404,7 +11404,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_infinite(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_INFINITE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_INFINITE;
   }
 
   public static expression_element_infinite parseexpression_element_infinite(org.antlr.runtime.tree.Tree tree) {
@@ -11435,7 +11435,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_a_set(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_A_SET;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_A_SET;
   }
 
   public static expression_element_not_a_set parseexpression_element_not_a_set(org.antlr.runtime.tree.Tree tree) {
@@ -11466,7 +11466,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_a_set(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_A_SET;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_A_SET;
   }
 
   public static expression_element_a_set parseexpression_element_a_set(org.antlr.runtime.tree.Tree tree) {
@@ -11497,7 +11497,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_empty(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_EMPTY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_EMPTY;
   }
 
   public static expression_element_not_empty parseexpression_element_not_empty(org.antlr.runtime.tree.Tree tree) {
@@ -11528,7 +11528,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_empty(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IS_EMPTY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IS_EMPTY;
   }
 
   public static expression_element_empty parseexpression_element_empty(org.antlr.runtime.tree.Tree tree) {
@@ -11559,7 +11559,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_in(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOT_IN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOT_IN;
   }
 
   public static expression_element_not_in parseexpression_element_not_in(org.antlr.runtime.tree.Tree tree) {
@@ -11596,7 +11596,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_in(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_IN;
   }
 
   public static expression_element_in parseexpression_element_in(org.antlr.runtime.tree.Tree tree) {
@@ -11633,7 +11633,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_between(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOT_BETWEEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOT_BETWEEN;
   }
 
   public static expression_element_not_between parseexpression_element_not_between(org.antlr.runtime.tree.Tree tree) {
@@ -11676,7 +11676,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_between(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_BETWEEN;
   }
 
   public static expression_element_between parseexpression_element_between(org.antlr.runtime.tree.Tree tree) {
@@ -11719,7 +11719,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_like(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_LIKE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_LIKE;
   }
 
   public static expression_element_like parseexpression_element_like(org.antlr.runtime.tree.Tree tree) {
@@ -11763,7 +11763,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_likec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LIKEC_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LIKEC_VK;
   }
 
   public static expression_element_likec parseexpression_element_likec(org.antlr.runtime.tree.Tree tree) {
@@ -11807,7 +11807,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_like2(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LIKE2_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LIKE2_VK;
   }
 
   public static expression_element_like2 parseexpression_element_like2(org.antlr.runtime.tree.Tree tree) {
@@ -11851,7 +11851,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_like4(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LIKE4_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LIKE4_VK;
   }
 
   public static expression_element_like4 parseexpression_element_like4(org.antlr.runtime.tree.Tree tree) {
@@ -11895,7 +11895,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_not_like(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOT_LIKE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOT_LIKE;
   }
 
   public static expression_element_not_like parseexpression_element_not_like(org.antlr.runtime.tree.Tree tree) {
@@ -11939,7 +11939,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_unary(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNARY_OPERATOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNARY_OPERATOR;
   }
 
   public static expression_element_unary parseexpression_element_unary(org.antlr.runtime.tree.Tree tree) {
@@ -11974,7 +11974,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_prior(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_PRIOR;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_PRIOR;
   }
 
   public static expression_element_prior parseexpression_element_prior(org.antlr.runtime.tree.Tree tree) {
@@ -12005,7 +12005,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_stanrd(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.STANDARD_FUNCTION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.STANDARD_FUNCTION;
   }
 
   public static expression_element_stanrd parseexpression_element_stanrd(org.antlr.runtime.tree.Tree tree) {
@@ -12036,7 +12036,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_some(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SOME_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SOME_VK;
   }
 
   public static expression_element_some parseexpression_element_some(org.antlr.runtime.tree.Tree tree) {
@@ -12067,7 +12067,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_exists(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_EXISTS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_EXISTS;
   }
 
   public static expression_element_exists parseexpression_element_exists(org.antlr.runtime.tree.Tree tree) {
@@ -12098,7 +12098,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_all(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL;
   }
 
   public static expression_element_all parseexpression_element_all(org.antlr.runtime.tree.Tree tree) {
@@ -12129,7 +12129,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_any(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ANY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ANY;
   }
 
   public static expression_element_any parseexpression_element_any(org.antlr.runtime.tree.Tree tree) {
@@ -12160,7 +12160,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_dot_asterisk(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DOT_ASTERISK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DOT_ASTERISK;
   }
 
   public static expression_element_dot_asterisk parseexpression_element_dot_asterisk(org.antlr.runtime.tree.Tree tree) {
@@ -12191,7 +12191,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_found(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_FOUND_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_FOUND_VK;
   }
 
   public static expression_element_found parseexpression_element_found(org.antlr.runtime.tree.Tree tree) {
@@ -12222,7 +12222,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_notfound(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_NOTFOUND_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_NOTFOUND_VK;
   }
 
   public static expression_element_notfound parseexpression_element_notfound(org.antlr.runtime.tree.Tree tree) {
@@ -12253,7 +12253,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_rowcount(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_ROWCOUNT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_ROWCOUNT_VK;
   }
 
   public static expression_element_rowcount parseexpression_element_rowcount(org.antlr.runtime.tree.Tree tree) {
@@ -12284,7 +12284,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_isopen(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PERCENT_ISOPEN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PERCENT_ISOPEN_VK;
   }
 
   public static expression_element_isopen parseexpression_element_isopen(org.antlr.runtime.tree.Tree tree) {
@@ -12315,7 +12315,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element_outer_join_sign(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OUTER_JOIN_SIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OUTER_JOIN_SIGN;
   }
 
   public static expression_element_outer_join_sign parseexpression_element_outer_join_sign(org.antlr.runtime.tree.Tree tree) {
@@ -12361,7 +12361,7 @@ public class parser {
   }
 
   public static boolean canParsedatetime_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.AT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.AT_VK;
   }
 
   public static datetime_element parsedatetime_element(org.antlr.runtime.tree.Tree tree) {
@@ -12387,7 +12387,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_expression(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MODEL_EXPRESSION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_EXPRESSION;
   }
 
   public static model_expression parsemodel_expression(org.antlr.runtime.tree.Tree tree) {
@@ -12428,7 +12428,7 @@ public class parser {
   }
 
   public static boolean canParsemodel_expression_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ANY;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ANY;
   }
 
   public static model_expression_element parsemodel_expression_element(org.antlr.runtime.tree.Tree tree) {
@@ -12454,7 +12454,7 @@ public class parser {
   }
 
   public static boolean canParsefor_single_column_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_IN;
   }
 
   public static for_single_column_element parsefor_single_column_element(org.antlr.runtime.tree.Tree tree) {
@@ -12480,7 +12480,7 @@ public class parser {
   }
 
   public static boolean canParsefor_like_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_LIKE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_LIKE;
   }
 
   public static for_like_part parsefor_like_part(org.antlr.runtime.tree.Tree tree) {
@@ -12520,7 +12520,7 @@ public class parser {
   }
 
   public static boolean canParsecase_statement_simple(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SIMPLE_CASE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SIMPLE_CASE;
   }
 
   public static case_statement_simple parsecase_statement_simple(org.antlr.runtime.tree.Tree tree) {
@@ -12568,7 +12568,7 @@ public class parser {
   }
 
   public static boolean canParsecase_statement_searched(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SEARCHED_CASE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SEARCHED_CASE;
   }
 
   public static case_statement_searched parsecase_statement_searched(org.antlr.runtime.tree.Tree tree) {
@@ -12610,7 +12610,7 @@ public class parser {
   }
 
   public static boolean canParsecase_when_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHEN;
   }
 
   public static case_when_part parsecase_when_part(org.antlr.runtime.tree.Tree tree) {
@@ -12661,7 +12661,7 @@ public class parser {
   }
 
   public static boolean canParsecase_else_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ELSE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ELSE;
   }
 
   public static case_else_part parsecase_else_part(org.antlr.runtime.tree.Tree tree) {
@@ -12717,7 +12717,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_enabling_over(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_ENABLING_OVER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_ENABLING_OVER;
   }
 
   public static standard_function_enabling_over parsestandard_function_enabling_over(org.antlr.runtime.tree.Tree tree) {
@@ -12759,7 +12759,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_count(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COUNT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COUNT_VK;
   }
 
   public static standard_function_count parsestandard_function_count(org.antlr.runtime.tree.Tree tree) {
@@ -12775,22 +12775,22 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DISTINCT)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DISTINCT)) {
       _result.set_SQL92_RESERVED_DISTINCT(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_UNIQUE)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_UNIQUE)) {
       _result.set_SQL92_RESERVED_UNIQUE(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ALL)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ALL)) {
       _result.set_SQL92_RESERVED_ALL(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK)) {
       _result.set_ASTERISK(tree.getChild(_i));
       ++_i;
     }
@@ -12826,7 +12826,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_xmlcast(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLCAST_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLCAST_VK;
   }
 
   public static standard_function_xmlcast parsestandard_function_xmlcast(org.antlr.runtime.tree.Tree tree) {
@@ -12863,7 +12863,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_case(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CAST_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CAST_VK;
   }
 
   public static standard_function_case parsestandard_function_case(org.antlr.runtime.tree.Tree tree) {
@@ -12900,7 +12900,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_enabling_within_or_over(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_ENABLING_WITHIN_OR_OVER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_ENABLING_WITHIN_OR_OVER;
   }
 
   public static standard_function_enabling_within_or_over parsestandard_function_enabling_within_or_over(org.antlr.runtime.tree.Tree tree) {
@@ -12949,7 +12949,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_extract(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXTRACT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXTRACT_VK;
   }
 
   public static standard_function_extract parsestandard_function_extract(org.antlr.runtime.tree.Tree tree) {
@@ -12986,7 +12986,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_translate(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TRANSLATE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TRANSLATE_VK;
   }
 
   public static standard_function_translate parsestandard_function_translate(org.antlr.runtime.tree.Tree tree) {
@@ -13029,7 +13029,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_trim(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TRIM_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TRIM_VK;
   }
 
   public static standard_function_trim parsestandard_function_trim(org.antlr.runtime.tree.Tree tree) {
@@ -13054,17 +13054,17 @@ public class parser {
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LEADING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LEADING_VK)) {
       _result.set_LEADING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TRAILING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TRAILING_VK)) {
       _result.set_TRAILING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BOTH_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BOTH_VK)) {
       _result.set_BOTH_VK(tree.getChild(_i));
       ++_i;
     }
@@ -13088,7 +13088,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_xmlagg(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLAGG_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLAGG_VK;
   }
 
   public static standard_function_xmlagg parsestandard_function_xmlagg(org.antlr.runtime.tree.Tree tree) {
@@ -13126,7 +13126,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_xmlparse(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLPARSE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLPARSE_VK;
   }
 
   public static standard_function_xmlparse parsestandard_function_xmlparse(org.antlr.runtime.tree.Tree tree) {
@@ -13150,7 +13150,7 @@ public class parser {
     _result.set_expression(parseexpression(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.WELLFORMED_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WELLFORMED_VK)) {
       _result.set_WELLFORMED_VK(tree.getChild(_i));
       ++_i;
     }
@@ -13184,7 +13184,7 @@ public class parser {
   }
 
   public static boolean canParsexmlparse_document(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DOCUMENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DOCUMENT_VK;
   }
 
   public static xmlparse_document parsexmlparse_document(org.antlr.runtime.tree.Tree tree) {
@@ -13210,7 +13210,7 @@ public class parser {
   }
 
   public static boolean canParsexmlparse_content(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONTENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONTENT_VK;
   }
 
   public static xmlparse_content parsexmlparse_content(org.antlr.runtime.tree.Tree tree) {
@@ -13236,7 +13236,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_root(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLROOT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLROOT_VK;
   }
 
   public static standard_function_root parsestandard_function_root(org.antlr.runtime.tree.Tree tree) {
@@ -13280,7 +13280,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_table(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLTABLE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLTABLE_VK;
   }
 
   public static standard_function_table parsestandard_function_table(org.antlr.runtime.tree.Tree tree) {
@@ -13334,7 +13334,7 @@ public class parser {
   }
 
   public static boolean canParsestandard_function_xmlelement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLELEMENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLELEMENT_VK;
   }
 
   public static standard_function_xmlelement parsestandard_function_xmlelement(org.antlr.runtime.tree.Tree tree) {
@@ -13350,22 +13350,22 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ENTITYESCAPING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ENTITYESCAPING_VK)) {
       _result.set_ENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOENTITYESCAPING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOENTITYESCAPING_VK)) {
       _result.set_NOENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NAME_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NAME_VK)) {
       _result.set_NAME_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.EVALNAME_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EVALNAME_VK)) {
       _result.set_EVALNAME_VK(tree.getChild(_i));
       ++_i;
     }
@@ -13431,7 +13431,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_year(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.YEAR_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.YEAR_VK;
   }
 
   public static extract_part_year parseextract_part_year(org.antlr.runtime.tree.Tree tree) {
@@ -13457,7 +13457,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_month(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MONTH_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MONTH_VK;
   }
 
   public static extract_part_month parseextract_part_month(org.antlr.runtime.tree.Tree tree) {
@@ -13483,7 +13483,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_day(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DAY_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DAY_VK;
   }
 
   public static extract_part_day parseextract_part_day(org.antlr.runtime.tree.Tree tree) {
@@ -13509,7 +13509,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_hour(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.HOUR_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.HOUR_VK;
   }
 
   public static extract_part_hour parseextract_part_hour(org.antlr.runtime.tree.Tree tree) {
@@ -13535,7 +13535,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_minute(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MINUTE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MINUTE_VK;
   }
 
   public static extract_part_minute parseextract_part_minute(org.antlr.runtime.tree.Tree tree) {
@@ -13561,7 +13561,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_second(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SECOND_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SECOND_VK;
   }
 
   public static extract_part_second parseextract_part_second(org.antlr.runtime.tree.Tree tree) {
@@ -13587,7 +13587,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_tzhour(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMEZONE_HOUR_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMEZONE_HOUR_VK;
   }
 
   public static extract_part_tzhour parseextract_part_tzhour(org.antlr.runtime.tree.Tree tree) {
@@ -13613,7 +13613,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_tzminute(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMEZONE_MINUTE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMEZONE_MINUTE_VK;
   }
 
   public static extract_part_tzminute parseextract_part_tzminute(org.antlr.runtime.tree.Tree tree) {
@@ -13639,7 +13639,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_tzabbr(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMEZONE_ABBR_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMEZONE_ABBR_VK;
   }
 
   public static extract_part_tzabbr parseextract_part_tzabbr(org.antlr.runtime.tree.Tree tree) {
@@ -13665,7 +13665,7 @@ public class parser {
   }
 
   public static boolean canParseextract_part_tz_region(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIMEZONE_REGION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIMEZONE_REGION_VK;
   }
 
   public static extract_part_tz_region parseextract_part_tz_region(org.antlr.runtime.tree.Tree tree) {
@@ -13704,7 +13704,7 @@ public class parser {
   }
 
   public static boolean canParseover_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.OVER_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OVER_VK;
   }
 
   public static over_clause parseover_clause(org.antlr.runtime.tree.Tree tree) {
@@ -13764,7 +13764,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_clause_rows(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROWS_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROWS_VK;
   }
 
   public static windowing_clause_rows parsewindowing_clause_rows(org.antlr.runtime.tree.Tree tree) {
@@ -13795,7 +13795,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_clause_range(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RANGE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RANGE_VK;
   }
 
   public static windowing_clause_range parsewindowing_clause_range(org.antlr.runtime.tree.Tree tree) {
@@ -13840,7 +13840,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_clause_between(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_BETWEEN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_BETWEEN;
   }
 
   public static windowing_clause_between parsewindowing_clause_between(org.antlr.runtime.tree.Tree tree) {
@@ -13893,7 +13893,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_elements_unbounded_preceding(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNBOUNDED_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNBOUNDED_VK;
   }
 
   public static windowing_elements_unbounded_preceding parsewindowing_elements_unbounded_preceding(org.antlr.runtime.tree.Tree tree) {
@@ -13909,7 +13909,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.PRECEDING_VK))) { throw new RuntimeException("Tree type mismatch"); }
+    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PRECEDING_VK))) { throw new RuntimeException("Tree type mismatch"); }
     _result.set_PRECEDING_VK(tree.getChild(_i));
     ++_i;
 
@@ -13924,7 +13924,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_elements_current_row(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CURRENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CURRENT_VK;
   }
 
   public static windowing_elements_current_row parsewindowing_elements_current_row(org.antlr.runtime.tree.Tree tree) {
@@ -13940,7 +13940,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROW_VK))) { throw new RuntimeException("Tree type mismatch"); }
+    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROW_VK))) { throw new RuntimeException("Tree type mismatch"); }
     _result.set_ROW_VK(tree.getChild(_i));
     ++_i;
 
@@ -13955,7 +13955,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_elements_preceding(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PRECEDING_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PRECEDING_VK;
   }
 
   public static windowing_elements_preceding parsewindowing_elements_preceding(org.antlr.runtime.tree.Tree tree) {
@@ -13986,7 +13986,7 @@ public class parser {
   }
 
   public static boolean canParsewindowing_elements_following(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FOLLOWING_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FOLLOWING_VK;
   }
 
   public static windowing_elements_following parsewindowing_elements_following(org.antlr.runtime.tree.Tree tree) {
@@ -14017,7 +14017,7 @@ public class parser {
   }
 
   public static boolean canParseusing_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PLSQL_NON_RESERVED_USING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PLSQL_NON_RESERVED_USING;
   }
 
   public static using_clause parseusing_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14066,7 +14066,7 @@ public class parser {
   }
 
   public static boolean canParseusing_element_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ELEMENT;
   }
 
   public static using_element_element parseusing_element_element(org.antlr.runtime.tree.Tree tree) {
@@ -14082,12 +14082,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_IN)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_IN)) {
       _result.set_SQL92_RESERVED_IN(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.OUT_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OUT_VK)) {
       _result.set_OUT_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14118,7 +14118,7 @@ public class parser {
   }
 
   public static boolean canParseusing_element_asterisk(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK;
   }
 
   public static using_element_asterisk parseusing_element_asterisk(org.antlr.runtime.tree.Tree tree) {
@@ -14144,7 +14144,7 @@ public class parser {
   }
 
   public static boolean canParsecollect_order_by_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_ORDER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_ORDER;
   }
 
   public static collect_order_by_part parsecollect_order_by_part(org.antlr.runtime.tree.Tree tree) {
@@ -14175,7 +14175,7 @@ public class parser {
   }
 
   public static boolean canParsewithin_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.WITHIN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.WITHIN_VK;
   }
 
   public static within_clause parsewithin_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14206,7 +14206,7 @@ public class parser {
   }
 
   public static boolean canParsecost_matrix_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COST_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COST_VK;
   }
 
   public static cost_matrix_clause parsecost_matrix_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14232,7 +14232,7 @@ public class parser {
   }
 
   public static boolean canParsexml_passing_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PASSING_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PASSING_VK;
   }
 
   public static xml_passing_clause parsexml_passing_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14248,7 +14248,7 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VALUE_VK)) {
       _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14283,7 +14283,7 @@ public class parser {
   }
 
   public static boolean canParsexml_attributes_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLATTRIBUTES_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLATTRIBUTES_VK;
   }
 
   public static xml_attributes_clause parsexml_attributes_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14299,22 +14299,22 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ENTITYESCAPING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ENTITYESCAPING_VK)) {
       _result.set_ENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOENTITYESCAPING_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOENTITYESCAPING_VK)) {
       _result.set_NOENTITYESCAPING_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCHEMACHECK_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SCHEMACHECK_VK)) {
       _result.set_SCHEMACHECK_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NOSCHEMACHECK_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NOSCHEMACHECK_VK)) {
       _result.set_NOSCHEMACHECK_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14346,7 +14346,7 @@ public class parser {
   }
 
   public static boolean canParsexml_namespaces_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XMLNAMESPACES_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XMLNAMESPACES_VK;
   }
 
   public static xml_namespaces_clause parsexml_namespaces_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14372,7 +14372,7 @@ public class parser {
   }
 
   public static boolean canParsexml_table_column(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_COLUMN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XML_COLUMN;
   }
 
   public static xml_table_column parsexml_table_column(org.antlr.runtime.tree.Tree tree) {
@@ -14392,7 +14392,7 @@ public class parser {
     _result.set_xml_column_name(parsexml_column_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.ORDINALITY_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ORDINALITY_VK)) {
       _result.set_ORDINALITY_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14431,7 +14431,7 @@ public class parser {
   }
 
   public static boolean canParsexml_general_default_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DEFAULT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DEFAULT;
   }
 
   public static xml_general_default_part parsexml_general_default_part(org.antlr.runtime.tree.Tree tree) {
@@ -14462,7 +14462,7 @@ public class parser {
   }
 
   public static boolean canParsexml_multiuse_expression_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XML_ELEMENT;
   }
 
   public static xml_multiuse_expression_element parsexml_multiuse_expression_element(org.antlr.runtime.tree.Tree tree) {
@@ -14500,7 +14500,7 @@ public class parser {
   }
 
   public static boolean canParsexml_alias(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_ALIAS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XML_ALIAS;
   }
 
   public static xml_alias parsexml_alias(org.antlr.runtime.tree.Tree tree) {
@@ -14545,7 +14545,7 @@ public class parser {
   }
 
   public static boolean canParsexml_alias_evalname(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EVALNAME_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EVALNAME_VK;
   }
 
   public static xml_alias_evalname parsexml_alias_evalname(org.antlr.runtime.tree.Tree tree) {
@@ -14576,7 +14576,7 @@ public class parser {
   }
 
   public static boolean canParsexml_param_version_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VERSION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VERSION_VK;
   }
 
   public static xml_param_version_part parsexml_param_version_part(org.antlr.runtime.tree.Tree tree) {
@@ -14592,12 +14592,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NO_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NO_VK)) {
       _result.set_NO_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VALUE_VK)) {
       _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14622,7 +14622,7 @@ public class parser {
   }
 
   public static boolean canParsexmlroot_param_standalone_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.STANDALONE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.STANDALONE_VK;
   }
 
   public static xmlroot_param_standalone_part parsexmlroot_param_standalone_part(org.antlr.runtime.tree.Tree tree) {
@@ -14638,17 +14638,17 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.YES_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.YES_VK)) {
       _result.set_YES_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.NO_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NO_VK)) {
       _result.set_NO_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.VALUE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VALUE_VK)) {
       _result.set_VALUE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -14668,7 +14668,7 @@ public class parser {
   }
 
   public static boolean canParsexmlserialize_param_enconding_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ENCODING_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ENCODING_VK;
   }
 
   public static xmlserialize_param_enconding_part parsexmlserialize_param_enconding_part(org.antlr.runtime.tree.Tree tree) {
@@ -14699,7 +14699,7 @@ public class parser {
   }
 
   public static boolean canParsexmlserialize_param_ident_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INDENT_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INDENT_VK;
   }
 
   public static xmlserialize_param_ident_part parsexmlserialize_param_ident_part(org.antlr.runtime.tree.Tree tree) {
@@ -14725,7 +14725,7 @@ public class parser {
   }
 
   public static boolean canParsepartition_extension_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARTITION_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARTITION_VK;
   }
 
   public static partition_extension_clause parsepartition_extension_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14765,7 +14765,7 @@ public class parser {
   }
 
   public static boolean canParsecolumn_alias(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COLUMN_ALIAS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COLUMN_ALIAS;
   }
 
   public static column_alias parsecolumn_alias(org.antlr.runtime.tree.Tree tree) {
@@ -14803,7 +14803,7 @@ public class parser {
   }
 
   public static boolean canParsetable_alias(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_ALIAS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_ALIAS;
   }
 
   public static table_alias parsetable_alias(org.antlr.runtime.tree.Tree tree) {
@@ -14841,7 +14841,7 @@ public class parser {
   }
 
   public static boolean canParsewhere_clause(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_WHERE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_WHERE;
   }
 
   public static where_clause parsewhere_clause(org.antlr.runtime.tree.Tree tree) {
@@ -14886,7 +14886,7 @@ public class parser {
   }
 
   public static boolean canParseinto_clause_normal(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_INTO;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_INTO;
   }
 
   public static into_clause_normal parseinto_clause_normal(org.antlr.runtime.tree.Tree tree) {
@@ -14921,7 +14921,7 @@ public class parser {
   }
 
   public static boolean canParseinto_clause_bulk(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.BULK_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BULK_VK;
   }
 
   public static into_clause_bulk parseinto_clause_bulk(org.antlr.runtime.tree.Tree tree) {
@@ -14956,7 +14956,7 @@ public class parser {
   }
 
   public static boolean canParsexml_column_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.XML_COLUMN_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.XML_COLUMN_NAME;
   }
 
   public static xml_column_name parsexml_column_name(org.antlr.runtime.tree.Tree tree) {
@@ -14994,7 +14994,7 @@ public class parser {
   }
 
   public static boolean canParsecost_class_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COST_CLASS_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COST_CLASS_NAME;
   }
 
   public static cost_class_name parsecost_class_name(org.antlr.runtime.tree.Tree tree) {
@@ -15032,7 +15032,7 @@ public class parser {
   }
 
   public static boolean canParseattribute_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ATTRIBUTE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ATTRIBUTE_NAME;
   }
 
   public static attribute_name parseattribute_name(org.antlr.runtime.tree.Tree tree) {
@@ -15070,7 +15070,7 @@ public class parser {
   }
 
   public static boolean canParsesavepoint_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SAVEPOINT_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SAVEPOINT_NAME;
   }
 
   public static savepoint_name parsesavepoint_name(org.antlr.runtime.tree.Tree tree) {
@@ -15108,7 +15108,7 @@ public class parser {
   }
 
   public static boolean canParserollback_segment_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROLLBACK_SEGMENT_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLBACK_SEGMENT_NAME;
   }
 
   public static rollback_segment_name parserollback_segment_name(org.antlr.runtime.tree.Tree tree) {
@@ -15146,7 +15146,7 @@ public class parser {
   }
 
   public static boolean canParsetable_var_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLE_VAR_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_VAR_NAME;
   }
 
   public static table_var_name parsetable_var_name(org.antlr.runtime.tree.Tree tree) {
@@ -15184,7 +15184,7 @@ public class parser {
   }
 
   public static boolean canParseschema_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SCHEMA_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SCHEMA_NAME;
   }
 
   public static schema_name parseschema_name(org.antlr.runtime.tree.Tree tree) {
@@ -15222,7 +15222,7 @@ public class parser {
   }
 
   public static boolean canParseroutine_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ROUTINE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ROUTINE_NAME;
   }
 
   public static routine_name parseroutine_name(org.antlr.runtime.tree.Tree tree) {
@@ -15271,7 +15271,7 @@ public class parser {
   }
 
   public static boolean canParsepackage_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PACKAGE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PACKAGE_NAME;
   }
 
   public static package_name parsepackage_name(org.antlr.runtime.tree.Tree tree) {
@@ -15313,7 +15313,7 @@ public class parser {
   }
 
   public static boolean canParseimplementation_type_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.IMPLEMENTATION_TYPE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.IMPLEMENTATION_TYPE_NAME;
   }
 
   public static implementation_type_name parseimplementation_type_name(org.antlr.runtime.tree.Tree tree) {
@@ -15355,7 +15355,7 @@ public class parser {
   }
 
   public static boolean canParseparameter_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PARAMETER_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PARAMETER_NAME;
   }
 
   public static parameter_name parseparameter_name(org.antlr.runtime.tree.Tree tree) {
@@ -15393,7 +15393,7 @@ public class parser {
   }
 
   public static boolean canParsereference_model_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.REFERENCE_MODEL_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REFERENCE_MODEL_NAME;
   }
 
   public static reference_model_name parsereference_model_name(org.antlr.runtime.tree.Tree tree) {
@@ -15431,7 +15431,7 @@ public class parser {
   }
 
   public static boolean canParsemain_model_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MAIN_MODEL_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MAIN_MODEL_NAME;
   }
 
   public static main_model_name parsemain_model_name(org.antlr.runtime.tree.Tree tree) {
@@ -15469,7 +15469,7 @@ public class parser {
   }
 
   public static boolean canParsequery_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.QUERY_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.QUERY_NAME;
   }
 
   public static query_name parsequery_name(org.antlr.runtime.tree.Tree tree) {
@@ -15507,7 +15507,7 @@ public class parser {
   }
 
   public static boolean canParseconstraint_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CONSTRAINT_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONSTRAINT_NAME;
   }
 
   public static constraint_name parseconstraint_name(org.antlr.runtime.tree.Tree tree) {
@@ -15556,7 +15556,7 @@ public class parser {
   }
 
   public static boolean canParselabel_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LABEL_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LABEL_NAME;
   }
 
   public static label_name parselabel_name(org.antlr.runtime.tree.Tree tree) {
@@ -15587,7 +15587,7 @@ public class parser {
   }
 
   public static boolean canParsetype_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TYPE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TYPE_NAME;
   }
 
   public static type_name parsetype_name(org.antlr.runtime.tree.Tree tree) {
@@ -15622,7 +15622,7 @@ public class parser {
   }
 
   public static boolean canParsesequence_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SEQUENCE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SEQUENCE_NAME;
   }
 
   public static sequence_name parsesequence_name(org.antlr.runtime.tree.Tree tree) {
@@ -15657,7 +15657,7 @@ public class parser {
   }
 
   public static boolean canParseexception_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXCEPTION_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXCEPTION_NAME;
   }
 
   public static exception_name parseexception_name(org.antlr.runtime.tree.Tree tree) {
@@ -15699,7 +15699,7 @@ public class parser {
   }
 
   public static boolean canParsefunction_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.FUNCTION_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FUNCTION_NAME;
   }
 
   public static function_name parsefunction_name(org.antlr.runtime.tree.Tree tree) {
@@ -15741,7 +15741,7 @@ public class parser {
   }
 
   public static boolean canParseprocedure_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PROCEDURE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PROCEDURE_NAME;
   }
 
   public static procedure_name parseprocedure_name(org.antlr.runtime.tree.Tree tree) {
@@ -15783,7 +15783,7 @@ public class parser {
   }
 
   public static boolean canParsetrigger_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TRIGGER_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TRIGGER_NAME;
   }
 
   public static trigger_name parsetrigger_name(org.antlr.runtime.tree.Tree tree) {
@@ -15825,7 +15825,7 @@ public class parser {
   }
 
   public static boolean canParsehosted_variable_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.HOSTED_VARIABLE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.HOSTED_VARIABLE_NAME;
   }
 
   public static hosted_variable_name parsehosted_variable_name(org.antlr.runtime.tree.Tree tree) {
@@ -15841,12 +15841,12 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BINDVAR)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BINDVAR)) {
       _result.set_BINDVAR(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNSIGNED_INTEGER)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNSIGNED_INTEGER)) {
       _result.set_UNSIGNED_INTEGER(tree.getChild(_i));
       ++_i;
     }
@@ -15864,7 +15864,7 @@ public class parser {
   }
 
   public static boolean canParsevariable_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.VARIABLE_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.VARIABLE_NAME;
   }
 
   public static variable_name parsevariable_name(org.antlr.runtime.tree.Tree tree) {
@@ -15906,7 +15906,7 @@ public class parser {
   }
 
   public static boolean canParseindex_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INDEX_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INDEX_NAME;
   }
 
   public static index_name parseindex_name(org.antlr.runtime.tree.Tree tree) {
@@ -15944,7 +15944,7 @@ public class parser {
   }
 
   public static boolean canParsecursor_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CURSOR_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CURSOR_NAME;
   }
 
   public static cursor_name parsecursor_name(org.antlr.runtime.tree.Tree tree) {
@@ -15982,7 +15982,7 @@ public class parser {
   }
 
   public static boolean canParserecord_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.RECORD_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_NAME;
   }
 
   public static record_name parserecord_name(org.antlr.runtime.tree.Tree tree) {
@@ -16020,7 +16020,7 @@ public class parser {
   }
 
   public static boolean canParsecollection_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COLLECTION_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COLLECTION_NAME;
   }
 
   public static collection_name parsecollection_name(org.antlr.runtime.tree.Tree tree) {
@@ -16062,7 +16062,7 @@ public class parser {
   }
 
   public static boolean canParselink_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.LINK_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LINK_NAME;
   }
 
   public static link_name parselink_name(org.antlr.runtime.tree.Tree tree) {
@@ -16100,7 +16100,7 @@ public class parser {
   }
 
   public static boolean canParsecolumn_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.COLUMN_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COLUMN_NAME;
   }
 
   public static column_name parsecolumn_name(org.antlr.runtime.tree.Tree tree) {
@@ -16142,7 +16142,7 @@ public class parser {
   }
 
   public static boolean canParsetableview_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.TABLEVIEW_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TABLEVIEW_NAME;
   }
 
   public static tableview_name parsetableview_name(org.antlr.runtime.tree.Tree tree) {
@@ -16198,7 +16198,7 @@ public class parser {
   }
 
   public static boolean canParsechar_set_name(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_SET_NAME;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_SET_NAME;
   }
 
   public static char_set_name parsechar_set_name(org.antlr.runtime.tree.Tree tree) {
@@ -16233,7 +16233,7 @@ public class parser {
   }
 
   public static boolean canParsefunction_argument(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ARGUMENTS;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ARGUMENTS;
   }
 
   public static function_argument parsefunction_argument(org.antlr.runtime.tree.Tree tree) {
@@ -16267,7 +16267,7 @@ public class parser {
   }
 
   public static boolean canParseargument(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ARGUMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ARGUMENT;
   }
 
   public static argument parseargument(org.antlr.runtime.tree.Tree tree) {
@@ -16320,7 +16320,7 @@ public class parser {
   }
 
   public static boolean canParsetype_spec_custom(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CUSTOM_TYPE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CUSTOM_TYPE;
   }
 
   public static type_spec_custom parsetype_spec_custom(org.antlr.runtime.tree.Tree tree) {
@@ -16340,7 +16340,7 @@ public class parser {
     _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.REF_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REF_VK)) {
       _result.set_REF_VK(tree.getChild(_i));
       ++_i;
     }
@@ -16365,7 +16365,7 @@ public class parser {
   }
 
   public static boolean canParsetype_spec_interval(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.INTERVAL_DATATYPE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.INTERVAL_DATATYPE;
   }
 
   public static type_spec_interval parsetype_spec_interval(org.antlr.runtime.tree.Tree tree) {
@@ -16416,7 +16416,7 @@ public class parser {
   }
 
   public static boolean canParseinterval_type_spec_first_year(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.YEAR_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.YEAR_VK;
   }
 
   public static interval_type_spec_first_year parseinterval_type_spec_first_year(org.antlr.runtime.tree.Tree tree) {
@@ -16448,7 +16448,7 @@ public class parser {
   }
 
   public static boolean canParseinterval_type_spec_first_day(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DAY_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DAY_VK;
   }
 
   public static interval_type_spec_first_day parseinterval_type_spec_first_day(org.antlr.runtime.tree.Tree tree) {
@@ -16494,7 +16494,7 @@ public class parser {
   }
 
   public static boolean canParseinterval_type_spec_second_month(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MONTH_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MONTH_VK;
   }
 
   public static interval_type_spec_second_month parseinterval_type_spec_second_month(org.antlr.runtime.tree.Tree tree) {
@@ -16526,7 +16526,7 @@ public class parser {
   }
 
   public static boolean canParseinterval_type_spec_second_second(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SECOND_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SECOND_VK;
   }
 
   public static interval_type_spec_second_second parseinterval_type_spec_second_second(org.antlr.runtime.tree.Tree tree) {
@@ -16558,7 +16558,7 @@ public class parser {
   }
 
   public static boolean canParsetype_precision(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.PRECISION;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PRECISION;
   }
 
   public static type_precision parsetype_precision(org.antlr.runtime.tree.Tree tree) {
@@ -16583,12 +16583,12 @@ public class parser {
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_VK)) {
       _result.set_CHAR_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.BYTE_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.BYTE_VK)) {
       _result.set_BYTE_VK(tree.getChild(_i));
       ++_i;
     }
@@ -16610,7 +16610,7 @@ public class parser {
   }
 
   public static boolean canParsenative_datatype_spec(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.NATIVE_DATATYPE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NATIVE_DATATYPE;
   }
 
   public static native_datatype_spec parsenative_datatype_spec(org.antlr.runtime.tree.Tree tree) {
@@ -16635,12 +16635,12 @@ public class parser {
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.TIME_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TIME_VK)) {
       _result.set_TIME_VK(tree.getChild(_i));
       ++_i;
     }
 
-    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == br.com.porcelli.parser.plsql.PLSQLParser.LOCAL_VK)) {
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.LOCAL_VK)) {
       _result.set_LOCAL_VK(tree.getChild(_i));
       ++_i;
     }
@@ -16662,7 +16662,7 @@ public class parser {
   }
 
   public static boolean canParsegeneral_element(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CASCATED_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CASCATED_ELEMENT;
   }
 
   public static general_element parsegeneral_element(org.antlr.runtime.tree.Tree tree) {
@@ -16711,7 +16711,7 @@ public class parser {
   }
 
   public static boolean canParsegeneral_element_id(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ANY_ELEMENT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ANY_ELEMENT;
   }
 
   public static general_element_id parsegeneral_element_id(org.antlr.runtime.tree.Tree tree) {
@@ -16767,7 +16767,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_unsigned(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.UNSIGNED_INTEGER;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNSIGNED_INTEGER;
   }
 
   public static constant_unsigned parseconstant_unsigned(org.antlr.runtime.tree.Tree tree) {
@@ -16796,7 +16796,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_minus_unsigned(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MINUS_SIGN;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MINUS_SIGN;
   }
 
   public static constant_minus_unsigned parseconstant_minus_unsigned(org.antlr.runtime.tree.Tree tree) {
@@ -16827,7 +16827,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_exact_num(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.EXACT_NUM_LIT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.EXACT_NUM_LIT;
   }
 
   public static constant_exact_num parseconstant_exact_num(org.antlr.runtime.tree.Tree tree) {
@@ -16856,7 +16856,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_approx_num(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.APPROXIMATE_NUM_LIT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.APPROXIMATE_NUM_LIT;
   }
 
   public static constant_approx_num parseconstant_approx_num(org.antlr.runtime.tree.Tree tree) {
@@ -16885,7 +16885,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_char_string(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.CHAR_STRING;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_STRING;
   }
 
   public static constant_char_string parseconstant_char_string(org.antlr.runtime.tree.Tree tree) {
@@ -16914,7 +16914,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_null(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_NULL;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_NULL;
   }
 
   public static constant_null parseconstant_null(org.antlr.runtime.tree.Tree tree) {
@@ -16940,7 +16940,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_true(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_TRUE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_TRUE;
   }
 
   public static constant_true parseconstant_true(org.antlr.runtime.tree.Tree tree) {
@@ -16966,7 +16966,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_false(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FALSE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FALSE;
   }
 
   public static constant_false parseconstant_false(org.antlr.runtime.tree.Tree tree) {
@@ -16992,7 +16992,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_dbtimezone(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.DBTIMEZONE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.DBTIMEZONE_VK;
   }
 
   public static constant_dbtimezone parseconstant_dbtimezone(org.antlr.runtime.tree.Tree tree) {
@@ -17018,7 +17018,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_sessiontimezone(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SESSIONTIMEZONE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SESSIONTIMEZONE_VK;
   }
 
   public static constant_sessiontimezone parseconstant_sessiontimezone(org.antlr.runtime.tree.Tree tree) {
@@ -17044,7 +17044,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_minvalue(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MINVALUE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MINVALUE_VK;
   }
 
   public static constant_minvalue parseconstant_minvalue(org.antlr.runtime.tree.Tree tree) {
@@ -17070,7 +17070,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_maxvalue(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.MAXVALUE_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MAXVALUE_VK;
   }
 
   public static constant_maxvalue parseconstant_maxvalue(org.antlr.runtime.tree.Tree tree) {
@@ -17096,7 +17096,7 @@ public class parser {
   }
 
   public static boolean canParseconstant_default(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_DEFAULT;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_DEFAULT;
   }
 
   public static constant_default parseconstant_default(org.antlr.runtime.tree.Tree tree) {
@@ -17122,7 +17122,7 @@ public class parser {
   }
 
   public static boolean canParseid(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == br.com.porcelli.parser.plsql.PLSQLParser.ID;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.ID;
   }
 
   public static id parseid(org.antlr.runtime.tree.Tree tree) {

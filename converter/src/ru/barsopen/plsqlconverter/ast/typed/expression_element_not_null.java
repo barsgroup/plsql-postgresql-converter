@@ -27,7 +27,7 @@ public class expression_element_not_null implements expression_element, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.IS_NOT_NULL);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.IS_NOT_NULL);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("IS_NOT_NULL");

@@ -28,7 +28,7 @@ public class parallel_enable_clause implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.PARALLEL_ENABLE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PARALLEL_ENABLE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("PARALLEL_ENABLE_VK");

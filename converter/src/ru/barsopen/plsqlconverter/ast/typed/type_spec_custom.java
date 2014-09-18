@@ -47,7 +47,7 @@ public class type_spec_custom implements type_spec, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CUSTOM_TYPE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CUSTOM_TYPE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CUSTOM_TYPE");

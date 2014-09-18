@@ -36,7 +36,7 @@ public class general_element implements statement, assignment_target, table_expr
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CASCATED_ELEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CASCATED_ELEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CASCATED_ELEMENT");

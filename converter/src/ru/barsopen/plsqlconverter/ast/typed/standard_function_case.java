@@ -37,7 +37,7 @@ public class standard_function_case implements standard_function, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CAST_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CAST_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CAST_VK");

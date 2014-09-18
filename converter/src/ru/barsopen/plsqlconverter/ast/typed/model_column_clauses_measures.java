@@ -27,7 +27,7 @@ public class model_column_clauses_measures implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MEASURES_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MEASURES_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MEASURES_VK");

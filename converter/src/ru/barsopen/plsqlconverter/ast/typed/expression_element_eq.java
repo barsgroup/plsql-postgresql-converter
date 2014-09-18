@@ -37,7 +37,7 @@ public class expression_element_eq implements expression_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.EQUALS_OP);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EQUALS_OP);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("EQUALS_OP");

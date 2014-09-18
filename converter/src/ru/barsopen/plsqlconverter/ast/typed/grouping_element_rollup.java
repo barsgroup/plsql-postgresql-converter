@@ -36,7 +36,7 @@ public class grouping_element_rollup implements grouping_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ROLLUP_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ROLLUP_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ROLLUP_VK");

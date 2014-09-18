@@ -17,7 +17,7 @@ public class model_rules_element implements _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MODEL_RULE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MODEL_RULE);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MODEL_RULE");

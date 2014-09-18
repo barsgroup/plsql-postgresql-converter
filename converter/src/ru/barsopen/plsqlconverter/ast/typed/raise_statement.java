@@ -28,7 +28,7 @@ public class raise_statement implements statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.RAISE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RAISE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("RAISE_VK");

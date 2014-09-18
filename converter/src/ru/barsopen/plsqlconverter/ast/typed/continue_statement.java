@@ -39,7 +39,7 @@ public class continue_statement implements statement, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.CONTINUE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.CONTINUE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("CONTINUE_VK");

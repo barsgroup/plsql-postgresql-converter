@@ -37,7 +37,7 @@ public class fetch_statement implements cursor_manipulation_statements, _baseNod
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.SQL92_RESERVED_FETCH);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_FETCH);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("SQL92_RESERVED_FETCH");

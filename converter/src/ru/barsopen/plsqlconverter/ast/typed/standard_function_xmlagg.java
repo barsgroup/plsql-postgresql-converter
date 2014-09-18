@@ -38,7 +38,7 @@ public class standard_function_xmlagg implements standard_function, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.XMLAGG_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.XMLAGG_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("XMLAGG_VK");

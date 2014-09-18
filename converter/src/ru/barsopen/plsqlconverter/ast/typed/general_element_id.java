@@ -27,7 +27,7 @@ public class general_element_id implements general_element_item, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ANY_ELEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ANY_ELEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ANY_ELEMENT");

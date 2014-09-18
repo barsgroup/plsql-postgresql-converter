@@ -17,7 +17,7 @@ public class projection_asterisk implements query_block_projection, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ASTERISK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ASTERISK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ASTERISK");

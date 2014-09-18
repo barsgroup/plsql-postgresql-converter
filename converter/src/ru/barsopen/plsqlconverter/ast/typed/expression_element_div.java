@@ -37,7 +37,7 @@ public class expression_element_div implements expression_element, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.DIV_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.DIV_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("DIV_VK");

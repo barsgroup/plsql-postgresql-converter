@@ -17,7 +17,7 @@ public class constant_minvalue implements constant, _baseNode {
     visitor.visit(this);
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MINVALUE_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MINVALUE_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MINVALUE_VK");

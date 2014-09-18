@@ -58,7 +58,7 @@ public class field_spec implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.FIELD_SPEC);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.FIELD_SPEC);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("FIELD_SPEC");

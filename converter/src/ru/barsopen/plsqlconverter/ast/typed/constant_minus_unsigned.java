@@ -27,7 +27,7 @@ public class constant_minus_unsigned implements constant, _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.MINUS_SIGN);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.MINUS_SIGN);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("MINUS_SIGN");

@@ -38,7 +38,7 @@ public class lock_table_element implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.LOCK_TABLE_ELEMENT);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.LOCK_TABLE_ELEMENT);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("LOCK_TABLE_ELEMENT");

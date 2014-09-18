@@ -27,7 +27,7 @@ public class xmlserialize_param_enconding_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.ENCODING_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.ENCODING_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("ENCODING_VK");

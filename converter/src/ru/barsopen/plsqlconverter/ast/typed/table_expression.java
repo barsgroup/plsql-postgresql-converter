@@ -27,7 +27,7 @@ public class table_expression implements dml_table_expression_clause, _baseNode 
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.TABLE_EXPRESSION);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.TABLE_EXPRESSION);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("TABLE_EXPRESSION");

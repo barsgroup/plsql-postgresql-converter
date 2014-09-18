@@ -37,7 +37,7 @@ public class error_logging_reject_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(br.com.porcelli.parser.plsql.PLSQLParser.REJECT_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.REJECT_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
     _token.setText("REJECT_VK");
