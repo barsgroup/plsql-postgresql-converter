@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class general_element implements statement, assignment_target, table_expression_element, expression_element, _baseNode {
+public class general_element implements statement, assignment_target, general_element_or_dml_statement, table_expression_element, expression_element, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;

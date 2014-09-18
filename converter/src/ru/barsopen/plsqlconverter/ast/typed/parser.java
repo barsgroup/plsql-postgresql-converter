@@ -4387,7 +4387,7 @@ public class parser {
   }
 
   public static boolean canParsestatement(org.antlr.runtime.tree.Tree tree) {
-    return canParseassignment_statement(tree) || canParsecontinue_statement(tree) || canParseexit_statement(tree) || canParsegoto_statement(tree) || canParseif_statement(tree) || canParseloop_statement(tree) || canParseforall_statement(tree) || canParsenull_statement(tree) || canParseraise_statement(tree) || canParsereturn_statement(tree) || canParsepipe_row_statement(tree) || canParsecase_statement(tree) || canParsesql_statement(tree) || canParsegeneral_element(tree) || canParsebody(tree) || canParseblock(tree);
+    return canParseassignment_statement(tree) || canParsecontinue_statement(tree) || canParseexit_statement(tree) || canParsegoto_statement(tree) || canParseif_statement(tree) || canParseloop_statement(tree) || canParseforall_statement(tree) || canParsenull_statement(tree) || canParseraise_statement(tree) || canParsereturn_statement(tree) || canParsepipe_row_statement(tree) || canParsecase_statement(tree) || canParsesql_statement(tree) || canParseperform_statement(tree) || canParsegeneral_element(tree) || canParsebody(tree) || canParseblock(tree);
   }
 
   public static statement parsestatement(org.antlr.runtime.tree.Tree tree) {
@@ -4408,6 +4408,7 @@ public class parser {
     if (canParsepipe_row_statement(tree)) return parsepipe_row_statement(tree);
     if (canParsecase_statement(tree)) return parsecase_statement(tree);
     if (canParsesql_statement(tree)) return parsesql_statement(tree);
+    if (canParseperform_statement(tree)) return parseperform_statement(tree);
     if (canParsegeneral_element(tree)) return parsegeneral_element(tree);
     if (canParsebody(tree)) return parsebody(tree);
     if (canParseblock(tree)) return parseblock(tree);
@@ -5367,6 +5368,51 @@ public class parser {
     }
     _result.set_body(body);
     return _result;
+  }
+
+  public static boolean canParseperform_statement(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.PGSQL_PERFORM;
+  }
+
+  public static perform_statement parseperform_statement(org.antlr.runtime.tree.Tree tree) {
+    if (!canParseperform_statement(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    perform_statement _result = new perform_statement();
+
+    _result._line = tree.getLine();
+    _result._col = tree.getCharPositionInLine();
+    _result._tokenStartIndex = tree.getTokenStartIndex();
+    _result._tokenStopIndex = tree.getTokenStopIndex();
+    int _i = 0;
+
+    if (!(_i < tree.getChildCount() && (canParsegeneral_element_or_dml_statement(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_inner(parsegeneral_element_or_dml_statement(tree.getChild(_i)));
+    ++_i;
+
+    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
+    return _result;
+  }
+
+  public static perform_statement make_perform_statement(ru.barsopen.plsqlconverter.ast.typed.general_element_or_dml_statement inner) {
+    perform_statement _result = new perform_statement();
+    _result.set_inner(inner);
+    return _result;
+  }
+
+  public static boolean canParsegeneral_element_or_dml_statement(org.antlr.runtime.tree.Tree tree) {
+    return canParsegeneral_element(tree) || canParsedata_manipulation_language_statements(tree);
+  }
+
+  public static general_element_or_dml_statement parsegeneral_element_or_dml_statement(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsegeneral_element_or_dml_statement(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    if (canParsegeneral_element(tree)) return parsegeneral_element(tree);
+    if (canParsedata_manipulation_language_statements(tree)) return parsedata_manipulation_language_statements(tree);
+    throw new RuntimeException("Tree type mismatch");
   }
 
   public static boolean canParsesql_statement(org.antlr.runtime.tree.Tree tree) {

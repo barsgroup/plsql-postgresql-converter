@@ -13,11 +13,9 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.Tree;
 
+import ru.barsopen.plsqlconverter.PLSQLPrinter;
 import ru.barsopen.plsqlconverter.ast.typed._baseNode;
 import ru.barsopen.plsqlconverter.ast.typed._visitor;
-import ru.barsopen.plsqlconverter.ast.typed.expression_element;
-import ru.barsopen.plsqlconverter.ast.typed.general_element;
-import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class AstUtil {
 	
@@ -27,7 +25,7 @@ public class AstUtil {
 	
 	static
 	{
-		Field[] fields = PLSQLParser.class.getDeclaredFields();
+		Field[] fields = PLSQLPrinter.class.getDeclaredFields();
 		tokenNumber2NameMap = new HashMap<Integer, String>();
 		tokenName2NumberMap = new HashMap<String, Integer>();
 		int maxTokenValue = 0;
@@ -47,7 +45,7 @@ public class AstUtil {
 			}
 		}
 		tokenNames = new String[maxTokenValue + 1];
-		for (int i = 0; i < maxTokenValue; ++i) {
+		for (int i = 0; i <= maxTokenValue; ++i) {
 			if (tokenNumber2NameMap.containsKey(i)) {
 				tokenNames[i] = tokenNumber2NameMap.get(i);
 			} else {

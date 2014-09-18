@@ -11,6 +11,11 @@ options {
     output = template;
 }
 
+tokens {
+    PGSQL_PERFORM;
+}
+
+
 @members {
 
   static String[] correctTokenNames = getCorrectTokenNames();
@@ -69,7 +74,6 @@ options {
  */
 package ru.barsopen.plsqlconverter;
 }
-
 
 compilation_unit
     :    ^(COMPILATION_UNIT u+=unit_statement*)
@@ -682,7 +686,7 @@ create_sequence
 // $<Common Sequence
 
 sequence_spec
-    :    ^(START_VK UNSIGNED_INTEGER)
+    :    ^(PLSQL_RESERVED_START UNSIGNED_INTEGER)
     ->   template() "not implemented: sequence_spec"
     |    ^(INCREMENT_VK UNSIGNED_INTEGER)
     ->   template() "not implemented: sequence_spec"
@@ -702,7 +706,7 @@ sequence_spec
     ->   template() "not implemented: sequence_spec"
     |    NOCACHE_VK
     ->   template() "not implemented: sequence_spec"
-    |    ORDER_VK
+    |    SQL92_RESERVED_ORDER
     ->   template() "not implemented: sequence_spec"
     |    NOORDER_VK
     ->   template() "not implemented: sequence_spec"
@@ -948,6 +952,7 @@ statement
     |    pipe_row_statement -> { $pipe_row_statement.st }
     |    case_statement -> { $case_statement.st }
     |    sql_statement -> { $sql_statement.st }
+    |    perform_statement -> { $perform_statement.st }
     |    general_element -> { $general_element.st }
     |    body -> { $body.st }
     |    block -> { $block.st }
@@ -1075,6 +1080,11 @@ block
     ;
 
 // $>
+
+perform_statement
+    :   ^(PGSQL_PERFORM (inner=general_element|inner=data_manipulation_language_statements))
+    ->  perform_statement(inner={$inner.st});
+
 
 // $<SQL PL/SQL Statements
 
@@ -2526,7 +2536,6 @@ native_datatype_spec
     |    CHARACTER_VK  { typeBaseName = "character"; }
     |    CHAR_VK { typeBaseName = "char"; }
     |    CLOB_VK { typeBaseName = "clob"; }
-    |    DATE_VK { typeBaseName = "date"; }
     |    SQL92_RESERVED_DATE { typeBaseName = "date"; }
     |    DAY_VK
     |    DECIMAL_VK  { typeBaseName = "decimal"; }

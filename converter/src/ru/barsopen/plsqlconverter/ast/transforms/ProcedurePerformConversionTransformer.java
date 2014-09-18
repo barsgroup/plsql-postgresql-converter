@@ -20,8 +20,7 @@ public class ProcedurePerformConversionTransformer {
 
 	public static void transform(Tree node) throws Exception {
 		general_element elt = parser.parsegeneral_element(node);
-		general_element_id first = (general_element_id)elt.general_element_items.get(0);
-		first.id.value = "perform " + first.id.value; // TODO HACK
-		AstUtil.replaceNode(node, elt.unparse());
+		perform_statement statement = parser.make_perform_statement(elt);
+		AstUtil.replaceNode(node, statement.unparse());
 	}
 }

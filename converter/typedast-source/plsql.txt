@@ -667,6 +667,7 @@ statement =>
     pipe_row_statement
     case_statement
     sql_statement
+    perform_statement
     general_element
     body
     block
@@ -743,6 +744,10 @@ exception_handler: SQL92_RESERVED_WHEN exception_name+ seq_of_statements;
 block: BLOCK declare_spec* body;
 
 // $>
+
+perform_statement: PGSQL_PERFORM {inner}=general_element_or_dml_statement;
+
+general_element_or_dml_statement => general_element data_manipulation_language_statements;
 
 // $<SQL PL/SQL Statements
 
