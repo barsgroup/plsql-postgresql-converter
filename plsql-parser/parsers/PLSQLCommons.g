@@ -71,6 +71,7 @@ tokens {
     COST_CLASS_NAME;
     XML_COLUMN_NAME;
     OUTER_JOIN_SIGN;
+    LONG_RAW;
 }
 
 // $<Common SQL PL/SQL Clauses/Parts
@@ -394,11 +395,12 @@ native_datatype_element
     |    smallint_key
     |    number_key
     |    decimal_key 
-    |    double_key precision_key?
+    |    double_key precision_key!?
     |    float_key
     |    real_key
     |    nchar_key
-    |    long_key raw_key?
+    |    long_key
+    |    long_key raw_key -> ^(LONG_RAW[$long_key.start, "LONG_RAW"])
     |    char_key  
     |    character_key 
     |    varchar2_key
