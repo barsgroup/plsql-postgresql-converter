@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class subprog_decl_in_type implements _baseNode {
+public class subprog_decl_in_type implements type_body_elements, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;

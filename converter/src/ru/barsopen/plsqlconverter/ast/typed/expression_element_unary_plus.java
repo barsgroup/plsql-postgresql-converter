@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class query_partition_clause implements _baseNode {
+public class expression_element_unary_plus implements expression_element, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
@@ -12,30 +12,36 @@ public class query_partition_clause implements _baseNode {
   public int _getCol() { return _col; }
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
-  public query_partition_clause_spec query_partition_clause_spec = null;
-  public query_partition_clause_spec get_query_partition_clause_spec() { return this.query_partition_clause_spec; }
-  public void set_query_partition_clause_spec(query_partition_clause_spec value) {
-    if (this.query_partition_clause_spec != null) { this.query_partition_clause_spec._setParent(null); }
-    this.query_partition_clause_spec = value;
-    if (this.query_partition_clause_spec != null) { this.query_partition_clause_spec._setParent(this); }
+  public String op = null;
+  public String get_op() { return this.op; }
+  public void set_op(String value) {
+    this.op = value;
+  }
+  public expression_element arg = null;
+  public expression_element get_arg() { return this.arg; }
+  public void set_arg(expression_element value) {
+    if (this.arg != null) { this.arg._setParent(null); }
+    this.arg = value;
+    if (this.arg != null) { this.arg._setParent(this); }
   }
 
   public void _walk(_visitor visitor) {
     visitor.visit(this);
-    if (this.query_partition_clause_spec != null) {
-      this.query_partition_clause_spec._walk(visitor);
+    if (this.arg != null) {
+      this.arg._walk(visitor);
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.PARTITION_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.UNARY_PLUS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("PARTITION_VK");
+    _token.setText(op);
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
-    if (query_partition_clause_spec == null) { throw new RuntimeException(); }
-    _result.addChild(query_partition_clause_spec.unparse());
+
+    if (arg == null) { throw new RuntimeException(); }
+    _result.addChild(arg.unparse());
 
 
     return _result;

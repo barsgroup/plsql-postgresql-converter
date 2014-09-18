@@ -52,16 +52,20 @@ public class parser {
     int _i = 0;
 
     if (!(_i < tree.getChildCount() && (canParsesql_script_item(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.set_sql_script_item(parsesql_script_item(tree.getChild(_i)));
-    ++_i;
+    while (_i < tree.getChildCount() && (canParsesql_script_item(tree.getChild(_i)))) {
+      _result.add_sql_script_items(parsesql_script_item(tree.getChild(_i)));
+      ++_i;
+    }
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static sql_script make_sql_script(ru.barsopen.plsqlconverter.ast.typed.sql_script_item sql_script_item) {
+  public static sql_script make_sql_script(java.util.List<ru.barsopen.plsqlconverter.ast.typed.sql_script_item> sql_script_items) {
     sql_script _result = new sql_script();
-    _result.set_sql_script_item(sql_script_item);
+    if (sql_script_items != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.sql_script_item _value: sql_script_items) { _result.add_sql_script_items(_value); }
+    }
     return _result;
   }
 
@@ -2057,7 +2061,7 @@ public class parser {
   }
 
   public static boolean canParsecreate_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return canParsecreate_type_body(tree) || canParsecreate_type_spec(tree);
   }
 
   public static create_type parsecreate_type(org.antlr.runtime.tree.Tree tree) {
@@ -2065,7 +2069,21 @@ public class parser {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    create_type _result = new create_type();
+    if (canParsecreate_type_body(tree)) return parsecreate_type_body(tree);
+    if (canParsecreate_type_spec(tree)) return parsecreate_type_spec(tree);
+    throw new RuntimeException("Tree type mismatch");
+  }
+
+  public static boolean canParsecreate_type_body(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_TYPE_BODY;
+  }
+
+  public static create_type_body parsecreate_type_body(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsecreate_type_body(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    create_type_body _result = new create_type_body();
 
     _result._line = tree.getLine();
     _result._col = tree.getCharPositionInLine();
@@ -2073,8 +2091,60 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    while (_i < tree.getChildCount() && (true)) {
-      _result.add_contents(tree.getChild(_i));
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_CREATE)) {
+      _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
+      ++_i;
+    }
+
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
+      _result.set_REPLACE_VK(tree.getChild(_i));
+      ++_i;
+    }
+
+    if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
+    ++_i;
+
+    if (!(_i < tree.getChildCount() && (canParsecreate_type_body_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_create_type_body_elements(parsecreate_type_body_elements(tree.getChild(_i)));
+    ++_i;
+
+    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
+    return _result;
+  }
+
+  public static create_type_body make_create_type_body(org.antlr.runtime.tree.Tree SQL92_RESERVED_CREATE,
+      org.antlr.runtime.tree.Tree REPLACE_VK,
+      ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      ru.barsopen.plsqlconverter.ast.typed.create_type_body_elements create_type_body_elements) {
+    create_type_body _result = new create_type_body();
+    _result.set_SQL92_RESERVED_CREATE(SQL92_RESERVED_CREATE);
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_type_name(type_name);
+    _result.set_create_type_body_elements(create_type_body_elements);
+    return _result;
+  }
+
+  public static boolean canParsecreate_type_body_elements(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.TYPE_BODY_ELEMENTS;
+  }
+
+  public static create_type_body_elements parsecreate_type_body_elements(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsecreate_type_body_elements(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    create_type_body_elements _result = new create_type_body_elements();
+
+    _result._line = tree.getLine();
+    _result._col = tree.getCharPositionInLine();
+    _result._tokenStartIndex = tree.getTokenStartIndex();
+    _result._tokenStopIndex = tree.getTokenStopIndex();
+    int _i = 0;
+
+    if (!(_i < tree.getChildCount() && (canParsetype_body_elements(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    while (_i < tree.getChildCount() && (canParsetype_body_elements(tree.getChild(_i)))) {
+      _result.add_elements(parsetype_body_elements(tree.getChild(_i)));
       ++_i;
     }
 
@@ -2082,16 +2152,75 @@ public class parser {
     return _result;
   }
 
-  public static create_type make_create_type(java.util.List<org.antlr.runtime.tree.Tree> contents) {
-    create_type _result = new create_type();
-    if (contents != null) {
-      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
+  public static create_type_body_elements make_create_type_body_elements(java.util.List<ru.barsopen.plsqlconverter.ast.typed.type_body_elements> elements) {
+    create_type_body_elements _result = new create_type_body_elements();
+    if (elements != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.type_body_elements _value: elements) { _result.add_elements(_value); }
     }
     return _result;
   }
 
+  public static boolean canParsecreate_type_spec(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CREATE_TYPE_SPEC;
+  }
+
+  public static create_type_spec parsecreate_type_spec(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsecreate_type_spec(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    create_type_spec _result = new create_type_spec();
+
+    _result._line = tree.getLine();
+    _result._col = tree.getCharPositionInLine();
+    _result._tokenStartIndex = tree.getTokenStartIndex();
+    _result._tokenStopIndex = tree.getTokenStopIndex();
+    int _i = 0;
+
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.SQL92_RESERVED_CREATE)) {
+      _result.set_SQL92_RESERVED_CREATE(tree.getChild(_i));
+      ++_i;
+    }
+
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REPLACE_VK)) {
+      _result.set_REPLACE_VK(tree.getChild(_i));
+      ++_i;
+    }
+
+    if (!(_i < tree.getChildCount() && (canParsetype_name(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_type_name(parsetype_name(tree.getChild(_i)));
+    ++_i;
+
+    if (_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CHAR_STRING)) {
+      _result.set_CHAR_STRING(tree.getChild(_i));
+      ++_i;
+    }
+
+    if (_i < tree.getChildCount() && (canParseobject_type_def(tree.getChild(_i)))) {
+      _result.set_object_type_def(parseobject_type_def(tree.getChild(_i)));
+      ++_i;
+    }
+
+    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
+    return _result;
+  }
+
+  public static create_type_spec make_create_type_spec(org.antlr.runtime.tree.Tree SQL92_RESERVED_CREATE,
+      org.antlr.runtime.tree.Tree REPLACE_VK,
+      ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      org.antlr.runtime.tree.Tree CHAR_STRING,
+      ru.barsopen.plsqlconverter.ast.typed.object_type_def object_type_def) {
+    create_type_spec _result = new create_type_spec();
+    _result.set_SQL92_RESERVED_CREATE(SQL92_RESERVED_CREATE);
+    _result.set_REPLACE_VK(REPLACE_VK);
+    _result.set_type_name(type_name);
+    _result.set_CHAR_STRING(CHAR_STRING);
+    _result.set_object_type_def(object_type_def);
+    return _result;
+  }
+
   public static boolean canParseobject_type_def(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OBJECT_TYPE_DEF;
   }
 
   public static object_type_def parseobject_type_def(org.antlr.runtime.tree.Tree tree) {
@@ -2125,7 +2254,7 @@ public class parser {
   }
 
   public static boolean canParseobject_as_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OBJECT_AS;
   }
 
   public static object_as_part parseobject_as_part(org.antlr.runtime.tree.Tree tree) {
@@ -2159,7 +2288,7 @@ public class parser {
   }
 
   public static boolean canParseobject_under_part(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNDER_VK;
   }
 
   public static object_under_part parseobject_under_part(org.antlr.runtime.tree.Tree tree) {
@@ -2193,7 +2322,7 @@ public class parser {
   }
 
   public static boolean canParsenested_table_type_def(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NESTED_TABLE_TYPE_DEF;
   }
 
   public static nested_table_type_def parsenested_table_type_def(org.antlr.runtime.tree.Tree tree) {
@@ -2227,7 +2356,7 @@ public class parser {
   }
 
   public static boolean canParsesqlj_object_type(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.JAVA_VK;
   }
 
   public static sqlj_object_type parsesqlj_object_type(org.antlr.runtime.tree.Tree tree) {
@@ -2261,7 +2390,7 @@ public class parser {
   }
 
   public static boolean canParsetype_body_elements(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML;
+    return canParsemap_order_func_declaration(tree) || canParsesubprog_decl_in_type(tree);
   }
 
   public static type_body_elements parsetype_body_elements(org.antlr.runtime.tree.Tree tree) {
@@ -2269,29 +2398,9 @@ public class parser {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    type_body_elements _result = new type_body_elements();
-
-    _result._line = tree.getLine();
-    _result._col = tree.getCharPositionInLine();
-    _result._tokenStartIndex = tree.getTokenStartIndex();
-    _result._tokenStopIndex = tree.getTokenStopIndex();
-    int _i = 0;
-
-    while (_i < tree.getChildCount() && (true)) {
-      _result.add_contents(tree.getChild(_i));
-      ++_i;
-    }
-
-    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
-    return _result;
-  }
-
-  public static type_body_elements make_type_body_elements(java.util.List<org.antlr.runtime.tree.Tree> contents) {
-    type_body_elements _result = new type_body_elements();
-    if (contents != null) {
-      for (org.antlr.runtime.tree.Tree _value: contents) { _result.add_contents(_value); }
-    }
-    return _result;
+    if (canParsemap_order_func_declaration(tree)) return parsemap_order_func_declaration(tree);
+    if (canParsesubprog_decl_in_type(tree)) return parsesubprog_decl_in_type(tree);
+    throw new RuntimeException("Tree type mismatch");
   }
 
   public static boolean canParsemap_order_func_declaration(org.antlr.runtime.tree.Tree tree) {
@@ -3809,7 +3918,7 @@ public class parser {
   }
 
   public static boolean canParserecord_type_dec_record(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE_FIELDS;
   }
 
   public static record_type_dec_record parserecord_type_dec_record(org.antlr.runtime.tree.Tree tree) {
@@ -3829,40 +3938,7 @@ public class parser {
     _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
-    if (_i < tree.getChildCount() && (canParsefield_specs(tree.getChild(_i)))) {
-      _result.set_field_specs(parsefield_specs(tree.getChild(_i)));
-      ++_i;
-    }
-
-    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
-    return _result;
-  }
-
-  public static record_type_dec_record make_record_type_dec_record(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
-      ru.barsopen.plsqlconverter.ast.typed.field_specs field_specs) {
-    record_type_dec_record _result = new record_type_dec_record();
-    _result.set_type_name(type_name);
-    _result.set_field_specs(field_specs);
-    return _result;
-  }
-
-  public static boolean canParsefield_specs(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.FIELDS;
-  }
-
-  public static field_specs parsefield_specs(org.antlr.runtime.tree.Tree tree) {
-    if (!canParsefield_specs(tree)) {
-      throw new RuntimeException("Tree type mismatch");
-    }
-
-    field_specs _result = new field_specs();
-
-    _result._line = tree.getLine();
-    _result._col = tree.getCharPositionInLine();
-    _result._tokenStartIndex = tree.getTokenStartIndex();
-    _result._tokenStopIndex = tree.getTokenStopIndex();
-    int _i = 0;
-
+    if (!(_i < tree.getChildCount() && (canParsefield_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
     while (_i < tree.getChildCount() && (canParsefield_spec(tree.getChild(_i)))) {
       _result.add_field_specs(parsefield_spec(tree.getChild(_i)));
       ++_i;
@@ -3872,8 +3948,10 @@ public class parser {
     return _result;
   }
 
-  public static field_specs make_field_specs(java.util.List<ru.barsopen.plsqlconverter.ast.typed.field_spec> field_specs) {
-    field_specs _result = new field_specs();
+  public static record_type_dec_record make_record_type_dec_record(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
+      java.util.List<ru.barsopen.plsqlconverter.ast.typed.field_spec> field_specs) {
+    record_type_dec_record _result = new record_type_dec_record();
+    _result.set_type_name(type_name);
     if (field_specs != null) {
       for (ru.barsopen.plsqlconverter.ast.typed.field_spec _value: field_specs) { _result.add_field_specs(_value); }
     }
@@ -3881,7 +3959,7 @@ public class parser {
   }
 
   public static boolean canParserecord_type_dec_refcursor(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE_REFCURSOR;
   }
 
   public static record_type_dec_refcursor parserecord_type_dec_refcursor(org.antlr.runtime.tree.Tree tree) {
@@ -3901,10 +3979,6 @@ public class parser {
     _result.set_type_name(parsetype_name(tree.getChild(_i)));
     ++_i;
 
-    if (!(_i < tree.getChildCount() && (tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.REF_VK))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.set_REF_VK(tree.getChild(_i));
-    ++_i;
-
     if (_i < tree.getChildCount() && (canParsetype_spec(tree.getChild(_i)))) {
       _result.set_type_spec(parsetype_spec(tree.getChild(_i)));
       ++_i;
@@ -3915,11 +3989,9 @@ public class parser {
   }
 
   public static record_type_dec_refcursor make_record_type_dec_refcursor(ru.barsopen.plsqlconverter.ast.typed.type_name type_name,
-      org.antlr.runtime.tree.Tree REF_VK,
       ru.barsopen.plsqlconverter.ast.typed.type_spec type_spec) {
     record_type_dec_refcursor _result = new record_type_dec_refcursor();
     _result.set_type_name(type_name);
-    _result.set_REF_VK(REF_VK);
     _result.set_type_spec(type_spec);
     return _result;
   }
@@ -6395,32 +6467,68 @@ public class parser {
     _result._tokenStopIndex = tree.getTokenStopIndex();
     int _i = 0;
 
-    if (!(_i < tree.getChildCount() && (canParsequery_partition_clause_impl(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
-    _result.set_query_partition_clause_impl(parsequery_partition_clause_impl(tree.getChild(_i)));
+    if (!(_i < tree.getChildCount() && (canParsequery_partition_clause_spec(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_query_partition_clause_spec(parsequery_partition_clause_spec(tree.getChild(_i)));
     ++_i;
 
     if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
     return _result;
   }
 
-  public static query_partition_clause make_query_partition_clause(ru.barsopen.plsqlconverter.ast.typed.query_partition_clause_impl query_partition_clause_impl) {
+  public static query_partition_clause make_query_partition_clause(ru.barsopen.plsqlconverter.ast.typed.query_partition_clause_spec query_partition_clause_spec) {
     query_partition_clause _result = new query_partition_clause();
-    _result.set_query_partition_clause_impl(query_partition_clause_impl);
+    _result.set_query_partition_clause_spec(query_partition_clause_spec);
     return _result;
   }
 
-  public static boolean canParsequery_partition_clause_impl(org.antlr.runtime.tree.Tree tree) {
-    return canParsesubquery(tree) || canParseexpression_list(tree);
+  public static boolean canParsequery_partition_clause_spec(org.antlr.runtime.tree.Tree tree) {
+    return canParsesubquery(tree) || canParseexpression_list(tree) || canParsequery_partition_clause_spec_expressions(tree);
   }
 
-  public static query_partition_clause_impl parsequery_partition_clause_impl(org.antlr.runtime.tree.Tree tree) {
-    if (!canParsequery_partition_clause_impl(tree)) {
+  public static query_partition_clause_spec parsequery_partition_clause_spec(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsequery_partition_clause_spec(tree)) {
       throw new RuntimeException("Tree type mismatch");
     }
 
     if (canParsesubquery(tree)) return parsesubquery(tree);
     if (canParseexpression_list(tree)) return parseexpression_list(tree);
+    if (canParsequery_partition_clause_spec_expressions(tree)) return parsequery_partition_clause_spec_expressions(tree);
     throw new RuntimeException("Tree type mismatch");
+  }
+
+  public static boolean canParsequery_partition_clause_spec_expressions(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS;
+  }
+
+  public static query_partition_clause_spec_expressions parsequery_partition_clause_spec_expressions(org.antlr.runtime.tree.Tree tree) {
+    if (!canParsequery_partition_clause_spec_expressions(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    query_partition_clause_spec_expressions _result = new query_partition_clause_spec_expressions();
+
+    _result._line = tree.getLine();
+    _result._col = tree.getCharPositionInLine();
+    _result._tokenStartIndex = tree.getTokenStartIndex();
+    _result._tokenStopIndex = tree.getTokenStopIndex();
+    int _i = 0;
+
+    if (!(_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    while (_i < tree.getChildCount() && (canParseexpression(tree.getChild(_i)))) {
+      _result.add_expressions(parseexpression(tree.getChild(_i)));
+      ++_i;
+    }
+
+    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
+    return _result;
+  }
+
+  public static query_partition_clause_spec_expressions make_query_partition_clause_spec_expressions(java.util.List<ru.barsopen.plsqlconverter.ast.typed.expression> expressions) {
+    query_partition_clause_spec_expressions _result = new query_partition_clause_spec_expressions();
+    if (expressions != null) {
+      for (ru.barsopen.plsqlconverter.ast.typed.expression _value: expressions) { _result.add_expressions(_value); }
+    }
+    return _result;
   }
 
   public static boolean canParseflashback_query_clause(org.antlr.runtime.tree.Tree tree) {
@@ -9868,7 +9976,7 @@ public class parser {
   }
 
   public static boolean canParseopen_for_statement(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_VK;
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_FOR;
   }
 
   public static open_for_statement parseopen_for_statement(org.antlr.runtime.tree.Tree tree) {
@@ -10542,7 +10650,7 @@ public class parser {
   }
 
   public static boolean canParseexpression_element(org.antlr.runtime.tree.Tree tree) {
-    return canParsecase_statement(tree) || canParseconstant(tree) || canParsegeneral_element(tree) || canParsehosted_variable_name(tree) || canParsesubquery(tree) || canParseexpression_element_or(tree) || canParseexpression_element_and(tree) || canParseexpression_element_eq(tree) || canParseexpression_element_neq(tree) || canParseexpression_element_lt(tree) || canParseexpression_element_gt(tree) || canParseexpression_element_lte(tree) || canParseexpression_element_gte(tree) || canParseexpression_element_concat(tree) || canParseexpression_element_plus(tree) || canParseexpression_element_minus(tree) || canParseexpression_element_asterisk(tree) || canParseexpression_element_solidus(tree) || canParseexpression_element_percent(tree) || canParseexpression_element_mod(tree) || canParseexpression_element_div(tree) || canParseexpression_element_not(tree) || canParseexpression_element_not_null(tree) || canParseexpression_element_null(tree) || canParseexpression_element_not_nan(tree) || canParseexpression_element_nan(tree) || canParseexpression_element_not_present(tree) || canParseexpression_element_present(tree) || canParseexpression_element_not_infinite(tree) || canParseexpression_element_infinite(tree) || canParseexpression_element_not_a_set(tree) || canParseexpression_element_a_set(tree) || canParseexpression_element_not_empty(tree) || canParseexpression_element_empty(tree) || canParseexpression_element_not_in(tree) || canParseexpression_element_in(tree) || canParseexpression_element_not_between(tree) || canParseexpression_element_between(tree) || canParseexpression_element_like(tree) || canParseexpression_element_likec(tree) || canParseexpression_element_like2(tree) || canParseexpression_element_like4(tree) || canParseexpression_element_not_like(tree) || canParseexpression_element_unary(tree) || canParseexpression_element_prior(tree) || canParseexpression_element_stanrd(tree) || canParseexpression_element_some(tree) || canParseexpression_element_exists(tree) || canParseexpression_element_all(tree) || canParseexpression_element_any(tree) || canParseexpression_element_dot_asterisk(tree) || canParseexpression_element_found(tree) || canParseexpression_element_notfound(tree) || canParseexpression_element_rowcount(tree) || canParseexpression_element_isopen(tree) || canParseexpression_element_outer_join_sign(tree);
+    return canParsecase_statement(tree) || canParseconstant(tree) || canParsegeneral_element(tree) || canParsehosted_variable_name(tree) || canParsesubquery(tree) || canParseexpression_element_or(tree) || canParseexpression_element_and(tree) || canParseexpression_element_eq(tree) || canParseexpression_element_neq(tree) || canParseexpression_element_lt(tree) || canParseexpression_element_gt(tree) || canParseexpression_element_lte(tree) || canParseexpression_element_gte(tree) || canParseexpression_element_concat(tree) || canParseexpression_element_plus(tree) || canParseexpression_element_minus(tree) || canParseexpression_element_asterisk(tree) || canParseexpression_element_solidus(tree) || canParseexpression_element_percent(tree) || canParseexpression_element_mod(tree) || canParseexpression_element_div(tree) || canParseexpression_element_not(tree) || canParseexpression_element_not_null(tree) || canParseexpression_element_null(tree) || canParseexpression_element_not_nan(tree) || canParseexpression_element_nan(tree) || canParseexpression_element_not_present(tree) || canParseexpression_element_present(tree) || canParseexpression_element_not_infinite(tree) || canParseexpression_element_infinite(tree) || canParseexpression_element_not_a_set(tree) || canParseexpression_element_a_set(tree) || canParseexpression_element_not_empty(tree) || canParseexpression_element_empty(tree) || canParseexpression_element_not_in(tree) || canParseexpression_element_in(tree) || canParseexpression_element_not_between(tree) || canParseexpression_element_between(tree) || canParseexpression_element_like(tree) || canParseexpression_element_likec(tree) || canParseexpression_element_like2(tree) || canParseexpression_element_like4(tree) || canParseexpression_element_not_like(tree) || canParseexpression_element_unary_plus(tree) || canParseexpression_element_unary_minus(tree) || canParseexpression_element_prior(tree) || canParseexpression_element_stanrd(tree) || canParseexpression_element_some(tree) || canParseexpression_element_exists(tree) || canParseexpression_element_all(tree) || canParseexpression_element_any(tree) || canParseexpression_element_dot_asterisk(tree) || canParseexpression_element_found(tree) || canParseexpression_element_notfound(tree) || canParseexpression_element_rowcount(tree) || canParseexpression_element_isopen(tree) || canParseexpression_element_outer_join_sign(tree);
   }
 
   public static expression_element parseexpression_element(org.antlr.runtime.tree.Tree tree) {
@@ -10593,7 +10701,8 @@ public class parser {
     if (canParseexpression_element_like2(tree)) return parseexpression_element_like2(tree);
     if (canParseexpression_element_like4(tree)) return parseexpression_element_like4(tree);
     if (canParseexpression_element_not_like(tree)) return parseexpression_element_not_like(tree);
-    if (canParseexpression_element_unary(tree)) return parseexpression_element_unary(tree);
+    if (canParseexpression_element_unary_plus(tree)) return parseexpression_element_unary_plus(tree);
+    if (canParseexpression_element_unary_minus(tree)) return parseexpression_element_unary_minus(tree);
     if (canParseexpression_element_prior(tree)) return parseexpression_element_prior(tree);
     if (canParseexpression_element_stanrd(tree)) return parseexpression_element_stanrd(tree);
     if (canParseexpression_element_some(tree)) return parseexpression_element_some(tree);
@@ -11984,16 +12093,16 @@ public class parser {
     return _result;
   }
 
-  public static boolean canParseexpression_element_unary(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNARY_OPERATOR;
+  public static boolean canParseexpression_element_unary_plus(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNARY_PLUS;
   }
 
-  public static expression_element_unary parseexpression_element_unary(org.antlr.runtime.tree.Tree tree) {
-    if (!canParseexpression_element_unary(tree)) {
+  public static expression_element_unary_plus parseexpression_element_unary_plus(org.antlr.runtime.tree.Tree tree) {
+    if (!canParseexpression_element_unary_plus(tree)) {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    expression_element_unary _result = new expression_element_unary();
+    expression_element_unary_plus _result = new expression_element_unary_plus();
 
     _result._line = tree.getLine();
     _result._col = tree.getCharPositionInLine();
@@ -12011,9 +12120,44 @@ public class parser {
     return _result;
   }
 
-  public static expression_element_unary make_expression_element_unary(String op,
+  public static expression_element_unary_plus make_expression_element_unary_plus(String op,
       ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
-    expression_element_unary _result = new expression_element_unary();
+    expression_element_unary_plus _result = new expression_element_unary_plus();
+    _result.set_op(op);
+    _result.set_arg(arg);
+    return _result;
+  }
+
+  public static boolean canParseexpression_element_unary_minus(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.UNARY_MINUS;
+  }
+
+  public static expression_element_unary_minus parseexpression_element_unary_minus(org.antlr.runtime.tree.Tree tree) {
+    if (!canParseexpression_element_unary_minus(tree)) {
+      throw new RuntimeException("Tree type mismatch");
+    }
+
+    expression_element_unary_minus _result = new expression_element_unary_minus();
+
+    _result._line = tree.getLine();
+    _result._col = tree.getCharPositionInLine();
+    _result._tokenStartIndex = tree.getTokenStartIndex();
+    _result._tokenStopIndex = tree.getTokenStopIndex();
+    int _i = 0;
+
+    _result.op = tree.getText();
+
+    if (!(_i < tree.getChildCount() && (canParseexpression_element(tree.getChild(_i))))) { throw new RuntimeException("Tree type mismatch"); }
+    _result.set_arg(parseexpression_element(tree.getChild(_i)));
+    ++_i;
+
+    if (_i < tree.getChildCount()) { throw new RuntimeException("Tree type mismatch"); }
+    return _result;
+  }
+
+  public static expression_element_unary_minus make_expression_element_unary_minus(String op,
+      ru.barsopen.plsqlconverter.ast.typed.expression_element arg) {
+    expression_element_unary_minus _result = new expression_element_unary_minus();
     _result.set_op(op);
     _result.set_arg(arg);
     return _result;
@@ -16788,7 +16932,7 @@ public class parser {
   }
 
   public static boolean canParseconstant(org.antlr.runtime.tree.Tree tree) {
-    return canParseconstant_unsigned(tree) || canParseconstant_minus_unsigned(tree) || canParseconstant_exact_num(tree) || canParseconstant_approx_num(tree) || canParseconstant_char_string(tree) || canParseconstant_null(tree) || canParseconstant_true(tree) || canParseconstant_false(tree) || canParseconstant_dbtimezone(tree) || canParseconstant_sessiontimezone(tree) || canParseconstant_minvalue(tree) || canParseconstant_maxvalue(tree) || canParseconstant_default(tree);
+    return canParseconstant_unsigned(tree) || canParseconstant_negated(tree) || canParseconstant_exact_num(tree) || canParseconstant_approx_num(tree) || canParseconstant_char_string(tree) || canParseconstant_null(tree) || canParseconstant_true(tree) || canParseconstant_false(tree) || canParseconstant_dbtimezone(tree) || canParseconstant_sessiontimezone(tree) || canParseconstant_minvalue(tree) || canParseconstant_maxvalue(tree) || canParseconstant_default(tree);
   }
 
   public static constant parseconstant(org.antlr.runtime.tree.Tree tree) {
@@ -16797,7 +16941,7 @@ public class parser {
     }
 
     if (canParseconstant_unsigned(tree)) return parseconstant_unsigned(tree);
-    if (canParseconstant_minus_unsigned(tree)) return parseconstant_minus_unsigned(tree);
+    if (canParseconstant_negated(tree)) return parseconstant_negated(tree);
     if (canParseconstant_exact_num(tree)) return parseconstant_exact_num(tree);
     if (canParseconstant_approx_num(tree)) return parseconstant_approx_num(tree);
     if (canParseconstant_char_string(tree)) return parseconstant_char_string(tree);
@@ -16841,16 +16985,16 @@ public class parser {
     return _result;
   }
 
-  public static boolean canParseconstant_minus_unsigned(org.antlr.runtime.tree.Tree tree) {
-    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.MINUS_SIGN;
+  public static boolean canParseconstant_negated(org.antlr.runtime.tree.Tree tree) {
+    return tree.getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.CONSTANT_NEGATED;
   }
 
-  public static constant_minus_unsigned parseconstant_minus_unsigned(org.antlr.runtime.tree.Tree tree) {
-    if (!canParseconstant_minus_unsigned(tree)) {
+  public static constant_negated parseconstant_negated(org.antlr.runtime.tree.Tree tree) {
+    if (!canParseconstant_negated(tree)) {
       throw new RuntimeException("Tree type mismatch");
     }
 
-    constant_minus_unsigned _result = new constant_minus_unsigned();
+    constant_negated _result = new constant_negated();
 
     _result._line = tree.getLine();
     _result._col = tree.getCharPositionInLine();
@@ -16866,8 +17010,8 @@ public class parser {
     return _result;
   }
 
-  public static constant_minus_unsigned make_constant_minus_unsigned(ru.barsopen.plsqlconverter.ast.typed.constant_unsigned constant_unsigned) {
-    constant_minus_unsigned _result = new constant_minus_unsigned();
+  public static constant_negated make_constant_negated(ru.barsopen.plsqlconverter.ast.typed.constant_unsigned constant_unsigned) {
+    constant_negated _result = new constant_negated();
     _result.set_constant_unsigned(constant_unsigned);
     return _result;
   }

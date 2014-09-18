@@ -866,12 +866,12 @@ record_type_dec
     ;
     
 record_type_dec_record
-    :    ^(RECORD_TYPE_DECLARE type_name (^(FIELDS fields+=field_spec*))?)
+    :    ^(RECORD_TYPE_DECLARE_FIELDS type_name fields+=field_spec+)
     ->   record_type_dec_record(name={$type_name.st}, field_specs={$fields})
     ;
     
 record_type_dec_refcursor
-    :    ^(RECORD_TYPE_DECLARE type_name REF_VK type_spec?)
+    :    ^(RECORD_TYPE_DECLARE_REFCURSOR type_name type_spec?)
     ->   record_type_dec_refcursor(name={$type_name.st}, type_spec={$type_spec.st})
     ;
 
@@ -1250,7 +1250,8 @@ query_partition_clause
 query_partition_clause_impl
     :   subquery -> in_parens(val={$subquery.st})
         | expression_list -> { $expression_list.st }
-        | expressions+=expression+ -> query_partition_clause_impl_expressions(expressions={$expressions})
+        | ^(QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS expressions+=expression+)
+          -> query_partition_clause_impl_expressions(expressions={$expressions})
     ;
 
 flashback_query_clause
@@ -1725,7 +1726,7 @@ fetch_statement
     ;
 
 open_for_statement
-    :    ^(OPEN_VK variable_name (e_or_s=expression|e_or_s=select_statement) using_clause?)
+    :    ^(OPEN_FOR variable_name (e_or_s=expression|e_or_s=select_statement) using_clause?)
     ->   open_for_statement(cursor_name={$variable_name.st}, expression_or_select_statement={$e_or_s.st}, using_clause={$using_clause.st})
     ;
 
@@ -1901,8 +1902,10 @@ expression_element
     |    ^(PIPE_VK expression_element expression_element)
     ->   template() "not implemented: expression_element"
 
-    |    ^(UNARY_OPERATOR arg=expression_element)
-    ->   expression_element_generic_prefix_unary_op(op={$UNARY_OPERATOR.text}, is_spaced={false}, arg={$arg.st})
+    |    ^(UNARY_PLUS arg=expression_element)
+    ->   expression_element_generic_prefix_unary_op(op={"+"}, is_spaced={false}, arg={$arg.st})
+    |    ^(UNARY_MINUS arg=expression_element)
+    ->   expression_element_generic_prefix_unary_op(op={"-"}, is_spaced={false}, arg={$arg.st})
     |    ^(SQL92_RESERVED_PRIOR arg=expression_element)
     ->   expression_element_prior(expr={$arg.st})
     |    ^(NEW_VK expression)
@@ -2541,14 +2544,13 @@ native_datatype_spec
     |    DECIMAL_VK  { typeBaseName = "decimal"; }
     |    DEC_VK { typeBaseName = "dec"; }
     |    DOUBLE_VK { typeBaseName = "double"; }
-    |    DOUBLE_VK PRECISION_VK { typeBaseName = "double precision"; }
     |    DSINTERVAL_UNCONSTRAINED_VK
     |    FLOAT_VK { typeBaseName = "float"; }
     |    HOUR_VK
     |    INTEGER_VK { typeBaseName = "integer"; }
     |    INT_VK { typeBaseName = "int"; }
     |    LONG_VK { typeBaseName = "long"; }
-    |    LONG_VK RAW_VK { typeBaseName = "long raw"; }
+    |    LONG_RAW { typeBaseName = "long raw"; }
     |    MINUTE_VK
     |    MLSLABEL_VK
     |    MONTH_VK
@@ -2621,7 +2623,7 @@ general_element_id
 
 constant
     :    v1=UNSIGNED_INTEGER -> string_literal(val={$v1.text})
-    |    ^(MINUS_SIGN v2=UNSIGNED_INTEGER) -> string_literal(val={"-" + $v2.text})
+    |    ^(CONSTANT_NEGATED v2=UNSIGNED_INTEGER) -> string_literal(val={"-" + $v2.text})
     |    EXACT_NUM_LIT -> string_literal(val={$EXACT_NUM_LIT.text})
     |    APPROXIMATE_NUM_LIT -> string_literal(val={$APPROXIMATE_NUM_LIT.text})
     |    CHAR_STRING -> string_literal(val={$CHAR_STRING.text})

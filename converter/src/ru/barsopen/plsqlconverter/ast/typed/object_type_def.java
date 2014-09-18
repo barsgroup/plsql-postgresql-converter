@@ -34,10 +34,10 @@ public class object_type_def implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OBJECT_TYPE_DEF);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("NON_DML");
+    _token.setText("OBJECT_TYPE_DEF");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);

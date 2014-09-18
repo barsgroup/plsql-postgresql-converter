@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class expression_list implements query_partition_clause_spec, grouping_element, expression_or_expression_list, in_elements, _baseNode {
+public class query_partition_clause_spec_expressions implements query_partition_clause_spec, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;
@@ -36,13 +36,14 @@ public class expression_list implements query_partition_clause_spec, grouping_el
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.EXPR_LIST);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("EXPR_LIST");
+    _token.setText("QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
+    if (expressions.size() == 0) { throw new RuntimeException(); }
     for (int i = 0; i < expressions.size(); ++i) {
       _result.addChild(expressions.get(i).unparse());
     }

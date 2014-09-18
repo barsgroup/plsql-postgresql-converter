@@ -34,10 +34,10 @@ public class object_under_part implements _baseNode {
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.NON_DML);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.UNDER_VK);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("NON_DML");
+    _token.setText("UNDER_VK");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);

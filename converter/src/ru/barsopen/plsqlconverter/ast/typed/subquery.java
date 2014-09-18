@@ -1,5 +1,5 @@
 package ru.barsopen.plsqlconverter.ast.typed;
-public class subquery implements subquery_basic_elements, query_partition_clause_impl, expression_or_subquery, table_collection_expression, expression_element, in_elements, _baseNode {
+public class subquery implements subquery_basic_elements, query_partition_clause_spec, expression_or_subquery, table_collection_expression, expression_element, in_elements, _baseNode {
   public int _line = -1;
   public int _col = -1;
   public int _tokenStartIndex = -1;

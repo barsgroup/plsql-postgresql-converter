@@ -48,10 +48,10 @@ public class open_for_statement implements cursor_manipulation_statements, _base
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_VK);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.OPEN_FOR);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("OPEN_VK");
+    _token.setText("OPEN_FOR");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);

@@ -19,29 +19,37 @@ public class record_type_dec_record implements record_type_dec, _baseNode {
     this.type_name = value;
     if (this.type_name != null) { this.type_name._setParent(this); }
   }
-  public field_specs field_specs = null;
-  public field_specs get_field_specs() { return this.field_specs; }
-  public void set_field_specs(field_specs value) {
-    if (this.field_specs != null) { this.field_specs._setParent(null); }
-    this.field_specs = value;
-    if (this.field_specs != null) { this.field_specs._setParent(this); }
+  public java.util.List<field_spec> field_specs = new java.util.ArrayList<field_spec>();
+  public java.util.List<field_spec> get_field_specs() { return this.field_specs; }
+  public void add_field_specs(field_spec value) {
+    insert_field_specs(field_specs.size(), value);
   }
-  public boolean is_field_specs() { return this.field_specs != null; }
+  public void insert_field_specs(int pos, field_spec value) {
+    this.field_specs.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_field_specs(int pos) {
+    this.field_specs.get(pos)._setParent(null);
+    this.field_specs.remove(pos);
+  }
+  public void remove_field_specs(field_spec value) {
+    this.remove_field_specs(this.field_specs.indexOf(value));
+  }
 
   public void _walk(_visitor visitor) {
     visitor.visit(this);
     if (this.type_name != null) {
       this.type_name._walk(visitor);
     }
-    if (this.field_specs != null) {
-      this.field_specs._walk(visitor);
+    for (field_spec _value: this.field_specs) {
+      _value._walk(visitor);
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE_FIELDS);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("RECORD_TYPE_DECLARE");
+    _token.setText("RECORD_TYPE_DECLARE_FIELDS");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
@@ -49,8 +57,9 @@ public class record_type_dec_record implements record_type_dec, _baseNode {
     _result.addChild(type_name.unparse());
 
 
-    if (field_specs != null) {
-      _result.addChild(field_specs.unparse());
+    if (field_specs.size() == 0) { throw new RuntimeException(); }
+    for (int i = 0; i < field_specs.size(); ++i) {
+      _result.addChild(field_specs.get(i).unparse());
     }
 
 

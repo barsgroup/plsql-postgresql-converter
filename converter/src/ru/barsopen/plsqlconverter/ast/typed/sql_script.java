@@ -12,18 +12,27 @@ public class sql_script implements _baseNode {
   public int _getCol() { return _col; }
   public int _getTokenStartIndex() { return _tokenStartIndex; }
   public int _getTokenStopIndex() { return _tokenStopIndex; }
-  public sql_script_item sql_script_item = null;
-  public sql_script_item get_sql_script_item() { return this.sql_script_item; }
-  public void set_sql_script_item(sql_script_item value) {
-    if (this.sql_script_item != null) { this.sql_script_item._setParent(null); }
-    this.sql_script_item = value;
-    if (this.sql_script_item != null) { this.sql_script_item._setParent(this); }
+  public java.util.List<sql_script_item> sql_script_items = new java.util.ArrayList<sql_script_item>();
+  public java.util.List<sql_script_item> get_sql_script_items() { return this.sql_script_items; }
+  public void add_sql_script_items(sql_script_item value) {
+    insert_sql_script_items(sql_script_items.size(), value);
+  }
+  public void insert_sql_script_items(int pos, sql_script_item value) {
+    this.sql_script_items.add(pos, value);
+    value._setParent(this);
+  }
+  public void remove_sql_script_items(int pos) {
+    this.sql_script_items.get(pos)._setParent(null);
+    this.sql_script_items.remove(pos);
+  }
+  public void remove_sql_script_items(sql_script_item value) {
+    this.remove_sql_script_items(this.sql_script_items.indexOf(value));
   }
 
   public void _walk(_visitor visitor) {
     visitor.visit(this);
-    if (this.sql_script_item != null) {
-      this.sql_script_item._walk(visitor);
+    for (sql_script_item _value: this.sql_script_items) {
+      _value._walk(visitor);
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
@@ -34,8 +43,10 @@ public class sql_script implements _baseNode {
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
-    if (sql_script_item == null) { throw new RuntimeException(); }
-    _result.addChild(sql_script_item.unparse());
+    if (sql_script_items.size() == 0) { throw new RuntimeException(); }
+    for (int i = 0; i < sql_script_items.size(); ++i) {
+      _result.addChild(sql_script_items.get(i).unparse());
+    }
 
 
     return _result;

@@ -4,7 +4,7 @@
 
 compilation_unit: COMPILATION_UNIT unit_statement*;
 
-sql_script: SQL_SCRIPT sql_script_item;
+sql_script: SQL_SCRIPT sql_script_item+;
 
 sql_script_item => unit_statement sql_plus_command;
     
@@ -325,30 +325,31 @@ dependent_exceptions_part: NON_DML @any*; /*
 
 // $>
 
-create_type: NON_DML @any*; /*
-    :    ^(CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name ^(TYPE_BODY_ELEMENTS type_body_elements+))
-    ->   template() "not implemented: create_type[CREATE_TYPE_BODY]"
-    |    ^(CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def?)
-    ->   template() "not implemented: create_type[CREATE_TYPE_SPEC]"
-    ;*/
+create_type => create_type_body create_type_spec;
 
-object_type_def: NON_DML @any*; /*
+create_type_body: CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name create_type_body_elements;
+
+create_type_body_elements: TYPE_BODY_ELEMENTS {[]elements}=type_body_elements+;
+
+create_type_spec: CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def?;
+
+object_type_def: OBJECT_TYPE_DEF @any*; /*
     :    ^(OBJECT_TYPE_DEF (object_as_part|object_under_part) invoker_rights_clause?
              sqlj_object_type? modifier_clause* ^(OBJECT_MEMBERS element_spec*))  
     ->   template() "not implemented: object_type_def"
     ;*/
 
-object_as_part : NON_DML @any*;/*
+object_as_part : OBJECT_AS @any*;/*
     :    ^(OBJECT_AS (OBJECT_VK|varray_type_def|nested_table_type_def))
     ->   template() "not implemented: object_as_part"
     ;*/
 
-object_under_part: NON_DML @any*; /*
+object_under_part: UNDER_VK @any*; /*
     :    ^(UNDER_VK type_spec)
     ->   template() "not implemented: object_under_part"
     ;*/
 
-nested_table_type_def: NON_DML @any*; /*
+nested_table_type_def: NESTED_TABLE_TYPE_DEF @any*; /*
     :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?)
     ->   nested_table_type_def(
           type_spec={$type_spec.st}, is_not_null={$SQL92_RESERVED_NULL != null},
@@ -356,17 +357,12 @@ nested_table_type_def: NON_DML @any*; /*
         )
     ;*/
 
-sqlj_object_type: NON_DML @any*; /*
+sqlj_object_type: JAVA_VK @any*; /*
     :    ^(JAVA_VK expression (SQLDATA_VK|CUSTOMDATUM_VK|ORADATA_VK))
     ->   template() "not implemented: sqlj_object_type"
     ;*/
 
-type_body_elements: NON_DML @any*; /*
-    :    map_order_func_declaration
-    ->   template() "not implemented: type_body_elements"
-    |    subprog_decl_in_type
-    ->   template() "not implemented: type_body_elements"
-    ;*/
+type_body_elements => map_order_func_declaration subprog_decl_in_type;
 
 map_order_func_declaration: NON_DML @any*; /*
     :    ^((MAP_VK|SQL92_RESERVED_ORDER) create_function_body)
@@ -612,12 +608,9 @@ record_declaration => record_type_dec record_var_dec;
 
 //incorporates ref_cursor_type_definition
 record_type_dec => record_type_dec_record record_type_dec_refcursor;
+record_type_dec_record: RECORD_TYPE_DECLARE_FIELDS type_name field_spec+;
     
-record_type_dec_record: RECORD_TYPE_DECLARE type_name field_specs?;
-    
-field_specs: FIELDS field_spec*;
-    
-record_type_dec_refcursor: RECORD_TYPE_DECLARE type_name REF_VK type_spec?;
+record_type_dec_refcursor: RECORD_TYPE_DECLARE_REFCURSOR type_name type_spec?;
 
 field_spec: FIELD_SPEC column_name type_spec? SQL92_RESERVED_NULL? default_value_part?;
 
@@ -827,11 +820,11 @@ join_on_part: SQL92_RESERVED_ON expression;
 
 join_using_part: PLSQL_NON_RESERVED_USING column_name+;
 
-query_partition_clause: PARTITION_VK query_partition_clause_impl;
+query_partition_clause: PARTITION_VK query_partition_clause_spec;
     
-query_partition_clause_impl => subquery expression_list;
-    
-// TODO: query_partition_clause_impl: expression+
+query_partition_clause_spec => subquery expression_list query_partition_clause_spec_expressions;
+
+query_partition_clause_spec_expressions: QUERY_PARTITION_CLAUSE_SPEC_EXPRESSIONS expression+;
 
 flashback_query_clause => flashback_query_clause_versions flashback_query_clause_as;
 
@@ -1113,7 +1106,7 @@ open_statement: OPEN_VK cursor_name expression_list?;
 
 fetch_statement: SQL92_RESERVED_FETCH cursor_name into_clause;
 
-open_for_statement: OPEN_VK variable_name expression_or_select_statement using_clause?;
+open_for_statement: OPEN_FOR variable_name expression_or_select_statement using_clause?;
 
 expression_or_select_statement => expression select_statement;
 
@@ -1191,7 +1184,7 @@ expression_element => case_statement constant general_element hosted_variable_na
   expression_element_not_between expression_element_between
   expression_element_like expression_element_likec
   expression_element_like2 expression_element_like4
-  expression_element_not_like expression_element_unary
+  expression_element_not_like expression_element_unary_plus expression_element_unary_minus
   expression_element_prior expression_element_stanrd
   expression_element_some expression_element_exists
   expression_element_all expression_element_any
@@ -1237,7 +1230,8 @@ expression_element_likec: LIKEC_VK {text}=expression_element {pattern}=expressio
 expression_element_like2: LIKE2_VK {text}=expression_element {pattern}=expression_element {escape}=expression_element?;
 expression_element_like4: LIKE4_VK {text}=expression_element {pattern}=expression_element {escape}=expression_element?;
 expression_element_not_like: NOT_LIKE {text}=expression_element {pattern}=expression_element {escape}=expression_element?;
-expression_element_unary: UNARY_OPERATOR {op}=@tokenText {arg}=expression_element;
+expression_element_unary_plus: UNARY_PLUS {op}=@tokenText {arg}=expression_element;
+expression_element_unary_minus: UNARY_MINUS {op}=@tokenText {arg}=expression_element;
 expression_element_prior: SQL92_RESERVED_PRIOR {arg}=expression_element;
 expression_element_stanrd: STANDARD_FUNCTION standard_function;
 expression_element_some: SOME_VK expression_or_subquery;
@@ -1613,7 +1607,6 @@ native_datatype_spec: NATIVE_DATATYPE {name}=@any type_precision? TIME_VK? LOCAL
     |    DECIMAL_VK  { typeBaseName = "decimal"; }
     |    DEC_VK { typeBaseName = "dec"; }
     |    DOUBLE_VK { typeBaseName = "double"; }
-    |    DOUBLE_VK PRECISION_VK { typeBaseName = "double precision"; }
 
     |    DSINTERVAL_UNCONSTRAINED_VK
     |    FLOAT_VK { typeBaseName = "float"; }
@@ -1621,7 +1614,7 @@ native_datatype_spec: NATIVE_DATATYPE {name}=@any type_precision? TIME_VK? LOCAL
     |    INTEGER_VK { typeBaseName = "integer"; }
     |    INT_VK { typeBaseName = "int"; }
     |    LONG_VK { typeBaseName = "long"; }
-    |    LONG_VK RAW_VK { typeBaseName = "long raw"; }
+    |    LONG_RAW { typeBaseName = "long raw"; }
     |    MINUTE_VK
     |    MLSLABEL_VK
     |    MONTH_VK
@@ -1669,7 +1662,7 @@ general_element_id: ANY_ELEMENT id;
 
 constant => 
   constant_unsigned
-  constant_minus_unsigned
+  constant_negated
   constant_exact_num
   constant_approx_num
   constant_char_string
@@ -1683,7 +1676,7 @@ constant =>
   constant_default;
 
 constant_unsigned: UNSIGNED_INTEGER {value}=@tokenText;
-constant_minus_unsigned: MINUS_SIGN constant_unsigned;
+constant_negated: CONSTANT_NEGATED constant_unsigned;
 constant_exact_num: EXACT_NUM_LIT {value}=@tokenText;
 constant_approx_num: APPROXIMATE_NUM_LIT {value}=@tokenText;
 constant_char_string: CHAR_STRING {value}=@tokenText;

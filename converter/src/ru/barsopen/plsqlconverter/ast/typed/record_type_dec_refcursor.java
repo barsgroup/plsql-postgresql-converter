@@ -19,11 +19,6 @@ public class record_type_dec_refcursor implements record_type_dec, _baseNode {
     this.type_name = value;
     if (this.type_name != null) { this.type_name._setParent(this); }
   }
-  public org.antlr.runtime.tree.Tree REF_VK = null;
-  public org.antlr.runtime.tree.Tree get_REF_VK() { return this.REF_VK; }
-  public void set_REF_VK(org.antlr.runtime.tree.Tree value) {
-    this.REF_VK = value;
-  }
   public type_spec type_spec = null;
   public type_spec get_type_spec() { return this.type_spec; }
   public void set_type_spec(type_spec value) {
@@ -38,27 +33,20 @@ public class record_type_dec_refcursor implements record_type_dec, _baseNode {
     if (this.type_name != null) {
       this.type_name._walk(visitor);
     }
-    if (this.REF_VK != null) {
-      visitor.visit(this.REF_VK);
-    }
     if (this.type_spec != null) {
       this.type_spec._walk(visitor);
     }
   }
   public org.antlr.runtime.tree.Tree unparse() {
-    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE);
+    org.antlr.runtime.CommonToken _token = new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.RECORD_TYPE_DECLARE_REFCURSOR);
     _token.setLine(_line);
     _token.setCharPositionInLine(_col);
-    _token.setText("RECORD_TYPE_DECLARE");
+    _token.setText("RECORD_TYPE_DECLARE_REFCURSOR");
     org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);
     _result.setTokenStartIndex(_tokenStartIndex);
     _result.setTokenStopIndex(_tokenStopIndex);
     if (type_name == null) { throw new RuntimeException(); }
     _result.addChild(type_name.unparse());
-
-
-    if (REF_VK == null) { throw new RuntimeException(); }
-    _result.addChild(REF_VK);
 
 
     if (type_spec != null) {
