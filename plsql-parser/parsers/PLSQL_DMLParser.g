@@ -82,7 +82,8 @@ tokens {
     NOT_IN;
     NOT_BETWEEN;
     NOT_LIKE;
-    UNARY_OPERATOR;
+    UNARY_PLUS;
+    UNARY_MINUS;
     STANDARD_FUNCTION;
     MODEL_EXPRESSION;
     FOR_SINGLE_COLUMN;
@@ -1033,8 +1034,8 @@ options
 {
 backtrack=true;
 }
-    :    MINUS_SIGN unary_expression -> ^(UNARY_OPERATOR[$MINUS_SIGN] unary_expression)
-    |    PLUS_SIGN unary_expression -> ^(UNARY_OPERATOR[$PLUS_SIGN] unary_expression)
+    :    MINUS_SIGN unary_expression -> ^(UNARY_MINUS[$MINUS_SIGN] unary_expression)
+    |    PLUS_SIGN unary_expression -> ^(UNARY_PLUS[$PLUS_SIGN] unary_expression)
     |    prior_key^ unary_expression
     |    connect_by_root_key^ unary_expression
     |    {input.LT(1).getText().equalsIgnoreCase("new") && !input.LT(2).getText().equals(".")}?=> new_key^ unary_expression

@@ -72,6 +72,7 @@ tokens {
     XML_COLUMN_NAME;
     OUTER_JOIN_SIGN;
     LONG_RAW;
+    CONSTANT_NEGATED;
 }
 
 // $<Common SQL PL/SQL Clauses/Parts
@@ -485,7 +486,7 @@ constant
 
 numeric
     :    UNSIGNED_INTEGER
-    |    MINUS_SIGN^ UNSIGNED_INTEGER
+    |    MINUS_SIGN UNSIGNED_INTEGER -> ^(CONSTANT_NEGATED[$MINUS_SIGN] UNSIGNED_INTEGER)
     |    EXACT_NUM_LIT
     |    APPROXIMATE_NUM_LIT;
 
