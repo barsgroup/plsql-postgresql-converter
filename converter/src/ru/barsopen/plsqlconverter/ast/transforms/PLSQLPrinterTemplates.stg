@@ -924,3 +924,83 @@ factoring_element(query_name, column_names, subquery, order_by_clause) ::= <<
 nested_table_type_def(type_spec, is_not_null, table_indexed_by_part) ::= <<
 table of <type_spec><if (is_not_null)> not null<endif><if (table_indexed_by_part)> <table_indexed_by_part><endif>
 >>
+
+create_view(is_replace, force_clause, name, view_type_clause, subquery, subquery_restriction_clause) ::= <<
+create<if (is_replace)> or replace<endif><if (force_clause)> <force_clause>
+<endif> view <name><if (view_type_clause)> <view_type_clause>
+<endif> as
+<subquery><if (subquery_restriction_clause)>
+
+<subquery_restriction_clause>
+<endif>;
+>>
+
+create_view_force_clause_force() ::= "force"
+create_view_force_clause_noforce() ::= "no force"
+
+view_type_constraints_clause(items) ::= <<
+(<items; separator=",\n">)
+>>
+
+view_type_constraint_item_inline(id, items) ::= <<
+<id><if (items)> <items; separator=" "><endif>
+>>
+
+inline_constraint_clause(id, inline_constraint_def, items) ::= <<
+<if (id)>constraint <id> <endif><inline_constraint_def><if (items)> <items; separator=" "><endif>
+>>
+
+inline_constraint_null() ::= "null"
+sinline_constraint_not_null() ::= "not null"
+inline_constraint_unique() ::= "unique"
+inline_constraint_primary_key() ::= "primary key"
+
+references_clause(name, columns, on_delete_clause) ::= <<
+references <name> (<columns; separator=", ">)<if (on_delete_clause)> <on_delete_clause><endif>
+>>
+
+references_on_delete_clause(action) ::= <<
+on delete <action>
+>>
+
+on_delete_clause_action_cascade() ::= "cascade"
+on_delete_clause_action_set_null() ::= "set null"
+
+checks_clause(expr) ::= <<
+check(<expr>)
+>>
+
+constraint_state_item_not_deferrable() ::= "not deferrable"
+constraint_state_item_deferrable() ::= "deferrable"
+constraint_state_item_immediate() ::= "immediate"
+constraint_state_item_deferred() ::= "deferred"
+constraint_state_item_rely() ::= "rely"
+constraint_state_item_norely() ::= "norely"
+constraint_state_item_enable() ::= "enable"
+constraint_state_item_disable() ::= "disable"
+constraint_state_item_validate() ::= "validate"
+constraint_state_item_novalidate() ::= "novalidate"
+
+using_index_clause(index_def) ::= <<
+using index <index_def>
+>>
+
+exceptions_clause(name) ::= <<
+exceptions into <name>
+>>
+
+out_of_line_constraint_clause(name, out_of_line_constraint_def, items) ::= <<
+<if (name)>constraint <name> <endif> <out_of_line_constraint_def><if (items)> <items; separator=" "><endif>
+>>
+
+out_of_line_constraint_def_unique(columns) ::= <<
+unique (<columns; separator=", ">)
+>>
+    
+out_of_line_constraint_def_primary_key(columns) ::= <<
+primary key (<columns; separator=", ">)
+>>
+
+out_of_line_constraint_def_foreign_key(columns, references_clause) ::= <<
+foreign key (<columns; separator=", ">) <references_clause>
+>>

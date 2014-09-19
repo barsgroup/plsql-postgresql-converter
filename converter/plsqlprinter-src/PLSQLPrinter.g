@@ -894,6 +894,153 @@ sequence_spec
 // $>
 // $>
 
+// $< DDL
+
+
+create_view
+    :   ^(CREATE_VIEW
+          REPLACE_VK?
+          create_view_force_clause?
+          view_name
+          view_type_clause?
+          subquery
+          subquery_restriction_clause?
+        )
+        -> create_view(
+          is_replace={$REPLACE_VK != null}, force_clause={$create_view_force_clause.st},
+          name={$view_name.st}, view_type_clause={$view_type_clause.st}, subquery={$subquery.st},
+          subquery_restriction_clause={$subquery_restriction_clause.st})
+    ;
+    
+create_view_force_clause
+    :   NOFORCE -> create_view_force_clause_noforce()
+    |   FORCE_VK -> create_view_force_clause_force()
+    ;
+    
+view_type_clause
+    :   view_type_constraints_clause -> { $view_type_constraints_clause.st }
+        // TODO not implemented http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8004.htm
+        //| object_view_clause
+        //| xmltype_view_clause
+    ;
+    
+view_type_constraints_clause
+    :   ^(VIEW_TYPE_CONSTRAINTS items+=view_type_constraints_clause_item+)
+        -> view_type_constraints_clause(items={ $items })
+    ;
+
+view_type_constraints_clause_item
+    :   view_type_constraint_item_inline -> { $view_type_constraint_item_inline.st }
+        //| out_of_line_constraint_clause -> { $out_of_line_constraint_clause.st }
+    ;
+    
+view_type_constraint_item_inline
+    :   ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE id /* items+=inline_constraint_clause* */)
+        -> view_type_constraint_item_inline(id={$id.st}/*, items={$items}*/)
+    ;
+ /*   
+inline_constraint_clause
+    :   ^(INLINE_CONSTRAINT_CLAUSE id? inline_constraint_def items+=constraint_state_item*)
+        -> inline_constraint_clause(id={$id.st}, inline_constraint_def={$inline_constraint_def.st}, items={$items})
+    ;
+    
+inline_constraint_def
+    :
+        inline_constraint_null
+        | inline_constraint_not_null
+        | inline_constraint_unique
+        | inline_constraint_primary_key
+        | references_clause
+        | checks_clause
+    ;
+    
+inline_constraint_null: SQL92_RESERVED_NULL -> inline_constraint_null();
+inline_constraint_not_null: NOT_NULL -> inline_constraint_not_null();
+inline_constraint_unique: SQL92_RESERVED_UNIQUE -> inline_constraint_unique();
+inline_constraint_primary_key: PRIMARY_KEY -> inline_constraint_primary_key();
+
+references_clause
+    : ^(REFERENCES_CLAUSE tableview_name ids+=id+ references_on_delete_clause?)
+      -> references_clause(name={$tableview_name.st}, columns={$ids}, on_delete_clause={$references_on_delete_clause.st})
+    ;
+
+references_on_delete_clause
+    : ^(ON_DELETE on_delete_clause_action)
+      -> references_on_delete_clause(action={$on_delete_clause_action.st})
+    ;
+    
+on_delete_clause_action
+    : CASCADE_VK -> on_delete_clause_action_cascade()
+    | SET_NULL -> on_delete_clause_action_set_null()
+    ;
+    
+checks_clause
+    : ^(SQL92_RESERVED_CHECK expression)
+      -> checks_clause(expr={$expression.st})
+    ;
+    
+constraint_state_item
+    : NOT_DEFERRABLE -> constraint_state_item_not_deferrable()
+    | DEFERRABLE_VK -> constraint_state_item_deferrable()
+    | IMMEDIATE_VK -> constraint_state_item_immediate()
+    | DEFERRED_VK -> constraint_state_item_deferred()
+    | RELY_VK -> constraint_state_item_rely()
+    | NORELY_VK -> constraint_state_item_norely()
+    | using_index_clause -> { $using_index_clause.st }
+    | ENABLE_VK -> constraint_state_item_enable()
+    | DISABLE_VK -> constraint_state_item_disable()
+    | VALIDATE_VK -> constraint_state_item_validate()
+    | NOVALIDATE_VK -> constraint_state_item_novalidate()
+    | exceptions_clause -> { $exceptions_clause.st }
+    ;
+    
+using_index_clause
+    : ^(USING_INDEX using_index_def)
+      -> using_index_clause(index_def={$using_index_def.st})
+    ;
+
+using_index_def
+    : tableview_name -> { $tableview_name.st }
+    // TODO not implemented http://docs.oracle.com/cd/B28359_01/server.111/b28286/clauses002.htm#CJAIHHGC
+    // | LEFT_PAREN create_index_statement RIGHT_PAREN
+    // | index_properties
+    ;
+  
+exceptions_clause
+    : ^(EXCEPTIONS_VK tableview_name)
+      -> exceptions_clause(name={$tableview_name.st})
+    ;
+    
+out_of_line_constraint_clause
+    : ^(OUT_OF_LINE_CONSTRAINT id? out_of_line_constraint_def items+=constraint_state_item*)
+      -> out_of_line_constraint_clause(
+          name={$id.st},out_of_line_constraint_def={$out_of_line_constraint_def.st}, items={$items})
+    ;
+
+out_of_line_constraint_def
+    : out_of_line_constraint_def_unique -> { $out_of_line_constraint_def_unique.st }
+    | out_of_line_constraint_def_primary_key -> { $out_of_line_constraint_def_primary_key.st }
+    | out_of_line_constraint_def_foreign_key -> { $out_of_line_constraint_def_foreign_key.st }
+    | checks_clause -> { $checks_clause.st }
+    ;
+    
+out_of_line_constraint_def_unique
+    : ^(SQL92_RESERVED_UNIQUE ids+=id+)
+      -> out_of_line_constraint_def_unique(columns={$ids})
+    ;
+    
+out_of_line_constraint_def_primary_key
+    : ^(PRIMARY_KEY ids+=id+)
+      -> out_of_line_constraint_def_primary_key(columns={$ids})
+    ;
+
+out_of_line_constraint_def_foreign_key
+    : ^(FOREIGN_KEY ids+=id+ references_clause)
+      -> out_of_line_constraint_def_foreign_key(columns={$ids}, references_clause={$references_clause.st})
+    ;*/
+
+// $>
+
 
 // $<Common DDL Clauses
 
@@ -2721,6 +2868,11 @@ column_name
 tableview_name
     :    ^(TABLEVIEW_NAME char_set_name? ids+=ID+ link_name? partition_extension_clause?)
     ->   tableview_name(ids={$ids}, link_name={$link_name.st}, partition_extension_clause={$partition_extension_clause.st})
+    ;
+
+view_name
+    :    ^(VIEW_NAME ids+=ID+)
+    ->   dotted_name(ids={$ids})
     ;
 
 char_set_name
