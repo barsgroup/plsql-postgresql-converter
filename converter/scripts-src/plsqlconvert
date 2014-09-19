@@ -1,0 +1,9 @@
+#!/bin/bash
+DIR="$(dirname "$0")"
+JVM_ARGS=""
+if [[ "$PLSQLCONVERT_DEBUG" == "suspend" ]]; then
+  JVM_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=6006";
+elif [[ "$PLSQLCONVERT_DEBUG" != "" ]]; then
+  JVM_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=6006";
+fi;
+java $JVM_ARGS -jar "$DIR/plsqlconverter.jar" "${@}"
