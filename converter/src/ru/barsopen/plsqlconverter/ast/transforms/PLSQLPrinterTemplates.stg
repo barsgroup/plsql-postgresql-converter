@@ -421,6 +421,26 @@ variable_declaration(name, type, is_constant, is_not_null, default_value_part) :
 <name><if (is_constant)> constant<endif> <type><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>;
 >>
 
+type_decl(is_create, is_replace, type_name, oid, def) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>type <type_name> <if (oid)><oid> <endif><def>;
+>>
+
+object_type_def(invoker_rights_clause, object_as_or_under_part, sqlj_object_type, object_member_specs, modifier_clauses) ::= <<
+<if (invoker_rights_clause)><invoker_rights_clause> <endif><object_as_or_under_part><if (sqlj_object_type)> <sqlj_object_type>
+<endif><if (object_member_specs)>(<object_member_specs; separator=",">)<endif>
+<modifier_clauses; separator="\n">
+>>
+
+object_as_part(def) ::= <<
+is <def>
+>>
+
+object_as_part_def_object() ::= "object"
+
+object_under_part(type_spec) ::= <<
+under <type_spec>
+>>
+
 table_type_dec(name, impl) ::= <<
 type <name> is <impl>;
 >>

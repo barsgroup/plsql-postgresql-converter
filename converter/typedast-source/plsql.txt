@@ -331,33 +331,26 @@ create_type_body: CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name 
 
 create_type_body_elements: TYPE_BODY_ELEMENTS {[]elements}=type_body_elements+;
 
-create_type_spec: CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def?;
+create_type_spec: CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def;
 
-object_type_def: OBJECT_TYPE_DEF @any*; /*
-    :    ^(OBJECT_TYPE_DEF (object_as_part|object_under_part) invoker_rights_clause?
-             sqlj_object_type? modifier_clause* ^(OBJECT_MEMBERS element_spec*))  
-    ->   template() "not implemented: object_type_def"
-    ;*/
+object_type_def: OBJECT_TYPE_DEF object_as_or_under_part invoker_rights_clause?
+             sqlj_object_type? modifier_clause* object_type_def_members;
+    
+object_type_def_members: OBJECT_MEMBERS element_spec*;
+    
+object_as_or_under_part => object_as_part object_under_part;
 
-object_as_part : OBJECT_AS @any*;/*
-    :    ^(OBJECT_AS (OBJECT_VK|varray_type_def|nested_table_type_def))
-    ->   template() "not implemented: object_as_part"
-    ;*/
+object_as_part : OBJECT_AS object_as_part_def;
+    
+object_as_part_def => object_as_part_def_object varray_type_def nested_table_type_def;
 
-object_under_part: UNDER_VK @any*; /*
-    :    ^(UNDER_VK type_spec)
-    ->   template() "not implemented: object_under_part"
-    ;*/
+object_as_part_def_object: OBJECT_VK;
 
-nested_table_type_def: NESTED_TABLE_TYPE_DEF @any*; /*
-    :    ^(NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?)
-    ->   nested_table_type_def(
-          type_spec={$type_spec.st}, is_not_null={$SQL92_RESERVED_NULL != null},
-          table_indexed_by_part={$table_indexed_by_part.st}
-        )
-    ;*/
+object_under_part: UNDER_VK type_spec;
 
-sqlj_object_type: JAVA_VK @any*; /*
+nested_table_type_def: NESTED_TABLE_TYPE_DEF type_spec SQL92_RESERVED_NULL? table_indexed_by_part?;
+
+sqlj_object_type: JAVA_VK expression @any*; /*
     :    ^(JAVA_VK expression (SQLDATA_VK|CUSTOMDATUM_VK|ORADATA_VK))
     ->   template() "not implemented: sqlj_object_type"
     ;*/

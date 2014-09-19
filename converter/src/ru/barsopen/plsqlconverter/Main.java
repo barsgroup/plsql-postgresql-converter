@@ -97,6 +97,8 @@ public class Main {
 		
 		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
 		
+		theTree = parser.parsesql_script(theTree).unparse();
+		
 		if (options.validateReparse) {
 			String errorMessage = validatePrintedTreeMatchesParsedTree(theTree, options.validateReparseOutputAstPath, options.tree_type);
 			

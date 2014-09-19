@@ -687,26 +687,43 @@ dependent_exceptions_part
 // $>
 
 create_type
-    :    ^(CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name ^(TYPE_BODY_ELEMENTS type_body_elements+))
-    ->   template() "not implemented: create_type[CREATE_TYPE_BODY]"
-    |    ^(CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def?)
-    ->   template() "not implemented: create_type[CREATE_TYPE_SPEC]"
+    :    ^(CREATE_TYPE_BODY SQL92_RESERVED_CREATE? REPLACE_VK? type_name type_body_elements_list)
+    ->   type_decl(is_create={$SQL92_RESERVED_CREATE != null}, is_replace={$REPLACE_VK != null}, type_name={$type_name.st}, oid={""}, def={$type_body_elements_list.st})
+    |    ^(CREATE_TYPE_SPEC SQL92_RESERVED_CREATE? REPLACE_VK? type_name CHAR_STRING? object_type_def)
+    ->   type_decl(is_create={$SQL92_RESERVED_CREATE != null}, is_replace={$REPLACE_VK != null}, type_name={$type_name.st}, oid={$CHAR_STRING.text}, def={$object_type_def.st})
+    ;
+    
+type_body_elements_list
+    :   ^(TYPE_BODY_ELEMENTS type_body_elements+) 
+    ->   template() "not implemented: type_body_elements_list"
     ;
 
 object_type_def
     :    ^(OBJECT_TYPE_DEF (object_as_part|object_under_part) invoker_rights_clause?
-             sqlj_object_type? modifier_clause* ^(OBJECT_MEMBERS element_spec*))  
-    ->   template() "not implemented: object_type_def"
+             sqlj_object_type? mod_clauses+=modifier_clause* ^(OBJECT_MEMBERS specs+=element_spec*))  
+    ->   object_type_def(
+          invoker_rights_clause={$invoker_rights_clause.st},
+          object_as_or_under_part={$object_as_part.st != null ? $object_as_part.st : $object_under_part.st},
+          sqlj_object_type={$sqlj_object_type.st},
+          object_member_specs={$specs}, modifier_clauses={$mod_clauses})
     ;
 
 object_as_part
-    :    ^(OBJECT_AS (OBJECT_VK|varray_type_def|nested_table_type_def))
-    ->   template() "not implemented: object_as_part"
+    :    ^(OBJECT_AS
+            (
+              OBJECT_VK
+              -> object_as_part(def={ %object_as_part_def_object() })
+              | varray_type_def
+              -> object_as_part(def={ $varray_type_def.st })
+              | nested_table_type_def
+              -> object_as_part(def={ $nested_table_type_def.st })
+            )
+          )
     ;
 
 object_under_part
     :    ^(UNDER_VK type_spec)
-    ->   template() "not implemented: object_under_part"
+    ->  object_under_part(type_spec={$type_spec.st})
     ;
 
 nested_table_type_def
