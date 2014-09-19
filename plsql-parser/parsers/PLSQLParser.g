@@ -123,6 +123,22 @@ tokens {
     CREATE_SEQUENCE;
     PIPE_ROW;
     OPEN_FOR;
+    CREATE_VIEW;
+    NOFORCE;
+    NOT_NULL;
+    PRIMARY_KEY;
+    SET_NULL;
+    ON_DELETE;
+    CONSTRAINT_STATE;
+    NOT_DEFERRABLE;
+    USING_INDEX;
+    VIEW_TYPE_CONSTRAINTS;
+    VIEW_TYPE_CONSTRAINT_ITEM_INLINE;
+    INLINE_CONSTRAINT_CLAUSE;
+    REFERENCES_CLAUSE;
+    OUT_OF_LINE_CONSTRAINT;
+    FOREIGN_KEY;
+    
 }
 
 @header {
@@ -177,7 +193,7 @@ backtrack=true;
 
 //    |    create_index //TODO
 //    |    create_table //TODO
-//    |    create_view //TODO
+    |    create_view //TODO
 //    |    create_directory //TODO
 //    |    create_materialized_view //TODO
 
@@ -905,6 +921,157 @@ sequence_start_clause
     ;
 
 // $>
+// $>
+
+// $<Table ddl
+
+create_view
+    :   create_key
+        (or_key replace_key)?
+        create_view_force_clause?
+        view_key
+        view_name
+        view_type_clause?
+        as_key
+        subquery
+        subquery_restriction_clause?
+        SEMICOLON
+        -> ^(CREATE_VIEW[$create_key.start, "create view"]
+          replace_key?
+          create_view_force_clause?
+          view_name
+          view_type_clause?
+          subquery
+          subquery_restriction_clause?
+        )
+    ;
+    
+create_view_force_clause
+    :   no_key force_key -> ^(NOFORCE[$no_key.start, "no force"])
+    |   force_key -> force_key
+    ;
+    
+view_type_clause
+    :   view_type_constraints_clause
+        // TODO not implemented http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_8004.htm
+        //| object_view_clause
+        //| xmltype_view_clause
+    ;
+    
+view_type_constraints_clause
+    :   LEFT_PAREN view_type_constraints_clause_item (COMMA view_type_constraints_clause_item)* RIGHT_PAREN
+    -> ^(VIEW_TYPE_CONSTRAINTS[$LEFT_PAREN, "view constraints"] view_type_constraints_clause_item+)
+    ;
+
+view_type_constraints_clause_item
+    :   id_expression inline_constraint_clause*
+        -> ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE[$id_expression.start, "view constraint item"] id_expression inline_constraint_clause*)
+        | out_of_line_constraint_clause
+    ;
+    
+inline_constraint_clause
+    :   (constraint_key id_expression)?
+        inline_constraint_def
+        ((constraint_state_item)=>constraint_state_item)*
+        -> ^(INLINE_CONSTRAINT_CLAUSE[
+            $constraint_key.start != null ? $constraint_key.start : $inline_constraint_def.start,
+            "inline constraint"] id_expression? inline_constraint_def constraint_state_item*)
+    ;
+    
+inline_constraint_def
+    :
+        inline_constraint_null
+        | inline_constraint_not_null
+        | inline_constraint_unique
+        | inline_constraint_primary_key
+        | references_clause
+        | checks_clause
+    ;
+    
+inline_constraint_null: null_key;
+inline_constraint_not_null: not_key null_key -> NOT_NULL[$not_key.start, "not null"];
+inline_constraint_unique: unique_key;
+inline_constraint_primary_key: primary_key key_key -> PRIMARY_KEY[$primary_key.start, "primary key"];
+
+references_clause
+    : references_key tableview_name LEFT_PAREN id_expression (COMMA id_expression)* RIGHT_PAREN references_on_delete_clause?
+      -> ^(REFERENCES_CLAUSE[$references_key.start] tableview_name id_expression+ references_on_delete_clause?)
+    ;
+
+references_on_delete_clause
+    : on_key delete_key on_delete_clause_action
+    ->  ^(ON_DELETE[$on_key.start, "on delete"] on_delete_clause_action)
+    ;
+    
+on_delete_clause_action
+    : cascade_key
+    | set_key null_key -> SET_NULL[$set_key.start, "set null"]
+    ;
+    
+checks_clause
+    : check_key LEFT_PAREN expression_wrapper RIGHT_PAREN
+    -> ^(check_key expression_wrapper)
+    ;
+    
+constraint_state_item
+    : not_key deferrable_key -> NOT_DEFERRABLE[$not_key.start, "not deferrable"]
+    | deferrable_key
+    | initially_key immediate_key -> immediate_key
+    | initially_key deferred_key -> deferred_key
+    | rely_key
+    | norely_key
+    | using_index_clause
+    | enable_key
+    | disable_key
+    | validate_key
+    | novalidate_key
+    | exceptions_clause
+    ;
+    
+using_index_clause
+    : using_key index_key using_index_def
+    -> ^(USING_INDEX[$using_key.start, "using index"] using_index_def)
+    ;
+
+using_index_def
+    : tableview_name
+    // TODO not implemented http://docs.oracle.com/cd/B28359_01/server.111/b28286/clauses002.htm#CJAIHHGC
+    // | LEFT_PAREN create_index_statement RIGHT_PAREN
+    // | index_properties
+    ;
+  
+exceptions_clause
+    : exceptions_key into_key tableview_name
+    -> ^(exceptions_key tableview_name)
+    ;
+    
+out_of_line_constraint_clause
+    : (constraint_key id_expression)? out_of_line_constraint_def constraint_state_item*
+      -> ^(OUT_OF_LINE_CONSTRAINT[$constraint_key.start != null ? $constraint_key.start : $out_of_line_constraint_def.start, "out of line constraint"] id_expression? out_of_line_constraint_def constraint_state_item*)
+    ;
+
+out_of_line_constraint_def
+    : out_of_line_constraint_def_unique
+    | out_of_line_constraint_def_primary_key
+    | out_of_line_constraint_def_foreign_key
+    | checks_clause
+    ;
+    
+out_of_line_constraint_def_unique
+    : unique_key LEFT_PAREN id_expression (COMMA id_expression)* RIGHT_PAREN
+      -> ^(unique_key id_expression+)
+    ;
+    
+out_of_line_constraint_def_primary_key
+    : primary_key key_key LEFT_PAREN id_expression (COMMA id_expression)* RIGHT_PAREN
+      -> ^(PRIMARY_KEY[$primary_key.start, "primary key"] id_expression+)
+    ;
+
+out_of_line_constraint_def_foreign_key
+    : foreign_key key_key LEFT_PAREN id_expression (COMMA id_expression)* RIGHT_PAREN references_clause
+      -> ^(FOREIGN_KEY[$foreign_key.start, "foreign key"] id_expression+ references_clause)
+    ;
+
 // $>
 
 

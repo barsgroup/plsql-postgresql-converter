@@ -73,6 +73,7 @@ tokens {
     OUTER_JOIN_SIGN;
     LONG_RAW;
     CONSTANT_NEGATED;
+    VIEW_NAME;
 }
 
 // $<Common SQL PL/SQL Clauses/Parts
@@ -295,6 +296,10 @@ tableview_name
     )?
         -> ^(TABLEVIEW_NAME id id_expression? link_name? partition_extension_clause?)
     ;
+    
+view_name
+    :   id_expression (PERIOD id_expression)?
+        -> ^(VIEW_NAME id_expression*);
 
 char_set_name
     :    id_expression ((PERIOD id_expression)=> PERIOD id_expression)*

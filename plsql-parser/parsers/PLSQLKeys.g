@@ -351,6 +351,16 @@ tokens {
     DIV_VK;
     PIPE_VK;
     RECURSIVE_VK;
+    CONSTRAINT_VK;
+    PRIMARY_VK;
+    KEY_VK;
+    REFERENCES_VK;
+    DEFERRABLE_VK;
+    INITIALLY_VK;
+    RELY_VK;
+    NORELY_VK;
+    NOVALIDATE_VK;
+    FOREIGN_VK;
 }
 
 create_key
@@ -724,7 +734,7 @@ role_key
     ;
 
 constraint_key
-    :    {input.LT(1).getText().equalsIgnoreCase("constraint")}?=> REGULAR_ID
+    :    {input.LT(1).getText().equalsIgnoreCase("constraint")}?=> REGULAR_ID -> CONSTRAINT_VK[$REGULAR_ID]
     ;
 
 constraints_key
@@ -2484,6 +2494,10 @@ where_key
     :    SQL92_RESERVED_WHERE
     ;
 
+view_key
+    :   SQL92_RESERVED_VIEW
+    ;
+
 sequence_key
     :   {input.LT(1).getText().equalsIgnoreCase("sequence")}? REGULAR_ID -> SEQUENCE_VK[$REGULAR_ID]
     ;
@@ -2539,3 +2553,41 @@ pipe_key
 recursive_key
     :   {input.LT(1).getText().equalsIgnoreCase("recursive")}? REGULAR_ID -> RECURSIVE_VK[$REGULAR_ID]
     ;
+
+primary_key
+    :   {input.LT(1).getText().equalsIgnoreCase("primary")}? REGULAR_ID -> PRIMARY_VK[$REGULAR_ID]
+    ;
+
+key_key
+    :   {input.LT(1).getText().equalsIgnoreCase("key")}? REGULAR_ID -> KEY_VK[$REGULAR_ID]
+    ;
+
+references_key
+    :   {input.LT(1).getText().equalsIgnoreCase("references")}? REGULAR_ID -> REFERENCES_VK[$REGULAR_ID]
+    ;
+
+deferrable_key
+    :   {input.LT(1).getText().equalsIgnoreCase("deferrable")}? REGULAR_ID -> DEFERRABLE_VK[$REGULAR_ID]
+    ;
+
+initially_key
+    :   {input.LT(1).getText().equalsIgnoreCase("initially")}? REGULAR_ID -> INITIALLY_VK[$REGULAR_ID]
+    ;
+
+rely_key
+    :   {input.LT(1).getText().equalsIgnoreCase("rely")}? REGULAR_ID -> RELY_VK[$REGULAR_ID]
+    ;
+
+norely_key
+    :   {input.LT(1).getText().equalsIgnoreCase("norely")}? REGULAR_ID -> NORELY_VK[$REGULAR_ID]
+    ;
+
+novalidate_key
+    :   {input.LT(1).getText().equalsIgnoreCase("novalidate")}? REGULAR_ID -> NOVALIDATE_VK[$REGULAR_ID]
+    ;
+
+foreign_key
+    :   {input.LT(1).getText().equalsIgnoreCase("foreign")}? REGULAR_ID -> FOREIGN_VK[$REGULAR_ID]
+    ;
+    
+    
