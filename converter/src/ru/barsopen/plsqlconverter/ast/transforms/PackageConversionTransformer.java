@@ -41,14 +41,18 @@ public class PackageConversionTransformer {
 		findPackageName();
 		
 		for (package_obj_body item: body.package_obj_bodys) {
-			if (item instanceof create_procedure_body) {
-				transformProcedureBody((create_procedure_body)item);
-			} else if (item instanceof create_function_body) {
-				transformFunctionBody((create_function_body)item);
-			} else {
-				throw new Exception(
-					String.format("Don't know how to handle %s", item.getClass().getName())
-				);
+			try {
+				if (item instanceof create_procedure_body) {
+					transformProcedureBody((create_procedure_body)item);
+				} else if (item instanceof create_function_body) {
+					transformFunctionBody((create_function_body)item);
+				} else {
+					throw new Exception(
+						String.format("Don't know how to handle %s at %d:%d", item.getClass().getName(), item._getLine(), item._getCol())
+					);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 			//procedure_spec, function_spec, variable_declaration, subtype_declaration, cursor_declaration, exception_declaration, record_declaration, table_declaration, create_procedure_body, create_function_body, create_type
 		}

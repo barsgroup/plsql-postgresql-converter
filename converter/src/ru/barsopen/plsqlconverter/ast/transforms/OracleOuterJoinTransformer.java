@@ -24,7 +24,11 @@ public class OracleOuterJoinTransformer {
 	public static void transformAllQueries(Tree tree) throws Exception {
 		List<Tree> queryBlocks = findQueryBlocks(tree);
 		for (Tree queryBlock: queryBlocks) {
-			transformQueryBlock(queryBlock);
+			try {
+				transformQueryBlock(queryBlock);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 	

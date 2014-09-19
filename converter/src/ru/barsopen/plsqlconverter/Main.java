@@ -95,10 +95,15 @@ public class Main {
 		
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
+			System.out.println("doing outer joins...");
 			OracleOuterJoinTransformer.transformAllQueries(theTree);
+			System.out.println("doing packages...");
 			PackageConversionTransformer.transformAllPackages(theTree);
+			System.out.println("doing datatypes...");
 			DatatypeConversionTransformer.transformAll(theTree);
+			System.out.println("doing procedure to function...");
 			ProcedureToFunctionConversionTransformer.transformAll(theTree);
+			System.out.println("doing perform...");
 			ProcedurePerformConversionTransformer.transformAll(theTree);
 			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, theTree);
 			IntoStrictConversionTransformer.transformAll(typedAst);
@@ -194,7 +199,12 @@ public class Main {
 				}
 				
 				if (options.splitLargeScriptOutputSql) {
-					PrintResult printResult = AstPrinter.printTreeToOracleString(newScript, options.tree_type);
+					PrintResult printResult = null;
+					if (options.usePgSql) {
+						printResult = AstPrinter.printTreeToPostgresqlString(newScript, options.tree_type);
+					} else {
+						printResult = AstPrinter.printTreeToOracleString(newScript, options.tree_type);
+					}
 
 					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%s_%d.sql", name, idx)).toString();
 					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
