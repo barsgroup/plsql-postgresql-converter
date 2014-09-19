@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.Tree;
+import org.apache.commons.io.IOUtils;
 
 import ru.barsopen.plsqlconverter.ast.transforms.AstParser;
 import ru.barsopen.plsqlconverter.ast.transforms.AstPrinter;
@@ -64,10 +65,22 @@ public class Main {
 		long parseStartTime = System.currentTimeMillis();
 		
 		if (options.inputSqlPath != null) {
-			String inputContent = new String(Files.readAllBytes(Paths.get(options.inputSqlPath)), Charset.forName("UTF-8"));
+			byte[] inputContentBytes;
+			if (options.inputSqlPath.equals("-")) {
+				inputContentBytes = IOUtils.toByteArray(System.in);
+			} else {
+				inputContentBytes = Files.readAllBytes(Paths.get(options.inputSqlPath));
+			}
+			String inputContent = new String(inputContentBytes, Charset.forName("UTF-8"));
 			parseResult = AstParser.parseTreeFromString(inputContent, false, options.tree_type);
 		} else if (options.inputXmlPath != null) {
-			String inputContent = new String(Files.readAllBytes(Paths.get(options.inputXmlPath)), Charset.forName("UTF-8"));
+			byte[] inputContentBytes;
+			if (options.inputXmlPath.equals("-")) {
+				inputContentBytes = IOUtils.toByteArray(System.in);
+			} else {
+				inputContentBytes = Files.readAllBytes(Paths.get(options.inputXmlPath));
+			}
+			String inputContent = new String(inputContentBytes, Charset.forName("UTF-8"));
 			parseResult = AstXml.xmlToAst(AstXml.stringToXml(inputContent));
 		} else if (options.inputSerialiedPath != null) {
 			try (FileInputStream stream = new FileInputStream(options.inputSerialiedPath)) {

@@ -37,8 +37,8 @@ public class CliOptions {
 		out.println("  --validate-reparse-ast-path");
 		out.println("  --limit-all-packages <N>");
 		out.println("  --tree-type (sql_script|statement|expression)");
-		out.println("  --input-sql path");
-		out.println("  --input-xml path");
+		out.println("  --input-sql (path|-)");
+		out.println("  --input-xml (path|-)");
 		out.println("  --input-serialized path");
 		out.println("  --convert");
 		out.println("  --use-pgsql");

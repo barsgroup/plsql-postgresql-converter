@@ -12,6 +12,7 @@
         <pathelement location="lib/antlr-runtime-3.5.2.jar"/>
         <pathelement location="lib/stringtemplate-3.2.1.jar"/>
         <pathelement location="lib/antlr-2.7.7.jar"/>
+        <pathelement location="lib/commons-io-2.4.jar"/>
     </path>
     
     <target name="init">
@@ -80,7 +81,7 @@
           <fileset dir="src" includes="**/*.stg" />
           <manifest>
             <attribute name="Main-Class" value="ru.barsopen.plsqlconverter.Main" />
-            <attribute name="Class-Path" value="lexer-parser-walker-1.0-SNAPSHOT.jar antlr-runtime-3.5.2.jar stringtemplate-3.2.1.jar antlr-2.7.7.jar" />
+            <attribute name="Class-Path" value="lexer-parser-walker-1.0-SNAPSHOT.jar antlr-runtime-3.5.2.jar stringtemplate-3.2.1.jar antlr-2.7.7.jar commons-io-2.4.jar" />
           </manifest>
         </jar>
         <chmod perm="ug+x" type="file">
