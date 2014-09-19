@@ -443,9 +443,10 @@ bind_variable
     ;
 
 general_element
-    :   r+=general_element_id
+    :   (r+=general_element_id|r+=bind_variable)
         (
-            PERIOD r+=general_element_id | (LEFT_PAREN ~PLUS_SIGN) => r+=function_argument
+            PERIOD r+=general_element_id
+            | (LEFT_PAREN ~PLUS_SIGN) => r+=function_argument
         )*
         -> ^(CASCATED_ELEMENT $r+)
     ;

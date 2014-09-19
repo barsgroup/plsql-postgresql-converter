@@ -550,7 +550,7 @@ SQL92_RESERVED_END
     ;
 
 SQL92_RESERVED_EXCEPTION
-    :    e='exception' | e='EXCEPTION'
+    :    (e='exception' | e='EXCEPTION')
     // "exception" is a keyword only withing the contex of the PL/SQL language
     // while it can be an identifier(column name, table name) in SQL
     // "exception" is a keyword if and only it is followed by "when"
@@ -839,8 +839,7 @@ PLSQL_NON_RESERVED_USING
     ;
 
 PLSQL_NON_RESERVED_MODEL
-    :    m='model'
-    |    m='MODEL'
+    :    (m='model' | m='MODEL')
     {
          // "model" is a keyword if and only if it is followed by ("main"|"partition"|"dimension")
          // otherwise it is a identifier(REGULAR_ID).

@@ -1096,7 +1096,6 @@ atom
 backtrack=true;
 }*/
     :    (routine_id (PERIOD routine_id)* outer_join_sign) => general_element outer_join_sign^
-    |    bind_variable
     |    constant
     |    (standard_function) => standard_function -> ^(STANDARD_FUNCTION standard_function)
     |    general_element
