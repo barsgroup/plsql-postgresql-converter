@@ -12,16 +12,11 @@ public class CliOptions {
 	public String inputSqlPath;
 	public String inputXmlPath;
 	public String inputSerialiedPath;
+	public boolean splitOutput;
 	public String outputSqlPath;
 	public String outputAstPath;
 	public String outputXmlPath;
 	public String outputSerializedPath;
-	public boolean splitLargeScript;
-	public String splitLargeScriptOutputDir;
-	public boolean splitLargeScriptOutputAst;
-	public boolean splitLargeScriptOutputXml;
-	public boolean splitLargeScriptOutputSql;
-	public boolean splitLargeScriptOutputSerialied;
 	public boolean usePgSql;
 	
 	public boolean convert;
@@ -42,15 +37,16 @@ public class CliOptions {
 		out.println("  --input-serialized path");
 		out.println("  --convert");
 		out.println("  --use-pgsql");
+		out.println("  --split-output");
+		out.println("    (in this case --output-sql, --output-ast are templates:");
+		out.println("      {i} is replaced by item index,");
+		out.println("      {t} is replaced by item type,");
+		out.println("      {n} is replaced by item name");
+		out.println("      e.g., --output-sql '{i}_{t}_{n}.sql'");
 		out.println("  --output-sql (path|-)");
 		out.println("  --output-ast (path|-)");
 		out.println("  --output-xml (path|-)");
 		out.println("  --output-serialized path");
-		out.println("  --split-large-script-output-dir path");
-		out.println("  --split-large-script-output-xml");
-		out.println("  --split-large-script-output-ast");
-		out.println("  --split-large-script-output-sql");
-		out.println("  --split-large-script-output-serialized");
 		out.println("  --debug");
 	}
 
@@ -70,6 +66,7 @@ public class CliOptions {
 			case "--input-sql": result.inputSqlPath = args[i]; ++i; break;
 			case "--input-xml": result.inputXmlPath = args[i]; ++i; break;
 			case "--input-serialized": result.inputSerialiedPath = args[i]; ++i; break;
+			case "--split-output": result.splitOutput = true; break;
 			case "--output-sql": result.outputSqlPath = args[i]; ++i; break;
 			case "--output-ast": result.outputAstPath = args[i]; ++i; break;
 			case "--output-xml": result.outputXmlPath = args[i]; ++i; break;
@@ -77,11 +74,6 @@ public class CliOptions {
 			case "--convert": result.convert = true; break;
 			case "--debug": result.debug = true; break;
 			case "--use-pgsql": result.usePgSql = true; break;
-			case "--split-large-script-output-dir": result.splitLargeScriptOutputDir = args[i]; ++i; result.splitLargeScript = true; break;
-			case "--split-large-script-output-xml": result.splitLargeScriptOutputXml = true; break;
-			case "--split-large-script-output-ast": result.splitLargeScriptOutputAst = true; break;
-			case "--split-large-script-output-sql": result.splitLargeScriptOutputSql = true; break;
-			case "--split-large-script-output-serialized": result.splitLargeScriptOutputSerialied = true; break;
 			default: System.err.printf("Unrecognized option: %s\n", arg); System.exit(1); break;
 			}
 		}

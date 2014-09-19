@@ -1,7 +1,9 @@
 package ru.barsopen.plsqlconverter;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -9,9 +11,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.Tree;
 import org.apache.commons.io.IOUtils;
@@ -61,6 +66,176 @@ public class Main {
 			return;
 		}
 		
+		ParseResult parseResult = readInputSql(options);
+		
+		org.antlr.runtime.tree.Tree tree = parseResult.tree;
+		
+		if (options.validateReparse) {
+			String errorMessage = validatePrintedTreeMatchesParsedTree(tree, options.validateReparseOutputAstPath, options.tree_type);
+			
+			if (errorMessage != null) {
+				System.err.printf("Error comparing after print: %s\n", errorMessage);
+				System.exit(1);
+			}
+		}
+		
+		if (options.convert) {
+			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
+			System.err.println("doing outer joins...");
+			OracleOuterJoinTransformer.transformAllQueries(tree);
+			System.err.println("doing packages...");
+			PackageConversionTransformer.transformAllPackages(tree);
+			System.err.println("doing datatypes...");
+			DatatypeConversionTransformer.transformAll(tree);
+			System.err.println("doing procedure to function...");
+			ProcedureToFunctionConversionTransformer.transformAll(tree);
+			System.err.println("doing perform...");
+			ProcedurePerformConversionTransformer.transformAll(tree);
+			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, tree);
+			IntoStrictConversionTransformer.transformAll(typedAst);
+			CustomTypesConversionTransformer.transformAll(typedAst);
+			//NestedFunctionConversionTransformer.transformAll(typedAst);
+			tree = typedAst.unparse();
+		}
+		
+		if (!options.splitOutput) {
+			List<Token> tokens = parseResult.tokens;
+			writeOutputTree(options, tree, tokens, null);
+		} else {
+			if (tree.getType() != PLSQLParser.SQL_SCRIPT) {
+				System.err.println("Parsed tree is not a SQL script");
+			}
+			
+			sql_script script = parser.parsesql_script(tree);
+			List<unit_statement> statements = new ArrayList<unit_statement>();
+			for (sql_script_item item: script.sql_script_items) {
+				if (item instanceof unit_statement) {
+					unit_statement statement = (unit_statement)item;
+					statements.add(statement);
+					if (options.limitAllPackages != null && statements.size() == options.limitAllPackages) {
+						break;
+					}
+				}
+			}
+			
+			int idx = 0;
+			for (unit_statement statement: statements) {
+				++idx;
+				//alter_function, alter_package, alter_procedure, alter_sequence, alter_trigger,
+				// alter_type, create_function_body, create_procedure_body, create_package, create_sequence,
+				// create_trigger, create_type, drop_function, drop_package, drop_procedure,
+				// drop_sequence, drop_trigger, drop_type
+				
+				StatementTypeAndName typeAndName = getStatementTypeAndName(statement);
+				
+				Tree newScript = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(PLSQLParser.SQL_SCRIPT));
+				newScript.addChild(statement.unparse());
+				
+				Map<String, String> replacements = new HashMap<String, String>();
+				replacements.put("i", String.valueOf(idx));
+				replacements.put("t", typeAndName.type);
+				replacements.put("n", typeAndName.name);
+				
+				writeOutputTree(options, newScript, parseResult.tokens, replacements);
+			}
+		}
+	}
+
+	private static void writeOutputTree(CliOptions options,
+			org.antlr.runtime.tree.Tree tree, List<Token> tokens,
+			Map<String, String> fileNameReplacements)
+			throws FileNotFoundException, IOException, RecognitionException,
+			Exception {
+		if (options.outputAstPath != null) {
+			String str = AstPrinter.prettyPrint(tree);
+
+			if (options.outputAstPath.equals("-")) {
+				if (options.splitOutput) {
+					System.err.println("--split-output can not be used with output to stdout");
+					System.exit(1);
+				}
+				System.out.println(str);
+			} else {
+				String path = options.outputAstPath;
+				if (options.splitOutput) {
+					path = doFileNameReplacements(path, fileNameReplacements);
+				}
+				Files.createDirectories(Paths.get(path).getParent());
+				try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+				    out.println(str);
+				}
+			}
+		}
+		
+		if (options.outputSqlPath != null) {
+			PrintResult printResult;
+			if (options.usePgSql) {
+				printResult = AstPrinter.printTreeToPostgresqlString(tree, options.tree_type);
+			} else {
+				printResult = AstPrinter.printTreeToOracleString(tree, options.tree_type);
+			}
+			
+			if (options.outputSqlPath.equals("-")) {
+				if (options.splitOutput) {
+					System.err.println("--split-output can not be used with output to stdout");
+					System.exit(1);
+				}
+				System.out.println(printResult.text);
+			} else {
+				String path = options.outputSqlPath;
+				if (options.splitOutput) {
+					path = doFileNameReplacements(path, fileNameReplacements);
+				}
+				Files.createDirectories(Paths.get(path).getParent());
+				try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+				    out.println(printResult.text);
+				}
+			}
+		}
+		
+		if (options.outputXmlPath != null) {
+			String astXml = AstXml.xmlToString(AstXml.astToXml(tokens, tree));
+			
+			if (options.outputXmlPath.equals("-")) {
+				if (options.splitOutput) {
+					System.err.println("--split-output can not be used with output to stdout");
+					System.exit(1);
+				}
+				System.out.println(astXml);
+			} else {
+				String path = options.outputXmlPath;
+				if (options.splitOutput) {
+					path = doFileNameReplacements(path, fileNameReplacements);
+				}
+				Files.createDirectories(Paths.get(path).getParent());
+				try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
+				    out.println(astXml);
+				}
+			}
+		}
+		
+		if (options.outputSerializedPath != null) {
+			String path = options.outputSerializedPath;
+			if (options.splitOutput) {
+				path = doFileNameReplacements(path, fileNameReplacements);
+			}
+			Files.createDirectories(Paths.get(path).getParent());
+			try (FileOutputStream stream = new FileOutputStream(path)) {
+				AstSerializer.serialiaseAst(stream, tokens, tree);
+			}
+		}
+	}
+
+	private static String doFileNameReplacements(String path, Map<String, String> fileNameReplacements) {
+		for (Entry<String, String> entry: fileNameReplacements.entrySet()) {
+			path = path.replace(String.format("{%s}", entry.getKey()), entry.getValue());
+		}
+		return path;
+	}
+
+	private static ParseResult readInputSql(CliOptions options)
+			throws IOException, RecognitionException, Exception,
+			FileNotFoundException {
 		ParseResult parseResult = null;
 		long parseStartTime = System.currentTimeMillis();
 		
@@ -88,190 +263,55 @@ public class Main {
 			}
 		} else {
 			System.err.println("No --input-sql or --input-xml or --input-serialized specified");
+			System.exit(1);
 		}
 		System.err.printf("Parse took %f seconds\n", (System.currentTimeMillis() - parseStartTime) / 1000.0);
 		
 		if (parseResult.lexerErrors.size() > 0 || parseResult.parserErrors.size() > 0) {
 			System.exit(1);
 		}
-		
-		org.antlr.runtime.tree.Tree theTree = parseResult.tree;
-		
-		theTree = parser.parsesql_script(theTree).unparse();
-		
-		if (options.validateReparse) {
-			String errorMessage = validatePrintedTreeMatchesParsedTree(theTree, options.validateReparseOutputAstPath, options.tree_type);
-			
-			if (errorMessage != null) {
-				System.err.printf("Error comparing after print: %s\n", errorMessage);
-				System.exit(1);
-			}
-		}
-		
-		if (options.convert) {
-			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
-			System.err.println("doing outer joins...");
-			OracleOuterJoinTransformer.transformAllQueries(theTree);
-			System.err.println("doing packages...");
-			PackageConversionTransformer.transformAllPackages(theTree);
-			System.err.println("doing datatypes...");
-			DatatypeConversionTransformer.transformAll(theTree);
-			System.err.println("doing procedure to function...");
-			ProcedureToFunctionConversionTransformer.transformAll(theTree);
-			System.err.println("doing perform...");
-			ProcedurePerformConversionTransformer.transformAll(theTree);
-			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, theTree);
-			IntoStrictConversionTransformer.transformAll(typedAst);
-			CustomTypesConversionTransformer.transformAll(typedAst);
-			//NestedFunctionConversionTransformer.transformAll(typedAst);
-			theTree = typedAst.unparse();
-		}
-		
-		if (!options.splitLargeScript) {
-			if (options.outputAstPath != null) {
-				String str = AstPrinter.prettyPrint(theTree);
-	
-				if (options.outputAstPath.equals("-")) {
-					System.out.println(str);
-				} else {
-					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputAstPath))) {
-					    out.println(str);
-					}
-				}
-			}
-			
-			if (options.outputSqlPath != null) {
-				PrintResult printResult;
-				if (options.usePgSql) {
-					printResult = AstPrinter.printTreeToPostgresqlString(theTree, options.tree_type);
-				} else {
-					printResult = AstPrinter.printTreeToOracleString(theTree, options.tree_type);
-				}
-				
-				if (options.outputSqlPath.equals("-")) {
-					System.out.println(printResult.text);
-				} else {
-					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputSqlPath))) {
-					    out.println(printResult.text);
-					}
-				}
-			}
-			
-			if (options.outputXmlPath != null) {
-				String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
-				
-				if (options.outputXmlPath.equals("-")) {
-					System.out.println(astXml);
-				} else {
-					try (PrintStream out = new PrintStream(new FileOutputStream(options.outputXmlPath))) {
-					    out.println(astXml);
-					}
-				}
-			}
-			
-			if (options.outputSerializedPath != null) {
-				try (FileOutputStream stream = new FileOutputStream(options.outputSerializedPath)) {
-					AstSerializer.serialiaseAst(stream, parseResult.tokens, theTree);
-				}
-			}
-		} else {
-			if (theTree.getType() != PLSQLParser.SQL_SCRIPT) {
-				System.err.println("Parsed tree is not a SQL script");
-			}
-			
-			sql_script script = parser.parsesql_script(theTree);
-			List<unit_statement> statements = new ArrayList<unit_statement>();
-			for (sql_script_item item: script.sql_script_items) {
-				if (item instanceof unit_statement) {
-					unit_statement statement = (unit_statement)item;
-					statements.add(statement);
-					if (options.limitAllPackages != null && statements.size() == options.limitAllPackages) {
-						break;
-					}
-				}
-			}
-			
-			int idx = 0;
-			for (unit_statement statement: statements) {
-				++idx;
-				//alter_function, alter_package, alter_procedure, alter_sequence, alter_trigger,
-				// alter_type, create_function_body, create_procedure_body, create_package, create_sequence,
-				// create_trigger, create_type, drop_function, drop_package, drop_procedure,
-				// drop_sequence, drop_trigger, drop_type
-				
-				String name = getStatementName(statement);
-				
-				Tree newScript = new org.antlr.runtime.tree.CommonTree(new org.antlr.runtime.CommonToken(PLSQLParser.SQL_SCRIPT));
-				newScript.addChild(statement.unparse());
-				
-				if (options.splitLargeScriptOutputAst) {
-					String str = AstPrinter.prettyPrint(newScript);
-
-					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%s_%d.ast.txt", name, idx)).toString();
-					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
-					    out.println(str);
-					}
-				}
-				
-				if (options.splitLargeScriptOutputSql) {
-					PrintResult printResult = null;
-					if (options.usePgSql) {
-						printResult = AstPrinter.printTreeToPostgresqlString(newScript, options.tree_type);
-					} else {
-						printResult = AstPrinter.printTreeToOracleString(newScript, options.tree_type);
-					}
-
-					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%s_%d.sql", name, idx)).toString();
-					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
-					    out.println(printResult.text);
-					}
-				}
-				
-				if (options.splitLargeScriptOutputSerialied) {
-					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%s_%d.bin", name, idx)).toString();
-					try (FileOutputStream out = new FileOutputStream(path)) {
-						AstSerializer.serialiaseAst(out, new ArrayList<Token>(), newScript);
-					}
-				}
-				
-				/*if (options.outputXmlPath != null) {
-					String astXml = AstXml.xmlToString(AstXml.astToXml(parseResult.tokens, theTree));
-
-					String path = Paths.get(options.splitLargeScriptOutputDir, String.format("%d.ast.xml", idx)).toString();
-					try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
-					    out.println(astXml);
-					}
-				}*/
-				
-				++idx;
-			}
-		}
+		return parseResult;
 	}
+	
+	static class StatementTypeAndName {
+		public String name;
+		public String type;
+	}
+	
+	static int counter = 0;
 
-	private static String getStatementName(unit_statement statement) {
-		String result;
+	private static StatementTypeAndName getStatementTypeAndName(unit_statement statement) {
+		StatementTypeAndName result = new StatementTypeAndName();
 		if (statement instanceof create_function_body) {
 			create_function_body b = (create_function_body)statement;
-			result = b.function_name.ids.get(b.function_name.ids.size() - 1).value;
+			result.name = b.function_name.ids.get(b.function_name.ids.size() - 1).value;
+			result.type = "func";
 		} else if (statement instanceof create_procedure_body) {
 			create_procedure_body b = (create_procedure_body)statement;
-			result = b.procedure_name.ids.get(b.procedure_name.ids.size() - 1).value;
+			result.name = b.procedure_name.ids.get(b.procedure_name.ids.size() - 1).value;
+			result.type = "proc";
 		} else if (statement instanceof create_package_spec) {
 			create_package_spec p = (create_package_spec)statement;
-			result = p.package_name.ids.get(p.package_name.ids.size() - 1).value;
+			result.name = p.package_name.ids.get(p.package_name.ids.size() - 1).value;
+			result.type = "pkgspec";
 		} else if (statement instanceof create_package_body) {
 			create_package_body p = (create_package_body)statement;
-			result = p.package_name.ids.get(p.package_name.ids.size() - 1).value;
+			result.name = p.package_name.ids.get(p.package_name.ids.size() - 1).value;
+			result.type = "pkgbody";
 		} else if (statement instanceof create_sequence) {
-			result = "seq";
+			result.name = "seq" + (++counter);
+			result.type = "seq";
 		} else if (statement instanceof create_trigger) {
-			result = "trigger";
+			result.name = "trigger" + (++counter);
+			result.type = "trigger";
 		} else if (statement instanceof create_type) {
-			result = "type";
+			result.name = "type" + (++counter);
+			result.type = "type";
 		} else {
-			return "other";
+			result.name = "other" + (++counter);
+			result.type = "other";
 		}
-		result = AstUtil.normalizeId(result).toLowerCase();
+		result.name = AstUtil.normalizeId(result.name).toLowerCase();
 		return result;
 	}
 
