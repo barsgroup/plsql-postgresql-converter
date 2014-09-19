@@ -68,11 +68,6 @@
             <src path="plsqlprinter-src/generated"/>
             <classpath refid="plsqlconverter.classpath"/>
         </javac>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.stg"/>
-            </fileset>
-        </copy>
         <copy todir="output">
           <fileset dir="lib" includes="*.jar"/>
         </copy>

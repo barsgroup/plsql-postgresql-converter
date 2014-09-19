@@ -95,15 +95,15 @@ public class Main {
 		
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
-			System.out.println("doing outer joins...");
+			System.err.println("doing outer joins...");
 			OracleOuterJoinTransformer.transformAllQueries(theTree);
-			System.out.println("doing packages...");
+			System.err.println("doing packages...");
 			PackageConversionTransformer.transformAllPackages(theTree);
-			System.out.println("doing datatypes...");
+			System.err.println("doing datatypes...");
 			DatatypeConversionTransformer.transformAll(theTree);
-			System.out.println("doing procedure to function...");
+			System.err.println("doing procedure to function...");
 			ProcedureToFunctionConversionTransformer.transformAll(theTree);
-			System.out.println("doing perform...");
+			System.err.println("doing perform...");
 			ProcedurePerformConversionTransformer.transformAll(theTree);
 			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, theTree);
 			IntoStrictConversionTransformer.transformAll(typedAst);
