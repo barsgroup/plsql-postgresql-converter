@@ -99,6 +99,11 @@ public class main {
     out.printf("  public int _getCol() { return _col; }\n");
     out.printf("  public int _getTokenStartIndex() { return _tokenStartIndex; }\n");
     out.printf("  public int _getTokenStopIndex() { return _tokenStopIndex; }\n");
+    
+    if (spec.nodeCode != null) {
+      out.println(spec.nodeCode);
+      out.println();
+    }
       
     for (AstNodes.RuleItem item: rule.body.items) {
       AstNodes.PropSpec propSpec = item.propSpec;
@@ -182,6 +187,29 @@ public class main {
     }
     out.printf("  }\n");
     out.println();
+    out.printf("  public java.util.List<_baseNode> _getChildren() {\n");
+    out.printf("    java.util.List<_baseNode> result = new java.util.ArrayList<_baseNode>();\n");
+      
+    for (AstNodes.RuleItem item: rule.body.items) {
+      AstNodes.PropSpec propSpec = item.propSpec;
+      boolean isToken = item.propMatchSpec.isToken();
+      boolean isText = item.propMatchSpec.isTokenText;
+      boolean isArray = propSpec.isArray;
+      String itemType = item.propMatchSpec.isTokenText ? "String" : isToken ? "org.antlr.runtime.tree.Tree" : item.propMatchSpec.name;
+      
+      if (isText || isToken) {
+        continue;
+      } else if (propSpec.isArray) {
+        out.printf("    result.addAll(this.%s);\n", propSpec.name);
+      } else {
+        out.printf("    if (this.%s != null) {\n", propSpec.name);
+        out.printf("      result.add(this.%s);\n", propSpec.name);
+        out.printf("    }\n");
+      }
+    }
+    out.printf("    return result;\n");
+    out.printf("  }\n");
+    out.println();
     out.printf("  public void _replace(_baseNode child, _baseNode replacement) {\n");
       
     for (AstNodes.RuleItem item: rule.body.items) {
@@ -238,6 +266,10 @@ public class main {
       out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
       out.printf("  void _walk(_visitor visitor);\n");
       out.printf("  void _replace(_baseNode child, _baseNode replacement);\n");
+      out.printf("  java.util.List<_baseNode> _getChildren();\n");
+      if (spec.baseNodeCode != null) {
+        out.println(spec.baseNodeCode);
+      }
       out.printf("}\n");
     }
   }

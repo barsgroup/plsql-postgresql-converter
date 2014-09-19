@@ -6,6 +6,8 @@ public class AstNodes {
     public List<String> tokenVocabName = new ArrayList<String>();
     public List<RuleSpec> rules = new ArrayList<RuleSpec>();
     public String parserClassName;
+    public String nodeCode;
+    public String baseNodeCode;
     
     public RuleSpec findRuleSpec(String name) {
       for (RuleSpec rs: rules) {

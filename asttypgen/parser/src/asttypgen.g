@@ -6,6 +6,8 @@ KW_PACKAGE: '@package';
 KW_TOKEN_VOCAB: '@tokenVocab';
 KW_TOKEN_TEXT: '@tokenText';
 KW_PARSER_CLASS: '@parserClass';
+KW_BASENODE_CODE: '@baseNodeCode';
+KW_NODE_CODE: '@nodeCode';
 KW_ANY: '@any';
 COLON: ':';
 SEMICOLON: ';';
@@ -19,6 +21,17 @@ BRACKET_R: ']';
 CURLY_L: '{';
 CURLY_R: '}';
 ARROW_R: '=>';
+STRING
+    @init { StringBuilder v = new StringBuilder(); }
+    :
+        '"'
+        (
+          options{greedy=false;}:
+          c=~'\\' { v.append((char)$c); }
+          | '\\\\' { v.append("\\"); }
+          | '\\"' { v.append("\""); }
+        )* '"'
+        { setText(v.toString()); };
 WS  :   ( ' '
         | '\t'
         | '\r'
@@ -35,6 +48,8 @@ astSpec returns [AstNodes.AstSpec spec]:
   packageNameDef[$spec]
   tokenVocabName[$spec]
   parserClassName[$spec]
+  parserBaseNodeCode[$spec]?
+  parserNodeCode[$spec]?
   (r=ruleSpec { $spec.rules.add(r); })* EOF;
   
 packageNameDef[AstNodes.AstSpec spec]:
@@ -45,6 +60,12 @@ tokenVocabName[AstNodes.AstSpec spec]:
   
 parserClassName[AstNodes.AstSpec spec]:
   KW_PARSER_CLASS r=ID { $spec.parserClassName = $r.text; };
+  
+parserBaseNodeCode[AstNodes.AstSpec spec]:
+  KW_BASENODE_CODE s=STRING { $spec.baseNodeCode = $s.text; };
+  
+parserNodeCode[AstNodes.AstSpec spec]:
+  KW_NODE_CODE s=STRING { $spec.nodeCode = $s.text; };
 
 ruleSpec returns [AstNodes.RuleSpec result]:
   r1=ruleWithoutAlternatives { $result = $r1.result; }
