@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="asttypgen">
+    <property environment="env"/>
+    <property name="dir.src" location="src"/>
+    <property name="dir.lib" location="lib"/>
+    <property name="dir.parser.src" location="parser/src"/>
+    <property name="dir.parser.gensrc" location="parser/generated-src"/>
+    
+    <path id="asttypgen.classpath">
+        <pathelement location="lib/gson-2.3.jar"/>
+        <pathelement location="lib/antlr-runtime-3.5.2.jar"/>
+    </path>
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+        <mkdir dir="output"/>
+        
+        <uptodate property="parser.notRequired">
+          <srcfiles dir="${dir.parser.src}" includes="asttypgen.g"/>
+          <mapper type="merge" to="${dir.parser.gensrc}/asttypgenParser.java"/>
+        </uptodate>
+    </target>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="output"/>
+        <delete dir="${dir.parser.gensrc}"/>
+    </target>
+    
+    <target name="build-parser" depends="init" unless="parser.notRequired">
+      <delete dir="${dir.parser.gensrc}"/>
+      <mkdir dir="${dir.parser.gensrc}" />
+      
+      <exec dir="${dir.parser.src}" executable="java">
+        <arg value="-jar"/>
+        <arg value="${dir.lib}/antlr-3.5.2-complete.jar"/>
+        <arg value="-o"/>
+        <arg value="${dir.parser.gensrc}"/>
+        <arg value="asttypgen.g"/>
+      </exec>
+    </target>
+    
+    <target depends="init,build-parser" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="source,lines,vars" destdir="bin" includeantruntime="false" source="1.7" target="1.7">
+            <src path="${dir.src}"/>
+            <src path="${dir.parser.gensrc}"/>
+            <classpath refid="asttypgen.classpath"/>
+        </javac>
+        <!--<copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.stg"/>
+            </fileset>
+        </copy>-->
+        <copy todir="output">
+          <fileset dir="lib" includes="antlr-runtime-3.5.2.jar"/>
+          <fileset dir="lib" includes="gson-2.3.jar"/>
+        </copy>
+        <jar destfile="output/asttypgen.jar">
+          <fileset dir="bin" />
+          <!--<fileset dir="src" includes="**/*.stg" />-->
+          <manifest>
+            <attribute name="Main-Class" value="main" />
+            <attribute name="Class-Path" value="antlr-runtime-3.5.2.jar gson-2.3.jar" />
+          </manifest>
+        </jar>
+    </target>
+</project>

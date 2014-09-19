@@ -181,6 +181,39 @@ public class main {
       }
     }
     out.printf("  }\n");
+    out.println();
+    out.printf("  public void _replace(_baseNode child, _baseNode replacement) {\n");
+      
+    for (AstNodes.RuleItem item: rule.body.items) {
+      if (item.propMatchSpec.isTokenText) {
+        continue;
+      }
+      if (item.propMatchSpec.isToken()) {
+        continue;
+      }
+      AstNodes.PropSpec propSpec = item.propSpec;
+      boolean isArray = propSpec.isArray;
+      String itemType = packageName + "." + item.propMatchSpec.name;
+      String propName = propSpec.name;
+      
+      if (propSpec.isArray) {
+        out.printf("    for (int _i = 0; _i < this.%s.size(); ++_i) {\n", propName);
+        out.printf("      if (this.%s.get(_i) == child) {\n", propName);
+        out.printf("        this.remove_%s(_i);\n", propName);
+        out.printf("        this.insert_%s(_i, (%s)replacement);\n", propName, itemType);
+        out.printf("        return;\n");
+        out.printf("      }\n");
+        out.printf("    }\n");
+      } else {
+        out.printf("    if (this.%s == child) {\n", propName);
+        out.printf("      this.set_%s((%s)replacement);\n", propName, itemType);
+        out.printf("      return;\n");
+        out.printf("    }\n");
+      }
+    }
+    out.printf("    throw new RuntimeException(\"Failed to replace node: no such node\");\n");
+    out.printf("  }\n");
+    out.println();
   }
   
   public static void generateBaseClass() throws Exception {
@@ -204,6 +237,7 @@ public class main {
       out.printf("  int _getTokenStopIndex();\n");
       out.printf("  org.antlr.runtime.tree.Tree unparse();\n");
       out.printf("  void _walk(_visitor visitor);\n");
+      out.printf("  void _replace(_baseNode child, _baseNode replacement);\n");
       out.printf("}\n");
     }
   }
