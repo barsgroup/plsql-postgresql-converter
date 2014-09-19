@@ -30,9 +30,9 @@
         </license>
     </licenses>
     <modules>
-        <module>lexer-parser</module>
+      <!--<module>lexer-parser</module>-->
         <module>lexer-parser-walker</module>
-        <module>lexer-parser-walker-composed</module>
+        <!--<module>lexer-parser-walker-composed</module>-->
     </modules>
     <dependencyManagement>
         <dependencies>
