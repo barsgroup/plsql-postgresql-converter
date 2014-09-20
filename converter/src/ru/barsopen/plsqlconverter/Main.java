@@ -37,6 +37,7 @@ import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedurePerformConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedureToFunctionConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.typed._baseNode;
+import ru.barsopen.plsqlconverter.ast.typed.constant;
 import ru.barsopen.plsqlconverter.ast.typed.create_function_body;
 import ru.barsopen.plsqlconverter.ast.typed.create_package_body;
 import ru.barsopen.plsqlconverter.ast.typed.create_package_spec;
@@ -44,12 +45,15 @@ import ru.barsopen.plsqlconverter.ast.typed.create_procedure_body;
 import ru.barsopen.plsqlconverter.ast.typed.create_sequence;
 import ru.barsopen.plsqlconverter.ast.typed.create_trigger;
 import ru.barsopen.plsqlconverter.ast.typed.create_type;
+import ru.barsopen.plsqlconverter.ast.typed.id;
 import ru.barsopen.plsqlconverter.ast.typed.parser;
 import ru.barsopen.plsqlconverter.ast.typed.sql_script;
 import ru.barsopen.plsqlconverter.ast.typed.sql_script_item;
 import ru.barsopen.plsqlconverter.ast.typed.unit_statement;
+import ru.barsopen.plsqlconverter.util.AttachedComments;
 import ru.barsopen.plsqlconverter.util.ReflectionUtil;
 import ru.barsopen.plsqlconverter.util.TokenCounter;
+import br.com.porcelli.parser.plsql.PLSQLLexer;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class Main {
@@ -67,11 +71,19 @@ public class Main {
 		}
 		
 		ParseResult parseResult = readInputSql(options);
+		List<Token> comments = new ArrayList<Token>();
+		for (Token token: parseResult.tokens) {
+			if (token.getType() == PLSQLLexer.COMMENT) {
+				comments.add(token);
+			}
+		}
 		
-		org.antlr.runtime.tree.Tree tree = parseResult.tree;
+		_baseNode ast = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, parseResult.tree);
+		
+		attachComments(ast, comments, parseResult.tokens);
 		
 		if (options.validateReparse) {
-			String errorMessage = validatePrintedTreeMatchesParsedTree(tree, options.validateReparseOutputAstPath, options.tree_type);
+			String errorMessage = validatePrintedTreeMatchesParsedTree(parseResult.tree, options.validateReparseOutputAstPath, options.tree_type);
 			
 			if (errorMessage != null) {
 				System.err.printf("Error comparing after print: %s\n", errorMessage);
@@ -82,21 +94,21 @@ public class Main {
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
 			System.err.println("doing outer joins...");
-			OracleOuterJoinTransformer.transformAllQueries(tree);
+			OracleOuterJoinTransformer.transformAllQueries(ast);
 			System.err.println("doing packages...");
-			PackageConversionTransformer.transformAllPackages(tree);
+			PackageConversionTransformer.transformAllPackages(ast);
 			System.err.println("doing datatypes...");
-			DatatypeConversionTransformer.transformAll(tree);
+			DatatypeConversionTransformer.transformAll(ast);
 			System.err.println("doing procedure to function...");
-			ProcedureToFunctionConversionTransformer.transformAll(tree);
+			ProcedureToFunctionConversionTransformer.transformAll(ast);
 			System.err.println("doing perform...");
-			ProcedurePerformConversionTransformer.transformAll(tree);
-			_baseNode typedAst = (_baseNode)ReflectionUtil.callStaticMethod(parser.class, "parse" + options.tree_type, tree);
-			IntoStrictConversionTransformer.transformAll(typedAst);
-			CustomTypesConversionTransformer.transformAll(typedAst);
+			ProcedurePerformConversionTransformer.transformAll(ast);
+			IntoStrictConversionTransformer.transformAll(ast);
+			CustomTypesConversionTransformer.transformAll(ast);
 			//NestedFunctionConversionTransformer.transformAll(typedAst);
-			tree = typedAst.unparse();
 		}
+		
+		Tree tree = ast.unparse();
 		
 		if (!options.splitOutput) {
 			List<Token> tokens = parseResult.tokens;
@@ -106,7 +118,7 @@ public class Main {
 				System.err.println("Parsed tree is not a SQL script");
 			}
 			
-			sql_script script = parser.parsesql_script(tree);
+			sql_script script = (sql_script)ast;
 			List<unit_statement> statements = new ArrayList<unit_statement>();
 			for (sql_script_item item: script.sql_script_items) {
 				if (item instanceof unit_statement) {
@@ -138,6 +150,66 @@ public class Main {
 				
 				writeOutputTree(options, newScript, parseResult.tokens, replacements);
 			}
+		}
+	}
+
+	private static void attachComments(_baseNode node, List<Token> comments, List<Token> allTokens) {
+		List<_baseNode> allNodes = AstUtil.getDescendantsOfType(node, _baseNode.class);
+		List<_baseNode> attachableNodes = new ArrayList<_baseNode>();
+		for (_baseNode n: allNodes) {
+			if (n instanceof id/* || n instanceof constant*/) {
+				attachableNodes.add(n);
+			}
+		}
+		Collections.sort(attachableNodes, new Comparator<_baseNode>() {
+			@Override
+			public int compare(_baseNode arg0, _baseNode arg1) {
+				if (arg0._getLine() != arg1._getLine()) {
+					return arg0._getLine() - arg1._getLine();
+				}
+				return arg0._getCol() - arg1._getCol();
+			}
+		});
+		
+		int i = 0, j = 0;
+		while (i < attachableNodes.size() && j < comments.size()) {
+			Token comment = comments.get(j);
+			_baseNode c1 = (i < attachableNodes.size()) ? attachableNodes.get(i) : null;
+			_baseNode c2 = (i + 1 < attachableNodes.size()) ? attachableNodes.get(i + 1) : null;
+			if (c1 == null) {
+				// bad luck
+			} else if (c2 == null) {
+				doAttach(c1, comment);
+				++j;
+			} else if (c2._getLine() < comment.getLine()
+					|| (c2._getLine() == comment.getLine() && c2._getCol() < comment.getCharPositionInLine())) {
+				++i;
+			} else {
+				// now: comment is between c1 and c2
+				int l1 = Math.abs(c1._getLine() - comment.getLine());
+				int l2 = Math.abs(c2._getLine() - comment.getLine());
+				int d1 = Math.abs(c1._getCol() - comment.getCharPositionInLine());
+				int d2 = Math.abs(c2._getCol() - comment.getCharPositionInLine());
+				//System.out.printf("cmt@%d, c1@%d, c2@%d, l1=%d, l2=%d, d1=%d, d2=%d\n", comment.getLine(), c1._getLine(), c2._getLine(), l1, l2, d1, d2);
+				if (l1 < l2) {
+					doAttach(c1, comment);
+					++j;
+				} else {
+					doAttach(c2, comment);
+					++j;
+				}
+			}
+		}
+	}
+	private static void doAttach(_baseNode node, Token c) {
+		if (node.getAttachedComments() == null) {
+			node.setComments(new AttachedComments());
+		}
+		boolean isBefore = c.getLine() < node._getLine() || (c.getLine() == node._getLine() && c.getCharPositionInLine() < node._getCol());
+		if (isBefore) {
+			node.getAttachedComments().before.add(c);
+		} else {
+			node.getAttachedComments().after.add(c);
 		}
 	}
 

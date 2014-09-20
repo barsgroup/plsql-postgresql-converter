@@ -21,9 +21,9 @@ public class OracleOuterJoinTransformer {
 	
 	public static boolean isDebugEnabled = true;
 	
-	public static void transformAllQueries(Tree tree) throws Exception {
-		List<Tree> queryBlocks = findQueryBlocks(tree);
-		for (Tree queryBlock: queryBlocks) {
+	public static void transformAllQueries(_baseNode tree) throws Exception {
+		List<query_block> queryBlocks = AstUtil.getDescendantsOfType(tree, query_block.class);
+		for (query_block queryBlock: queryBlocks) {
 			try {
 				transformQueryBlock(queryBlock);
 			} catch (Exception ex) {
@@ -31,37 +31,17 @@ public class OracleOuterJoinTransformer {
 			}
 		}
 	}
-	
-	private static List<Tree> findQueryBlocks(Tree tree) {
-		List<Tree> result = new ArrayList<Tree>();
-		findQueryBlocks(tree, result);
-		return result;
-	}
 
-	private static void findQueryBlocks(Tree tree, List<Tree> result) {
-		if (tree.getType() == PLSQLParser.SQL92_RESERVED_SELECT) {
-			result.add(tree);
-		}
-		for (int i = 0; i < tree.getChildCount(); ++i) {
-			findQueryBlocks(tree.getChild(i), result);
-		}
-	}
-
-	public static void transformQueryBlock(Tree queryBlockNode) throws Exception {
+	public static void transformQueryBlock(query_block queryBlockNode) throws Exception {
 		OracleOuterJoinTransformer transformer = new OracleOuterJoinTransformer(queryBlockNode);
 		transformer.transform();
 	}
 	
 
 	query_block query;
-	Tree queryBlockNode;
 	
-	private OracleOuterJoinTransformer(Tree queryBlockNode) throws Exception {
-		if (queryBlockNode.getType() != PLSQLParser.SQL92_RESERVED_SELECT) {
-			throw new Exception("Wrong queryBlockNode.type");
-		}
-		this.queryBlockNode = queryBlockNode;
-		query = parser.parsequery_block(queryBlockNode);
+	private OracleOuterJoinTransformer(query_block queryBlockNode) throws Exception {
+		query = queryBlockNode;
 	}
 
 	private void transform() {
@@ -311,8 +291,6 @@ public class OracleOuterJoinTransformer {
 			}
 			query.from_clause.add_table_refs(tr);
 		}
-		
-		AstUtil.replaceNode(queryBlockNode, query.unparse());
 	}
 
 	private void addJoinNode(table_ref tableRefNode, OuterJoinNode source, OuterJoinNode target) {

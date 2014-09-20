@@ -11,30 +11,25 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class PackageConversionTransformer {
 	
-	public static void transformAllPackages(Tree tree) throws Exception {
-		List<Tree> packageNodes = AstUtil.getDescendantsOfType(tree, PLSQLParser.CREATE_PACKAGE_BODY);
-		for (Tree packageNode: packageNodes) {
+	public static void transformAllPackages(_baseNode tree) throws Exception {
+		List<create_package_body> packageNodes = AstUtil.getDescendantsOfType(tree, create_package_body.class);
+		for (create_package_body packageNode: packageNodes) {
 			transformPackage(packageNode);
 		}
 	}
 
-	public static void transformPackage(Tree packageNode) throws Exception {
+	public static void transformPackage(create_package_body packageNode) throws Exception {
 		PackageConversionTransformer transformer = new PackageConversionTransformer(packageNode);
 		transformer.transform();
 	}
 	
-	Tree packageNode;
 	String packageName;
 	create_package_body body;
 	
-	List<Tree> packageContents = new ArrayList<Tree>();
+	List<sql_script_item> packageContents = new ArrayList<sql_script_item>();
 	
-	private PackageConversionTransformer(Tree packageNode) throws Exception {
-		if (packageNode.getType() != PLSQLParser.CREATE_PACKAGE_BODY) {
-			throw new Exception("Wrong packageNode.type");
-		}
-		this.packageNode = packageNode;
-		this.body = parser.parsecreate_package_body(this.packageNode);
+	private PackageConversionTransformer(create_package_body packageNode) throws Exception {
+		this.body = packageNode;
 	}
 
 	private void transform() throws Exception {
@@ -57,7 +52,12 @@ public class PackageConversionTransformer {
 			//procedure_spec, function_spec, variable_declaration, subtype_declaration, cursor_declaration, exception_declaration, record_declaration, table_declaration, create_procedure_body, create_function_body, create_type
 		}
 		
-		AstUtil.replaceNode(packageNode, packageContents);
+		sql_script script = (sql_script)body._getParent();
+		int idx = script.sql_script_items.indexOf(body);
+		script.remove_sql_script_items(idx);
+		for (int i = 0; i < packageContents.size(); ++i) {
+			script.insert_sql_script_items(idx + i, packageContents.get(i));
+		}
 	}
 
 	private void transformFunctionBody(create_function_body item) {
@@ -71,7 +71,7 @@ public class PackageConversionTransformer {
 		if (item.function_impl instanceof body_mode) {
 			((body_mode)item.function_impl).block.body.set_label_name(null);
 		}
-		packageContents.add(item.unparse());
+		packageContents.add(item);
 	}
 
 	private void transformProcedureBody(create_procedure_body item) {
@@ -85,7 +85,7 @@ public class PackageConversionTransformer {
 		if (item.create_procedure_body_impl instanceof body_mode) {
 			((body_mode)item.create_procedure_body_impl).block.body.set_label_name(null);
 		}
-		packageContents.add(item.unparse());
+		packageContents.add(item);
 	}
 
 	private void findPackageName() {

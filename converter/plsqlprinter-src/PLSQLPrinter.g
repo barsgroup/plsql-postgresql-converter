@@ -324,7 +324,7 @@ alter_function
     ;
 
 create_function_body
-    :    ^(CREATE_FUNCTION SQL92_RESERVED_CREATE? REPLACE_VK? ^(FUNCTION_NAME name+=ID+) ret=type_spec ^(PARAMETERS args+=parameter*)
+    :    ^(CREATE_FUNCTION SQL92_RESERVED_CREATE? REPLACE_VK? ^(FUNCTION_NAME name+=commented_id+) ret=type_spec ^(PARAMETERS args+=parameter*)
             ac+=invoker_rights_clause* ac+=parallel_enable_clause* ac+=result_cache_clause* DETERMINISTIC_VK* PIPELINED_VK?
             (    ^(USING_MODE AGGREGATE_VK? implementation_type_name)
     ->   template() "not implemented: create_function_body[USING_MODE]"
@@ -796,7 +796,7 @@ element_spec_options
     ->   template() "not implemented: element_spec_options"
     |    map_order_function_spec
     ->   template() "not implemented: element_spec_options"
-    |    ^(FIELD_SPEC id type_spec sqlj_object_type_attr?)
+    |    ^(FIELD_SPEC commented_id type_spec sqlj_object_type_attr?)
     ->   template() "not implemented: element_spec_options"
     ;
 
@@ -830,7 +830,7 @@ pragma_clause
     ;
 
 pragma_elements
-    :    id
+    :    commented_id
     ->   template() "not implemented: pragma_elements"
     |    SQL92_RESERVED_DEFAULT
     ->   template() "not implemented: pragma_elements"
@@ -935,12 +935,12 @@ view_type_constraints_clause_item
     ;
     
 view_type_constraint_item_inline
-    :   ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE id /* items+=inline_constraint_clause* */)
+    :   ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE id=commented_id /* items+=inline_constraint_clause* */)
         -> view_type_constraint_item_inline(id={$id.st}/*, items={$items}*/)
     ;
  /*   
 inline_constraint_clause
-    :   ^(INLINE_CONSTRAINT_CLAUSE id? inline_constraint_def items+=constraint_state_item*)
+    :   ^(INLINE_CONSTRAINT_CLAUSE id=commented_id? inline_constraint_def items+=constraint_state_item*)
         -> inline_constraint_clause(id={$id.st}, inline_constraint_def={$inline_constraint_def.st}, items={$items})
     ;
     
@@ -960,7 +960,7 @@ inline_constraint_unique: SQL92_RESERVED_UNIQUE -> inline_constraint_unique();
 inline_constraint_primary_key: PRIMARY_KEY -> inline_constraint_primary_key();
 
 references_clause
-    : ^(REFERENCES_CLAUSE tableview_name ids+=id+ references_on_delete_clause?)
+    : ^(REFERENCES_CLAUSE tableview_name ids+=commented_id+ references_on_delete_clause?)
       -> references_clause(name={$tableview_name.st}, columns={$ids}, on_delete_clause={$references_on_delete_clause.st})
     ;
 
@@ -1012,7 +1012,7 @@ exceptions_clause
     ;
     
 out_of_line_constraint_clause
-    : ^(OUT_OF_LINE_CONSTRAINT id? out_of_line_constraint_def items+=constraint_state_item*)
+    : ^(OUT_OF_LINE_CONSTRAINT id=commented_id? out_of_line_constraint_def items+=constraint_state_item*)
       -> out_of_line_constraint_clause(
           name={$id.st},out_of_line_constraint_def={$out_of_line_constraint_def.st}, items={$items})
     ;
@@ -1025,17 +1025,17 @@ out_of_line_constraint_def
     ;
     
 out_of_line_constraint_def_unique
-    : ^(SQL92_RESERVED_UNIQUE ids+=id+)
+    : ^(SQL92_RESERVED_UNIQUE ids+=commented_id+)
       -> out_of_line_constraint_def_unique(columns={$ids})
     ;
     
 out_of_line_constraint_def_primary_key
-    : ^(PRIMARY_KEY ids+=id+)
+    : ^(PRIMARY_KEY ids+=commented_id+)
       -> out_of_line_constraint_def_primary_key(columns={$ids})
     ;
 
 out_of_line_constraint_def_foreign_key
-    : ^(FOREIGN_KEY ids+=id+ references_clause)
+    : ^(FOREIGN_KEY ids+=commented_id+ references_clause)
       -> out_of_line_constraint_def_foreign_key(columns={$ids}, references_clause={$references_clause.st})
     ;*/
 
@@ -1050,7 +1050,7 @@ invoker_rights_clause
     ;
 
 compiler_parameters_clause
-    :    ^(COMPILER_PARAMETER ^(ASSIGN id expression))
+    :    ^(COMPILER_PARAMETER ^(ASSIGN id=commented_id expression))
     ->   template() "not implemented: compiler_parameters_clause"
     ;
 
@@ -1067,7 +1067,7 @@ java_spec
     ;
 
 c_spec
-    :    ^(C_VK CHAR_STRING? CONTEXT_VK? ^(LIBRARY_VK id) c_agent_in_clause? c_parameters_clause?)
+    :    ^(C_VK CHAR_STRING? CONTEXT_VK? ^(LIBRARY_VK commented_id) c_agent_in_clause? c_parameters_clause?)
     ->   template() "not implemented: c_spec"
     ;
 
@@ -1165,14 +1165,14 @@ pragma_declaration_impl
          |     AUTONOMOUS_TRANSACTION_VK -> pragma_declaration_impl_serially_autonomous_transaction()
          |    ^(EXCEPTION_INIT_VK exception_name constant)
          ->   pragma_declaration_impl_serially_exception_init(name={$exception_name.st}, numeric={$constant.st})
-         |    ^(INLINE_VK id expression)
+         |    ^(INLINE_VK id=commented_id expression)
          ->   pragma_declaration_impl_serially_inline(id={$id.st}, expression={$expression.st})
          |    ^(RESTRICT_REFERENCES_VK
                 (
                   SQL92_RESERVED_DEFAULT { firstSt = %string_literal(val={"default"}); }
-                  | firstId=id { firstSt = $firstId.st; }
+                  | firstId=commented_id { firstSt = $firstId.st; }
                 )
-                rest+=id+
+                rest+=commented_id+
               )
          ->   pragma_declaration_impl_serially_restrict_references(arg1={firstSt}, restArgs={$rest})
     ;
@@ -1801,8 +1801,8 @@ update_set_elements
     ->   update_set_element_column_expr(column_name={$column_name.st}, expression={$expression.st})
     |    ^(ASSIGN names+=column_name+ subquery)
     ->   update_set_element_columns_subquery(column_names={$names}, subquery={$subquery.st})
-    |    ^(VALUE_VK char_set_name? ID expression)
-    ->   update_set_element_column_value(column_name={$ID.text}, expression={$expression.st})
+    |    ^(VALUE_VK char_set_name? id=commented_id expression)
+    ->   update_set_element_column_value(column_name={$id.st}, expression={$expression.st})
     ;
 
 // $>
@@ -2506,7 +2506,7 @@ standard_function
           is_name={$NAME_VK != null}, is_evalname={$EVALNAME_VK != null}, expression={$expression.st},
           xml_attributes_clause={$xml_attributes_clause.st}, value_expressions={$value_exprs})
     |    ^(XMLPI_VK
-                (    NAME_VK char_set_name? ID
+                (    NAME_VK char_set_name? id=commented_id
                 |    EVALNAME_VK expression
                 )
                 expression?
@@ -2652,7 +2652,7 @@ xml_multiuse_expression_element
     ;
 
 xml_alias
-    :    ^(XML_ALIAS ID) -> xml_alias_id(id={$ID.text})
+    :    ^(XML_ALIAS id=commented_id) -> xml_alias_id(id={$id.st})
     |    ^(XML_ALIAS ^(EVALNAME_VK expression))
     ->   xml_alias_evalname(expression={$expression.st})
     ;
@@ -2701,10 +2701,10 @@ partition_extension_clause
     ;
 
 alias
-    :    ^(COLUMN_ALIAS char_set_name? ID)
-    ->   column_alias(name={$ID.text})
-    |    ^(TABLE_ALIAS char_set_name? ID)
-    ->   table_alias(name={$ID.text})
+    :    ^(COLUMN_ALIAS char_set_name? id=commented_id)
+    ->   column_alias(name={$id.st})
+    |    ^(TABLE_ALIAS char_set_name? id=commented_id)
+    ->   table_alias(name={$id.st})
     ;
 
 where_clause
@@ -2724,104 +2724,104 @@ into_clause
 // $<Common PL/SQL Named Elements
 
 xml_column_name
-    :    ^(XML_COLUMN_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(XML_COLUMN_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 cost_class_name
-    :    ^(COST_CLASS_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(COST_CLASS_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 attribute_name
-    :    ^(ATTRIBUTE_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(ATTRIBUTE_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 savepoint_name
-    :    ^(SAVEPOINT_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(SAVEPOINT_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 rollback_segment_name
-    :    ^(ROLLBACK_SEGMENT_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(ROLLBACK_SEGMENT_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 
 table_var_name
-    :    ^(TABLE_VAR_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(TABLE_VAR_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 schema_name
-    :    ^(SCHEMA_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(SCHEMA_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 routine_name
-    :    ^(ROUTINE_NAME char_set_name? ID+ link_name?)
+    :    ^(ROUTINE_NAME char_set_name? commented_id+ link_name?)
     ->   template() "not implemented: routine_name"
     ;
 
 package_name
-    :    ^(PACKAGE_NAME char_set_name? ids+=ID+)
+    :    ^(PACKAGE_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 implementation_type_name
-    :    ^(IMPLEMENTATION_TYPE_NAME char_set_name? ids+=ID+)
+    :    ^(IMPLEMENTATION_TYPE_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 parameter_name
-    :    ^(PARAMETER_NAME char_set_name? ID)
-    ->   string_literal(val={$ID.text})
+    :    ^(PARAMETER_NAME char_set_name? id=commented_id)
+    ->   string_literal(val={$id.st})
     ;
 
 reference_model_name
-    :    ^(REFERENCE_MODEL_NAME char_set_name? ID)
+    :    ^(REFERENCE_MODEL_NAME char_set_name? id=commented_id)
     ->   template() "not implemented: reference_model_name"
     ;
 
 main_model_name
-    :    ^(MAIN_MODEL_NAME char_set_name? ID)
+    :    ^(MAIN_MODEL_NAME char_set_name? id=commented_id)
     ->   template() "not implemented: main_model_name"
     ;
 
 query_name
-    :    ^(QUERY_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(QUERY_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 constraint_name
-    :    ^(CONSTRAINT_NAME char_set_name? ID+ link_name?)
+    :    ^(CONSTRAINT_NAME char_set_name? commented_id+ link_name?)
     ->   template() "not implemented: constraint_name"
     ;
 
 label_name
-    :    ^(LABEL_NAME ID) -> string_literal(val={$ID.text})
+    :    ^(LABEL_NAME id=commented_id) -> string_literal(val={$id.st})
     ;
 
 type_name
-    :    ^(TYPE_NAME ids+=ID+)
+    :    ^(TYPE_NAME ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 sequence_name
-    :    ^(SEQUENCE_NAME ID+)
+    :    ^(SEQUENCE_NAME commented_id+)
     ->   template() "not implemented: sequence_name"
     ;
 
 exception_name
-    :    ^(EXCEPTION_NAME char_set_name? ids+=ID+)
+    :    ^(EXCEPTION_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 function_name
-    :    ^(FUNCTION_NAME char_set_name? ids+=ID+)
+    :    ^(FUNCTION_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 procedure_name
-    :    ^(PROCEDURE_NAME char_set_name? ids+=ID+)
+    :    ^(PROCEDURE_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 trigger_name
-    :    ^(TRIGGER_NAME char_set_name? ids+=ID+)
+    :    ^(TRIGGER_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
     
@@ -2835,48 +2835,48 @@ hosted_variable_name
     ;
 
 variable_name
-    :    ^(VARIABLE_NAME char_set_name? ids+=ID+)
+    :    ^(VARIABLE_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 index_name
-    :    ^(INDEX_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(INDEX_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 cursor_name
-    :    ^(CURSOR_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(CURSOR_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 record_name
-    :    ^(RECORD_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(RECORD_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 collection_name
-    :    ^(COLLECTION_NAME char_set_name? ids+=ID+)
+    :    ^(COLLECTION_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 link_name
-    :    ^(LINK_NAME char_set_name? ID) -> string_literal(val={$ID.text})
+    :    ^(LINK_NAME char_set_name? id=commented_id) -> string_literal(val={$id.st})
     ;
 
 column_name
-    :    ^(COLUMN_NAME char_set_name? ids+=ID+)
+    :    ^(COLUMN_NAME char_set_name? ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 tableview_name
-    :    ^(TABLEVIEW_NAME char_set_name? ids+=ID+ link_name? partition_extension_clause?)
+    :    ^(TABLEVIEW_NAME char_set_name? ids+=commented_id+ link_name? partition_extension_clause?)
     ->   tableview_name(ids={$ids}, link_name={$link_name.st}, partition_extension_clause={$partition_extension_clause.st})
     ;
 
 view_name
-    :    ^(VIEW_NAME ids+=ID+)
+    :    ^(VIEW_NAME ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
 char_set_name
-    :    ^(CHAR_SET_NAME ids+=ID+)
+    :    ^(CHAR_SET_NAME ids+=commented_id+)
     ->   dotted_name(ids={$ids})
     ;
 
@@ -3014,7 +3014,7 @@ general_element
     ;
  
 general_element_id
-    : ^(ANY_ELEMENT ID) -> string_literal(val={$ID.text})
+    : ^(ANY_ELEMENT id=commented_id) -> string_literal(val={$id.st})
     ;
 
 // $>
@@ -3039,9 +3039,18 @@ constant
     
 // $>
 
-id
-    :    char_set_name? ID
-    ->   string_literal(val={$ID.text})
+id_with_charset
+    :    char_set_name? commented_id
+    ->   {$commented_id.st}
     ;
 
+commented_id
+    :   val=ID
+        ->  commented_id(val={$val.text}, cbefore={null}, cafter={null})
+    |   ^(val=ID ^(COMMENT cbefore=COMMENT cinside=COMMENT cafter=COMMENT))
+        ->  commented_id(
+              val={$val.text},
+              cbefore={"".equals($cbefore.text) ? null : $cbefore.text},
+              cafter={"".equals($cafter.text) ? null : $cafter.text})
+    ;
     

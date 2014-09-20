@@ -11,26 +11,25 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class ProcedureToFunctionConversionTransformer {
 	
-	public static void transformAll(Tree tree) throws Exception {
-		List<Tree> nodes = AstUtil.getDescendantsOfType(tree, PLSQLParser.CREATE_PROCEDURE);
-		for (Tree node: nodes) {
+	public static void transformAll(_baseNode tree) throws Exception {
+		List<create_procedure_body> nodes = AstUtil.getDescendantsOfType(tree, create_procedure_body.class);
+		for (create_procedure_body node: nodes) {
 			transform(node);
 		}
 	}
 
-	public static void transform(Tree node) throws Exception {
+	public static void transform(create_procedure_body node) throws Exception {
 		ProcedureToFunctionConversionTransformer transformer = new ProcedureToFunctionConversionTransformer(node);
 		transformer.transform();
 	}
 	
-	Tree node;
+	create_procedure_body proc;
 	
-	private ProcedureToFunctionConversionTransformer(Tree node) throws Exception {
-		this.node = node;
+	private ProcedureToFunctionConversionTransformer(create_procedure_body node) throws Exception {
+		this.proc = node;
 	}
 
 	private void transform() throws Exception {
-		create_procedure_body proc = parser.parsecreate_procedure_body(node);
 		type_spec returnTypeSpec = computeReturnTypeSpec(proc);
 		create_function_body func = parser.make_create_function_body(
 				AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_CREATE),
@@ -45,9 +44,7 @@ public class ProcedureToFunctionConversionTransformer {
 				null,
 				(function_impl)proc.create_procedure_body_impl);
 		
-		Tree replacement = func.unparse();
-		
-		AstUtil.replaceNode(node, replacement);
+		proc._getParent()._replace(proc, func);
 	}
 
 	private type_spec computeReturnTypeSpec(create_procedure_body proc) {

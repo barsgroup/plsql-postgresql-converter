@@ -9,29 +9,14 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class DatatypeConversionTransformer {
 	
-	public static void transformAll(Tree tree) throws Exception {
-		List<Tree> nodes = AstUtil.getDescendantsOfType(tree, PLSQLParser.NATIVE_DATATYPE);
-		for (Tree node: nodes) {
+	public static void transformAll(_baseNode tree) throws Exception {
+		List<native_datatype_spec> nodes = AstUtil.getDescendantsOfType(tree, native_datatype_spec.class);
+		for (native_datatype_spec node: nodes) {
 			transform(node);
 		}
 	}
 
-	public static void transform(Tree node) throws Exception {
-		DatatypeConversionTransformer transformer = new DatatypeConversionTransformer(node);
-		transformer.transform();
-	}
-	
-	Tree node;
-	
-	private DatatypeConversionTransformer(Tree node) throws Exception {
-		if (node.getType() != PLSQLParser.NATIVE_DATATYPE) {
-			throw new Exception("Wrong packageNode.type");
-		}
-		this.node = node;
-	}
-
-	private void transform() throws Exception {
-		native_datatype_spec typeSpec = parser.parsenative_datatype_spec(node);
+	public static void transform(native_datatype_spec typeSpec) throws Exception {
 		int nodeType = typeSpec.name.getType();
 		if (nodeType == PLSQLParser.NUMBER_VK) {
 			typeSpec.name = AstUtil.createAstNode(PLSQLParser.NUMERIC_VK);
@@ -40,6 +25,5 @@ public class DatatypeConversionTransformer {
 		} else {
 			return;
 		}
-		AstUtil.replaceNode(node, typeSpec.unparse());
 	}
 }

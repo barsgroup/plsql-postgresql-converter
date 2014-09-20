@@ -2,6 +2,38 @@
 @tokenVocab ru.barsopen.plsqlconverter.PLSQLPrinter
 @parserClass parser
 
+@baseNodeCode
+"void setComments(ru.barsopen.plsqlconverter.util.AttachedComments comments);
+ru.barsopen.plsqlconverter.util.AttachedComments getAttachedComments();
+void _setCol(int col);
+void _setLine(int line);
+"
+
+@nodeCode
+"ru.barsopen.plsqlconverter.util.AttachedComments _comments;
+public void setComments(ru.barsopen.plsqlconverter.util.AttachedComments comments) { this._comments = comments; }
+public ru.barsopen.plsqlconverter.util.AttachedComments getAttachedComments() { return this._comments; }
+public void _setCol(int col) { this._col = col; }
+public void _setLine(int line) { this._line = line; }"
+
+@unparserBeforeCode
+"
+if (_comments != null) {
+  org.antlr.runtime.tree.CommonTree commentsNode = new org.antlr.runtime.tree.CommonTree(
+    new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT));
+  org.antlr.runtime.tree.CommonTree commentsBeforeNode = new org.antlr.runtime.tree.CommonTree(
+    new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT, _comments.getBefore()));
+  org.antlr.runtime.tree.CommonTree commentsAfterNode = new org.antlr.runtime.tree.CommonTree(
+    new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT, _comments.getAfter()));
+  org.antlr.runtime.tree.CommonTree commentsInsideNode = new org.antlr.runtime.tree.CommonTree(
+    new org.antlr.runtime.CommonToken(ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT, _comments.getInside()));
+  commentsNode.addChild(commentsBeforeNode);
+  commentsNode.addChild(commentsInsideNode);
+  commentsNode.addChild(commentsAfterNode);
+  _result.addChild(commentsNode);
+}
+"
+
 compilation_unit: COMPILATION_UNIT unit_statement*;
 
 sql_script: SQL_SCRIPT sql_script_item+;

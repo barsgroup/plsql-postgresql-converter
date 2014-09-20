@@ -1004,3 +1004,7 @@ primary key (<columns; separator=", ">)
 out_of_line_constraint_def_foreign_key(columns, references_clause) ::= <<
 foreign key (<columns; separator=", ">) <references_clause>
 >>
+
+commented_id(val, cbefore, cafter) ::= <<
+<if (cbefore)><cbefore> <endif><val><if (cafter)> <cafter><endif>
+>>

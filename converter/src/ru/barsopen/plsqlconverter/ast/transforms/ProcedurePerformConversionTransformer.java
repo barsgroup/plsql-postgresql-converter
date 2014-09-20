@@ -9,18 +9,19 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class ProcedurePerformConversionTransformer {
 	
-	public static void transformAll(Tree tree) throws Exception {
-		List<Tree> nodes = AstUtil.getDescendantsOfType(tree, PLSQLParser.CASCATED_ELEMENT);
-		for (Tree node: nodes) {
-			if (node.getParent().getType() == PLSQLParser.STATEMENTS || node.getParent().getType() == PLSQLParser.LABEL_DECLARE) {
+	public static void transformAll(_baseNode tree) throws Exception {
+		List<general_element> nodes = AstUtil.getDescendantsOfType(tree, general_element.class);
+		for (general_element node: nodes) {
+			if (node._getParent() instanceof seq_of_statements
+				|| node._getParent() instanceof labeled_statement) {
 				transform(node);
 			}
 		}
 	}
 
-	public static void transform(Tree node) throws Exception {
-		general_element elt = parser.parsegeneral_element(node);
-		perform_statement statement = parser.make_perform_statement(elt);
-		AstUtil.replaceNode(node, statement.unparse());
+	public static void transform(general_element node) throws Exception {
+		_baseNode parent = node._getParent();
+		perform_statement statement = parser.make_perform_statement(node);
+		parent._replace(node, statement);
 	}
 }
