@@ -233,6 +233,10 @@ subquery_operation_part(operator, is_all, subquery_basic_elements) ::= <<
 <operator><if (is_all)> all<endif> <subquery_basic_elements>
 >>
 
+subquery_operation_part_union() ::= "union"
+subquery_operation_part_intersect() ::= "intersect"
+subquery_operation_part_minus() ::= "minus"
+
 in_parens(val) ::= "(<val>)"
 
 query_block(
@@ -254,9 +258,10 @@ all
 <if (into_clause)>
 
 <into_clause>
-<endif>
+<endif><if (from_clause)>
 
-<from_clause><if (where_clause)>
+<from_clause>
+<endif><if (where_clause)>
 
 <where_clause>
 <endif><if (hierarchical_query_clause)>
@@ -1008,3 +1013,37 @@ foreign key (<columns; separator=", ">) <references_clause>
 commented_id(val, cbefore, cafter) ::= <<
 <if (cbefore)><cbefore> <endif><val><if (cafter)> <cafter><endif>
 >>
+
+native_datatype_unsupported() ::= "Unsupported datatype"
+native_datatype_bfile() ::= "bfile"
+native_datatype_binary_float() ::= "binary_float"
+native_datatype_binary_integer() ::= "binary_integer"
+native_datatype_blob() ::= "blob"
+native_datatype_boolean() ::= "boolean"
+native_datatype_character() ::= "character"
+native_datatype_char() ::= "char"
+native_datatype_clob() ::= "clob"
+native_datatype_date() ::= "date"
+native_datatype_decimal() ::= "decimal"
+native_datatype_dec() ::= "dec"
+native_datatype_double() ::= "double"
+native_datatype_float() ::= "float"
+native_datatype_integer() ::= "integer"
+native_datatype_int() ::= "int"
+native_datatype_long() ::= "long"
+native_datatype_long_raw() ::= "long raw"
+native_datatype_nchar() ::= "nchar"
+native_datatype_nclob() ::= "nclob"
+native_datatype_number() ::= "number"
+native_datatype_numeric() ::= "numeric"
+native_datatype_nvarchar2() ::= "nvarchar2"
+native_datatype_pls_integer() ::= "pls_integer"
+native_datatype_raw() ::= "raw"
+native_datatype_rowid() ::= "rowid"
+native_datatype_smallint() ::= "smallint"
+native_datatype_timestamp() ::= "timestamp"
+native_datatype_urowid() ::= "urowid"
+native_datatype_varchar2() ::= "varchar2"
+native_datatype_varchar() ::= "varchar"
+native_datatype_text() ::= "text"
+native_datatype_interval() ::= "interval"

@@ -45,6 +45,9 @@ public class OracleOuterJoinTransformer {
 	}
 
 	private void transform() {
+		if (query.from_clause == null) {
+			return;
+		}
 		findTableRefs();
 		findOuterJoinSigns();
 		if (outerJoinExpressions.size() == 0) {

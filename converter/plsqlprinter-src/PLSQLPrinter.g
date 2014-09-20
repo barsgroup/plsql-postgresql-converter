@@ -15,6 +15,9 @@ tokens {
     PGSQL_PERFORM;
     PGSQL_STRICT;
     PGSQL_TEXT;
+    PGSQL_TYPED_LITERAL;
+    PGSQL_NATIVE_DATATYPE_INTERVAL;
+    PGSQL_EXCEPT;
 }
 
 
@@ -88,7 +91,7 @@ tokens {
   1 OUTER_JOIN_SIGN
   0 HOSTED_VARIABLE_NAME  UNSIGNED_INTEGER CONSTANT_NEGATED EXACT_NUM_LIT APPROXIMATE_NUM_LIT CHAR_STRING SQL92_RESERVED_NULL
         SQL92_RESERVED_TRUE SQL92_RESERVED_FALSE  DBTIMEZONE_VK  SESSIONTIMEZONE_VK  MINVALUE_VK  MAXVALUE_VK  SQL92_RESERVED_DEFAULT
-        STANDARD_FUNCTION CASCATED_ELEMENT
+        STANDARD_FUNCTION CASCATED_ELEMENT PGSQL_TYPED_LITERAL
   */
   
   static java.util.Map<Integer, Integer> unaryPriorityMap = new java.util.HashMap<Integer, Integer>();
@@ -112,6 +115,7 @@ tokens {
     priorityMap.put(PLSQLPrinter.SQL92_RESERVED_DEFAULT, priority);
     priorityMap.put(PLSQLPrinter.STANDARD_FUNCTION, priority);
     priorityMap.put(PLSQLPrinter.CASCATED_ELEMENT, priority);
+    priorityMap.put(PLSQLPrinter.PGSQL_TYPED_LITERAL, priority);
     // 1
     ++priority;
     priorityMap.put(PLSQLPrinter.OUTER_JOIN_SIGN, priority);;
@@ -1408,9 +1412,10 @@ block
 // $>
 
 perform_statement
-    :   ^(PGSQL_PERFORM (inner=general_element|inner=data_manipulation_language_statements))
-    ->  perform_statement(inner={$inner.st});
-
+    :   ^(PGSQL_PERFORM inner=expression)
+    ->  perform_statement_expr(inner={$inner.st})
+    |   ^(PGSQL_PERFORM inner=data_manipulation_language_statements)
+    ->  perform_statement_sql(inner={$inner.st});
 
 // $<SQL PL/SQL Statements
 
@@ -1480,12 +1485,12 @@ subquery
     ;
 
 subquery_operation_part
-@init { String op = null; }
+@init { StringTemplate op = null; }
     :    ^(
             (
-              SQL92_RESERVED_UNION { op = "union"; }
-              |SQL92_RESERVED_INTERSECT { op = "intersect"; }
-              |PLSQL_RESERVED_MINUS { op = "minus"; }
+              SQL92_RESERVED_UNION { op = %subquery_operation_part_union(); }
+              |SQL92_RESERVED_INTERSECT { op = %subquery_operation_part_intersect(); }
+              |PLSQL_RESERVED_MINUS { op = %subquery_operation_part_minus(); }
             )
             SQL92_RESERVED_ALL? subquery_basic_elements
           )
@@ -1500,7 +1505,7 @@ subquery_basic_elements
 
 query_block
     :    ^(SQL92_RESERVED_SELECT 
-            from_clause 
+            from_clause? 
             (SQL92_RESERVED_DISTINCT|SQL92_RESERVED_UNIQUE|SQL92_RESERVED_ALL)? 
             (    ASTERISK
             |    ^(SELECT_LIST selected+=selected_element+)
@@ -2928,67 +2933,68 @@ type_precision
     ;
 
 native_datatype_spec
-@init { String typeBaseName = null; }
+@init { StringTemplate typeBaseName = null; }
     :    ^(NATIVE_DATATYPE
-    (    BFILE_VK { typeBaseName = "bfile"; }
-    |    BINARY_FLOAT_VK { typeBaseName = "binary_float"; }
-    |    BINARY_INTEGER_VK { typeBaseName = "binary_integer"; }
-    |    BLOB_VK { typeBaseName = "blob"; }
-    |    BOOLEAN_VK { typeBaseName = "boolean"; }
-    |    CHARACTER_VK  { typeBaseName = "character"; }
-    |    CHAR_VK { typeBaseName = "char"; }
-    |    CLOB_VK { typeBaseName = "clob"; }
-    |    SQL92_RESERVED_DATE { typeBaseName = "date"; }
+    (    BFILE_VK { typeBaseName = %native_datatype_bfile(); }
+    |    BINARY_FLOAT_VK { typeBaseName = %native_datatype_binary_float(); }
+    |    BINARY_INTEGER_VK { typeBaseName = %native_datatype_binary_integer(); }
+    |    BLOB_VK { typeBaseName = %native_datatype_blob(); }
+    |    BOOLEAN_VK { typeBaseName = %native_datatype_boolean(); }
+    |    CHARACTER_VK  { typeBaseName = %native_datatype_character(); }
+    |    CHAR_VK { typeBaseName = %native_datatype_char(); }
+    |    CLOB_VK { typeBaseName = %native_datatype_clob(); }
+    |    SQL92_RESERVED_DATE { typeBaseName = %native_datatype_date(); }
     |    DAY_VK
-    |    DECIMAL_VK  { typeBaseName = "decimal"; }
-    |    DEC_VK { typeBaseName = "dec"; }
-    |    DOUBLE_VK { typeBaseName = "double"; }
+    |    DECIMAL_VK  { typeBaseName = %native_datatype_decimal(); }
+    |    DEC_VK { typeBaseName = %native_datatype_dec(); }
+    |    DOUBLE_VK { typeBaseName = %native_datatype_double(); }
     |    DSINTERVAL_UNCONSTRAINED_VK
-    |    FLOAT_VK { typeBaseName = "float"; }
+    |    FLOAT_VK { typeBaseName = %native_datatype_float(); }
     |    HOUR_VK
-    |    INTEGER_VK { typeBaseName = "integer"; }
-    |    INT_VK { typeBaseName = "int"; }
-    |    LONG_VK { typeBaseName = "long"; }
-    |    LONG_RAW { typeBaseName = "long raw"; }
+    |    INTEGER_VK { typeBaseName = %native_datatype_integer(); }
+    |    INT_VK { typeBaseName = %native_datatype_int(); }
+    |    LONG_VK { typeBaseName = %native_datatype_long(); }
+    |    LONG_RAW { typeBaseName = %native_datatype_long_raw(); }
     |    MINUTE_VK
     |    MLSLABEL_VK
     |    MONTH_VK
     |    NATURALN_VK
     |    NATURAL_VK
-    |    NCHAR_VK { typeBaseName = "nchar"; }
-    |    NCLOB_VK { typeBaseName = "nclob"; }
-    |    NUMBER_VK { typeBaseName = "number"; }
-    |    NUMERIC_VK { typeBaseName = "numeric"; }
-    |    NVARCHAR2_VK { typeBaseName = "nvarchar2"; }
-    |    PLS_INTEGER_VK { typeBaseName = "pls_integer"; }
+    |    NCHAR_VK { typeBaseName = %native_datatype_nchar(); }
+    |    NCLOB_VK { typeBaseName = %native_datatype_nclob(); }
+    |    NUMBER_VK { typeBaseName = %native_datatype_number(); }
+    |    NUMERIC_VK { typeBaseName = %native_datatype_numeric(); }
+    |    NVARCHAR2_VK { typeBaseName = %native_datatype_nvarchar2(); }
+    |    PLS_INTEGER_VK { typeBaseName = %native_datatype_pls_integer(); }
     |    POSITIVEN_VK
     |    POSITIVE_VK
-    |    RAW_VK { typeBaseName = "raw"; }
+    |    RAW_VK { typeBaseName = %native_datatype_raw(); }
     |    REAL_VK
-    |    ROWID_VK { typeBaseName = "rowid"; }
+    |    ROWID_VK { typeBaseName = %native_datatype_rowid(); }
     |    SECOND_VK
     |    SIGNTYPE_VK
     |    SIMPLE_INTEGER_VK
-    |    SMALLINT_VK { typeBaseName = "smallint"; }
+    |    SMALLINT_VK { typeBaseName = %native_datatype_smallint(); }
     |    STRING_VK
     |    TIMESTAMP_LTZ_UNCONSTRAINED_VK
     |    TIMESTAMP_TZ_UNCONSTRAINED_VK
     |    TIMESTAMP_UNCONSTRAINED_VK
-    |    TIMESTAMP_VK { typeBaseName = "timestamp"; }
+    |    TIMESTAMP_VK { typeBaseName = %native_datatype_timestamp(); }
     |    TIMEZONE_ABBR_VK
     |    TIMEZONE_HOUR_VK
     |    TIMEZONE_MINUTE_VK
     |    TIMEZONE_REGION_VK
-    |    UROWID_VK { typeBaseName = "urowid"; }
-    |    VARCHAR2_VK { typeBaseName = "varchar2"; }
-    |    VARCHAR_VK { typeBaseName = "varchar"; }
+    |    UROWID_VK { typeBaseName = %native_datatype_urowid(); }
+    |    VARCHAR2_VK { typeBaseName = %native_datatype_varchar2(); }
+    |    VARCHAR_VK { typeBaseName = %native_datatype_varchar(); }
     |    YEAR_VK
     |    YMINTERVAL_UNCONSTRAINED_VK
-    |    PGSQL_TEXT { typeBaseName = "text"; })
+    |    PGSQL_TEXT { typeBaseName = %native_datatype_text(); }
+    |    PGSQL_NATIVE_DATATYPE_INTERVAL { typeBaseName = %native_datatype_interval(); })
     prec=type_precision?
     (is_tz=TIME_VK is_tz_local=LOCAL_VK?)?
     )
-    { if (typeBaseName == null) { typeBaseName = "Unsupported datatype"; } }
+    { if (typeBaseName == null) { typeBaseName = %native_datatype_unsupported(); } }
     -> base_type_spec(
   baseName={typeBaseName}, precision={$prec.st},
   is_with_time_zone={$is_tz != null}, is_time_zone_local={$is_tz_local != null}
@@ -3035,6 +3041,8 @@ constant
     |    MINVALUE_VK -> string_literal(val={"minvalue"})
     |    MAXVALUE_VK -> string_literal(val={"maxvalue"})
     |    SQL92_RESERVED_DEFAULT -> string_literal(val={"default"})
+    |    ^(PGSQL_TYPED_LITERAL type_spec CHAR_STRING)
+         -> pgsql_typed_literal(type={$type_spec.st}, string={$CHAR_STRING.text})
     ;
     
 // $>

@@ -881,9 +881,9 @@ block: BLOCK declare_spec* body;
 
 // $>
 
-perform_statement: PGSQL_PERFORM {inner}=general_element_or_dml_statement;
+perform_statement: PGSQL_PERFORM {inner}=expression_or_sql_statement;
 
-general_element_or_dml_statement => general_element data_manipulation_language_statements;
+expression_or_sql_statement => expression data_manipulation_language_statements;
 
 // $<SQL PL/SQL Statements
 
@@ -920,7 +920,7 @@ subquery_operation_minus: PLSQL_RESERVED_MINUS SQL92_RESERVED_ALL? subquery_basi
 subquery_basic_elements => query_block subquery;
 
 query_block: SQL92_RESERVED_SELECT 
-            from_clause 
+            from_clause? 
             SQL92_RESERVED_DISTINCT?
             SQL92_RESERVED_UNIQUE?
             SQL92_RESERVED_ALL? 
@@ -1817,7 +1817,8 @@ constant =>
   constant_sessiontimezone
   constant_minvalue
   constant_maxvalue
-  constant_default;
+  constant_default
+  constant_pgsql_typed_literal;
 
 constant_unsigned: UNSIGNED_INTEGER {value}=@tokenText;
 constant_negated: CONSTANT_NEGATED constant_unsigned;
@@ -1832,6 +1833,7 @@ constant_sessiontimezone: SESSIONTIMEZONE_VK;
 constant_minvalue: MINVALUE_VK;
 constant_maxvalue: MAXVALUE_VK;
 constant_default: SQL92_RESERVED_DEFAULT;
+constant_pgsql_typed_literal: PGSQL_TYPED_LITERAL type_spec constant_char_string;
     
 // $>
 

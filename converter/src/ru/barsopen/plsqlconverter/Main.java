@@ -29,6 +29,7 @@ import ru.barsopen.plsqlconverter.ast.transforms.AstXml;
 import ru.barsopen.plsqlconverter.ast.transforms.CustomTypesConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.DatatypeConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.IntoStrictConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.MiscConversionsTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.NestedFunctionConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.OracleOuterJoinTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.PackageConversionTransformer;
@@ -93,6 +94,8 @@ public class Main {
 		
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
+			System.err.println("doing misc conversion...");
+			MiscConversionsTransformer.transformAll(ast);
 			System.err.println("doing outer joins...");
 			OracleOuterJoinTransformer.transformAllQueries(ast);
 			System.err.println("doing packages...");

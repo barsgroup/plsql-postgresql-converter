@@ -21,7 +21,7 @@ public class ProcedurePerformConversionTransformer {
 
 	public static void transform(general_element node) throws Exception {
 		_baseNode parent = node._getParent();
-		perform_statement statement = parser.make_perform_statement(node);
+		perform_statement statement = parser.make_perform_statement(parser.make_general_expression(node));
 		parent._replace(node, statement);
 	}
 }

@@ -11,6 +11,14 @@ public class AttachedComments {
 	public List<Token> after = new ArrayList<Token>();
 	public List<Token> inside = new ArrayList<Token>();
 	
+	public void add(AttachedComments other) {
+		if (other != null) {
+			before.addAll(other.before);
+			inside.addAll(other.inside);
+			after.addAll(other.after);
+		}
+	}
+	
 	public String getBefore() {
 		StringBuilder sb = new StringBuilder();
 		
