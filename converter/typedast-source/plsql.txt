@@ -805,6 +805,7 @@ statement =>
     sql_statement
     perform_statement
     general_element
+    pgsql_raise_statement
     body
     block
     ;
@@ -895,6 +896,7 @@ execute_immediate: EXECUTE_VK expression into_clause? using_clause? dynamic_retu
 dynamic_returning_clause: DYNAMIC_RETURN into_clause;
 // $>
 
+pgsql_raise_statement: PGSQL_RAISE PGSQL_NOTICE {format}=constant_char_string expression*;
 
 // $<DML SQL PL/SQL Statements
 

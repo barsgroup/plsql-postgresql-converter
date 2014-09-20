@@ -18,6 +18,8 @@ tokens {
     PGSQL_TYPED_LITERAL;
     PGSQL_NATIVE_DATATYPE_INTERVAL;
     PGSQL_EXCEPT;
+    PGSQL_RAISE;
+    PGSQL_NOTICE;
 }
 
 
@@ -1284,6 +1286,7 @@ statement
     |    sql_statement -> { $sql_statement.st }
     |    perform_statement -> { $perform_statement.st }
     |    general_element -> { $general_element.st }
+    |    pgsql_raise_statement -> { $pgsql_raise_statement.st }
     |    body -> { $body.st }
     |    block -> { $block.st }
     ;
@@ -1445,6 +1448,10 @@ dynamic_returning_clause
     ;
 // $>
 
+pgsql_raise_statement
+    :   ^(PGSQL_RAISE PGSQL_NOTICE CHAR_STRING expr+=expression*)
+        -> pgsql_raise_statement(level={"notice"}, format={$CHAR_STRING.text}, expressions={$expr})
+    ;
 
 // $<DML SQL PL/SQL Statements
 

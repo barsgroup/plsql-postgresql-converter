@@ -78,3 +78,6 @@ native_datatype_binary_float() ::= "double precision"
 native_datatype_binary_integer() ::= "integer"
 native_datatype_pls_integer() ::= "integer"
 
+pgsql_raise_statement(level, format, expressions) ::= <<
+raise <level> <format><if (expressions)>, <expressions; separator=", "><endif>
+>>

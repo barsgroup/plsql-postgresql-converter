@@ -34,9 +34,8 @@ public class MiscConversionsTransformer {
 		replace_sequence_nextval(node);
 		
 		change_exception_names(node);
-
-		//# Raise information to the client
-		//$str =~ s/DBMS_OUTPUT\.(put_line|put|new_line)*\((.*?)\);/&raise_output($2)/igse;
+		
+		dbms_output_to_raise_notice(node);
 		
 		// # Replace raise_application_error by PG standard RAISE EXCEPTION
 		
@@ -201,5 +200,80 @@ public class MiscConversionsTransformer {
 				}
 			}
 		}
+	}
+
+	private static void dbms_output_to_raise_notice(_baseNode node) {
+		if (node instanceof general_element
+			&& (node._getParent() instanceof seq_of_statements
+				|| node._getParent() instanceof labeled_statement)) {
+			general_element ge = (general_element)node;
+			if (ge.general_element_items.size() == 3
+				&& ge.general_element_items.get(1) instanceof general_element_id
+				&& ge.general_element_items.get(2) instanceof function_argument) {
+				id id1 = ((general_element_id)ge.general_element_items.get(0)).id;
+				id id2 = ((general_element_id)ge.general_element_items.get(1)).id;
+				function_argument arg = (function_argument)ge.general_element_items.get(2);
+				_baseNode parent = node._getParent();
+				if (AstUtil.normalizeId(id1.value).equals("DBMS_OUTPUT")) {
+					pgsql_raise_statement new_statement = parser.make_pgsql_raise_statement(
+						AstUtil.createAstNode(PLSQLPrinter.PGSQL_NOTICE),
+						null,
+						null);
+					if (arg.arguments.size() == 0) {
+						// This is DBMS_OUTPUT.NEW_LINE
+						new_statement.set_format(parser.make_constant_char_string("''"));
+					} else {
+						// This is DBMS_OUTPUT.PUT or DBMS_OUTPUT.PUT_LINE, it has one argument
+						// '%' is a format string for one argument
+						new_statement.set_format(parser.make_constant_char_string("'%'"));
+						expression lineExpr = arg.arguments.get(0).expression;
+						new_statement.add_expressions(lineExpr);
+					}
+					// Костыль: приаттачим комменты к ближайшему id
+					if (id1.getAttachedComments() != null || id2.getAttachedComments() != null) {
+						_baseNode n = node;
+						while (n != null) {
+							List<id> ids = AstUtil.getDescendantsOfType(n, id.class);
+							if (ids.size() > 2) {
+								// if we have some other IDs (other than id1 and id2)
+								int idx1 = ids.indexOf(id1), idx2 = ids.indexOf(id2);
+								if (idx1 == -1 || idx2 == -1) {
+									// This should not happen
+									break;
+								}
+								int idx = Math.min(idx1, idx2) - 1;
+								while (idx == -1 || idx == idx1 || idx == idx2) {
+									++idx;
+								}
+								if (idx >= ids.size()) {
+									// This should not happen
+									break;
+								}
+								id comments_receiver = ids.get(idx);
+								if (comments_receiver.getAttachedComments() == null) {
+									comments_receiver.setComments(new AttachedComments());
+								}
+								if (id1.getAttachedComments() != null) {
+									comments_receiver.getAttachedComments().after.addAll(id1.getAttachedComments().before);
+									comments_receiver.getAttachedComments().after.addAll(id1.getAttachedComments().after);
+								}
+								if (id2.getAttachedComments() != null) {
+									comments_receiver.getAttachedComments().after.addAll(id2.getAttachedComments().before);
+									comments_receiver.getAttachedComments().after.addAll(id2.getAttachedComments().after);
+								}
+								break;
+							} else {
+								n = n._getParent();
+							}
+						}
+					}
+					parent._replace(node, new_statement);
+				}
+			}
+		}
+			
+
+		//# Raise information to the client
+		//$str =~ s/DBMS_OUTPUT\.(put_line|put|new_line)*\((.*?)\);/&raise_output($2)/igse;
 	}
 }
