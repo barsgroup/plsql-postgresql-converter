@@ -37,20 +37,7 @@ import ru.barsopen.plsqlconverter.ast.transforms.ParseResult;
 import ru.barsopen.plsqlconverter.ast.transforms.PrintResult;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedurePerformConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.ProcedureToFunctionConversionTransformer;
-import ru.barsopen.plsqlconverter.ast.typed._baseNode;
-import ru.barsopen.plsqlconverter.ast.typed.constant;
-import ru.barsopen.plsqlconverter.ast.typed.create_function_body;
-import ru.barsopen.plsqlconverter.ast.typed.create_package_body;
-import ru.barsopen.plsqlconverter.ast.typed.create_package_spec;
-import ru.barsopen.plsqlconverter.ast.typed.create_procedure_body;
-import ru.barsopen.plsqlconverter.ast.typed.create_sequence;
-import ru.barsopen.plsqlconverter.ast.typed.create_trigger;
-import ru.barsopen.plsqlconverter.ast.typed.create_type;
-import ru.barsopen.plsqlconverter.ast.typed.id;
-import ru.barsopen.plsqlconverter.ast.typed.parser;
-import ru.barsopen.plsqlconverter.ast.typed.sql_script;
-import ru.barsopen.plsqlconverter.ast.typed.sql_script_item;
-import ru.barsopen.plsqlconverter.ast.typed.unit_statement;
+import ru.barsopen.plsqlconverter.ast.typed.*;
 import ru.barsopen.plsqlconverter.util.AttachedComments;
 import ru.barsopen.plsqlconverter.util.ReflectionUtil;
 import ru.barsopen.plsqlconverter.util.TokenCounter;
@@ -191,9 +178,6 @@ public class Main {
 				// now: comment is between c1 and c2
 				int l1 = Math.abs(c1._getLine() - comment.getLine());
 				int l2 = Math.abs(c2._getLine() - comment.getLine());
-				int d1 = Math.abs(c1._getCol() - comment.getCharPositionInLine());
-				int d2 = Math.abs(c2._getCol() - comment.getCharPositionInLine());
-				//System.out.printf("cmt@%d, c1@%d, c2@%d, l1=%d, l2=%d, d1=%d, d2=%d\n", comment.getLine(), c1._getLine(), c2._getLine(), l1, l2, d1, d2);
 				if (l1 < l2) {
 					doAttach(c1, comment);
 					++j;

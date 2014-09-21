@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.Tree;
 
 public class AttachedComments {
 	public List<Token> before = new ArrayList<Token>();

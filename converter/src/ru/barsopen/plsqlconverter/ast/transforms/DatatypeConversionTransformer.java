@@ -2,8 +2,6 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.List;
 
-import org.antlr.runtime.tree.Tree;
-
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 

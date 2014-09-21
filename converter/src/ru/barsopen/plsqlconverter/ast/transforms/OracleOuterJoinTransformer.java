@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.antlr.runtime.tree.Tree;
-
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 

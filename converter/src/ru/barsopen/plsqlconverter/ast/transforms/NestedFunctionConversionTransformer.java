@@ -2,13 +2,10 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import ru.barsopen.plsqlconverter.PLSQLPrinter;
 import ru.barsopen.plsqlconverter.ast.typed.*;
 
 public class NestedFunctionConversionTransformer {

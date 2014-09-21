@@ -11,8 +11,6 @@ import org.antlr.runtime.tree.Tree;
 import ru.barsopen.plsqlconverter.PLSQLPrinter;
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import ru.barsopen.plsqlconverter.util.AttachedComments;
-import antlr.MakeGrammar;
-import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class MiscConversionsTransformer {
 	
@@ -209,6 +207,11 @@ public class MiscConversionsTransformer {
 	}
 
 	private static void dbms_output_to_raise_notice(_baseNode node) {
+		//# Raise information to the client
+		// DBMS_OUTPUT.NEW_LINE() => raise notice ''
+		// DBMS_OUTPUT.PUT_LINE(<expr>)
+		// or DBMS_OUTPUT.PUT(<expr>) => raise notice '%', <expr>
+		//$str =~ s/DBMS_OUTPUT\.(put_line|put|new_line)*\((.*?)\);/&raise_output($2)/igse;
 		if (node instanceof general_element
 			&& (node._getParent() instanceof seq_of_statements
 				|| node._getParent() instanceof labeled_statement)) {
@@ -217,7 +220,6 @@ public class MiscConversionsTransformer {
 				&& ge.general_element_items.get(1) instanceof general_element_id
 				&& ge.general_element_items.get(2) instanceof function_argument) {
 				id id1 = ((general_element_id)ge.general_element_items.get(0)).id;
-				id id2 = ((general_element_id)ge.general_element_items.get(1)).id;
 				function_argument arg = (function_argument)ge.general_element_items.get(2);
 				_baseNode parent = node._getParent();
 				if (AstUtil.normalizeId(id1.value).equals("DBMS_OUTPUT")) {
@@ -241,10 +243,6 @@ public class MiscConversionsTransformer {
 				}
 			}
 		}
-			
-
-		//# Raise information to the client
-		//$str =~ s/DBMS_OUTPUT\.(put_line|put|new_line)*\((.*?)\);/&raise_output($2)/igse;
 	}
 
 	private static void reattachCommentsFromDeletedNodes(_baseNode new_node, _baseNode old_node) {
