@@ -94,3 +94,11 @@ pgsql_raise_using_option_name_errcode() ::= "errcode"
 
 pgsql_raise_level_notice() ::= "notice"
 pgsql_raise_level_exception() ::= "exception"
+
+cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
+<cursor_name> cursor<if (parameters)>(<parameters; separator=", ">)<endif>
+<if (type_spec)> return <type_spec><endif>
+<if (select_statement)> for
+  <select_statement>
+<endif>;
+>>
