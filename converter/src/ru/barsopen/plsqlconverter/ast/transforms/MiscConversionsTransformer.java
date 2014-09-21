@@ -44,6 +44,7 @@ public class MiscConversionsTransformer {
 		
 		add_months(node);
 		
+		add_years(node);
 	}
 
 	private static void replace_sysdate_with_current_timestamp(_baseNode node) {
@@ -360,6 +361,7 @@ public class MiscConversionsTransformer {
 	}
 
 	private static void add_months(_baseNode node) {
+		// Convert the call to the Oracle function add_months() into Pg syntax
 		if (node instanceof general_element) {
 			general_element ge = (general_element)node;
 			if (ge.general_element_items.size () == 2
@@ -377,6 +379,49 @@ public class MiscConversionsTransformer {
 							null, null, null
 						),
 						parser.make_constant_char_string("'1 month'")
+					);
+					
+					expression_element new_expr = parser.make_expression_element_plus(
+						parser.make_expression_element_standard_fn(
+							parser.make_standard_function_cast(
+								parser.make_general_expression(date_expr),
+								parser.make_native_datatype_spec(
+									AstUtil.createAstNode(PLSQLPrinter.TIMESTAMP_VK),
+									null, null, null
+								)
+							)
+						),
+						parser.make_expression_element_asterisk(
+							months_expr,
+							interval_expr_1month
+						)
+					);
+					node._getParent()._replace(node, new_expr);
+					reattachCommentsFromDeletedNodes(new_expr, node);
+				}
+			}
+		}
+	}
+
+	private static void add_years(_baseNode node) {
+		// Convert the call to the Oracle function add_years() into Pg syntax
+		if (node instanceof general_element) {
+			general_element ge = (general_element)node;
+			if (ge.general_element_items.size () == 2
+				&& ge.general_element_items.get(1) instanceof function_argument) {
+				general_element_id id1 = (general_element_id)ge.general_element_items.get(0);
+				function_argument arg = (function_argument)ge.general_element_items.get(1);
+				if (AstUtil.normalizeId(id1.id.value).equals("ADD_YEARS")
+					&& arg.arguments.size() == 2) {
+					expression_element date_expr = ((general_expression)arg.arguments.get(0).expression).expression_element;
+					expression_element months_expr = ((general_expression)arg.arguments.get(1).expression).expression_element;
+
+					expression_element interval_expr_1month = parser.make_constant_pgsql_typed_literal(
+						parser.make_native_datatype_spec(
+							AstUtil.createAstNode(PLSQLPrinter.PGSQL_NATIVE_DATATYPE_INTERVAL),
+							null, null, null
+						),
+						parser.make_constant_char_string("'1 year'")
 					);
 					
 					expression_element new_expr = parser.make_expression_element_plus(
