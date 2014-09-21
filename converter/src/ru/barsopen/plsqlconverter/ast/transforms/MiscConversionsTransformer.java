@@ -11,6 +11,7 @@ import org.antlr.runtime.tree.Tree;
 import ru.barsopen.plsqlconverter.PLSQLPrinter;
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import ru.barsopen.plsqlconverter.util.AttachedComments;
+import antlr.MakeGrammar;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class MiscConversionsTransformer {
@@ -41,7 +42,7 @@ public class MiscConversionsTransformer {
 		
 		raise_application_error_to_raise_exception(node);
 		
-		// # Replace raise_application_error by PG standard RAISE EXCEPTION
+		add_months(node);
 		
 	}
 
@@ -274,11 +275,18 @@ public class MiscConversionsTransformer {
 		_baseNode n = new_node;
 		while (n != null) {
 			List<_baseNode> nodes = getDescendantIdsOrNode(n, new_node);
-			int idx = nodes.indexOf(new_node);
-			while (idx == -1 || !(nodes.get(idx) instanceof id)) {
+			int idx_start = nodes.indexOf(new_node);
+			int idx = idx_start;
+			while (idx < nodes.size() && (idx == -1 || !(nodes.get(idx) instanceof id))) {
 				idx++;
 			}
-			if (idx == -1) {
+			if (idx == -1 || idx == nodes.size()) {
+				idx = idx_start;
+				while (idx >= 0 && !(nodes.get(idx) instanceof id)) {
+					idx--;
+				}
+			}
+			if (idx == -1 || idx == nodes.size()) {
 				n = n._getParent();
 			} else {
 				id comments_receiver = (id)nodes.get(idx);
@@ -348,6 +356,48 @@ public class MiscConversionsTransformer {
 				}
 			}
 			
+		}
+	}
+
+	private static void add_months(_baseNode node) {
+		if (node instanceof general_element) {
+			general_element ge = (general_element)node;
+			if (ge.general_element_items.size () == 2
+				&& ge.general_element_items.get(1) instanceof function_argument) {
+				general_element_id id1 = (general_element_id)ge.general_element_items.get(0);
+				function_argument arg = (function_argument)ge.general_element_items.get(1);
+				if (AstUtil.normalizeId(id1.id.value).equals("ADD_MONTHS")
+					&& arg.arguments.size() == 2) {
+					expression_element date_expr = ((general_expression)arg.arguments.get(0).expression).expression_element;
+					expression_element months_expr = ((general_expression)arg.arguments.get(1).expression).expression_element;
+
+					expression_element interval_expr_1month = parser.make_constant_pgsql_typed_literal(
+						parser.make_native_datatype_spec(
+							AstUtil.createAstNode(PLSQLPrinter.PGSQL_NATIVE_DATATYPE_INTERVAL),
+							null, null, null
+						),
+						parser.make_constant_char_string("'1 month'")
+					);
+					
+					expression_element new_expr = parser.make_expression_element_plus(
+						parser.make_expression_element_standard_fn(
+							parser.make_standard_function_cast(
+								parser.make_general_expression(date_expr),
+								parser.make_native_datatype_spec(
+									AstUtil.createAstNode(PLSQLPrinter.TIMESTAMP_VK),
+									null, null, null
+								)
+							)
+						),
+						parser.make_expression_element_asterisk(
+							months_expr,
+							interval_expr_1month
+						)
+					);
+					node._getParent()._replace(node, new_expr);
+					reattachCommentsFromDeletedNodes(new_expr, node);
+				}
+			}
 		}
 	}
 }
