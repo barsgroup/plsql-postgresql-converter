@@ -2,7 +2,9 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 
@@ -36,6 +38,8 @@ public class MiscConversionsTransformer {
 		change_exception_names(node);
 		
 		dbms_output_to_raise_notice(node);
+		
+		raise_application_error_to_raise_exception(node);
 		
 		// # Replace raise_application_error by PG standard RAISE EXCEPTION
 		
@@ -229,45 +233,8 @@ public class MiscConversionsTransformer {
 						expression lineExpr = arg.arguments.get(0).expression;
 						new_statement.add_expressions(lineExpr);
 					}
-					// Костыль: приаттачим комменты к ближайшему id
-					if (id1.getAttachedComments() != null || id2.getAttachedComments() != null) {
-						_baseNode n = node;
-						while (n != null) {
-							List<id> ids = AstUtil.getDescendantsOfType(n, id.class);
-							if (ids.size() > 2) {
-								// if we have some other IDs (other than id1 and id2)
-								int idx1 = ids.indexOf(id1), idx2 = ids.indexOf(id2);
-								if (idx1 == -1 || idx2 == -1) {
-									// This should not happen
-									break;
-								}
-								int idx = Math.min(idx1, idx2) - 1;
-								while (idx == -1 || idx == idx1 || idx == idx2) {
-									++idx;
-								}
-								if (idx >= ids.size()) {
-									// This should not happen
-									break;
-								}
-								id comments_receiver = ids.get(idx);
-								if (comments_receiver.getAttachedComments() == null) {
-									comments_receiver.setComments(new AttachedComments());
-								}
-								if (id1.getAttachedComments() != null) {
-									comments_receiver.getAttachedComments().after.addAll(id1.getAttachedComments().before);
-									comments_receiver.getAttachedComments().after.addAll(id1.getAttachedComments().after);
-								}
-								if (id2.getAttachedComments() != null) {
-									comments_receiver.getAttachedComments().after.addAll(id2.getAttachedComments().before);
-									comments_receiver.getAttachedComments().after.addAll(id2.getAttachedComments().after);
-								}
-								break;
-							} else {
-								n = n._getParent();
-							}
-						}
-					}
 					parent._replace(node, new_statement);
+					reattachCommentsFromDeletedNodes(new_statement, node);
 				}
 			}
 		}
@@ -275,5 +242,85 @@ public class MiscConversionsTransformer {
 
 		//# Raise information to the client
 		//$str =~ s/DBMS_OUTPUT\.(put_line|put|new_line)*\((.*?)\);/&raise_output($2)/igse;
+	}
+
+	private static void reattachCommentsFromDeletedNodes(_baseNode new_node, _baseNode old_node) {
+		List<id> old_ids = AstUtil.getDescendantsOfType(old_node, id.class);
+		Set<id> new_ids = new HashSet<id>(AstUtil.getDescendantsOfType(new_node, id.class));
+		List<id> deleted_ids = new ArrayList<id>();
+		for (id old_id: old_ids) {
+			if (!new_ids.contains(old_id)) {
+				deleted_ids.add(old_id);
+			}
+		}
+		reattachCommentsFromDeletedNodes(new_node, old_node, deleted_ids);
+	}
+
+	private static void reattachCommentsFromDeletedNodes(_baseNode new_node, _baseNode old_node, List<id> old_ids) {
+		if (old_ids == null) {
+			old_ids = AstUtil.getDescendantsOfType(old_node, id.class);
+		}
+		List<AttachedComments> comments = new ArrayList<AttachedComments>();
+		for (id old_id: old_ids) {
+			if (old_id.getAttachedComments() != null) {
+				comments.add(old_id.getAttachedComments());
+			}
+		}
+		if (comments.size() == 0) {
+			return;
+		}
+		// Костыль: приаттачим комменты к ближайшему id
+		_baseNode n = new_node;
+		while (n != null) {
+			List<_baseNode> nodes = getDescendantIdsOrNode(n, new_node);
+			int idx = nodes.indexOf(new_node);
+			while (idx == -1 || !(nodes.get(idx) instanceof id)) {
+				idx++;
+			}
+			if (idx == -1) {
+				n = n._getParent();
+			} else {
+				id comments_receiver = (id)nodes.get(idx);
+				if (comments_receiver.getAttachedComments() == null) {
+					comments_receiver.setComments(new AttachedComments());
+				}
+				for (AttachedComments comment: comments) {
+					comments_receiver.getAttachedComments().after.addAll(comment.before);
+					comments_receiver.getAttachedComments().after.addAll(comment.after);
+				}
+				break;
+			}
+		}
+	}
+
+	private static List<_baseNode> getDescendantIdsOrNode(_baseNode node,
+			final _baseNode new_node) {
+
+		final List<_baseNode> elts = new ArrayList<_baseNode>();
+		node._walk(new _visitor() {
+			public void visit(Tree nonNode) {
+			}
+			public void visit(_baseNode node) {
+				if (node == new_node || node instanceof id) {
+					elts.add(node);
+				}
+			}
+		});
+		return elts;
+	}
+
+	private static void raise_application_error_to_raise_exception(
+			_baseNode node) {
+		if (node instanceof general_element) {
+			general_element ge = (general_element)node;
+			if (ge.general_element_items.size() == 2
+				&& ge.general_element_items.get(1) instanceof function_argument
+				&& AstUtil.normalizeId(((general_element_id)ge.general_element_items.get(0)).id.value)
+				.equals("RAISE_APPLICATION_ERROR")
+			) {
+				function_argument args = (function_argument)ge.general_element_items.get(1);
+			}
+			
+		}
 	}
 }
