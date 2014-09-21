@@ -78,6 +78,19 @@ native_datatype_binary_float() ::= "double precision"
 native_datatype_binary_integer() ::= "integer"
 native_datatype_pls_integer() ::= "integer"
 
-pgsql_raise_statement(level, format, expressions) ::= <<
-raise <level> <format><if (expressions)>, <expressions; separator=", "><endif>
+pgsql_raise_statement(level, format, expressions, options) ::= <<
+raise <level> <format><if (expressions)>, <expressions; separator=", "><endif><if (options)> <options><endif>
 >>
+
+pgsql_raise_using_options(options) ::= <<
+using <options>
+>>
+    
+pgsql_raise_using_option(option_name, expression) ::= <<
+<option_name> <expression>
+>>
+
+pgsql_raise_using_option_name_errcode() ::= "errcode"
+
+pgsql_raise_level_notice() ::= "notice"
+pgsql_raise_level_exception() ::= "exception"

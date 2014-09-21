@@ -20,6 +20,10 @@ tokens {
     PGSQL_EXCEPT;
     PGSQL_RAISE;
     PGSQL_NOTICE;
+    PGSQL_EXCEPTION;
+    PGSQL_USING;
+    PGSQL_OPTION;
+    PGSQL_ERRCODE;
 }
 
 
@@ -1449,8 +1453,27 @@ dynamic_returning_clause
 // $>
 
 pgsql_raise_statement
-    :   ^(PGSQL_RAISE PGSQL_NOTICE CHAR_STRING expr+=expression*)
-        -> pgsql_raise_statement(level={"notice"}, format={$CHAR_STRING.text}, expressions={$expr})
+    :   ^(PGSQL_RAISE pgsql_raise_level CHAR_STRING expr+=expression* pgsql_raise_using_options?)
+        -> pgsql_raise_statement(level={$pgsql_raise_level.st}, format={$CHAR_STRING.text}, expressions={$expr}, options={$pgsql_raise_using_options.st})
+    ;
+
+pgsql_raise_using_options
+    :   ^(PGSQL_USING options+=pgsql_raise_using_option+)
+        -> pgsql_raise_using_options(options={$options})
+    ;
+    
+pgsql_raise_using_option
+    :   ^(PGSQL_OPTION pgsql_raise_using_option_name expression)
+        -> pgsql_raise_using_option(option_name={$pgsql_raise_using_option_name.st}, expression={$expression.st})
+    ;
+
+pgsql_raise_using_option_name
+    :   PGSQL_ERRCODE -> pgsql_raise_using_option_name_errcode()
+    ;
+
+pgsql_raise_level
+    :   PGSQL_NOTICE -> pgsql_raise_level_notice()
+        | PGSQL_EXCEPTION -> pgsql_raise_level_exception()
     ;
 
 // $<DML SQL PL/SQL Statements

@@ -220,7 +220,8 @@ public class MiscConversionsTransformer {
 				_baseNode parent = node._getParent();
 				if (AstUtil.normalizeId(id1.value).equals("DBMS_OUTPUT")) {
 					pgsql_raise_statement new_statement = parser.make_pgsql_raise_statement(
-						AstUtil.createAstNode(PLSQLPrinter.PGSQL_NOTICE),
+						parser.make_pgsql_raise_level_notice(),
+						null,
 						null,
 						null);
 					if (arg.arguments.size() == 0) {
@@ -311,6 +312,7 @@ public class MiscConversionsTransformer {
 
 	private static void raise_application_error_to_raise_exception(
 			_baseNode node) {
+		// # Replace raise_application_error by PG standard RAISE EXCEPTION
 		if (node instanceof general_element) {
 			general_element ge = (general_element)node;
 			if (ge.general_element_items.size() == 2
@@ -319,6 +321,31 @@ public class MiscConversionsTransformer {
 				.equals("RAISE_APPLICATION_ERROR")
 			) {
 				function_argument args = (function_argument)ge.general_element_items.get(1);
+				if (args.arguments.size() >= 2) {
+					general_expression errorCodeExpr = (general_expression)args.arguments.get(0).expression;
+					constant_unsigned errorCodeNode = (constant_unsigned)((expression_element_unary_minus)errorCodeExpr.expression_element).arg;
+					expression msgNode = args.arguments.get(1).expression;
+					int errorCode = -Integer.valueOf(errorCodeNode.value, 10);
+					// errorCode should be in -20000..-20999
+					String pgErrorCode = String.format("'AA%03d'", -errorCode - 20000);
+					pgsql_raise_statement new_statement = parser.make_pgsql_raise_statement(
+						parser.make_pgsql_raise_level_exception(),
+						parser.make_constant_char_string("'%s'"),
+						Arrays.asList(msgNode),
+						parser.make_pgsql_raise_using_options(
+							Arrays.asList(
+								parser.make_pgsql_raise_using_option(
+									parser.make_pgsql_raise_using_option_name_errcode(),
+									parser.make_general_expression(
+										parser.make_constant_char_string(pgErrorCode)
+									)
+								)
+							)
+						)
+					);
+					node._getParent()._replace(node, new_statement);
+					reattachCommentsFromDeletedNodes(new_statement, node);
+				}
 			}
 			
 		}

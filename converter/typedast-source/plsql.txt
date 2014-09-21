@@ -896,7 +896,19 @@ execute_immediate: EXECUTE_VK expression into_clause? using_clause? dynamic_retu
 dynamic_returning_clause: DYNAMIC_RETURN into_clause;
 // $>
 
-pgsql_raise_statement: PGSQL_RAISE PGSQL_NOTICE {format}=constant_char_string expression*;
+pgsql_raise_statement: PGSQL_RAISE pgsql_raise_level {format}=constant_char_string expression* {using}=pgsql_raise_using_options?;
+
+pgsql_raise_using_options: PGSQL_USING {[]options}=pgsql_raise_using_option+;
+    
+pgsql_raise_using_option: PGSQL_OPTION {name}=pgsql_raise_using_option_name expression;
+
+pgsql_raise_using_option_name => pgsql_raise_using_option_name_errcode;
+pgsql_raise_using_option_name_errcode: PGSQL_ERRCODE;
+
+pgsql_raise_level => pgsql_raise_level_notice pgsql_raise_level_exception;
+
+pgsql_raise_level_notice: PGSQL_NOTICE;
+pgsql_raise_level_exception: PGSQL_EXCEPTION;
 
 // $<DML SQL PL/SQL Statements
 
