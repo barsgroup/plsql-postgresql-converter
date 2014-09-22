@@ -15,13 +15,22 @@ import ru.barsopen.plsqlconverter.util.AttachedComments;
 public class MiscConversionsTransformer {
 	
 	public static void transformAll(_baseNode tree) throws Exception {
-		List<_baseNode> nodes = AstUtil.getDescendantsOfType(tree, _baseNode.class);
+		MiscConversionsTransformer transformer = new MiscConversionsTransformer();
+		transformer.doTransformAll(tree);
+	}
+	
+	_baseNode rootAst;
+
+	private void doTransformAll(_baseNode tree) throws Exception {
+		this.rootAst = tree;
+		List<_baseNode> nodes = AstUtil.getDescendantsOfType(rootAst, _baseNode.class);
 		for (_baseNode node: nodes) {
 			transform(node);
 		}
 	}
 
 	public static void transform(_baseNode node) throws Exception {
+		
 		change_nvl_to_coalesce(node);
 		
 		replace_sysdate_plus_number(node);

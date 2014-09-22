@@ -28,6 +28,7 @@ import ru.barsopen.plsqlconverter.ast.transforms.AstUtil;
 import ru.barsopen.plsqlconverter.ast.transforms.AstXml;
 import ru.barsopen.plsqlconverter.ast.transforms.CustomTypesConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.DatatypeConversionTransformer;
+import ru.barsopen.plsqlconverter.ast.transforms.FunctionNamedResultConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.IntoStrictConversionTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.MiscConversionsTransformer;
 import ru.barsopen.plsqlconverter.ast.transforms.NestedFunctionConversionTransformer;
@@ -81,6 +82,12 @@ public class Main {
 		
 		if (options.convert) {
 			OracleOuterJoinTransformer.isDebugEnabled = options.debug;
+			System.err.println("doing procedure to function...");
+			ProcedureToFunctionConversionTransformer.transformAll(ast);
+			System.err.println("doing named function result (forward)...");
+			FunctionNamedResultConversionTransformer.transformAllForward(ast);
+			System.err.println("doing nested functions...");
+			NestedFunctionConversionTransformer.transformAll(ast);
 			System.err.println("doing misc conversion...");
 			MiscConversionsTransformer.transformAll(ast);
 			System.err.println("doing outer joins...");
@@ -89,13 +96,10 @@ public class Main {
 			PackageConversionTransformer.transformAllPackages(ast);
 			System.err.println("doing datatypes...");
 			DatatypeConversionTransformer.transformAll(ast);
-			System.err.println("doing procedure to function...");
-			ProcedureToFunctionConversionTransformer.transformAll(ast);
 			System.err.println("doing perform...");
 			ProcedurePerformConversionTransformer.transformAll(ast);
 			IntoStrictConversionTransformer.transformAll(ast);
 			CustomTypesConversionTransformer.transformAll(ast);
-			//NestedFunctionConversionTransformer.transformAll(typedAst);
 		}
 		
 		Tree tree = ast.unparse();
