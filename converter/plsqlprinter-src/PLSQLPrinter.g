@@ -501,7 +501,7 @@ statement
     |    raise_statement -> { $raise_statement.st }
     |    return_statement -> { $return_statement.st }
     |    pipe_row_statement -> { $pipe_row_statement.st }
-    |    case_statement -> { $case_statement.st }
+    |    case_statement[true] -> { $case_statement.st }
     |    sql_statement -> { $sql_statement.st }
     |    perform_statement -> { $perform_statement.st }
     |    general_element -> { $general_element.st }
@@ -1566,7 +1566,7 @@ expression_element returns [int priority]
           }
     ->   expression_element_outer_join_sign(expr={$expr.st})
 
-    |    case_statement
+    |    case_statement[false]
           {
             $priority = getPriority(SEARCHED_CASE);
           }
@@ -1640,11 +1640,11 @@ for_like_part
     ->   template() "not implemented: for_like_part"
     ;
 
-case_statement
+case_statement[boolean is_statement]
     :    ^(SIMPLE_CASE expression parts+=case_when_part+ case_else_part?)  
-    ->   case_statement_simple(expression={$expression.st}, case_when_parts={$parts}, case_else_part={$case_else_part.st})
+    ->   case_statement_simple(expression={$expression.st}, is_statement={$is_statement}, case_when_parts={$parts}, case_else_part={$case_else_part.st})
     |    ^(SEARCHED_CASE parts+=case_when_part+ case_else_part?) 
-    ->   case_statement_searched(case_when_parts={$parts}, case_else_part={$case_else_part.st})
+    ->   case_statement_searched(case_when_parts={$parts}, is_statement={$is_statement}, case_else_part={$case_else_part.st})
     ;
 
 // $<CASE - Specific Clauses

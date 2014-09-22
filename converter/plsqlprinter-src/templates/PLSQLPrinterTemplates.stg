@@ -1047,3 +1047,4 @@ native_datatype_varchar2() ::= "varchar2"
 native_datatype_varchar() ::= "varchar"
 native_datatype_text() ::= "text"
 native_datatype_interval() ::= "interval"
+

@@ -10,26 +10,27 @@ returns <return_type>
 <if (is_pipelined)>pipelined<endif>
 
 as $$
+#variable_conflict use_column
 <block>;
 $$
 language plpgsql;
 >>
 
 
-case_statement_simple(expression, case_when_parts, case_else_part) ::= <<
+case_statement_simple(expression, is_statement, case_when_parts, case_else_part) ::= <<
 case <expression>
   <case_when_parts; separator="\n"><if (case_else_part)>
   
   <case_else_part><endif>
-end case
+end<if (is_statement)> case<endif>
 >>
 
-case_statement_searched(case_when_parts, case_else_part) ::= <<
+case_statement_searched(case_when_parts, is_statement, case_else_part) ::= <<
 case
   <case_when_parts; separator="\n"><if (case_else_part)>
   
   <case_else_part><endif>
-end case
+end<if (is_statement)> case<endif>
 >>
 
 perform_statement_expr(inner) ::= "perform <inner>"
@@ -86,7 +87,7 @@ using <options>
 >>
     
 pgsql_raise_using_option(option_name, expression) ::= <<
-<option_name> <expression>
+<option_name> = <expression>
 >>
 
 pgsql_raise_using_option_name_errcode() ::= "errcode"
@@ -103,3 +104,7 @@ cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
 >>
 
 function_argument(valueExpr, name) ::= "<if (name)><name> := <endif><valueExpr>"
+
+loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
+<indexVar> in <if (isReverse)>reverse <upperBound>..<lowerBound><else><lowerBound>..<upperBound><endif>
+>>

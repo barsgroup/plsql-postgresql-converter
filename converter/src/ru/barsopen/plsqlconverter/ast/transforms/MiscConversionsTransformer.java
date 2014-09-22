@@ -52,6 +52,10 @@ public class MiscConversionsTransformer {
 		add_months(node);
 		
 		add_years(node);
+		
+		add_loop_variable_declaration_for_select_based_loops(node);
+		
+		remote_rowtype_from_arguments(node);
 	}
 
 	private static void replace_sysdate_with_current_timestamp(_baseNode node) {
@@ -454,6 +458,45 @@ public class MiscConversionsTransformer {
 					node._getParent()._replace(node, new_expr);
 					reattachCommentsFromDeletedNodes(new_expr, node);
 				}
+			}
+		}
+	}
+
+	private static void add_loop_variable_declaration_for_select_based_loops(_baseNode node) {
+		if (node instanceof for_loop) {
+			for_loop loop = (for_loop)node;
+			if (loop.cursor_loop_param instanceof select_based_for) {
+				select_based_for loop_select = (select_based_for)loop.cursor_loop_param;
+				id varName = parser.make_id(loop_select.record_name.id.value);
+				seq_of_statements blockStatements;
+				block replacementBlock = parser.make_block(
+					Arrays.asList(
+						(declare_spec)parser.make_variable_declaration(
+							parser.make_variable_name(null, Arrays.asList(varName)),
+							parser.make_type_spec_custom(
+								parser.make_type_name(Arrays.asList(parser.make_id("record"))),
+								null,
+								null
+							),
+							null,
+							null,
+							null
+						)
+					),
+					parser.make_body(null, blockStatements = parser.make_seq_of_statements(null), null)
+				);
+				_baseNode parent = node._getParent();
+				parent._replace(loop, replacementBlock);
+				blockStatements.add_stat_or_labels(loop);
+			}
+		}
+	}
+
+	private static void remote_rowtype_from_arguments(_baseNode node) {
+		if (node instanceof type_spec_custom && node._getParent() instanceof parameter) {
+			type_spec_custom typespec = (type_spec_custom)node;
+			if (typespec.percent_type_or_rowtype instanceof percent_rowtype) {
+				typespec.set_percent_type_or_rowtype(null);
 			}
 		}
 	}
