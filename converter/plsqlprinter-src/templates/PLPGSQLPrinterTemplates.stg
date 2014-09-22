@@ -4,8 +4,7 @@ create_function_body(
   is_create, is_replace, name_parts, arguments,
   return_type, add_clauses, is_pipelined, block
 ) ::= <<
-<if (is_create)>create<if (is_replace)> or replace<endif> <endif>function <name_parts; separator="."><if (arguments)>
-  (<arguments; separator=",\n">)<endif>
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>function <name_parts; separator="."> (<arguments; separator=",\n">)
 returns <return_type>
 <add_clauses; separator=" ">
 <if (is_pipelined)>pipelined<endif>
@@ -102,3 +101,5 @@ cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
   <select_statement>
 <endif>;
 >>
+
+function_argument(valueExpr, name) ::= "<if (name)><name> := <endif><valueExpr>"

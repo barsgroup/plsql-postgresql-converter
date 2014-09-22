@@ -2,8 +2,12 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import org.antlr.runtime.UnwantedTokenException;
 
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import br.com.porcelli.parser.plsql.PLSQLParser;
@@ -18,13 +22,9 @@ public class ProcedureToFunctionConversionTransformer {
 			printReferences(sa);
 		}
 		
-		List<create_function_body> funcNodes = AstUtil.getDescendantsOfType(tree, create_function_body.class);
-		for (create_function_body node: funcNodes) {
-			verifyFunctionHasNotOutParameters(node);
-		}
-		List<create_procedure_body> nodes = AstUtil.getDescendantsOfType(tree, create_procedure_body.class);
-		for (create_procedure_body node: nodes) {
-			transform(node);
+		List<create_function_or_procedure_body> nodes = AstUtil.getDescendantsOfType(tree, create_function_or_procedure_body.class);
+		for (create_function_or_procedure_body node: nodes) {
+			transform(node, sa);
 		}
 	}
 
@@ -37,18 +37,6 @@ public class ProcedureToFunctionConversionTransformer {
 				general_element ge = (general_element)reference._getParent();
 				id idNode = ((general_element_id)ge.general_element_items.get(0)).id;
 				System.err.printf(" => %s at %d:%d\n", idNode.value, idNode._line, idNode._col);
-			}
-		}
-	}
-
-	private static void verifyFunctionHasNotOutParameters(
-			create_function_body func_node) {
-
-		for (parameter p: func_node.parameters.parameters) {
-			for (parameter_dir_spec pds: p.parameter_dir_specs) {
-				if (pds instanceof parameter_out || pds instanceof parameter_inout) {
-					System.err.printf("WARNING: There is a function with out parameter: %s\n", get_function_name(func_node));
-				}
 			}
 		}
 	}
@@ -84,18 +72,56 @@ public class ProcedureToFunctionConversionTransformer {
 		return "<no package>";
 	}
 
-	public static void transform(create_procedure_body node) throws Exception {
-		ProcedureToFunctionConversionTransformer transformer = new ProcedureToFunctionConversionTransformer(node);
+	public static void transform(create_function_or_procedure_body node, ScopeAssignment sa) throws Exception {
+		ProcedureToFunctionConversionTransformer transformer = new ProcedureToFunctionConversionTransformer(node, sa);
 		transformer.transform();
 	}
 	
-	create_procedure_body proc;
+	create_function_or_procedure_body proc_or_func;
+	ScopeAssignment sa;
 	
-	private ProcedureToFunctionConversionTransformer(create_procedure_body node) throws Exception {
-		this.proc = node;
+	private ProcedureToFunctionConversionTransformer(create_function_or_procedure_body node, ScopeAssignment sa) {
+		this.proc_or_func = node;
+		this.sa = sa;
 	}
 
 	private void transform() throws Exception {
+		if (proc_or_func instanceof create_procedure_body) {
+			transformProc();
+		} else {
+			transformFunc();
+		}
+	}
+
+	private void transformFunc() {
+
+		/*
+		type_spec returnTypeSpec = computeReturnTypeSpec(proc);
+		create_function_body func = parser.make_create_function_body(
+				AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_CREATE),
+				AstUtil.createAstNode(PLSQLParser.REPLACE_VK),
+				parser.make_function_name(null, proc.procedure_name.ids),
+				returnTypeSpec,
+				proc.parameters,
+				null,
+				null,
+				null,
+				null,
+				null,
+				(function_impl)proc.create_procedure_body_impl);
+		
+		proc._getParent()._replace(proc, func);*/
+	}
+
+	private void transformProc() {
+		create_procedure_body proc = (create_procedure_body)proc_or_func;
+		List<Integer> in_params = new ArrayList<Integer>();
+		List<Integer> out_params = new ArrayList<Integer>();
+		classifyParameters(proc.parameters, in_params, out_params);
+		if (out_params.size() > 0) {
+			transformProcCallSites(in_params, out_params);
+		}
+
 		type_spec returnTypeSpec = computeReturnTypeSpec(proc);
 		create_function_body func = parser.make_create_function_body(
 				AstUtil.createAstNode(PLSQLParser.SQL92_RESERVED_CREATE),
@@ -111,6 +137,130 @@ public class ProcedureToFunctionConversionTransformer {
 				(function_impl)proc.create_procedure_body_impl);
 		
 		proc._getParent()._replace(proc, func);
+	}
+
+	private void transformProcCallSites(List<Integer> in_params, List<Integer> out_params) {
+		List<general_element_item> references = sa.defToScopeEntry.get(proc_or_func).references;
+		List<parameter> formalArgs = (((create_procedure_body)proc_or_func).parameters).parameters;
+		Map<String, Integer> name2pos = new HashMap<String, Integer>();
+		{
+			int i = 0;
+			for (parameter p: formalArgs) {
+				name2pos.put(AstUtil.normalizeId(p.parameter_name.id.value), i);
+				++i;
+			}
+		}
+		for (general_element_item refItem: references) {
+			general_element callSite = (general_element)refItem._getParent();
+			int idx = callSite.general_element_items.indexOf(refItem);
+			if (idx == callSite.general_element_items.size() - 1 || !(callSite.general_element_items.get(idx + 1) instanceof function_argument)) {
+				callSite.insert_general_element_items(idx + 1, parser.make_function_argument(null));
+			}
+			function_argument argsNode = (function_argument)callSite.general_element_items.get(idx + 1);
+			Map<String, argument> passedArgs = new HashMap<String, argument>();
+			List<argument> deletedArgs = new ArrayList<argument>();
+			{
+				int i = 0;
+				for (argument arg: argsNode.arguments) {
+					String name;
+					if (arg.is_parameter_name()) {
+						name = AstUtil.normalizeId(arg.parameter_name.id.value);
+					} else {
+						name = AstUtil.normalizeId(formalArgs.get(i).parameter_name.id.value);
+						++i;
+					}
+					passedArgs.put(name, arg);
+					if (!in_params.contains(name2pos.get(name))) {
+						deletedArgs.add(arg);
+					}
+				}
+			}
+			for (argument arg: deletedArgs) {
+				argsNode.remove_arguments(arg);
+				MiscConversionsTransformer.reattachCommentsFromDeletedNodes(argsNode, arg);
+			}
+
+			if (out_params.size() == 1) {
+				argument outArg = passedArgs.get(AstUtil.normalizeId(formalArgs.get(out_params.get(0)).parameter_name.id.value));
+				general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
+				
+				assignment_statement replacement = parser.make_assignment_statement(outArgExpr, null);
+				callSite._getParent()._replace(callSite, replacement);
+				replacement.set_expression(parser.make_general_expression(callSite));
+			} else {
+				assignment_statement assignment = parser.make_assignment_statement(
+					parser.make_general_element(
+						Arrays.asList(
+							(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__"))
+						)
+					),
+					null 
+				);
+				List<stat_or_label> statements = new ArrayList<stat_or_label>();
+				statements.add(assignment);
+				for (int out_param_no: out_params) {
+					parameter formalArg = formalArgs.get(out_param_no);
+					argument outArg = passedArgs.get(AstUtil.normalizeId(formalArg.parameter_name.id.value));
+					general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
+					outArgExpr = parser.parsegeneral_element(AstUtil.cloneTree(outArgExpr.unparse()));
+					assignment_statement unwrapArgStatement = parser.make_assignment_statement(
+						outArgExpr,
+						parser.make_general_expression(
+							parser.make_general_element(
+								Arrays.asList(
+									(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
+									(general_element_item)parser.make_general_element_id(parser.make_id(formalArg.parameter_name.id.value))
+								)
+							)
+						)
+					);
+					statements.add(unwrapArgStatement);
+				}
+				block replacement = parser.make_block(
+					Arrays.asList(
+						(declare_spec)parser.make_variable_declaration(
+							parser.make_variable_name(null, Arrays.asList(parser.make_id("__tmp__"))),
+							parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("record"))), null, null),
+							null,
+							null,
+							null
+						)
+					),
+					parser.make_body(
+						null,
+						parser.make_seq_of_statements(
+							statements
+						),
+						null
+					)
+				);
+				callSite._getParent()._replace(callSite, replacement);
+				assignment.set_expression(parser.make_general_expression(callSite));
+			}
+		}
+	}
+
+	private void classifyParameters(parameters parameters,
+			List<Integer> in_params, List<Integer> out_params) {
+		for (int i = 0; i < parameters.parameters.size(); ++i) {
+			parameter p = parameters.parameters.get(i);
+			boolean is_in = false, is_inout = false, is_out = false;
+			for (parameter_dir_spec ds: p.parameter_dir_specs) {
+				if (ds instanceof parameter_in) {
+					is_in = true;
+				} else if (ds instanceof parameter_out) {
+					is_out = true;
+				} else if (ds instanceof parameter_inout) {
+					is_inout = true;
+				}
+			}
+			if (is_in || is_inout) {
+				in_params.add(i);
+			}
+			if (is_out || is_inout) {
+				out_params.add(i);
+			}
+		}
 	}
 
 	private type_spec computeReturnTypeSpec(create_procedure_body proc) {
