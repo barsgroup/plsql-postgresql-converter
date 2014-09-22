@@ -626,14 +626,14 @@ view_type_constraints_clause
 
 view_type_constraints_clause_item
     :   view_type_constraint_item_inline -> { $view_type_constraint_item_inline.st }
-        //| out_of_line_constraint_clause -> { $out_of_line_constraint_clause.st }
+        | out_of_line_constraint_clause -> { $out_of_line_constraint_clause.st }
     ;
     
 view_type_constraint_item_inline
-    :   ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE id=commented_id /* items+=inline_constraint_clause* */)
-        -> view_type_constraint_item_inline(id={$id.st}/*, items={$items}*/)
+    :   ^(VIEW_TYPE_CONSTRAINT_ITEM_INLINE id=commented_id items+=inline_constraint_clause*)
+        -> view_type_constraint_item_inline(id={$id.st}, items={$items})
     ;
- /*   
+ 
 inline_constraint_clause
     :   ^(INLINE_CONSTRAINT_CLAUSE id=commented_id? inline_constraint_def items+=constraint_state_item*)
         -> inline_constraint_clause(id={$id.st}, inline_constraint_def={$inline_constraint_def.st}, items={$items})
@@ -732,7 +732,7 @@ out_of_line_constraint_def_primary_key
 out_of_line_constraint_def_foreign_key
     : ^(FOREIGN_KEY ids+=commented_id+ references_clause)
       -> out_of_line_constraint_def_foreign_key(columns={$ids}, references_clause={$references_clause.st})
-    ;*/
+    ;
 
 // $>
 

@@ -319,6 +319,7 @@ unit_statement
     |    drop_sequence -> { $drop_sequence.st}
     |    drop_trigger -> { $drop_trigger.st}
     |    drop_type -> { $drop_type.st}
+    |    create_view -> { $create_view.st }
     ;
 
 
