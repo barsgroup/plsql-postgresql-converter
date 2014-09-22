@@ -156,7 +156,9 @@ public class main {
     }
     out.println();
     out.printf("  public void _walk(_visitor visitor) {\n");
-    out.printf("    visitor.visit(this);\n");
+    out.printf("    if (!visitor.enter(this)) {\n");
+    out.printf("      return;\n");
+    out.printf("    }\n");
       
     for (AstNodes.RuleItem item: rule.body.items) {
       AstNodes.PropSpec propSpec = item.propSpec;
@@ -185,6 +187,7 @@ public class main {
         out.printf("    }\n");
       }
     }
+    out.printf("    visitor.leave(this);\n");
     out.printf("  }\n");
     out.println();
     out.printf("  public java.util.List<_baseNode> _getChildren() {\n");
@@ -249,7 +252,9 @@ public class main {
     try (PrintStream out = new PrintStream(file, "UTF-8")) {
       out.printf("package %s;\n", packageName);
       out.printf("public interface _visitor {\n");
-      out.printf("  void visit(_baseNode node);\n");
+      out.printf("  /* returns false => don't process children, don't call leave */\n");
+      out.printf("  boolean enter(_baseNode node);\n");
+      out.printf("  void leave(_baseNode node);\n");
       out.printf("  void visit(org.antlr.runtime.tree.Tree nonNode);\n");
       out.printf("}\n");
     }
