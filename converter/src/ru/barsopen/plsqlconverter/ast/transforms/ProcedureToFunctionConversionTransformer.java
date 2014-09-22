@@ -3,13 +3,21 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 
 import ru.barsopen.plsqlconverter.ast.typed.*;
 import br.com.porcelli.parser.plsql.PLSQLParser;
 
 public class ProcedureToFunctionConversionTransformer {
 	
+	public static boolean isDebugEnabled = false;
+	
 	public static void transformAll(_baseNode tree) throws Exception {
+		ScopeAssignment sa = ScopeAssignment.compute(tree);
+		if (isDebugEnabled) {
+			printReferences(sa);
+		}
+		
 		List<create_function_body> funcNodes = AstUtil.getDescendantsOfType(tree, create_function_body.class);
 		for (create_function_body node: funcNodes) {
 			verifyFunctionHasNotOutParameters(node);
@@ -17,6 +25,19 @@ public class ProcedureToFunctionConversionTransformer {
 		List<create_procedure_body> nodes = AstUtil.getDescendantsOfType(tree, create_procedure_body.class);
 		for (create_procedure_body node: nodes) {
 			transform(node);
+		}
+	}
+
+	private static void printReferences(ScopeAssignment scopeAssignment) {
+		for (Entry<_baseNode, ScopeEntry> mapEntry: scopeAssignment.defToScopeEntry.entrySet()) {
+			_baseNode defNode = mapEntry.getKey();
+			ScopeEntry scopeEntry = mapEntry.getValue();
+			System.err.printf("def node %s at %d:%d has %d references:\n", defNode.getClass().getSimpleName(), defNode._getLine(), defNode._getCol(), scopeEntry.references.size());
+			for (general_element_item reference: scopeEntry.references) {
+				general_element ge = (general_element)reference._getParent();
+				id idNode = ((general_element_id)ge.general_element_items.get(0)).id;
+				System.err.printf(" => %s at %d:%d\n", idNode.value, idNode._line, idNode._col);
+			}
 		}
 	}
 
