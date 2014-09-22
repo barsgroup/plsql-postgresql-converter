@@ -20,6 +20,11 @@ public class DatatypeConversionTransformer {
 			typeSpec.name = AstUtil.createAstNode(PLSQLParser.NUMERIC_VK);
 		} else if (nodeType == PLSQLParser.VARCHAR2_VK) {
 			typeSpec.name = AstUtil.createAstNode(PLSQLParser.VARCHAR_VK);
+		} else if (nodeType == PLSQLParser.RAW_VK) {
+			// Convert raw(123) ro bytea
+			// raw -> bytea is handled by template
+			// here we remove precision
+			typeSpec.set_type_precision(null);
 		} else {
 			return;
 		}
