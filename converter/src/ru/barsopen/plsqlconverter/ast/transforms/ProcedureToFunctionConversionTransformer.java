@@ -160,6 +160,12 @@ public class ProcedureToFunctionConversionTransformer {
 	}
 
 	private void transformFuncCallSites(List<Integer> in_params, List<Integer> out_params) {
+		if (sa.defToScopeEntry.get(proc_or_func) == null) {
+			List<id> nameIds = ((create_function_body)proc_or_func).function_name.ids;
+			id nameId = nameIds.get(nameIds.size() - 1);
+			System.err.printf("Can't transform function %s (at %d:%d) because it is overloaded\n", nameId.value, nameId._line, nameId._col);
+			return;
+		}
 		List<general_element_item> references = sa.defToScopeEntry.get(proc_or_func).references;
 		List<parameter> formalArgs = (((create_function_body)proc_or_func).parameters).parameters;
 		Map<String, Integer> name2pos = new HashMap<String, Integer>();
@@ -171,108 +177,118 @@ public class ProcedureToFunctionConversionTransformer {
 			}
 		}
 		for (general_element_item refItem: references) {
-			general_element_id refItemId = (general_element_id)refItem;
-			general_element callSite = (general_element)refItem._getParent();
-			if (!canTransformFuncCallSite(callSite)) {
-				System.err.printf("Can't transform function %s call site at %d:%d\n", refItemId.id.value, refItemId._line, refItemId._col);
+			if (ScopeAssignment.isInSqlStatement(refItem)) {
 				continue;
 			}
-
-			int idx = callSite.general_element_items.indexOf(refItem);
-			if (idx == callSite.general_element_items.size() - 1 || !(callSite.general_element_items.get(idx + 1) instanceof function_argument)) {
-				callSite.insert_general_element_items(idx + 1, parser.make_function_argument(null));
-			}
-			function_argument argsNode = (function_argument)callSite.general_element_items.get(idx + 1);
-			Map<String, argument> passedArgs = new HashMap<String, argument>();
-			List<argument> deletedArgs = new ArrayList<argument>();
-			{
-				int i = 0;
-				for (argument arg: argsNode.arguments) {
-					String name;
-					if (arg.is_parameter_name()) {
-						name = AstUtil.normalizeId(arg.parameter_name.id.value);
-					} else {
-						name = AstUtil.normalizeId(formalArgs.get(i).parameter_name.id.value);
-						++i;
-					}
-					passedArgs.put(name, arg);
-					if (!in_params.contains(name2pos.get(name))) {
-						deletedArgs.add(arg);
+			try {
+				general_element_id refItemId = (general_element_id)refItem;
+				general_element callSite = (general_element)refItem._getParent();
+				if (!canTransformFuncCallSite(callSite)) {
+					System.err.printf("Can't transform function %s call site at %d:%d\n", refItemId.id.value, refItemId._line, refItemId._col);
+					continue;
+				}
+	
+				int idx = callSite.general_element_items.indexOf(refItem);
+				if (idx == callSite.general_element_items.size() - 1 || !(callSite.general_element_items.get(idx + 1) instanceof function_argument)) {
+					callSite.insert_general_element_items(idx + 1, parser.make_function_argument(null));
+				}
+				function_argument argsNode = (function_argument)callSite.general_element_items.get(idx + 1);
+				Map<String, argument> passedArgs = new HashMap<String, argument>();
+				List<argument> deletedArgs = new ArrayList<argument>();
+				{
+					int i = 0;
+					for (argument arg: argsNode.arguments) {
+						String name;
+						if (arg.is_parameter_name()) {
+							name = AstUtil.normalizeId(arg.parameter_name.id.value);
+						} else {
+							name = AstUtil.normalizeId(formalArgs.get(i).parameter_name.id.value);
+							++i;
+						}
+						passedArgs.put(name, arg);
+						if (!in_params.contains(name2pos.get(name))) {
+							deletedArgs.add(arg);
+						}
 					}
 				}
-			}
-			for (argument arg: deletedArgs) {
-				argsNode.remove_arguments(arg);
-				MiscConversionsTransformer.reattachCommentsFromDeletedNodes(argsNode, arg);
-			}
-
-			assignment_statement assignment = parser.make_assignment_statement(
-				parser.make_general_element(
+				for (argument arg: deletedArgs) {
+					argsNode.remove_arguments(arg);
+					MiscConversionsTransformer.reattachCommentsFromDeletedNodes(argsNode, arg);
+				}
+	
+				assignment_statement assignment = parser.make_assignment_statement(
+					parser.make_general_element(
+						Arrays.asList(
+							(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__"))
+						)
+					),
+					null 
+				);
+				List<stat_or_label> statements = new ArrayList<stat_or_label>();
+				statements.add(assignment);
+				for (int out_param_no: out_params) {
+					parameter formalArg = formalArgs.get(out_param_no);
+					argument outArg = passedArgs.get(AstUtil.normalizeId(formalArg.parameter_name.id.value));
+					general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
+					outArgExpr = parser.parsegeneral_element(AstUtil.cloneTree(outArgExpr.unparse()));
+					assignment_statement unwrapArgStatement = parser.make_assignment_statement(
+						outArgExpr,
+						parser.make_general_expression(
+							parser.make_general_element(
+								Arrays.asList(
+									(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
+									(general_element_item)parser.make_general_element_id(parser.make_id(formalArg.parameter_name.id.value))
+								)
+							)
+						)
+					);
+					statements.add(unwrapArgStatement);
+				}
+				if (isCallSiteInAssignment(callSite)) {
+					assignment_statement ownerAssignment = (assignment_statement)callSite._getParent()._getParent();
+					assignment_target at = ownerAssignment.assignment_target;
+					ownerAssignment.set_assignment_target(null);
+	
+					assignment_statement unwrapArgStatement = parser.make_assignment_statement(
+						at,
+						parser.make_general_expression(
+							parser.make_general_element(
+								Arrays.asList(
+									(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
+									(general_element_item)parser.make_general_element_id(parser.make_id("__retval__"))
+								)
+							)
+						)
+					);
+					statements.add(unwrapArgStatement);
+				}
+				block replacement = parser.make_block(
 					Arrays.asList(
-						(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__"))
-					)
-				),
-				null 
-			);
-			List<stat_or_label> statements = new ArrayList<stat_or_label>();
-			statements.add(assignment);
-			for (int out_param_no: out_params) {
-				parameter formalArg = formalArgs.get(out_param_no);
-				argument outArg = passedArgs.get(AstUtil.normalizeId(formalArg.parameter_name.id.value));
-				general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
-				outArgExpr = parser.parsegeneral_element(AstUtil.cloneTree(outArgExpr.unparse()));
-				assignment_statement unwrapArgStatement = parser.make_assignment_statement(
-					outArgExpr,
-					parser.make_general_expression(
-						parser.make_general_element(
-							Arrays.asList(
-								(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
-								(general_element_item)parser.make_general_element_id(parser.make_id(formalArg.parameter_name.id.value))
-							)
+						(declare_spec)parser.make_variable_declaration(
+							parser.make_variable_name(null, Arrays.asList(parser.make_id("__tmp__"))),
+							parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("record"))), null, null),
+							null,
+							null,
+							null
 						)
-					)
-				);
-				statements.add(unwrapArgStatement);
-			}
-			if (isCallSiteInAssignment(callSite)) {
-				assignment_statement ownerAssignment = (assignment_statement)callSite._getParent()._getParent();
-				assignment_target at = ownerAssignment.assignment_target;
-				ownerAssignment.set_assignment_target(null);
-
-				assignment_statement unwrapArgStatement = parser.make_assignment_statement(
-					at,
-					parser.make_general_expression(
-						parser.make_general_element(
-							Arrays.asList(
-								(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
-								(general_element_item)parser.make_general_element_id(parser.make_id("__retval__"))
-							)
-						)
-					)
-				);
-				statements.add(unwrapArgStatement);
-			}
-			block replacement = parser.make_block(
-				Arrays.asList(
-					(declare_spec)parser.make_variable_declaration(
-						parser.make_variable_name(null, Arrays.asList(parser.make_id("__tmp__"))),
-						parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("record"))), null, null),
+					),
+					parser.make_body(
 						null,
-						null,
+						parser.make_seq_of_statements(
+							statements
+						),
 						null
 					)
-				),
-				parser.make_body(
-					null,
-					parser.make_seq_of_statements(
-						statements
-					),
-					null
-				)
-			);
-			_baseNode whatToReplace = isCallSiteInSeq(callSite) ? callSite : callSite._getParent()._getParent();
-			whatToReplace._getParent()._replace(whatToReplace, replacement);
-			assignment.set_expression(parser.make_general_expression(callSite));
+				);
+				_baseNode whatToReplace = isCallSiteInSeq(callSite) ? callSite : callSite._getParent()._getParent();
+				whatToReplace._getParent()._replace(whatToReplace, replacement);
+				assignment.set_expression(parser.make_general_expression(callSite));
+			} catch (Exception ex) {
+				List<id> nameIds = ((create_function_body)proc_or_func).function_name.ids;
+				id nameId = nameIds.get(nameIds.size() - 1);
+				System.err.printf("While transforming procedure %s (at %d:%d) call site %d:%d\n", nameId.value, nameId._line, nameId._col, refItem._getLine(), refItem._getCol());
+				ex.printStackTrace();
+			}
 		}
 	}
 
@@ -320,6 +336,12 @@ public class ProcedureToFunctionConversionTransformer {
 	}
 
 	private void transformProcCallSites(List<Integer> in_params, List<Integer> out_params) {
+		if (sa.defToScopeEntry.get(proc_or_func) == null) {
+			List<id> nameIds = ((create_procedure_body)proc_or_func).procedure_name.ids;
+			id nameId = nameIds.get(nameIds.size() - 1);
+			System.err.printf("Can't transform procedure %s (at %d:%d) because it is overloaded\n", nameId.value, nameId._line, nameId._col);
+			return;
+		}
 		List<general_element_item> references = sa.defToScopeEntry.get(proc_or_func).references;
 		List<parameter> formalArgs = (((create_procedure_body)proc_or_func).parameters).parameters;
 		Map<String, Integer> name2pos = new HashMap<String, Integer>();
@@ -331,91 +353,101 @@ public class ProcedureToFunctionConversionTransformer {
 			}
 		}
 		for (general_element_item refItem: references) {
-			general_element callSite = (general_element)refItem._getParent();
-			int idx = callSite.general_element_items.indexOf(refItem);
-			if (idx == callSite.general_element_items.size() - 1 || !(callSite.general_element_items.get(idx + 1) instanceof function_argument)) {
-				callSite.insert_general_element_items(idx + 1, parser.make_function_argument(null));
+			if (ScopeAssignment.isInSqlStatement(refItem)) {
+				continue;
 			}
-			function_argument argsNode = (function_argument)callSite.general_element_items.get(idx + 1);
-			Map<String, argument> passedArgs = new HashMap<String, argument>();
-			List<argument> deletedArgs = new ArrayList<argument>();
-			{
-				int i = 0;
-				for (argument arg: argsNode.arguments) {
-					String name;
-					if (arg.is_parameter_name()) {
-						name = AstUtil.normalizeId(arg.parameter_name.id.value);
-					} else {
-						name = AstUtil.normalizeId(formalArgs.get(i).parameter_name.id.value);
-						++i;
-					}
-					passedArgs.put(name, arg);
-					if (!in_params.contains(name2pos.get(name))) {
-						deletedArgs.add(arg);
+			try {
+				general_element callSite = (general_element)refItem._getParent();
+				int idx = callSite.general_element_items.indexOf(refItem);
+				if (idx == callSite.general_element_items.size() - 1 || !(callSite.general_element_items.get(idx + 1) instanceof function_argument)) {
+					callSite.insert_general_element_items(idx + 1, parser.make_function_argument(null));
+				}
+				function_argument argsNode = (function_argument)callSite.general_element_items.get(idx + 1);
+				Map<String, argument> passedArgs = new HashMap<String, argument>();
+				List<argument> deletedArgs = new ArrayList<argument>();
+				{
+					int i = 0;
+					for (argument arg: argsNode.arguments) {
+						String name;
+						if (arg.is_parameter_name()) {
+							name = AstUtil.normalizeId(arg.parameter_name.id.value);
+						} else {
+							name = AstUtil.normalizeId(formalArgs.get(i).parameter_name.id.value);
+							++i;
+						}
+						passedArgs.put(name, arg);
+						if (!in_params.contains(name2pos.get(name))) {
+							deletedArgs.add(arg);
+						}
 					}
 				}
-			}
-			for (argument arg: deletedArgs) {
-				argsNode.remove_arguments(arg);
-				MiscConversionsTransformer.reattachCommentsFromDeletedNodes(argsNode, arg);
-			}
-
-			if (out_params.size() == 1) {
-				argument outArg = passedArgs.get(AstUtil.normalizeId(formalArgs.get(out_params.get(0)).parameter_name.id.value));
-				general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
-				
-				assignment_statement replacement = parser.make_assignment_statement(outArgExpr, null);
-				callSite._getParent()._replace(callSite, replacement);
-				replacement.set_expression(parser.make_general_expression(callSite));
-			} else {
-				assignment_statement assignment = parser.make_assignment_statement(
-					parser.make_general_element(
-						Arrays.asList(
-							(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__"))
-						)
-					),
-					null 
-				);
-				List<stat_or_label> statements = new ArrayList<stat_or_label>();
-				statements.add(assignment);
-				for (int out_param_no: out_params) {
-					parameter formalArg = formalArgs.get(out_param_no);
-					argument outArg = passedArgs.get(AstUtil.normalizeId(formalArg.parameter_name.id.value));
+				for (argument arg: deletedArgs) {
+					argsNode.remove_arguments(arg);
+					MiscConversionsTransformer.reattachCommentsFromDeletedNodes(argsNode, arg);
+				}
+	
+				if (out_params.size() == 1) {
+					argument outArg = passedArgs.get(AstUtil.normalizeId(formalArgs.get(out_params.get(0)).parameter_name.id.value));
 					general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
-					outArgExpr = parser.parsegeneral_element(AstUtil.cloneTree(outArgExpr.unparse()));
-					assignment_statement unwrapArgStatement = parser.make_assignment_statement(
-						outArgExpr,
-						parser.make_general_expression(
-							parser.make_general_element(
-								Arrays.asList(
-									(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
-									(general_element_item)parser.make_general_element_id(parser.make_id(formalArg.parameter_name.id.value))
+					
+					assignment_statement replacement = parser.make_assignment_statement(outArgExpr, null);
+					callSite._getParent()._replace(callSite, replacement);
+					replacement.set_expression(parser.make_general_expression(callSite));
+				} else {
+					assignment_statement assignment = parser.make_assignment_statement(
+						parser.make_general_element(
+							Arrays.asList(
+								(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__"))
+							)
+						),
+						null 
+					);
+					List<stat_or_label> statements = new ArrayList<stat_or_label>();
+					statements.add(assignment);
+					for (int out_param_no: out_params) {
+						parameter formalArg = formalArgs.get(out_param_no);
+						argument outArg = passedArgs.get(AstUtil.normalizeId(formalArg.parameter_name.id.value));
+						general_element outArgExpr = (general_element)((general_expression)outArg.expression).expression_element;
+						outArgExpr = parser.parsegeneral_element(AstUtil.cloneTree(outArgExpr.unparse()));
+						assignment_statement unwrapArgStatement = parser.make_assignment_statement(
+							outArgExpr,
+							parser.make_general_expression(
+								parser.make_general_element(
+									Arrays.asList(
+										(general_element_item)parser.make_general_element_id(parser.make_id("__tmp__")),
+										(general_element_item)parser.make_general_element_id(parser.make_id(formalArg.parameter_name.id.value))
+									)
 								)
 							)
-						)
-					);
-					statements.add(unwrapArgStatement);
-				}
-				block replacement = parser.make_block(
-					Arrays.asList(
-						(declare_spec)parser.make_variable_declaration(
-							parser.make_variable_name(null, Arrays.asList(parser.make_id("__tmp__"))),
-							parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("record"))), null, null),
+						);
+						statements.add(unwrapArgStatement);
+					}
+					block replacement = parser.make_block(
+						Arrays.asList(
+							(declare_spec)parser.make_variable_declaration(
+								parser.make_variable_name(null, Arrays.asList(parser.make_id("__tmp__"))),
+								parser.make_type_spec_custom(parser.make_type_name(Arrays.asList(parser.make_id("record"))), null, null),
+								null,
+								null,
+								null
+							)
+						),
+						parser.make_body(
 							null,
-							null,
+							parser.make_seq_of_statements(
+								statements
+							),
 							null
 						)
-					),
-					parser.make_body(
-						null,
-						parser.make_seq_of_statements(
-							statements
-						),
-						null
-					)
-				);
-				callSite._getParent()._replace(callSite, replacement);
-				assignment.set_expression(parser.make_general_expression(callSite));
+					);
+					callSite._getParent()._replace(callSite, replacement);
+					assignment.set_expression(parser.make_general_expression(callSite));
+				}
+			} catch (Exception ex) {
+				List<id> nameIds = ((create_procedure_body)proc_or_func).procedure_name.ids;
+				id nameId = nameIds.get(nameIds.size() - 1);
+				System.err.printf("While transforming procedure %s (at %d:%d) call site %d:%d\n", nameId.value, nameId._line, nameId._col, refItem._getLine(), refItem._getCol());
+				ex.printStackTrace();
 			}
 		}
 	}
