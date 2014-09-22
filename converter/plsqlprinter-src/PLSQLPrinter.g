@@ -26,6 +26,7 @@ tokens {
     PGSQL_USING;
     PGSQL_OPTION;
     PGSQL_ERRCODE;
+    PGSQL_BIGINT;
 }
 
 
@@ -2235,7 +2236,8 @@ native_datatype_spec
     |    YEAR_VK
     |    YMINTERVAL_UNCONSTRAINED_VK
     |    PGSQL_TEXT { typeBaseName = %native_datatype_text(); }
-    |    PGSQL_NATIVE_DATATYPE_INTERVAL { typeBaseName = %native_datatype_interval(); })
+    |    PGSQL_NATIVE_DATATYPE_INTERVAL { typeBaseName = %native_datatype_interval(); }
+    |    PGSQL_BIGINT { typeBaseName = %native_datatype_bigint(); })
     prec=type_precision?
     (is_tz=TIME_VK is_tz_local=LOCAL_VK?)?
     )
