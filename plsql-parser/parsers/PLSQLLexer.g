@@ -23,6 +23,7 @@ tokens { // moved to the import vocabulary
     MINUS_SIGN; // Imaginary token based on subtoken typecasting - see the rule <SEPARATOR>
     DOUBLE_PERIOD;
     UNDERSCORE; // Imaginary token based on subtoken typecasting - see the rule <INTRODUCER>
+    COMMENT;
 }
 
 @header {
@@ -333,7 +334,7 @@ INTRODUCER
 //  It was originally a protected rule set to be filtered out but the <COMMENT> and <MINUS_SIGN> clashed. 
 SEPARATOR
     :    '-' {$type = MINUS_SIGN;}
-    |    COMMENT { $channel=HIDDEN; }
+    |    COMMENT_FRAGMENT { $channel=HIDDEN; $type = COMMENT; }
     |    (SPACE | NEWLINE)+ { $channel=HIDDEN; }
     ;
 //}
@@ -387,7 +388,7 @@ UNSIGNED_INTEGER
 
 //{ Rule #097 <COMMENT>
 fragment
-COMMENT
+COMMENT_FRAGMENT
     :    '--' ( ~('\r' | '\n') )* (NEWLINE|EOF)
     |    '/*' (options{greedy=false;} : .)* '*/'
     ;
