@@ -3,11 +3,9 @@ package ru.barsopen.plsqlconverter.ast.transforms;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
@@ -22,56 +20,41 @@ public class NestedFunctionConversionTransformer {
 	
 	public static void transformAll(_baseNode tree) throws Exception {
 		List<create_function_or_procedure_body> functionClauses = AstUtil.getDescendantsOfType(tree, create_function_or_procedure_body.class);
+		ScopeAssignment sa = ScopeAssignment.compute(tree);
+		//ProcedureToFunctionConversionTransformer.printReferences(sa);
 		Collections.reverse(functionClauses);
 		for (create_function_or_procedure_body clause: functionClauses) {
 			if (clause._getParent() instanceof block) {
-				new NestedFunctionConversionTransformer(clause).transform();
+				new NestedFunctionConversionTransformer(clause, sa).transform();
 			}
 		}
 	}
 	
+	ScopeAssignment sa;
 	block parentBlock;
 	create_function_or_procedure_body func_node;
 	create_function_or_procedure_body toplevelFuncNode;
 	List<create_function_or_procedure_body> owningFuncNodes = new ArrayList<create_function_or_procedure_body>();
 	
-	private NestedFunctionConversionTransformer(create_function_or_procedure_body clause) {
+	private NestedFunctionConversionTransformer(create_function_or_procedure_body clause, ScopeAssignment sa) {
+		this.sa = sa;
 		func_node = clause;
 		parentBlock = (block)clause._getParent();
 	}
 
 	String funcName, newFuncName;
-	Map<String, _baseNode> referenced = new HashMap<String, _baseNode>();
-	Map<String, List<_baseNode>> references = new HashMap<String, List<_baseNode>>();
+	Set<_baseNode> referenced = new HashSet<_baseNode>();
 	Map<String, _baseNode> functionScope;
-	List<general_element> functionCalls = new ArrayList<general_element>();
 	List<parameter> addedParameters = new ArrayList<parameter>();
 	
 	private void transform() {
 		findParentFuncNode();
 		funcName = AstUtil.normalizeId(findNameNode(func_node).value);
-		functionScope = getScope(func_node);
 		findFreeVariables();
-		findFunctionCalls();
 		addParameters();
 		renameFunction();
 		moveFunctionToSibling();
 		transformCallSites();
-		
-		if (isDebugEnabled) {
-			System.out.printf("Inner function %s\n", ProcedureToFunctionConversionTransformer.get_function_name(func_node));
-			for (Entry<String, _baseNode> entry: referenced.entrySet()) {
-				System.out.printf(" references external variable %s (defined at %d:%d) from:\n", entry.getKey(), entry.getValue()._getLine(), entry.getValue()._getCol());
-				for (_baseNode refSource: references.get(entry.getKey())) {
-					System.out.printf("  %s at %d:%d\n", refSource.getClass().getName(), refSource._getLine(), refSource._getCol());
-				}
-			}
-			for (general_element elt: functionCalls) {
-				id id1 = ((general_element_id)elt.general_element_items.get(0)).id;
-				System.out.printf(" called from %d:%d\n", id1._line, id1._col);
-			}
-			System.out.println();
-		}
 	}
 
 	public static id findNameNode(create_function_or_procedure_body func) {
@@ -125,6 +108,7 @@ public class NestedFunctionConversionTransformer {
 			)
 		);
 		nameNode.set_value(newFuncName);
+		sa.defToScopeEntry.get(func_node).rename(newFuncName);
 	}
 
 	private void moveFunctionToSibling() {
@@ -161,7 +145,7 @@ public class NestedFunctionConversionTransformer {
 	}
 
 	private void addParameters() {
-		for (_baseNode defNode: referenced.values()) {
+		for (_baseNode defNode: referenced) {
 			if (defNode instanceof parameter) {
 				parameter defParam = (parameter)defNode;
 				parameter newParam = parser.make_parameter(
@@ -201,10 +185,40 @@ public class NestedFunctionConversionTransformer {
 	}
 
 	private void transformCallSites() {
-		for (general_element callSite: functionCalls) {
+		for (general_element_item ref_item: sa.defToScopeEntry.get(func_node).references) {
+			general_element callSite = (general_element)ref_item._getParent();
+			if (callSite == null) {
+				continue;
+			}
+			// skip suspicious references: those that are in sql statements and lack parenthesis
+			if (ScopeAssignment.isInSqlStatement(ref_item)) {
+				boolean hasCall = false;
+				for (general_element_item item: callSite.general_element_items) {
+					if (item instanceof function_argument) {
+						hasCall = true;
+						break;
+					}
+				}
+				if (!hasCall) {
+					continue;
+				}
+			}
+
+			int idx = callSite.general_element_items.indexOf(ref_item);
+			if (idx == 1) {
+				general_element_item item0 = callSite.general_element_items.get(0);
+				callSite.remove_general_element_items(0);
+				MiscConversionsTransformer.reattachCommentsFromDeletedNodes(ref_item, item0);
+			}
 			general_element_id callFuncName = (general_element_id)callSite.general_element_items.get(0);
 			callFuncName.id.set_value(newFuncName);
-			function_argument callArgs = (function_argument)callSite.general_element_items.get(1);
+			function_argument callArgs;
+			if (callSite.general_element_items.size() == 1) {
+				callArgs = parser.make_function_argument(null);
+				callSite.add_general_element_items(callArgs);
+			} else {
+				callArgs = (function_argument)callSite.general_element_items.get(1);
+			}
 			boolean should_use_names = false;
 			for (argument arg: callArgs.arguments) {
 				if (arg.parameter_name != null) {
@@ -233,150 +247,31 @@ public class NestedFunctionConversionTransformer {
 		}
 	}
 
-	private void findFunctionCalls() {
-		List<general_element> elts = AstUtil.getDescendantsOfType(parentBlock.body, general_element.class);
-		for (general_element elt: elts) {
-			if (elt.general_element_items.size() == 2
-					&& elt.get_general_element_items().get(1) instanceof function_argument) {
-				// Hope that there will not be a nested function inside a body block with same name
-				id id1 = ((general_element_id)elt.general_element_items.get(0)).id;
-				if (AstUtil.normalizeId(id1.value).equals(funcName)) {
-					functionCalls.add(elt);
-				}
-			}
-		}
-	}
-
 	private void findFreeVariables() {
 		List<general_element> elts = FunctionNamedResultConversionTransformer.getOwnNodesOfType(func_node, general_element.class);
 		for (general_element elt: elts) {
-			String referencedName = getReferencedVariableName(elt);
-			if (referencedName != null) {
-				Map<String, _baseNode> eltScope = getScope(elt);
-				if (eltScope.containsKey(referencedName) && functionScope.containsKey(referencedName) && eltScope.get(referencedName) == functionScope.get(referencedName)) {
-					referenced.put(referencedName, eltScope.get(referencedName));
-					if (!references.containsKey(referencedName)) {
-						references.put(referencedName, new ArrayList<_baseNode>());
-					}
-					references.get(referencedName).add(elt);
-				}
-			}
-		}
-	}
-
-	private static String getReferencedVariableName(general_element elt) {
-		if (elt._getParent() instanceof seq_of_statements || elt._getParent() instanceof labeled_statement) {
-			return null;
-		}
-		String rv1 = getReferencedVariableNameAsCollectionMethod(elt);
-		if (rv1 != null) {
-			return rv1;
-		}
-		boolean hasCalls = false;
-		id lastId = null;
-		for (general_element_item item: elt.general_element_items) {
-			if (item instanceof function_argument) {
-				hasCalls = true;
-				break;
-			}
-			general_element_id gei = (general_element_id)item;
-			lastId = gei.id;
-		}
-		if (hasCalls) {
-			return null;
-		}
-		String name = AstUtil.normalizeId(lastId.value);
-		return name;
-	}
-
-	private static String getReferencedVariableNameAsCollectionMethod(
-			general_element elt) {
-		List<general_element_item> items = new ArrayList<general_element_item>(elt.general_element_items);
-		if (items.get(items.size() - 1) instanceof function_argument) {
-			items.remove(items.size() - 1);
-		}
-
-		boolean hasCalls = false;
-		for (general_element_item item: items) {
-			if (item instanceof function_argument) {
-				hasCalls = true;
-				break;
-			}
-		}
-		if (hasCalls) {
-			return null;
-		}
-
-		if (items.size() >= 2) {
-			id lastId = ((general_element_id)items.get(items.size() - 1)).id;
-			String lastAttr = AstUtil.normalizeId(lastId.value);
-			if (collectionMethodNames.contains(lastAttr)) {
-				id prevId = ((general_element_id)items.get(items.size() - 2)).id;
-
-				String name = AstUtil.normalizeId(prevId.value);
-				return name;
-			}
-		}
-		
-		return null;
-	}
-	
-	static Set<String> collectionMethodNames = new HashSet<String>();
-	{
-		collectionMethodNames.add("EXISTS");
-		collectionMethodNames.add("COUNT");
-		collectionMethodNames.add("LIMIT");
-		collectionMethodNames.add("FIRST");
-		collectionMethodNames.add("LAST");
-		collectionMethodNames.add("PRIOR");
-		collectionMethodNames.add("NEXT");
-		collectionMethodNames.add("EXTEND");
-		collectionMethodNames.add("TRIM");
-		collectionMethodNames.add("DELETE");
-	}
-
-	private static Map<String, _baseNode> getScope(_baseNode node) {
-		Map<String, _baseNode> result = new HashMap<String, _baseNode>();
-		node = node._getParent();
-		while (node != null) {
-			if (node instanceof block) {
-				block b = (block)node;
-				for (declare_spec d: b.declare_specs) {
-					// variable_declaration, subtype_declaration, cursor_declaration, exception_declaration,
-					// pragma_declaration, record_declaration, table_declaration, create_procedure_body, create_function_body, create_type
-					if (d instanceof variable_declaration) {
-						variable_declaration vd = (variable_declaration)d;
-						String name = AstUtil.getLastIdString(vd.variable_name.ids);
-						result.put(name, d);
-					} else if (d instanceof create_procedure_body) {
-						create_procedure_body cpb = (create_procedure_body)d;
-						String name = AstUtil.getLastIdString(cpb.procedure_name.ids);
-						result.put(name, cpb);
-					} else if (d instanceof create_function_body) {
-						create_function_body cfb = (create_function_body)d;
-						String name = AstUtil.getLastIdString(cfb.function_name.ids);
-						result.put(name, cfb);
+			Scope scope = sa.generalElementToScope.get(elt);
+			_baseNode target = ScopeAssignment.getGeneralElementInitialTarget((general_element_id)elt.general_element_items.get(0), scope);
+			if (target != null) {
+				addReferenced(target);
+				for (int i = 1; target != null && i < elt.general_element_items.size(); ++i) {
+					general_element_item item = elt.general_element_items.get(i);
+					target = ScopeAssignment.getGeneralElementNextTarget(item, target, sa);
+					if (target != null) {
+						addReferenced(target);
 					}
 				}
-			} else if (node instanceof create_function_body) {
-				create_function_body cfb = (create_function_body)node;
-				String name = AstUtil.getLastIdString(cfb.function_name.ids);
-				result.put(name, cfb);
-				for (parameter p: cfb.parameters.parameters) {
-					String paramName = AstUtil.normalizeId(p.parameter_name.id.value);
-					result.put(paramName, p);
-				}
-			} else if (node instanceof create_procedure_body) {
-				create_procedure_body cpb = (create_procedure_body)node;
-				String name = AstUtil.getLastIdString(cpb.procedure_name.ids);
-				result.put(name, cpb);
-				for (parameter p: cpb.parameters.parameters) {
-					String paramName = AstUtil.normalizeId(p.parameter_name.id.value);
-					result.put(paramName, p);
-				}
 			}
+		}
+	}
+
+	private void addReferenced(_baseNode target) {
+		_baseNode node = target;
+		while (node != null && node != func_node) {
 			node = node._getParent();
 		}
-		return result;
+		if (node == null) {
+			referenced.add(target);
+		}
 	}
 }

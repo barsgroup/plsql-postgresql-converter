@@ -28,7 +28,7 @@ public class ProcedureToFunctionConversionTransformer {
 		}
 	}
 
-	private static void printReferences(ScopeAssignment scopeAssignment) {
+	public static void printReferences(ScopeAssignment scopeAssignment) {
 		for (Entry<_baseNode, ScopeEntry> mapEntry: scopeAssignment.defToScopeEntry.entrySet()) {
 			_baseNode defNode = mapEntry.getKey();
 			ScopeEntry scopeEntry = mapEntry.getValue();

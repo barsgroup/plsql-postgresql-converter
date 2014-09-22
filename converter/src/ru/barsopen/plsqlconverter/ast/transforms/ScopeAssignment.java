@@ -1,9 +1,11 @@
 package ru.barsopen.plsqlconverter.ast.transforms;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Stack;
 
 import org.antlr.runtime.tree.Tree;
@@ -21,6 +23,7 @@ public class ScopeAssignment {
 		result.globalScope = new Scope();
 		final Stack<Scope> scopeStack = new Stack<Scope>();
 		scopeStack.push(result.globalScope);
+		final Map<String, Scope> packageScopes = new HashMap<String, Scope>();
 		ast._walk(new _visitor() {
 			@Override
 			public boolean enter(_baseNode node) {
@@ -30,7 +33,22 @@ public class ScopeAssignment {
 					String name = AstUtil.getLastIdString(((create_package_body)node).package_name.ids);
 					currentScope.addEntry(name, node);
 					
-					Scope packageScope = currentScope.createChild(String.format("package %s", name));
+					Scope packageScope = packageScopes.get(name);
+					if (packageScope == null) {
+						packageScope = currentScope.createChild(String.format("package %s", name));
+						packageScopes.put(name, packageScope);
+					}
+					result.defToScope.put(node, packageScope);
+					scopeStack.push(packageScope);
+				} else if (node instanceof create_package_spec) {
+					String name = AstUtil.getLastIdString(((create_package_spec)node).package_name.ids);
+					
+					Scope packageScope = packageScopes.get(name);
+					if (packageScope == null) {
+						currentScope.addEntry(name, node);
+						packageScope = currentScope.createChild(String.format("package %s", name));
+						packageScopes.put(name, packageScope);
+					}
 					result.defToScope.put(node, packageScope);
 					scopeStack.push(packageScope);
 				} else if (node instanceof create_function_body) {
@@ -63,6 +81,12 @@ public class ScopeAssignment {
 					result.defToScope.put(node, loopScope);
 					fillForLoopScope(loopScope, (for_loop)node);
 					scopeStack.push(loopScope);
+				} else if (node instanceof variable_declaration
+							&& (node._getParent() instanceof create_package_spec
+							|| node._getParent() instanceof create_package_body)) {
+					variable_declaration varNode = (variable_declaration)node;
+					String name = AstUtil.getLastIdString(varNode.variable_name.ids);
+					currentScope.addEntry(name, node);
 				} else if (node instanceof general_element) {
 					result.generalElementToScope.put((general_element)node, currentScope);
 				}
@@ -78,9 +102,11 @@ public class ScopeAssignment {
 			public void leave(_baseNode node) {
 				
 				if (node instanceof create_package_body
+					|| node instanceof create_package_spec
 					|| node instanceof create_function_body
 					|| node instanceof create_procedure_body
-					|| node instanceof block) {
+					|| node instanceof block
+					|| node instanceof for_loop) {
 					scopeStack.pop();
 				}
 			}
@@ -161,18 +187,59 @@ public class ScopeAssignment {
 			}
 		}
 	}
+	
+	public static boolean isInSqlStatement(_baseNode node) {
+		while (node != null) {
+			if (node instanceof merge_statement
+				|| node instanceof lock_table_statement
+				|| node instanceof select_statement
+				|| node instanceof update_statement
+				|| node instanceof delete_statement
+				|| node instanceof insert_statement) {
+				
+				return true;
+				
+			} else {
+				node = node._getParent();
+			}
+		}
+		return false;
+	}
 
-	private static _baseNode getGeneralElementInitialTarget(general_element_id item, Scope scope) {
+	public static _baseNode getGeneralElementInitialTarget(general_element_id item, Scope scope) {
 		String id = AstUtil.normalizeId(item.id.value);
 		ScopeEntry scopeEntry = scope.lookup(id);
 		if (scopeEntry == null) {
-			System.err.printf("For ID %s at %d:%d could not find entry in scope\n", id, item.id._line, item.id._col);
+			if (!isInSqlStatement(item) && !isBuiltinObject(id)) {
+				System.err.printf("For ID %s at %d:%d could not find entry in scope\n", id, item.id._line, item.id._col);
+			}
 			return null;
 		}
 		return scopeEntry.defNode;
 	}
+	
+	static Set<String> builtins = new HashSet<String>();
+	{
+		String[] builtinsStr = {
+			"COALESCE TRUNC CURRENT_TIMESTAMP SQLERRM TO_CHAR TO_NUMBER NVL SYSDATE CHR SQLCODE SQLERRM SUBSTR UPPER",
+			"SYS INSTR DBMS_SQL LENGTH REPLACE TO_DATE DBMS_XMLDOM LOWER DBMS_METADATA DBMS_RANDOM ",
+		     "INSTR DBMS_SQL CPARS LENGTH REPLACE TO_DATE DBMS_XMLDOM LOWER ROUND DBMS_OUTPUT DBMS_LOB LPAD UTL_RAW RPAD LTRIM RTRIM USER REGEXP_SUBSTR",
+			 "INITCAP RAISE_APPLICATION_ERROR UTL_FILE MOD XMLTYPE REGEXP_REPLACE ADD_MONTHS LEAST ASCII MONTHS_BETWEEN",
+			 "NLS_CHARSET_ID GREATEST CEIL EMPTY_BLOB REGEXP_LIKE ABS REGEXP_INSTR LAST_DAY EMPTY_CLOB TO_CLOB NEXT_DAY",
+			 "UTL_HTTP POWER FLOOR CONVERT BFILENAME DBMS_SPACE DBMS_JOB UTL_I18N NLS_UPPER DBMS_PIPE DBMS_CRYPTO SYS_CONTEXT"
+		};
+		for (String str: builtinsStr) {
+			for (String id: str.split("\\s+")) {
+				builtins.add(id);
+			}
+		}
+	}
 
-	private static _baseNode getGeneralElementNextTarget(general_element_item item, _baseNode prevTarget, ScopeAssignment sa) {
+	private static boolean isBuiltinObject(String id) {
+		return builtins.contains(id);
+	}
+
+	public static _baseNode getGeneralElementNextTarget(general_element_item item, _baseNode prevTarget, ScopeAssignment sa) {
 		if (item instanceof general_element_id) {
 			id idNode = ((general_element_id)item).id;
 			String attrName = AstUtil.normalizeId(idNode.value);
@@ -180,7 +247,7 @@ public class ScopeAssignment {
 				Scope functionArgsScope = sa.defToScope.get(prevTarget);
 				ScopeEntry entry = functionArgsScope.entries.get(attrName);
 				if (entry == null) {
-					return null;
+					//return null;
 				} else {
 					return entry.defNode;
 				}
@@ -188,16 +255,28 @@ public class ScopeAssignment {
 				Scope labeledScope = sa.defToScope.get(prevTarget);
 				ScopeEntry entry = labeledScope.lookup(attrName);
 				if (entry == null) {
-					return null;
+					//return null;
 				} else {
 					return entry.defNode;
 				}
-			} else if (prevTarget instanceof variable_declaration) {
+			} else if (prevTarget instanceof create_package_body) {
+				Scope packageScope = sa.defToScope.get(prevTarget);
+				ScopeEntry entry = packageScope.lookup(attrName);
+				if (entry == null) {
+					//return null;
+				} else {
+					return entry.defNode;
+				}
+			} else if (prevTarget instanceof variable_declaration
+				|| prevTarget instanceof parameter
+				|| prevTarget instanceof select_based_for
+				|| prevTarget instanceof cursor_based_for
+				|| prevTarget instanceof indexed_for) {
 				return null; // VAR.ID -> method call or attr access, don't process those
-			} else if (prevTarget instanceof parameter) {
-				return null; // PARAM.ID -> method call or attr access, don't process those
 			}
-			System.err.printf("ScopeAssignment: Don't know how to process general_element_id %s (of %s) at %d:%d\n", attrName, prevTarget.getClass().getSimpleName(), idNode._line, idNode._col);
+			if (!isInSqlStatement(item)) {
+				System.err.printf("ScopeAssignment: Don't know how to process general_element_id %s (of %s) at %d:%d\n", attrName, prevTarget.getClass().getSimpleName(), idNode._line, idNode._col);
+			}
 		} else {
 			if (prevTarget instanceof create_function_body) {
 				create_function_body func = (create_function_body)prevTarget;

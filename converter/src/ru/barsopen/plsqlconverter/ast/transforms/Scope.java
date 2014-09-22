@@ -29,6 +29,7 @@ public class Scope {
 	
 	public ScopeEntry addEntry(String name, _baseNode defNode) {
 		ScopeEntry entry = new ScopeEntry();
+		entry.scope = this;
 		entry.name = name;
 		entry.defNode = defNode;
 		entries.put(name, entry);
