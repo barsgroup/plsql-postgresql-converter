@@ -457,14 +457,18 @@ public class ProcedureToFunctionConversionTransformer {
 		for (int i = 0; i < parameters.parameters.size(); ++i) {
 			parameter p = parameters.parameters.get(i);
 			boolean is_in = false, is_inout = false, is_out = false;
-			for (parameter_dir_spec ds: p.parameter_dir_specs) {
-				if (ds instanceof parameter_in) {
-					is_in = true;
-				} else if (ds instanceof parameter_out) {
-					is_out = true;
-				} else if (ds instanceof parameter_inout) {
-					is_inout = true;
+			if (p.parameter_dir_specs.size() > 0) {
+				for (parameter_dir_spec ds: p.parameter_dir_specs) {
+					if (ds instanceof parameter_in) {
+						is_in = true;
+					} else if (ds instanceof parameter_out) {
+						is_out = true;
+					} else if (ds instanceof parameter_inout) {
+						is_inout = true;
+					}
 				}
+			} else {
+				is_in = true;
 			}
 			if (is_in || is_inout) {
 				in_params.add(i);
