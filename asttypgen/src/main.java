@@ -340,9 +340,18 @@ public class main {
       out.printf("    _result._tokenStopIndex = tree.getTokenStopIndex();\n");
       out.printf("    int _i = 0;\n");
       out.println();
+      
+      if (spec.parserBeforeCode != null) {
+        out.println(spec.parserBeforeCode);
+      }
+      
       for (AstNodes.RuleItem item: theRule.body.items) {
         generateParserRuleItem(out, item);
         out.println();
+      }
+      
+      if (spec.parserAfterCode != null) {
+        out.println(spec.parserAfterCode);
       }
       out.printf("    if (_i < tree.getChildCount()) { throw new RuntimeException(\"Tree type mismatch\"); }\n");
       out.printf("    return _result;\n");
@@ -455,12 +464,18 @@ public class main {
       out.printf("    _token.setText(\"%s\");\n", rule.body.rootType);
     }
     out.printf("    org.antlr.runtime.tree.CommonTree _result = new org.antlr.runtime.tree.CommonTree(_token);\n");
+    if (spec.unparserBeforeCode != null) {
+      out.println(spec.unparserBeforeCode);
+    }
     out.printf("    _result.setTokenStartIndex(_tokenStartIndex);\n");
     out.printf("    _result.setTokenStopIndex(_tokenStopIndex);\n");
     
     for (AstNodes.RuleItem item: rule.body.items) {
       generateUnparserRuleItem(out, item);
       out.println();
+    }
+    if (spec.unparserAfterCode != null) {
+      out.println(spec.unparserAfterCode);
     }
     out.printf("    return _result;\n");
     out.printf("  }\n");

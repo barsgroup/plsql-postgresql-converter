@@ -8,6 +8,10 @@ KW_TOKEN_TEXT: '@tokenText';
 KW_PARSER_CLASS: '@parserClass';
 KW_BASENODE_CODE: '@baseNodeCode';
 KW_NODE_CODE: '@nodeCode';
+KW_UNPARSER_BEFORE_CODE: '@unparserBeforeCode';
+KW_UNPARSER_AFTER_CODE: '@unparserAfterCode';
+KW_PARSER_BEFORE_CODE: '@parserBeforeCode';
+KW_PARSER_AFTER_CODE: '@parserAfterCode';
 KW_ANY: '@any';
 COLON: ':';
 SEMICOLON: ';';
@@ -50,6 +54,10 @@ astSpec returns [AstNodes.AstSpec spec]:
   parserClassName[$spec]
   parserBaseNodeCode[$spec]?
   parserNodeCode[$spec]?
+  unparserBeforeCode[$spec]?
+  unparserAfterCode[$spec]?
+  parserBeforeCode[$spec]?
+  parserAfterCode[$spec]?
   (r=ruleSpec { $spec.rules.add(r); })* EOF;
   
 packageNameDef[AstNodes.AstSpec spec]:
@@ -66,6 +74,18 @@ parserBaseNodeCode[AstNodes.AstSpec spec]:
   
 parserNodeCode[AstNodes.AstSpec spec]:
   KW_NODE_CODE s=STRING { $spec.nodeCode = $s.text; };
+  
+unparserBeforeCode[AstNodes.AstSpec spec]:
+  KW_UNPARSER_BEFORE_CODE s=STRING { $spec.unparserBeforeCode = $s.text; };
+  
+unparserAfterCode[AstNodes.AstSpec spec]:
+  KW_UNPARSER_AFTER_CODE s=STRING { $spec.unparserAfterCode = $s.text; };
+  
+parserBeforeCode[AstNodes.AstSpec spec]:
+  KW_PARSER_BEFORE_CODE s=STRING { $spec.parserBeforeCode = $s.text; };
+  
+parserAfterCode[AstNodes.AstSpec spec]:
+  KW_PARSER_AFTER_CODE s=STRING { $spec.parserAfterCode = $s.text; };
 
 ruleSpec returns [AstNodes.RuleSpec result]:
   r1=ruleWithoutAlternatives { $result = $r1.result; }

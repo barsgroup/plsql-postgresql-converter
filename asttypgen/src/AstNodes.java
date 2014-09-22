@@ -8,6 +8,10 @@ public class AstNodes {
     public String parserClassName;
     public String nodeCode;
     public String baseNodeCode;
+    public String unparserBeforeCode;
+    public String unparserAfterCode;
+    public String parserBeforeCode;
+    public String parserAfterCode;
     
     public RuleSpec findRuleSpec(String name) {
       for (RuleSpec rs: rules) {
