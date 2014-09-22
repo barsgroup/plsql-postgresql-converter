@@ -10,24 +10,27 @@ import br.com.porcelli.parser.plsql.PLSQLParser;
 public class PackageConversionTransformer {
 	
 	public static void transformAllPackages(_baseNode tree) throws Exception {
+		ScopeAssignment sa = ScopeAssignment.compute(tree);
 		List<create_package_body> packageNodes = AstUtil.getDescendantsOfType(tree, create_package_body.class);
 		for (create_package_body packageNode: packageNodes) {
-			transformPackage(packageNode);
+			transformPackage(packageNode, sa);
 		}
 	}
 
-	public static void transformPackage(create_package_body packageNode) throws Exception {
-		PackageConversionTransformer transformer = new PackageConversionTransformer(packageNode);
+	public static void transformPackage(create_package_body packageNode, ScopeAssignment sa) throws Exception {
+		PackageConversionTransformer transformer = new PackageConversionTransformer(packageNode, sa);
 		transformer.transform();
 	}
 	
+	ScopeAssignment sa;
 	String packageName;
 	create_package_body body;
 	
 	List<sql_script_item> packageContents = new ArrayList<sql_script_item>();
 	
-	private PackageConversionTransformer(create_package_body packageNode) throws Exception {
+	private PackageConversionTransformer(create_package_body packageNode, ScopeAssignment sa) throws Exception {
 		this.body = packageNode;
+		this.sa = sa;
 	}
 
 	private void transform() throws Exception {
@@ -40,11 +43,10 @@ public class PackageConversionTransformer {
 				} else if (item instanceof create_function_body) {
 					transformFunctionBody((create_function_body)item);
 				} else {
-					throw new Exception(
-						String.format("Don't know how to handle %s at %d:%d", item.getClass().getName(), item._getLine(), item._getCol())
-					);
+					System.err.printf("Don't know how to handle %s at %d:%d\n", item.getClass().getName(), item._getLine(), item._getCol());
 				}
 			} catch (Exception ex) {
+				System.err.printf("While converting %s at %d:%d:\n", item.getClass().getName(), item._getLine(), item._getCol());
 				ex.printStackTrace();
 			}
 			//procedure_spec, function_spec, variable_declaration, subtype_declaration, cursor_declaration, exception_declaration, record_declaration, table_declaration, create_procedure_body, create_function_body, create_type
@@ -70,6 +72,7 @@ public class PackageConversionTransformer {
 			((body_mode)item.function_impl).block.body.set_label_name(null);
 		}
 		packageContents.add(item);
+		transformReferences(item, name);
 	}
 
 	private void transformProcedureBody(create_procedure_body item) {
@@ -84,10 +87,38 @@ public class PackageConversionTransformer {
 			((body_mode)item.create_procedure_body_impl).block.body.set_label_name(null);
 		}
 		packageContents.add(item);
+		transformReferences(item, name);
 	}
 
 	private void findPackageName() {
 		String tokenValue = body.package_name.ids.get(body.package_name.ids.size() - 1).value;
 		packageName = AstUtil.normalizeId(tokenValue);
+	}
+
+	private void transformReferences(create_function_or_procedure_body fn, String name) {
+		ScopeEntry scopeEntry = sa.defToScopeEntry.get(fn);
+		if (scopeEntry == null) {
+			System.err.printf("Function at %s at %d:%d does not have scope entry\n", name, fn._getLine(), fn._getCol());
+			return;
+		}
+		for (general_element_item refItem: scopeEntry.references) {
+			general_element callSite = (general_element)refItem._getParent();
+			int idx = callSite.general_element_items.indexOf(refItem);
+			if (ScopeAssignment.isInSqlStatement(callSite)) {
+				if (idx == callSite.general_element_items.size() - 1) {
+					continue;
+				}
+				if (callSite.general_element_items.get(idx + 1) instanceof function_argument) {
+					continue;
+				}
+			}
+			while (idx > 0) {
+				general_element_item item0 = callSite.general_element_items.get(0);
+				callSite.remove_general_element_items(0);
+				MiscConversionsTransformer.reattachCommentsFromDeletedNodes(callSite, item0);
+				--idx;
+			}
+			((general_element_id)refItem).id.set_value(name);
+		}
 	}
 }
