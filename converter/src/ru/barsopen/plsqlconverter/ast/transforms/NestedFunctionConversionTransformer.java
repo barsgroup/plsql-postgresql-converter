@@ -251,6 +251,9 @@ public class NestedFunctionConversionTransformer {
 		List<general_element> elts = FunctionNamedResultConversionTransformer.getOwnNodesOfType(func_node, general_element.class);
 		for (general_element elt: elts) {
 			Scope scope = sa.generalElementToScope.get(elt);
+			if (scope == null) {
+				continue;
+			}
 			_baseNode target = ScopeAssignment.getGeneralElementInitialTarget((general_element_id)elt.general_element_items.get(0), scope);
 			if (target != null) {
 				addReferenced(target);
