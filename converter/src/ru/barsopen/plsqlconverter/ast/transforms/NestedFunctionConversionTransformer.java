@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
 
@@ -16,10 +18,12 @@ import ru.barsopen.plsqlconverter.util.AttachedComments;
 
 public class NestedFunctionConversionTransformer {
 	
+	static boolean isDebugEnabled = false;
+	
 	public static void transformAll(_baseNode tree) throws Exception {
-		List<create_function_body> functionClauses = AstUtil.getDescendantsOfType(tree, create_function_body.class);
+		List<create_function_or_procedure_body> functionClauses = AstUtil.getDescendantsOfType(tree, create_function_or_procedure_body.class);
 		Collections.reverse(functionClauses);
-		for (create_function_body clause: functionClauses) {
+		for (create_function_or_procedure_body clause: functionClauses) {
 			if (clause._getParent() instanceof block) {
 				new NestedFunctionConversionTransformer(clause).transform();
 			}
@@ -27,10 +31,11 @@ public class NestedFunctionConversionTransformer {
 	}
 	
 	block parentBlock;
-	create_function_body func_node;
-	create_function_body parentFuncNode;
+	create_function_or_procedure_body func_node;
+	create_function_or_procedure_body toplevelFuncNode;
+	List<create_function_or_procedure_body> owningFuncNodes = new ArrayList<create_function_or_procedure_body>();
 	
-	private NestedFunctionConversionTransformer(create_function_body clause) {
+	private NestedFunctionConversionTransformer(create_function_or_procedure_body clause) {
 		func_node = clause;
 		parentBlock = (block)clause._getParent();
 	}
@@ -43,12 +48,8 @@ public class NestedFunctionConversionTransformer {
 	List<parameter> addedParameters = new ArrayList<parameter>();
 	
 	private void transform() {
-		if (!verifyFuncIsDirectlyUnderFunction()) {
-			return;
-		}
-
-		parentFuncNode = (create_function_body)((body_mode)parentBlock._getParent())._getParent();
-		funcName = AstUtil.normalizeId(func_node.function_name.ids.get(func_node.function_name.ids.size() - 1).value);
+		findParentFuncNode();
+		funcName = AstUtil.normalizeId(findNameNode(func_node).value);
 		functionScope = getScope(func_node);
 		findFreeVariables();
 		findFunctionCalls();
@@ -57,7 +58,7 @@ public class NestedFunctionConversionTransformer {
 		moveFunctionToSibling();
 		transformCallSites();
 		
-		if (false) {
+		if (isDebugEnabled) {
 			System.out.printf("Inner function %s\n", ProcedureToFunctionConversionTransformer.get_function_name(func_node));
 			for (Entry<String, _baseNode> entry: referenced.entrySet()) {
 				System.out.printf(" references external variable %s (defined at %d:%d) from:\n", entry.getKey(), entry.getValue()._getLine(), entry.getValue()._getCol());
@@ -73,9 +74,43 @@ public class NestedFunctionConversionTransformer {
 		}
 	}
 
+	public static id findNameNode(create_function_or_procedure_body func) {
+		List<id> ids;
+		if (func instanceof create_function_body) {
+			ids = ((create_function_body)func).function_name.ids;
+		} else {
+			ids = ((create_procedure_body)func).procedure_name.ids;
+		}
+		return ids.get(ids.size() - 1);
+	}
+
+	private void findParentFuncNode() {
+		_baseNode node = func_node._getParent();
+		while (node != null) {
+			if (node instanceof create_function_or_procedure_body) {
+				owningFuncNodes.add((create_function_or_procedure_body)node);
+			}
+			node = node._getParent();
+		}
+		toplevelFuncNode = owningFuncNodes.get(owningFuncNodes.size() - 1);
+	}
+
 	private void renameFunction() {
-		String parentFuncName = AstUtil.normalizeId(parentFuncNode.function_name.ids.get(parentFuncNode.function_name.ids.size() - 1).value);
-		id nameNode = func_node.function_name.ids.get(func_node.function_name.ids.size() - 1);
+		StringBuilder newNameSb = new StringBuilder();
+		StringBuilder nestedFnSb = new StringBuilder();
+		for (int i = owningFuncNodes.size() - 1; i >= 0; --i) {
+			String intermediateName = AstUtil.normalizeId(findNameNode(owningFuncNodes.get(i)).value);
+			if (i != owningFuncNodes.size() - 1) {
+				newNameSb.append("_");
+				nestedFnSb.append(" / ");
+			}
+			newNameSb.append(intermediateName);
+			nestedFnSb.append(intermediateName);
+		}
+		newNameSb.append("_");
+		newNameSb.append(funcName);
+		newFuncName = newNameSb.toString();
+		id nameNode = findNameNode(func_node);
 		if (nameNode.getAttachedComments() == null) {
 			nameNode.setComments(new AttachedComments());
 		}
@@ -85,30 +120,42 @@ public class NestedFunctionConversionTransformer {
 				String.format(
 					"-- Converted from inner function %s of function %s \n", 
 					funcName,
-					parentFuncName
+					nestedFnSb.toString()
 				)
 			)
 		);
-		newFuncName = String.format("%s_%s", parentFuncName, funcName);
 		nameNode.set_value(newFuncName);
 	}
 
 	private void moveFunctionToSibling() {
 		parentBlock.remove_declare_specs(func_node);
-		if (parentFuncNode.is_SQL92_RESERVED_CREATE()) {
-			func_node.set_SQL92_RESERVED_CREATE(AstUtil.createAstNode(PLSQLPrinter.SQL92_RESERVED_CREATE));
+		boolean isCreate = false, isReplace = false;
+		if (toplevelFuncNode instanceof create_procedure_body) {
+			create_procedure_body p = (create_procedure_body)toplevelFuncNode;
+			isCreate = p.is_SQL92_RESERVED_CREATE();
+			isReplace = p.is_REPLACE_VK();
+		} else {
+			create_function_body p = (create_function_body)toplevelFuncNode;
+			isCreate = p.is_SQL92_RESERVED_CREATE();
+			isReplace = p.is_REPLACE_VK();
 		}
-		if (parentFuncNode.is_REPLACE_VK()) {
-			func_node.set_REPLACE_VK(AstUtil.createAstNode(PLSQLPrinter.REPLACE_VK));
+		if (func_node instanceof create_procedure_body) {
+			create_procedure_body p = (create_procedure_body)func_node;
+			p.set_SQL92_RESERVED_CREATE(isCreate ? AstUtil.createAstNode(PLSQLPrinter.SQL92_RESERVED_CREATE) : null);
+			p.set_REPLACE_VK(isReplace ? AstUtil.createAstNode(PLSQLPrinter.REPLACE_VK) : null);
+		} else {
+			create_function_body p = (create_function_body)func_node;
+			p.set_SQL92_RESERVED_CREATE(isCreate ? AstUtil.createAstNode(PLSQLPrinter.SQL92_RESERVED_CREATE) : null);
+			p.set_REPLACE_VK(isReplace ? AstUtil.createAstNode(PLSQLPrinter.REPLACE_VK) : null);
 		}
 		
-		if (parentFuncNode._getParent() instanceof sql_script) {
-			sql_script script = (sql_script)parentFuncNode._getParent();
-			int idx = script.sql_script_items.indexOf(parentFuncNode);
+		if (toplevelFuncNode._getParent() instanceof sql_script) {
+			sql_script script = (sql_script)toplevelFuncNode._getParent();
+			int idx = script.sql_script_items.indexOf(toplevelFuncNode);
 			script.insert_sql_script_items(idx, func_node);
-		} else if (parentFuncNode._getParent() instanceof create_package_body) {
-			create_package_body pkg = (create_package_body)parentFuncNode._getParent();
-			int idx = pkg.package_obj_bodys.indexOf(parentFuncNode);
+		} else if (toplevelFuncNode._getParent() instanceof create_package_body) {
+			create_package_body pkg = (create_package_body)toplevelFuncNode._getParent();
+			int idx = pkg.package_obj_bodys.indexOf(toplevelFuncNode);
 			pkg.insert_package_obj_bodys(idx, func_node);
 		}
 	}
@@ -127,7 +174,11 @@ public class NestedFunctionConversionTransformer {
 					null
 				);
 				addedParameters.add(newParam);
-				func_node.parameters.add_parameters(newParam);
+				if (func_node instanceof create_function_body) {
+					((create_function_body)func_node).parameters.add_parameters(newParam);
+				} else {
+					((create_procedure_body)func_node).parameters.add_parameters(newParam);
+				}
 			} else if (defNode instanceof variable_declaration) {
 				variable_declaration defVar = (variable_declaration)defNode;
 				parameter newParam = parser.make_parameter(
@@ -140,13 +191,13 @@ public class NestedFunctionConversionTransformer {
 					null
 				);
 				addedParameters.add(newParam);
-				func_node.parameters.add_parameters(newParam);
+				if (func_node instanceof create_function_body) {
+					((create_function_body)func_node).parameters.add_parameters(newParam);
+				} else {
+					((create_procedure_body)func_node).parameters.add_parameters(newParam);
+				}
 			}
 		}
-		type_spec return_type_spec = ProcedureToFunctionConversionTransformer.computeFuncionReturnTypeSpec(func_node.parameters);
-		type_spec old_type_spec = func_node.type_spec;
-		func_node.set_type_spec(return_type_spec);
-		MiscConversionsTransformer.reattachCommentsFromDeletedNodes(return_type_spec, old_type_spec);
 	}
 
 	private void transformCallSites() {
@@ -182,14 +233,6 @@ public class NestedFunctionConversionTransformer {
 		}
 	}
 
-	private boolean verifyFuncIsDirectlyUnderFunction() {
-		if (!(parentBlock._getParent() instanceof body_mode)) {
-			System.err.printf("WARNING: Inner function %s is not directly under other function/procedure; can't transorm it\n", ProcedureToFunctionConversionTransformer.get_function_name(func_node));
-			return false;
-		}
-		return true;
-	}
-
 	private void findFunctionCalls() {
 		List<general_element> elts = AstUtil.getDescendantsOfType(parentBlock.body, general_element.class);
 		for (general_element elt: elts) {
@@ -205,7 +248,7 @@ public class NestedFunctionConversionTransformer {
 	}
 
 	private void findFreeVariables() {
-		List<general_element> elts = AstUtil.getDescendantsOfType(func_node.function_impl, general_element.class);
+		List<general_element> elts = FunctionNamedResultConversionTransformer.getOwnNodesOfType(func_node, general_element.class);
 		for (general_element elt: elts) {
 			String referencedName = getReferencedVariableName(elt);
 			if (referencedName != null) {
@@ -225,6 +268,10 @@ public class NestedFunctionConversionTransformer {
 		if (elt._getParent() instanceof seq_of_statements || elt._getParent() instanceof labeled_statement) {
 			return null;
 		}
+		String rv1 = getReferencedVariableNameAsCollectionMethod(elt);
+		if (rv1 != null) {
+			return rv1;
+		}
 		boolean hasCalls = false;
 		id lastId = null;
 		for (general_element_item item: elt.general_element_items) {
@@ -240,6 +287,52 @@ public class NestedFunctionConversionTransformer {
 		}
 		String name = AstUtil.normalizeId(lastId.value);
 		return name;
+	}
+
+	private static String getReferencedVariableNameAsCollectionMethod(
+			general_element elt) {
+		List<general_element_item> items = new ArrayList<general_element_item>(elt.general_element_items);
+		if (items.get(items.size() - 1) instanceof function_argument) {
+			items.remove(items.size() - 1);
+		}
+
+		boolean hasCalls = false;
+		for (general_element_item item: items) {
+			if (item instanceof function_argument) {
+				hasCalls = true;
+				break;
+			}
+		}
+		if (hasCalls) {
+			return null;
+		}
+
+		if (items.size() >= 2) {
+			id lastId = ((general_element_id)items.get(items.size() - 1)).id;
+			String lastAttr = AstUtil.normalizeId(lastId.value);
+			if (collectionMethodNames.contains(lastAttr)) {
+				id prevId = ((general_element_id)items.get(items.size() - 2)).id;
+
+				String name = AstUtil.normalizeId(prevId.value);
+				return name;
+			}
+		}
+		
+		return null;
+	}
+	
+	static Set<String> collectionMethodNames = new HashSet<String>();
+	{
+		collectionMethodNames.add("EXISTS");
+		collectionMethodNames.add("COUNT");
+		collectionMethodNames.add("LIMIT");
+		collectionMethodNames.add("FIRST");
+		collectionMethodNames.add("LAST");
+		collectionMethodNames.add("PRIOR");
+		collectionMethodNames.add("NEXT");
+		collectionMethodNames.add("EXTEND");
+		collectionMethodNames.add("TRIM");
+		collectionMethodNames.add("DELETE");
 	}
 
 	private static Map<String, _baseNode> getScope(_baseNode node) {

@@ -32,15 +32,22 @@ public class ProcedureToFunctionConversionTransformer {
 		}
 	}
 
-	public static String get_function_name(create_function_body func_node) {
+	public static String get_function_name(create_function_or_procedure_body func_node) {
 		String packageName = get_function_package_name(func_node);
-		id nameNode = func_node.function_name.ids.get(func_node.function_name.ids.size() - 1);
+
+		List <id> ids;
+		if (func_node instanceof create_function_body) {
+			ids = ((create_function_body)func_node).function_name.ids;
+		} else {
+			ids = ((create_procedure_body)func_node).procedure_name.ids;
+		}
+		id nameNode = ids.get(ids.size() - 1);
 		String name = AstUtil.normalizeId(nameNode.value);
 		String result = String.format("%s.%s@%d:%d", packageName, name, nameNode._line, nameNode._col);
 		return result;
 	}
 
-	private static String get_function_package_name(create_function_body func_node) {
+	private static String get_function_package_name(create_function_or_procedure_body func_node) {
 		_baseNode parent = func_node._getParent();
 		while (parent != null) {
 			if (parent instanceof create_package_body) {
