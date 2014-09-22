@@ -245,7 +245,7 @@ public class MiscConversionsTransformer {
 		}
 	}
 
-	private static void reattachCommentsFromDeletedNodes(_baseNode new_node, _baseNode old_node) {
+	public static void reattachCommentsFromDeletedNodes(_baseNode new_node, _baseNode old_node) {
 		List<id> old_ids = AstUtil.getDescendantsOfType(old_node, id.class);
 		Set<id> new_ids = new HashSet<id>(AstUtil.getDescendantsOfType(new_node, id.class));
 		List<id> deleted_ids = new ArrayList<id>();

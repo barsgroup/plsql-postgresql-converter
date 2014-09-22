@@ -34,6 +34,15 @@ if (_comments != null) {
 }
 "
 
+@parserBeforeCode
+"
+if (_i < tree.getChildCount() && tree.getChild(_i).getType() == ru.barsopen.plsqlconverter.PLSQLPrinter.COMMENT) {
+  org.antlr.runtime.tree.Tree commentsNode = tree.getChild(_i);
+  _result.setComments(ru.barsopen.plsqlconverter.util.AttachedComments.fromTree(commentsNode));
+  ++_i;
+}
+"
+
 compilation_unit: COMPILATION_UNIT unit_statement*;
 
 sql_script: SQL_SCRIPT sql_script_item+;
