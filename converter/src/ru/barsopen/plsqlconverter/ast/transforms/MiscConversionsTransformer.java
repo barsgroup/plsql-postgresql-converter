@@ -317,10 +317,15 @@ public class MiscConversionsTransformer {
 		node._walk(new _visitor() {
 			public void visit(Tree nonNode) {
 			}
-			public void visit(_baseNode node) {
+			@Override
+			public boolean enter(_baseNode node) {
 				if (node == new_node || node instanceof id) {
 					elts.add(node);
 				}
+				return true;
+			}
+			@Override
+			public void leave(_baseNode node) {
 			}
 		});
 		return elts;

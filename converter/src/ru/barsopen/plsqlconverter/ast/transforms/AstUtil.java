@@ -196,10 +196,15 @@ public class AstUtil {
 			public void visit(Tree nonNode) {
 			}
 			@SuppressWarnings("unchecked")
-			public void visit(_baseNode node) {
+			@Override
+			public boolean enter(_baseNode node) {
 				if (klass.isAssignableFrom(node.getClass())) {
 					elts.add((T)node);
 				}
+				return true;
+			}
+			@Override
+			public void leave(_baseNode node) {
 			}
 		});
 		return elts;
