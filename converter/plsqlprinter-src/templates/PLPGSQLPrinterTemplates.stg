@@ -1,0 +1,111 @@
+group PLPGSQLPrinterTemplates;
+
+create_function_body(
+  is_create, is_replace, name_parts, arguments,
+  return_type, add_clauses, is_pipelined, block
+) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>function <name_parts; separator="."> (<arguments; separator=",\n">)
+returns <return_type>
+<add_clauses; separator=" ">
+<if (is_pipelined)>pipelined<endif>
+
+as $$
+#variable_conflict use_column
+<block>;
+$$
+language plpgsql;
+>>
+
+
+case_statement_simple(expression, is_statement, case_when_parts, case_else_part) ::= <<
+case <expression>
+  <case_when_parts; separator="\n"><if (case_else_part)>
+  
+  <case_else_part><endif>
+end<if (is_statement)> case<endif>
+>>
+
+case_statement_searched(case_when_parts, is_statement, case_else_part) ::= <<
+case
+  <case_when_parts; separator="\n"><if (case_else_part)>
+  
+  <case_else_part><endif>
+end<if (is_statement)> case<endif>
+>>
+
+perform_statement_expr(inner) ::= "perform <inner>"
+
+perform_statement_sql(inner) ::= "perform (<inner>)"
+
+into_clause(is_bulk_collect, is_strict, general_elements) ::= <<
+<if (is_bulk_collect)>bulk collect <endif>into<if (is_strict)> strict<endif> <general_elements; separator=", ">
+>>
+
+pgsql_typed_literal(type, string) ::= "<type> <string>"
+
+execute_immediate_statement(expression, into_clause, using_clause, dynamic_returning_clause) ::= <<
+execute <expression><if (into_clause)>
+
+<into_clause>
+<endif><if (using_clause)>
+
+<using_clause>
+<endif><if (dynamic_returning_clause)>
+
+<dynamic_returning_clause>
+<endif>
+>>
+
+subquery_operation_part_minus() ::= "except"
+
+native_datatype_number() ::= "numeric"
+native_datatype_nchar() ::= "char"
+native_datatype_nvarchar2() ::= "varchar"
+native_datatype_varchar2() ::= "varchar"
+native_datatype_date() ::= "timestamp"
+native_datatype_long() ::= "text"
+native_datatype_long_raw() ::= "bytea"
+native_datatype_blob() ::= "bytea"
+native_datatype_clob() ::= "text"
+native_datatype_nclob() ::= "text"
+native_datatype_bfile() ::= "bytea"
+native_datatype_raw() ::= "bytea"
+native_datatype_rowid() ::= "oid"
+native_datatype_float() ::= "double precision"
+native_datatype_dec() ::= "decimal"
+native_datatype_int() ::= "integer"
+native_datatype_binary_float() ::= "double precision"
+native_datatype_binary_integer() ::= "integer"
+native_datatype_pls_integer() ::= "integer"
+native_datatype_bigint() ::= "bigint"
+
+pgsql_raise_statement(level, format, expressions, options) ::= <<
+raise <level> <format><if (expressions)>, <expressions; separator=", "><endif><if (options)> <options><endif>
+>>
+
+pgsql_raise_using_options(options) ::= <<
+using <options>
+>>
+    
+pgsql_raise_using_option(option_name, expression) ::= <<
+<option_name> = <expression>
+>>
+
+pgsql_raise_using_option_name_errcode() ::= "errcode"
+
+pgsql_raise_level_notice() ::= "notice"
+pgsql_raise_level_exception() ::= "exception"
+
+cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
+<cursor_name> cursor<if (parameters)>(<parameters; separator=", ">)<endif>
+<if (type_spec)> return <type_spec><endif>
+<if (select_statement)> for
+  <select_statement>
+<endif>;
+>>
+
+function_argument(valueExpr, name) ::= "<if (name)><name> := <endif><valueExpr>"
+
+loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
+<indexVar> in <if (isReverse)>reverse <upperBound>..<lowerBound><else><lowerBound>..<upperBound><endif>
+>>

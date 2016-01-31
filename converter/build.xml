@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="plsqlconverter">
+    <property environment="env"/>
+    <property name="dir.src" location="src"/>
+    <property name="dir.scripts.src" location="scripts-src"/>
+    <property name="dir.plsqlprinter.src" location="plsqlprinter-src"/>
+    <property name="dir.plsqlprinter.templates" location="plsqlprinter-src/templates"/>
+    <property name="dir.typed_ast.gensrc" location="src/ru/barsopen/plsqlconverter/ast/typed"/>
+    <property name="dir.typed_ast.src" location="typedast-source"/>
+    
+    <path id="plsqlconverter.classpath">
+        <pathelement location="lib/lexer-parser-walker-1.0-SNAPSHOT.jar"/>
+        <pathelement location="lib/antlr-runtime-3.5.2.jar"/>
+        <pathelement location="lib/stringtemplate-3.2.1.jar"/>
+        <pathelement location="lib/antlr-2.7.7.jar"/>
+        <pathelement location="lib/commons-io-2.4.jar"/>
+    </path>
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+        <mkdir dir="output"/>
+        
+        <uptodate property="plsqlprinter.notRequired">
+          <srcfiles dir="${dir.plsqlprinter.src}" includes="PLSQLParser.tokens"/>
+          <srcfiles dir="${dir.plsqlprinter.src}" includes="*.g"/>
+          <mapper type="merge" to="${dir.plsqlprinter.src}/generated/ru/barsopen/plsqlconverter/PLSQLPrinter.java"/>
+        </uptodate>
+        
+        <uptodate property="typedast.notRequired">
+          <srcfiles dir="${dir.typed_ast.src}" includes="plsql.txt"/>
+          <srcfiles dir="${dir.typed_ast.src}/asttypgen-binary" includes="*.jar"/>
+          <mapper type="merge" to="${dir.typed_ast.gensrc}/parser.java"/>
+        </uptodate>
+    </target>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="output"/>
+        <delete dir="plsqlprinter-src/generated"/>
+        <delete dir="${dir.typed_ast.gensrc}"/>
+    </target>
+    
+    <target name="build-plsqlprinter" depends="init" unless="plsqlprinter.notRequired">
+      <delete dir="plsqlprinter-src/generated"/>
+      <mkdir dir="plsqlprinter-src/generated/ru/barsopen/plsqlconverter" />
+      <exec dir="plsqlprinter-src" executable="java">
+        <arg value="-cp"/>
+        <arg value="tools/antlr-3.5.2.jar:tools/antlr-runtime-3.5.2.jar:tools/ST4-4.0.8.jar"/>
+        <arg value="org.antlr.Tool"/>
+        <arg value="-lib"/>
+        <arg value="."/>
+        <arg value="-o"/>
+        <arg value="generated/ru/barsopen/plsqlconverter"/>
+        <arg value="PLSQLPrinter.g"/>
+      </exec>
+    </target>
+    
+    <target name="build-typedast" depends="init" unless="typedast.notRequired">
+      <delete dir="${dir.typed_ast.gensrc}"/>
+      <exec dir="${dir.typed_ast.src}" executable="java">
+        <arg value="-jar"/>
+        <arg value="asttypgen-binary/asttypgen.jar"/>
+        <arg value="plsql.txt"/>
+        <arg value="${dir.src}"/>
+      </exec>
+    </target>
+    
+    <target depends="init,build-plsqlprinter,build-typedast" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="source,lines,vars" destdir="bin" includeantruntime="false" source="1.7" target="1.7">
+            <src path="src"/>
+            <src path="plsqlprinter-src/generated"/>
+            <classpath refid="plsqlconverter.classpath"/>
+        </javac>
+        <copy todir="output">
+          <fileset dir="lib" includes="*.jar"/>
+          <fileset dir="${dir.scripts.src}">
+            <include name="plsqlconvert" />
+          </fileset>
+        </copy>
+        <jar destfile="output/plsqlconverter.jar">
+          <fileset dir="bin" />
+          <fileset dir="${dir.plsqlprinter.templates}" includes="**/*.stg" />
+          <manifest>
+            <attribute name="Main-Class" value="ru.barsopen.plsqlconverter.Main" />
+            <attribute name="Class-Path" value="lexer-parser-walker-1.0-SNAPSHOT.jar antlr-runtime-3.5.2.jar stringtemplate-3.2.1.jar antlr-2.7.7.jar commons-io-2.4.jar" />
+          </manifest>
+        </jar>
+        <chmod perm="ug+x" type="file">
+          <fileset dir="output">
+            <include name="plsqlconvert" />
+          </fileset>
+        </chmod>
+    </target>
+</project>

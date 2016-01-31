@@ -1,0 +1,1050 @@
+group PLSQLPrinterTemplates;
+
+string_literal(val) ::= "<val>"
+
+create_function_body(
+  is_create, is_replace, name_parts, arguments,
+  return_type, add_clauses, is_pipelined, block
+) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>function <name_parts; separator="."><if (arguments)>
+  (<arguments; separator=",\n">)<endif>
+return <return_type>
+<add_clauses; separator=" ">
+<if (is_pipelined)>pipelined<endif>
+
+is
+<block>;
+>>
+
+parameter(
+  name, is_in, is_out, is_inout, is_nocopy, type, default_value_part
+) ::= <<
+<name><if (is_in)>
+ IN<endif><if (is_out)> OUT<endif><if (is_inout)> IN OUT
+<endif><if (is_nocopy)>
+ NOCOPY
+<endif> <type><if (default_value_part)> <default_value_part><endif>
+>>
+
+default_value_part(expression) ::= "default <expression>"
+
+base_type_spec_precision(
+  size1, size2, is_byte, is_char
+) ::= <<
+(<size1><if (is_byte)> byte<elseif (is_char)> char<endif><if (size2)>, <size2><endif>)
+<endif>
+>>
+
+base_type_spec(
+  baseName, precision, is_with_time_zone, is_time_zone_local
+) ::= <<
+<baseName><precision><if (is_with_time_zone)>
+ with<if (is_time_zone_local)> local<endif> time zone
+<endif>
+>>
+
+body(
+  bodyLabel, statements, exception_clause
+) ::= <<
+begin
+  <statements>
+<exception_clause>
+end<if (bodyLabel)> <bodyLabel><endif>
+>>
+
+seq_of_statements(statements) ::= <<
+<statements:{statement|<statement>;}; separator="\n">
+>>
+
+labeled_statement(name, statement) ::= <<
+\<\<<name>\>\>
+<statement>
+>>
+
+return_statement(expression) ::= "return<if (expression)> <expression><endif>"
+
+null_statement() ::= "null"
+
+case_statement_simple(expression, case_when_parts, case_else_part) ::= <<
+case <expression>
+  <case_when_parts; separator="\n"><if (case_else_part)>
+  
+  <case_else_part><endif>
+end
+>>
+
+case_statement_searched(case_when_parts, case_else_part) ::= <<
+case
+  <case_when_parts; separator="\n"><if (case_else_part)>
+  
+  <case_else_part><endif>
+end
+>>
+
+case_when_part_statements(condition, seq_of_statements) ::= <<
+when <condition>
+then
+  <seq_of_statements>
+>>
+
+case_when_part_expression(condition, expression) ::= <<
+when <condition> then <expression>
+>>
+
+case_else_part_statements(seq_of_statements) ::= <<
+else
+  <seq_of_statements>
+>>
+
+case_else_part_expression(expression) ::= <<
+else <expression>
+>>
+
+general_element(parts) ::= "<parts>"
+
+function_argument(valueExpr, name) ::= "<if (name)><name> => <endif><valueExpr>"
+
+function_arguments(arguments) ::= <<
+(<arguments; separator=", ">)
+>>
+
+maybe_parens(expr, omit) ::= <<
+<if (omit)><expr><else>(<expr>)<endif>
+>>
+
+expression_element_generic_binop(op, arg1, arg2, omit_parens_1, omit_parens_2) ::= <<
+<maybe_parens(expr=arg1, omit=omit_parens_1)> <op> <maybe_parens(expr=arg2, omit=omit_parens_2)>
+>>
+expression_element_generic_suffix_unary_op(op, arg, omit_parens) ::= "<maybe_parens(expr=arg, omit=omit_parens)> <op>"
+expression_element_generic_prefix_unary_op(op, is_spaced, arg, omit_parens) ::= "<op><if (is_spaced)> <endif><maybe_parens(expr=arg, omit=omit_parens)>"
+expression_element_cursor_op(cursor_name, op) ::= "<cursor_name><op>"
+expression_element_in(expr, in_elements) ::= "<expr> in <in_elements>"
+expression_element_not_in(expr, in_elements) ::= "<expr> not in <in_elements>"
+expression_element_prior(expr) ::= "prior <expr>"
+expression_element_dot_star(tableview_name) ::= "<tableview_name>.*"
+expression_element_like(text, like_op, pattern, escape_char, omit_parens_text, omit_parens_pattern, omit_parens_escape) ::= <<
+<maybe_parens(expr=text, omit=omit_parens_text)> <like_op> <maybe_parens(expr=pattern, omit=omit_parens_pattern)><if (escape_char)> escape <maybe_parens(expr=escape_char, omit=omit_parens_escape)><endif>
+>>
+expression_element_not(expr, omit_parens) ::= "not<if (omit_parens)> <expr><else>(<expr>)<endif>"
+expression_element_outer_join_sign(expr) ::= "<expr>(+)"
+expression_element_quantified_expr(subquery_or_expression, is_some, is_any, is_all, is_exists) ::= <<
+<if (is_some)>some<elseif (is_any)>any<elseif (is_all)>all<elseif (is_exists)>exists<endif>(<subquery_or_expression>)
+>>
+expression_element_between(expr, is_not, expr_low, expr_high) ::= <<
+<expr> <if (is_not)>not <endif>between <expr_low> and <expr_high>
+>>
+
+standard_function_count(is_distinct, is_unique, is_all, is_asterisk, expression, over_clause) ::= <<
+count(<if (is_distinct)>
+distinct <elseif(is_unique)>unique <elseif(is_all)>all <endif><if (is_asterisk)>*<else><expression>
+<endif>)<if (over_clause)> <over_clause><endif>
+>>
+
+standard_function_enabling_over(function_name, function_arguments, over_clause) ::= <<
+<function_name><function_arguments><if (over_clause)> <over_clause><endif>
+>>
+
+standard_function_enabling_within(function_name, function_arguments, within_clause) ::= <<
+<function_name><function_arguments><if (within_clause)> <within_clause><endif>
+>>
+
+within_clause(order_by_clause) ::= <<
+within group (<order_by_clause>)
+>>
+
+standard_function_cast(subquery_or_expression, type_spec) ::= <<
+cast(<subquery_or_expression> as <type_spec>)
+>>
+
+standard_function_xmlcast(expression, type_spec) ::= <<
+cast(<expression> as <type_spec>)
+>>
+
+standard_function_extract(part, expression) ::= <<
+extract(<part> from <expression>)
+>>
+
+standard_function_translate(expr, expr_from, expr_to) ::= <<
+translate(<expr>, <expr_from>, <expr_to>)
+>>
+
+standard_function_trim(text_expr, trim_char_expr, trim_kind) ::= <<
+trim(<if (trim_char_expr)><if (trim_kind)><trim_kind> <endif><trim_char_expr> from <endif><text_expr>)
+>>
+
+trim_kind_leading() ::= "leading"
+trim_kind_trailing() ::= "trailing"
+trim_kind_both() ::= "both"
+
+
+for_loop(loopDefinition, statements) ::= <<
+for <loopDefinition> loop
+  <statements>
+end loop
+>>
+
+loopDefinition_bounds(indexVar, isReverse, lowerBound, upperBound) ::= <<
+<indexVar> in<if (isReverse)> reverse<endif> <lowerBound>..<upperBound>
+>>
+
+loopDefinition_cursor(indexVar, cursor) ::= <<
+<indexVar> in <cursor>
+>>
+
+loopDefinition_select(indexVar, select_statement) ::= <<
+<indexVar> in
+(
+  <select_statement>
+)
+>>
+
+while_loop(condition, seq_of_statements) ::= <<
+while <condition> loop
+  <seq_of_statements>
+end loop
+>>
+
+loop(seq_of_statements) ::= <<
+loop
+  <seq_of_statements>
+end loop
+>>
+
+select_statement(subquery_factoring_clause, subquery, order_by_clause, for_update_clause) ::= <<
+<if (subquery_factoring_clause)><subquery_factoring_clause><endif>
+<subquery><if (order_by_clause)>
+
+<order_by_clause>
+<endif>
+<if (for_update_clause)>
+
+<for_update_clause>
+<endif>
+>>
+
+subquery(subquery_basic_elements, subquery_operation_parts) ::= <<
+<subquery_basic_elements>
+<if (subquery_operation_parts)>
+<subquery_operation_parts; separator="\n">
+<endif>
+>>
+
+subquery_operation_part(operator, is_all, subquery_basic_elements) ::= <<
+<operator><if (is_all)> all<endif> <subquery_basic_elements>
+>>
+
+subquery_operation_part_union() ::= "union"
+subquery_operation_part_intersect() ::= "intersect"
+subquery_operation_part_minus() ::= "minus"
+
+in_parens(val) ::= "(<val>)"
+
+query_block(
+  is_distinct, is_unique, is_all, is_asterisk, selected_elements,
+  into_clause, from_clause, where_clause, hierarchical_query_clause, group_by_clause, model_clause
+) ::= <<
+select <if (is_distinct)>
+distinct 
+<elseif (is_unique)>
+unique
+<elseif (is_all)>
+all
+<endif>
+<if (is_asterisk)>
+*
+<else>
+<selected_elements; separator=",\n  ">
+<endif>
+<if (into_clause)>
+
+<into_clause>
+<endif><if (from_clause)>
+
+<from_clause>
+<endif><if (where_clause)>
+
+<where_clause>
+<endif><if (hierarchical_query_clause)>
+
+<hierarchical_query_clause>
+<endif><if (group_by_clause)>
+
+<group_by_clause>
+<endif><if (model_clause)>
+
+<model_clause>
+<endif>
+>>
+
+column_alias(name) ::= "as <name>"
+table_alias(name) ::= "<name>"
+
+selected_element(expression, alias) ::= "<expression><if (alias)> <alias><endif>"
+
+from_clause(table_refs) ::= <<
+from <table_refs; separator=",\n  ">
+>>
+
+table_ref(table_ref_aux, join_clauses) ::= <<
+<table_ref_aux><if (join_clauses)>
+
+<join_clauses; separator="\n">
+<endif>
+>>
+
+join_clause(qpc1, is_cross, is_natural, is_inner, is_left, is_right, is_full, table_ref_aux, qpc2, join_on_part, join_using_part) ::= <<
+<if (qpc1)>
+<qpc1>
+<endif><if (is_cross)>
+cross
+<else><if (is_natural)>
+natural
+<endif><if (is_inner)>
+inner<elseif (is_left)>
+left<elseif (is_right)>
+right<elseif (is_full)>
+full<endif>
+<endif> join <table_ref_aux> <if (qpc2)>
+<qpc2>
+<endif>
+<if (join_on_part)><join_on_part><else><join_using_part><endif>
+>>
+
+table_ref_aux(is_only, dml_table_expression_clause, pivot_clause, unpivot_clause, flashback_query_clause, alias) ::= <<
+<if (is_only)>
+only(<dml_table_expression_clause>)
+<else>
+<dml_table_expression_clause><if (pivot_clause)> <pivot_clause><elseif (unpivot_clause)> <unpivot_clause><endif>
+<endif><if (flashback_query_clause)> <flashback_query_clause><endif><if (alias)> <alias><endif>
+>>
+
+dml_table_expression_clause_direct(table_or_view_name, sample_clause) ::= <<
+<table_or_view_name><if (sample_clause)> <sample_clause><endif>
+>>
+
+tableview_name(ids, link_name, partition_extension_clause) ::= <<
+<ids; separator="."><if (link_name)>@<link_name><endif><if (partition_extension_clause)><partition_extension_clause><endif>
+>>
+
+dml_table_expression_clause_select(select_statement, subquery_restriction_clause) ::= <<
+(<select_statement><if (subquery_restriction_clause)>
+
+<subquery_restriction_clause>
+<endif>)
+>>
+
+join_on_part(expression) ::= "on <expression>"
+
+where_clause(expression) ::= "where <expression>"
+
+order_by_clause(is_siblings, elements) ::= <<
+order<if (is_siblings)> siblings<endif> by <elements; separator=", ">
+>>
+
+order_by_elements(expression, is_asc, is_desc, is_nulls_first, is_nulls_last) ::= <<
+<expression><if (is_asc)> asc<elseif (is_desc)> desc<endif><if (is_nulls_first)> nulls first<elseif (is_nulls_last)> nulls last<endif>
+>>
+
+for_update_clause(for_update_of_part, for_update_options) ::= <<
+for update<if (for_update_of_part)> <for_update_of_part><endif><if (for_update_options)> <for_update_options><endif>
+>>
+
+for_update_of_part(column_names) ::= <<
+of <column_names; separator=",">
+>>
+
+for_update_options_skip_locked() ::= "skip locked"
+for_update_options_nowait() ::= "nowait"
+for_update_options_wait(expression) ::= "wait <expression>"
+
+create_package_spec(is_replace, name, invoker_rights_clause, items) ::= <<
+create<if (is_replace)> or replace<endif> package <name><if (invoker_rights_clause)>
+
+<invoker_rights_clause>
+<endif>
+
+is
+  <items; separator="\n\n">
+end;
+>>
+
+dotted_name(ids) ::= <<
+<ids; separator=".">
+>>
+
+procedure_spec(name, arguments) ::= <<
+procedure <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif>;
+>>
+
+function_spec(name, arguments, return_type, is_pipelined, is_result_cache, is_deterministic) ::= <<
+function <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif>
+return <return_type><if (is_pipelined)> pipelined<endif><if (is_result_cache)> result_cache<endif><if (is_deterministic)> deterministic<endif>;
+>>
+
+typespec_custom(name, is_ref, is_percent_rowtype, is_percent_type) ::= <<
+<if (is_ref)>ref <endif><name><if (is_percent_rowtype)>%rowtype<elseif (is_percent_type)>%type<endif>
+>>
+
+create_package_body(is_replace, name, items, init_section_seq_of_statements, init_section_exception_clause) ::= <<
+create<if (is_replace)> or replace<endif> package body <name>
+is
+  <items; separator="\n\n"><if (init_section_seq_of_statements)>
+
+begin
+  <init_section_seq_of_statements>
+<init_section_exception_clause>
+<endif>
+
+end;
+>>
+
+create_procedure_body(is_create, is_replace, name, arguments, invoker_rights_clause, impl) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>procedure <name><if (arguments)>(
+  <arguments; separator=",\n">)<endif><if (invoker_rights_clause)>
+
+<invoker_rights_clause>
+<endif>
+
+is
+<impl>;
+>>
+
+create_procedure_body_impl_external() ::= "external"
+
+block(declare_spec, body) ::= <<
+<if (declare_spec)>
+declare
+  <declare_spec:{v|<v>
+}>
+<endif>
+<body>
+>>
+
+variable_declaration(name, type, is_constant, is_not_null, default_value_part) ::= <<
+<name><if (is_constant)> constant<endif> <type><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>;
+>>
+
+type_decl(is_create, is_replace, type_name, oid, def) ::= <<
+<if (is_create)>create<if (is_replace)> or replace<endif> <endif>type <type_name> <if (oid)><oid> <endif><def>;
+>>
+
+object_type_def(invoker_rights_clause, object_as_or_under_part, sqlj_object_type, object_member_specs, modifier_clauses) ::= <<
+<if (invoker_rights_clause)><invoker_rights_clause> <endif><object_as_or_under_part><if (sqlj_object_type)> <sqlj_object_type>
+<endif><if (object_member_specs)>(<object_member_specs; separator=",">)<endif>
+<modifier_clauses; separator="\n">
+>>
+
+object_as_part(def) ::= <<
+is <def>
+>>
+
+object_as_part_def_object() ::= "object"
+
+object_under_part(type_spec) ::= <<
+under <type_spec>
+>>
+
+table_type_dec(name, impl) ::= <<
+type <name> is <impl>;
+>>
+
+varray_type_def(limit_expression, element_type, is_not_null) ::= <<
+varray(<limit_expression>) of <element_type><if (is_not_null)> not null<endif>
+>>
+
+table_type_dec_table_of(type_spec, table_indexed_by_part, is_not_null) ::= <<
+table of <type_spec><if (table_indexed_by_part)> <table_indexed_by_part><endif><if (is_not_null)> not null<endif>
+>>
+
+table_indexed_by_part(type_spec) ::= <<
+indexed by <type_spec>
+>>
+
+subtype_declaration(name, type_spec, range, is_not_null) ::= <<
+subtype <name> is <type_spec><if (range)> <range><endif><if (is_not_null)> not null<endif>;
+>>
+
+subtype_range(low_bound, high_bound) ::= <<
+range <low_bound>..<high_bound>
+>>
+    
+record_type_dec_record(name, field_specs) ::= <<
+type <name> is record (
+  <field_specs; separator=",\n">);
+>>
+    
+record_type_dec_refcursor(name, type_spec) ::= <<
+type <name> is ref cursor<if (type_spec)> return <type_spec><endif>;
+>>
+
+field_spec(name, type_spec, is_not_null, default_value_part) ::= <<
+<name><if (type_spec)> <type_spec><endif><if (is_not_null)> not null<endif><if (default_value_part)> <default_value_part><endif>
+>>
+
+exception_declaration(name) ::= "<name> exception;"
+
+pragma_declaration(impl) ::= "pragma <impl>;"
+
+pragma_declaration_impl_serially_reusable() ::= "serially_reusable"
+pragma_declaration_impl_serially_autonomous_transaction() ::= "autonomous_transaction"
+pragma_declaration_impl_serially_exception_init(name, numeric) ::= "exception_init (<name>, <numeric>)"
+pragma_declaration_impl_serially_inline(id, expression) ::= "inline (<id>, <expression>)"
+pragma_declaration_impl_serially_restrict_references(arg1, restArgs) ::= <<
+restrict_references (<arg1><restArgs:{v|, <v>}>)
+>>
+
+single_table_insert(insert_into_clause, values_clause, static_returning_clause, select_statement, error_logging_clause) ::= <<
+insert <insert_into_clause>
+<if (values_clause)>
+<values_clause><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif>
+<else>
+<select_statement>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+insert_into_clause(general_table_ref, columns) ::= <<
+into <general_table_ref><if (columns)>(<columns; separator=", ">)<endif>
+>>
+
+general_table_ref(is_only, dml_table_expression_clause, table_alias) ::= <<
+<if (is_only)>
+only(<dml_table_expression_clause>)
+<else>
+<dml_table_expression_clause>
+<endif>
+<if (table_alias)> <table_alias><endif>
+>>
+
+values_clause(expression_or_expression_list) ::= <<
+values <expression_or_expression_list>
+>>
+
+expression_list(expressions) ::= <<
+(<expressions; separator=",\n">)
+>>
+
+static_returning_clause(expressions, into_clause) ::= <<
+returning <expressions; separator=", "> <into_clause>
+>>
+
+into_clause(is_bulk_collect, is_strict, general_elements) ::= <<
+<if (is_bulk_collect)>bulk collect <endif>into <general_elements; separator=", ">
+>>
+
+exception_clause(exception_handlers) ::= <<
+exception
+  <exception_handlers; separator="\n">
+>>
+
+exception_handler(exception_names, seq_of_statements) ::= <<
+when <exception_names; separator=" or ">
+then
+  <seq_of_statements>
+>>
+
+update_statement(general_table_ref, update_set_elements, where_clause, static_returning_clause, error_logging_clause) ::= <<
+update <general_table_ref>
+set
+  <update_set_elements; separator=",\n"><if (where_clause)>
+  
+<where_clause>
+<endif><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+update_set_element_column_expr(column_name, expression) ::= <<
+<column_name> = <expression>
+>>
+
+update_set_element_columns_subquery(column_names, subquery) ::= <<
+(<column_names; separator=", ">) = <subquery>
+>>
+
+update_set_element_column_value(column_name, expression) ::= <<
+value(<column_name>) = <expression>
+>>
+
+if_statement(condition, then_seq_of_statements, elsif_parts, else_part) ::= <<
+if <condition> then
+  <then_seq_of_statements><if (elsif_parts)>
+  
+<elsif_parts; separator="\n">
+<endif><if (else_part)>
+
+<else_part>
+<endif>
+
+end if
+>>
+
+elsif_part(condition, seq_of_statements) ::= <<
+elsif <condition> then
+  <seq_of_statements>
+>>
+
+else_part(seq_of_statements) ::= <<
+else
+  <seq_of_statements>
+>>
+
+delete_statement(general_table_ref, where_clause, static_returning_clause, error_logging_clause) ::= <<
+delete from <general_table_ref><if (where_clause)>
+
+<where_clause>
+<endif><if (static_returning_clause)>
+
+<static_returning_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+assignment_statement(dst, expression) ::= <<
+<dst> := <expression>
+>>
+
+hierarchical_query_clause(is_nocycle, condition, start_part) ::= <<
+connect by<if (is_nocycle)> nocycle<endif> <condition><if (start_part)> <start_part><endif>
+>>
+
+start_part(condition) ::= <<
+start with <condition>
+>>
+
+group_by_clause(group_by_elements, having_clause) ::= <<
+group by <group_by_elements; separator=", "><if (having_clause)>
+
+<having_clause>
+<endif>
+>>
+
+having_clause(condition) ::= <<
+having <condition>
+>>
+
+rollup_grouping_element(elements) ::= <<
+rollup(<elements; separator=", ">)
+>>
+
+cube_grouping_element(elements) ::= <<
+cube(<elements; separator=", ">)
+>>
+
+table_collection_expression(expression_or_subquery, is_outer_join) ::= <<
+table (<expression_or_subquery>)<if (is_outer_join)>(+)<endif>
+>>
+
+close_statement(cursor_name) ::= "close <cursor_name>"
+open_statement(cursor_name, expression_list) ::= "open <cursor_name><expression_list>"
+
+fetch_statement(cursor_name, into_clause) ::= <<
+fetch <cursor_name> <into_clause>
+>>
+
+open_for_statement(cursor_name, expression_or_select_statement, using_clause) ::= <<
+open <cursor_name> for <expression_or_select_statement><if (using_clause)>
+
+<using_clause>
+<endif>
+>>
+
+using_clause(using_elements) ::= <<
+using <using_elements; separator=", ">
+>>
+
+using_element_asterisk() ::= "*"
+
+using_element_element(is_in, is_out, expression, alias) ::= <<
+<if (is_in)>in <endif><if (is_out)>out <endif><expression><if (alias)> <alias><endif>
+>>
+
+over_clause(query_partition_clause, order_by_clause, windowing_clause) ::= <<
+over (<if (query_partition_clause)><query_partition_clause> <endif><if (order_by_clause)><order_by_clause><if (windowing_clause)> <windowing_clause><endif><endif>)
+>>
+
+exit_statement(label_name, condition) ::= <<
+exit<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
+>>
+
+continue_statement(label_name, condition) ::= <<
+continue<if (label_name)> <label_name><endif><if (condition)> <condition><endif>
+>>
+
+general_when(expression) ::= "when <expression>"
+
+execute_immediate_statement(expression, into_clause, using_clause, dynamic_returning_clause) ::= <<
+execute immediate <expression><if (into_clause)>
+
+<into_clause>
+<endif><if (using_clause)>
+
+<using_clause>
+<endif><if (dynamic_returning_clause)>
+
+<dynamic_returning_clause>
+<endif>
+>>
+
+dynamic_returning_clause(into_clause) ::= "returning <into_clause>"
+
+commit_statement(is_work, additional) ::= "commit<if (is_work)> work<endif><if (additional)> <additional><endif>"
+
+commit_comment(comment_expression, write_clause) ::= <<
+comment <comment_expression><if (write_clause)> <write_clause><endif>
+>>
+
+commit_statement_write_clause(is_wait, is_nowait, is_immediate, is_batch) ::= <<
+write<if (is_wait)> wait<elseif (is_nowait)> nowait<endif><if (is_immediate)> immediate<elseif (is_batch)> batch<endif>
+>>
+
+commit_statement_force_1(expr1, expr2) ::= <<
+force <expr1><if (expr2)>, <expr2><endif>
+>>
+
+commit_statement_force_2(expression) ::= <<
+force corrupt_xid <expression>
+>>
+
+commit_statement_force_3() ::= <<
+force corrupt_xid_all
+>>
+
+raise_statement(name) ::= "raise<if(name)> <name><endif>"
+
+query_partition_clause(impl) ::= "partition by <impl>"
+query_partition_clause_impl_expressions(expressions) ::= <<
+<expressions; separator=", ">
+>>
+
+xmltable(xml_namespaces_clause, xquery_expression, xml_passing_clause, xml_table_columns) ::= <<
+xmltable(<if (xml_namespaces_clause)>
+<xml_namespaces_clause> <endif><xquery_expression><if (xml_passing_clause)> <xml_passing_clause>
+<endif>
+<if (xml_table_columns)> columns <xml_table_columns; separator=", "><endif>)
+>>
+
+xml_passing_clause(is_by_value, xml_passing_clause_expressions) ::= <<
+passing<if (is_by_value)> by value<endif> <xml_passing_clause_expressions; separator=", ">
+>>
+
+xml_passing_clause_expr(expression, alias) ::= <<
+<expression><if (alias)> <alias><endif>
+>>
+
+xml_table_column_ordinality(name) ::= <<
+<name> for ordinality
+>>
+
+xml_table_column_typespec(name, type_spec, path_expr, xml_general_default_part) ::= <<
+<name> <type_spec><if (path_expr)> path <path_expr><endif><if (xml_general_default_part)> <xml_general_default_part><endif>
+>>
+
+xml_general_default_part(expression) ::= <<
+default <expression>
+>>
+
+xml_parse(is_document, is_content, expression, is_wellformed) ::= <<
+xmlparse(<if (is_document)>document<elseif (is_content)>content><endif> <expression><if (is_wellformed)> wellformed<endif>)
+>>
+
+xmlagg(expression, order_by_clause) ::= <<
+xmlagg(<expression><if (order_by_clause)> <order_by_clause><endif>)
+>>
+
+xmlelement(is_entity_escaping, is_no_entity_escaping, is_name, is_evalname, expression, xml_attributes_clause, value_expressions) ::= <<
+xmlelement(<if (is_entity_escaping)>
+entityescaping <elseif (is_no_entity_escaping)>noentityescaping <endif><if (is_name)>
+name <elseif (is_evalname)>evalname <endif><expression><if (xml_attributes_clause)>
+,
+  <xml_attributes_clause>
+<endif><if (value_expressions)>,
+  <value_expressions; separator=",\n"><endif>)
+>>
+
+xmlelement_value_expr(expression, alias) ::= <<
+<expression><if (alias)> <alias><endif>
+>>
+
+xml_attributes_clause(is_entity_escaping, is_no_entity_escaping, is_schema_check, is_no_schema_check, xml_multiuse_expression_elements) ::=
+<<
+xmlattributes(<if (is_entity_escaping)>entityescaping 
+<elseif (is_no_entity_escaping)>noentityescaping 
+<endif><if (is_schema_check)>schemacheck 
+<elseif (is_no_schema_check)>noschemacheck <endif> 
+<xml_multiuse_expression_elements; separator=",\n">)
+>>
+
+xml_multiuse_expression_element(expression, xml_alias) ::= <<
+<expression><if (xml_alias)> <xml_alias><endif>
+>>
+
+xml_alias_id(id) ::= "as <id>"
+
+xml_alias_evalname(expression) ::= "as evalname <expression>"
+
+xmlroot(expression, xml_param_version_part, xmlroot_param_standalone_part) ::= <<
+xmlroot(<expression>, version <xml_param_version_part><if (xmlroot_param_standalone_part)>, <xmlroot_param_standalone_part><endif>)
+>>
+
+xml_param_version_part_novalue() ::= "no value"
+
+xmlroot_param_standalone_part_yes() ::= "yes"
+xmlroot_param_standalone_part_no() ::= "no"
+xmlroot_param_standalone_part_no_value() ::= "no value"
+
+interval_type_spec(left_side, right_side) ::= <<
+interval <left_side> to <right_side>
+>>
+
+interval_type_spec_first(is_year, is_day, expression) ::= <<
+<if (is_year)>year<elseif (is_day)>day<endif><if (expression)>(<expression>)<endif>
+>>
+
+interval_type_spec_second(is_month, is_second, expression) ::= <<
+<if (is_month)>month<elseif (is_second)>second<endif><if (expression)>(<expression>)<endif>
+>>
+
+savepoint_statement(name) ::= "savepoint <name>"
+
+rollback_statement(is_work, is_to_savepoint, savepoint_name, is_force, force_string) ::= <<
+rollback<if (is_work)> work<endif><if (is_to_savepoint)>
+ to savepoint <savepoint_name>
+<endif>
+<if (is_force)>
+force <force_string>
+<endif>
+>>
+
+windowing_clause(is_rows, is_range, is_between, windowing_element_1, windowing_element_2) ::= <<
+<if (is_rows)>rows<elseif (is_range)>range<endif>
+<if (is_between)> between <windowing_element_1> and <windowing_element_2>
+<else> <windowing_element_1><endif>
+>>
+
+windowing_elements_unbounded_preceding() ::= "unbounded preceding"
+windowing_elements_current_row() ::= "current row"
+windowing_elements_rows_preceding(expression) ::= "<expression> preceding"
+windowing_elements_rows_following(expression) ::= "<expression> following"
+
+cursor_declaration(cursor_name, parameters, type_spec, select_statement) ::= <<
+cursor <cursor_name><if (parameters)>(<parameters; separator=", ">)<endif>
+<if (type_spec)> return <type_spec><endif>
+<if (select_statement)> is
+  <select_statement>
+<endif>;
+>>
+
+parameter_spec(parameter_name, type_spec, default_value_part) ::= <<
+<parameter_name><if (type_spec)> <type_spec><endif><if (default_value_part)> <default_value_part><endif>
+>>
+
+goto_statement(label_name) ::= "goto <label_name>"
+
+pipe_row_statement(expression) ::= "pipe row(<expression>)"
+
+call_spec(declaration) ::= "language <declaration>"
+
+call_spec_java(name) ::= "java name <name>"
+
+merge_statement(table_name, table_alias, selected_tableview, condition, merge_update_clause, merge_insert_clause, error_logging_clause) ::= <<
+merge into <table_name><if (table_alias)> <table_alias><endif>
+using <selected_tableview>
+on (<condition>)<if (merge_update_clause)>
+
+<merge_update_clause>
+<endif><if (merge_insert_clause)>
+
+<merge_insert_clause>
+<endif><if (error_logging_clause)>
+
+<error_logging_clause>
+<endif>
+>>
+
+selected_tableview_table(name, alias) ::= <<
+<name><if (alias)> <alias><endif>
+>>
+
+selected_tableview_select_statement(select_statement, alias) ::= <<
+(
+  <select_statement>
+)<if (alias)> <alias><endif>
+>>
+
+merge_update_clause(merge_elements, where_clause, merge_update_delete_part) ::= <<
+when matched then
+  update set <merge_elements; separator=",\n"><if (where_clause)>
+
+  <where_clause>
+<endif><if (merge_update_delete_part)>
+
+  <merge_update_delete_part>
+<endif>
+>>
+
+merge_element(column_name, expression) ::= <<
+<column_name> = <expression>
+>>
+
+merge_update_delete_part(where_clause) ::= <<
+delete <where_clause>
+>>
+
+merge_insert_clause(columns, expression_list, where_clause) ::= <<
+when not matched then
+  insert<if (columns)> (<columns; separator=", ">)<endif>
+  values
+    <expression_list><if (where_clause)>
+
+  <where_clause>
+<endif>
+>>
+
+subquery_factoring_clause(is_recursive, factoring_elements) ::= <<
+with<if (is_recursive)> recursive<endif>
+  <factoring_elements; separator=",\n">
+>>
+
+factoring_element(query_name, column_names, subquery, order_by_clause) ::= <<
+<query_name><if (column_names)> (<column_names; separator=", ">)<endif> as (
+  <subquery><if (order_by_clause)>
+  
+  <order_by_clause><endif>)
+>>
+
+nested_table_type_def(type_spec, is_not_null, table_indexed_by_part) ::= <<
+table of <type_spec><if (is_not_null)> not null<endif><if (table_indexed_by_part)> <table_indexed_by_part><endif>
+>>
+
+create_view(is_replace, force_clause, name, view_type_clause, subquery, subquery_restriction_clause) ::= <<
+create<if (is_replace)> or replace<endif><if (force_clause)> <force_clause>
+<endif> view <name><if (view_type_clause)> <view_type_clause>
+<endif> as
+<subquery><if (subquery_restriction_clause)>
+
+<subquery_restriction_clause>
+<endif>;
+>>
+
+create_view_force_clause_force() ::= "force"
+create_view_force_clause_noforce() ::= "no force"
+
+view_type_constraints_clause(items) ::= <<
+(<items; separator=",\n">)
+>>
+
+view_type_constraint_item_inline(id, items) ::= <<
+<id><if (items)> <items; separator=" "><endif>
+>>
+
+inline_constraint_clause(id, inline_constraint_def, items) ::= <<
+<if (id)>constraint <id> <endif><inline_constraint_def><if (items)> <items; separator=" "><endif>
+>>
+
+inline_constraint_null() ::= "null"
+sinline_constraint_not_null() ::= "not null"
+inline_constraint_unique() ::= "unique"
+inline_constraint_primary_key() ::= "primary key"
+
+references_clause(name, columns, on_delete_clause) ::= <<
+references <name> (<columns; separator=", ">)<if (on_delete_clause)> <on_delete_clause><endif>
+>>
+
+references_on_delete_clause(action) ::= <<
+on delete <action>
+>>
+
+on_delete_clause_action_cascade() ::= "cascade"
+on_delete_clause_action_set_null() ::= "set null"
+
+checks_clause(expr) ::= <<
+check(<expr>)
+>>
+
+constraint_state_item_not_deferrable() ::= "not deferrable"
+constraint_state_item_deferrable() ::= "deferrable"
+constraint_state_item_immediate() ::= "immediate"
+constraint_state_item_deferred() ::= "deferred"
+constraint_state_item_rely() ::= "rely"
+constraint_state_item_norely() ::= "norely"
+constraint_state_item_enable() ::= "enable"
+constraint_state_item_disable() ::= "disable"
+constraint_state_item_validate() ::= "validate"
+constraint_state_item_novalidate() ::= "novalidate"
+
+using_index_clause(index_def) ::= <<
+using index <index_def>
+>>
+
+exceptions_clause(name) ::= <<
+exceptions into <name>
+>>
+
+out_of_line_constraint_clause(name, out_of_line_constraint_def, items) ::= <<
+<if (name)>constraint <name> <endif> <out_of_line_constraint_def><if (items)> <items; separator=" "><endif>
+>>
+
+out_of_line_constraint_def_unique(columns) ::= <<
+unique (<columns; separator=", ">)
+>>
+    
+out_of_line_constraint_def_primary_key(columns) ::= <<
+primary key (<columns; separator=", ">)
+>>
+
+out_of_line_constraint_def_foreign_key(columns, references_clause) ::= <<
+foreign key (<columns; separator=", ">) <references_clause>
+>>
+
+commented_id(val, cbefore, cafter) ::= <<
+<if (cbefore)><cbefore> <endif><val><if (cafter)> <cafter><endif>
+>>
+
+native_datatype_unsupported() ::= "Unsupported datatype"
+native_datatype_bfile() ::= "bfile"
+native_datatype_binary_float() ::= "binary_float"
+native_datatype_binary_integer() ::= "binary_integer"
+native_datatype_blob() ::= "blob"
+native_datatype_boolean() ::= "boolean"
+native_datatype_character() ::= "character"
+native_datatype_char() ::= "char"
+native_datatype_clob() ::= "clob"
+native_datatype_date() ::= "date"
+native_datatype_decimal() ::= "decimal"
+native_datatype_dec() ::= "dec"
+native_datatype_double() ::= "double"
+native_datatype_float() ::= "float"
+native_datatype_integer() ::= "integer"
+native_datatype_int() ::= "int"
+native_datatype_long() ::= "long"
+native_datatype_long_raw() ::= "long raw"
+native_datatype_nchar() ::= "nchar"
+native_datatype_nclob() ::= "nclob"
+native_datatype_number() ::= "number"
+native_datatype_numeric() ::= "numeric"
+native_datatype_nvarchar2() ::= "nvarchar2"
+native_datatype_pls_integer() ::= "pls_integer"
+native_datatype_raw() ::= "raw"
+native_datatype_rowid() ::= "rowid"
+native_datatype_smallint() ::= "smallint"
+native_datatype_timestamp() ::= "timestamp"
+native_datatype_urowid() ::= "urowid"
+native_datatype_varchar2() ::= "varchar2"
+native_datatype_varchar() ::= "varchar"
+native_datatype_text() ::= "text"
+native_datatype_interval() ::= "interval"
+
